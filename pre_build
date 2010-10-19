@@ -1,0 +1,15 @@
+#/bin/sh
+
+mkdir -p moc
+
+for i in `ls include/*.h` `ls include/math/*.h`
+do 
+    MOCFILE=moc/moc_`basename $i .h`.cpp
+    if [ $i -nt $MOCFILE ]; then 
+        moc $i -o $MOCFILE | grep -v -e "No relevant classes found. No output generated.";
+echo Rebuild $MOCFILE
+    fi
+done
+
+exit 0
+

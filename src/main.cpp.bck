@@ -1,0 +1,455 @@
+#include "stm32f10x_rcc.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_tim.h"
+#include <stdint.h>
+#include "misc.h"
+#include "servo.h"
+#include "rateau.h"
+#include "Hctl_Handler.h"
+#include "quadrature_coder_handler.h"
+#include "asservissement.h"
+#include "Position.h"
+#include "Angle.h"
+#include "PositionPlusAngle.h"
+#include "memory.h"
+#include "Rouleau.h"
+#include "roues.h"
+#include "Moteur.h"
+#include "capteurs.h"
+#include "strategie.h"
+
+#define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
+//Declarations
+void NMI_Handler(void);
+void HardFault_Handler(void);
+int main(void);
+
+// VARIABLES
+
+GPIO_InitTypeDef GPIO_InitStructure;
+NVIC_InitTypeDef TIM2_IRQ;
+
+void Clk_Init();
+void myDelay(unsigned long);
+
+
+void initTimer()
+{
+    /*
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+
+    TIM_TimeBaseInitTypeDef timInit;
+    timInit.TIM_Prescaler = 36000;
+    timInit.TIM_CounterMode = TIM_CounterMode_Up;
+    timInit.TIM_Period = 2000;
+    timInit.TIM_ClockDivision = TIM_CKD_DIV2;
+    timInit.TIM_RepetitionCounter = 0;
+    TIM_TimeBaseInit(TIM2, &timInit);
+
+    TIM2_IRQ.NVIC_IRQChannel = TIM2_IRQn;
+    TIM2_IRQ.NVIC_IRQChannelCmd = ENABLE;
+    TIM2_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
+    TIM2_IRQ.NVIC_IRQChannelSubPriority = 1;
+    NVIC_Init(&TIM2_IRQ);
+
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    TIM_Cmd(TIM2, ENABLE);*/
+
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+
+    TIM_TimeBaseInitTypeDef timInit;
+    timInit.TIM_Prescaler = 0;
+    timInit.TIM_CounterMode = TIM_CounterMode_Up;
+    timInit.TIM_Period = 3000;
+    timInit.TIM_ClockDivision = 0;
+    timInit.TIM_RepetitionCounter = 0;
+    TIM_TimeBaseInit(TIM2, &timInit);
+
+    TIM_OCInitTypeDef timOCInit;
+    timOCInit.TIM_OCMode =TIM_OCMode_PWM1;
+    timOCInit.TIM_OutputState = TIM_OutputState_Enable;
+    timOCInit.TIM_Pulse = 800; /* rapport cyclique */
+    timOCInit.TIM_OCPolarity = TIM_OCPolarity_High;
+
+    TIM_OC3Init(TIM2, &timOCInit);
+
+    TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);
+
+    TIM_ARRPreloadConfig(TIM2, ENABLE);
+
+
+    TIM_Cmd(TIM2, ENABLE);
+}
+
+void initQuadEncoderCounter(){
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    //TIM_ICInitTypeDef       TIM_ICInitStructure;
+    GPIO_InitTypeDef        GPIO_InitStructure;
+
+    //Enable GPIOA clock
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+
+    //Enable timer clock
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+
+    //Setup timer for quadrature encoder interface
+    //Encoder A channel at PA0.0 (Ch1)
+    //        B channel at PA0.1 (Ch2)
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_0|GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    //Time Base configuration
+    TIM_TimeBaseStructure.TIM_Prescaler     = 0;
+    TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_Period        = 0xFFFF;
+    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+
+    //Initialize input capture structure: Ch1
+    /*TIM_ICStructInit(&TIM_ICInitStructure);
+    TIM_ICInitStructure.TIM_Channel     = TIM_Channel_1;
+    TIM_ICInitStructure.TIM_ICPolarity  = TIM_ICPolarity_Rising;
+    TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+    TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+    TIM_ICInitStructure.TIM_ICFilter    = 0;
+    TIM_ICInit(TIM2, &TIM_ICInitStructure);*/
+
+    //Initialize input capture structure: Ch2
+   /* TIM_ICInitStructure.TIM_Channel     = TIM_Channel_2;
+    TIM_ICInit(TIM2, &TIM_ICInitStructure);*/
+
+    //Encoder Interface Configuration
+    TIM_EncoderInterfaceConfig(TIM2,
+                               TIM_EncoderMode_TI12,
+                               TIM_ICPolarity_Rising,
+                               TIM_ICPolarity_Rising);
+
+    TIM2_IRQ.NVIC_IRQChannel = TIM2_IRQn;
+    TIM2_IRQ.NVIC_IRQChannelCmd = ENABLE;
+    TIM2_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
+    TIM2_IRQ.NVIC_IRQChannelSubPriority = 1;
+    NVIC_Init(&TIM2_IRQ);
+
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+    //Enable TIM2 Peripheral
+    TIM_Cmd(TIM2,ENABLE);
+}
+
+bool DELenabled = true;
+
+//extern "C" void TIM2_IRQHandler()
+//{
+    //if( TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+//    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+    //int a = TIM_GetCounter(TIM2);
+    /*if( !DELenabled)
+        GPIOC->BRR |= 0x00001000;
+    else
+        GPIOC->BSRR |= 0x00001000;
+    DELenabled = !DELenabled;*/
+//}
+
+extern "C" void WWDG_IRQHandler()
+{
+
+}
+
+void test_call(int a)
+{
+
+}
+
+void fou() {}
+
+/*Mettez toutes vos initialisations de PIN dans la fonction "initialisation"
+On l'appellera ensuite dans le main au tout début pour tout initialiser d'un coup
+*/
+void initialisation()
+{
+    //Patte coté de la partie bleu ou jaune
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+
+    //Tirette
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    //Pattes des servos
+    GPIO_WriteBit(GPIOA,GPIO_Pin_6,Bit_SET);
+    //GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    GPIO_WriteBit(GPIOA,GPIO_Pin_7,Bit_RESET);
+    //GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+}
+
+bool isBlue()
+{
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)  == Bit_SET;
+}
+
+bool isTiretteEnleve()
+{
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)  == Bit_SET;
+}
+
+/*************************************************************************
+ * Function Name: main
+ * Parameters: none
+ * Return: Int32U
+ *
+ * Description: The main subroutine
+ *
+ *************************************************************************/
+int main(void)
+{
+
+	*NVIC_CCR = *NVIC_CCR | 0x200; /* Set STKALIGN in NVIC */
+	// Init clock system
+	  Clk_Init();
+
+
+    RCC_PCLK2Config(RCC_HCLK_Div8); // nécessaire pour le bon fonctionnement de l'ADC
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA, ENABLE);
+
+
+//Appel de la fonction qui permet d'initialiser tous les PINS
+initialisation();
+
+
+
+/*
+                  ------------------
+                  |  CODE TIRETTE  |
+                  ------------------
+*/
+
+    // pin-5 : start2, pin-1 : start1, inversion des élec :p
+
+
+/*
+    int a=4;
+
+    if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5) == Bit_RESET)
+        a=12;
+  *//*
+    int poil=5;
+    while(1)
+    {
+        if(GPIO_ReadInputDataBit(GPIOB, (uint16_t)GPIO_Pin_5) == Bit_RESET)
+            poil=45;
+        if(GPIO_ReadInputDataBit(GPIOB, (uint16_t)GPIO_Pin_5) == Bit_SET)
+            poil=10;
+    }*/
+
+
+    /*while(GPIO_ReadInputDataBit(GPIOB, (uint16_t)GPIO_Pin_5) == Bit_RESET)
+    {}*/
+    //initTimer();
+    //Hctl_Handler hctl;
+
+    //for(;;){
+    //hctl.faireUnTour();
+    //}
+
+    //Servo::initTimer();
+/*
+    while(1)
+    {
+        test_call(TIM_GetCounter(TIM2));
+    }*/
+
+    //Servo servo(1);
+
+//
+//    int a = 0;
+//    int b = 0;
+
+    //
+    //initQuadEncoderCounter();
+
+
+    /*Angle coucou = Angle(2*3.14)-Angle(-3.14*8+1.1);
+    float a = 10;*/
+
+    /*Angle coucou(4*3.14);
+    Angle caca(-4);
+    Angle poil(caca-coucou);*/
+
+
+    /*QuadratureCoderHandler* roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
+    QuadratureCoderHandler* roueCodeuseGauche = new QuadratureCoderHandler(TIM1);
+
+    PositionPlusAngle positionPlusAngleInitiale(Position(0,0), Angle(0));
+    Asservissement asservissement(positionPlusAngleInitiale, roueCodeuseGauche, roueCodeuseDroite);
+
+    asservissement.goTo(Position(10, -500));*/
+
+    unsigned int buffer = 0xffffffff;
+
+    while(buffer)
+    {
+        buffer <<= 1;
+        bool tmp = !isTiretteEnleve();
+        buffer |= tmp;
+    }
+
+    Strategie strategie(isBlue());
+
+    /*Rouleau rouleau(0.95);
+    rouleau.avaleBoule();
+    rouleau.recracheBoule();
+    rouleau.arrete();
+    rouleau.recracheBoule();
+    rouleau.avaleBoule();*/
+
+    /*Roues roues;
+    roues.gauche.tourne(0.5);
+    roues.droite.tourne(0.5);
+    float coucou = 4;*/
+
+    /*Roues roues;
+    roues.droite.tourne(-0.5);
+    roues.gauche.tourne(0.5);
+    float coucou = 4;*/
+
+    // Petit programme d'exemple du ADC : http://www.micromouseonline.com/blog/2009/05/25/simple-adc-use-on-the-stm32
+/*
+    Capteurs capteurs;
+    uint16_t test, test2, test3, test4;
+    uint32_t test42;
+    while (true) {
+        capteurs.startConversion();
+        while(!capteurs.conversionFinished());
+        test = capteurs.rawData[0];
+        test2 = capteurs.rawData[1];
+        test3 = capteurs.rawData[2];
+        test4 = capteurs.rawData[3];
+        test42 = ADC1->DR;
+
+        uint16_t datacount = DMA_GetCurrDataCounter(DMA1_Channel1);
+
+    }
+    Servo::initTimer();
+
+*/
+
+    /*Servo::initTimer();
+
+    Servo serv1(1);
+    Servo serv2(2);
+    int a = 100;
+
+
+//    Rateau rat(serv1,serv2);
+//
+////int a = 0;
+//    while(1)
+//    {
+//    rat.pivote(a);
+//    }
+    while(1)
+    {
+
+//    //Servo serv1(1);
+//
+////    Angle a(0.0);
+    serv1.goToAngle(a);
+//    Angle a(10.0);
+//    Rateau rat(serv1,serv2);
+//    rat.pivote(a);//*/
+//
+//   }
+
+    while(1)
+    {
+
+       // serv.goToAngle(a);
+        //for(unsigned int i=0; i<72*1000*25; i++)
+        //    fou();
+
+        /*servo.goToAngle(b);
+        a = TIM_GetCounter(TIM3);*/
+        //a = TIM_GetCounter(TIM2);
+        //a = roueCodeuseDroite.getTickValue();
+        //b = roueCodeuseGauche.getTickValue();
+
+        //TIM2->CCR3 = a;
+        //for(unsigned int i=0; i<72*1000*25; i++)
+         //   fou();
+        //TIM2->CCR3 = 800;
+
+    }
+}
+void NMI_Handler(void)
+{
+	return ;
+}
+
+void HardFault_Handler(void)
+{
+	return ;
+}
+//Functions definitions
+void myDelay(unsigned long delay )
+{
+  while(delay) delay--;
+}
+
+/*************************************************************************
+ * Function Name: Clk_Init
+ * Parameters: Int32U Frequency
+ * Return: Int32U
+ *
+ * Description: Init clock system
+ *
+ *************************************************************************/
+
+void Clk_Init (void)
+{
+  // 1. Cloking the controller from internal HSI RC (8 MHz)
+  RCC_HSICmd(ENABLE);
+  // wait until the HSI is ready
+  while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
+  RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
+  // 2. Enable ext. high frequency OSC
+  RCC_HSEConfig(RCC_HSE_ON);
+  // wait until the HSE is ready
+  while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
+  // 3. Init PLL
+  RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_9); // 72MHz
+//  RCC_PLLConfig(RCC_PLLSource_HSE_Div2,RCC_PLLMul_9); // 72MHz
+  RCC_PLLCmd(ENABLE);
+  // wait until the PLL is ready
+  while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
+  // 4. Set system clock divders
+  RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
+  RCC_ADCCLKConfig(RCC_PCLK2_Div8);
+  RCC_PCLK2Config(RCC_HCLK_Div1);
+  RCC_PCLK1Config(RCC_HCLK_Div2);
+  RCC_HCLKConfig(RCC_SYSCLK_Div1);
+  // Flash 1 wait state
+  *(vu32 *)0x40022000 = 0x12;
+  // 5. Clock system from PLL
+  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+}

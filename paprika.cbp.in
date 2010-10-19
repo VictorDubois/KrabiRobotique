@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Triatek Editor" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Triatek">
+				<Option output="triatek" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					#Debug Compiler Add option /!\ DO NOT TOUCH THIS LINE /!\ <Add option="AUTOOPTIONS" />
+				</Compiler>
+				<Linker>
+					#Debug Linker Add option /!\ DO NOT TOUCH THIS LINE /!\ <Add option="AUTOOPTIONS" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			#Compiler Add option /!\ DO NOT TOUCH THIS LINE /!\ <Add option="AUTOOPTIONS" />
+		<Add directory="moc" />
+		<Add directory="include" />
+		<Add directory="." />
+		<Add directory="impl" />
+		</Compiler>
+		<Linker>
+			#Linker Add option /!\ DO NOT TOUCH THIS LINE /!\ <Add option="AUTOOPTIONS" />
+		</Linker>
+		<ExtraCommands>
+			<Add before="./pre_build" />
+		</ExtraCommands>
+		#File here<Unit filename="confwnd/conf_id.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
