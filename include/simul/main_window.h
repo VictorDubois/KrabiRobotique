@@ -18,6 +18,8 @@ private slots:
 	void update();
 protected:
 	void resizeEvent(QResizeEvent* event);
+	void keyPressEvent(QKeyEvent* evt);
+	void keyReleaseEvent(QKeyEvent* evt);
 };
 
 #endif

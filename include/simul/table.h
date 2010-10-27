@@ -2,13 +2,15 @@
 #define TABLE_H_INCLUDED
 
 #include <QWidget>
+#include "element.h"
 
 class Table : public QWidget
 {
 private:
 	int dt;
-public:
+	std::vector<class Element*> elements;
 	std::vector<class Robot*> robots;
+public:
 
 	static const int tableWidth = 3000;
 	static const int tableHeight = 2100;
@@ -20,6 +22,7 @@ public:
 
 	void update(int dt);
 	void paintEvent(QPaintEvent* evt);
+	void keyPressEvent(QKeyEvent* evt, bool press);
 };
 
 #endif

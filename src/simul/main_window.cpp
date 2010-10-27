@@ -29,6 +29,16 @@ void MainWindow::update()
 	table->update(dt);
 }
 
+void MainWindow::keyPressEvent(QKeyEvent* evt)
+{
+	table->keyPressEvent(evt,true);
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent* evt)
+{
+	table->keyPressEvent(evt,false);
+}
+
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
 	float proportion = (float)table->tableWidth/table->tableHeight;

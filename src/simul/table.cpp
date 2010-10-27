@@ -13,6 +13,8 @@ Table::Table(QWidget* parent) : QWidget(parent)
 	setPalette(p);
 
 	robots.push_back(new Robot());
+
+	elements.push_back(new Element(Position(300,300),Element::Pion));
 }
 
 Table::~Table()
@@ -30,6 +32,7 @@ void Table::paintEvent(QPaintEvent* evt)
 	static float l = 0;
 	l+= dt*0.005;
 	QPainter p(this);
+	p.setRenderHints(QPainter::Antialiasing,true);
 	p.setWindow(QRect(0,0,tableWidth,tableHeight));
 	p.setWorldMatrixEnabled(true);
 
@@ -58,9 +61,22 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.fillRect(1128,1850,22,130,Qt::black);
 	p.fillRect(2528,1850,22,130,Qt::black);
 
+
+	p.setBrush(QBrush(QColor("yellow")));
+	p.setPen(QBrush(QColor("yellow")));
+
+	for(unsigned int i=0; i < elements.size(); i++)
+		elements[i]->paint(p);
+
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->paint(p,dt);
 
 	dt = 0;
+}
+
+void Table::keyPressEvent(QKeyEvent* evt, bool press)
+{
+	for(unsigned int i=0; i < robots.size(); i++)
+		robots[i]->keyPressEvent(evt, press);
 }
 

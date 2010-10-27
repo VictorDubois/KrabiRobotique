@@ -21,7 +21,8 @@ paprika_INCLS=\
 include/simul/main.h \
 include/simul/main_window.h \
 include/simul/table.h \
-include/simul/robot.h
+include/simul/robot.h \
+include/simul/pion.h
 
 bin_PROGRAMS = paprika
 

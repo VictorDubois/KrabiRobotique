@@ -2,11 +2,14 @@
 #define ROBOT_H_INCLUDED
 
 #include <QPainter>
+#include <QKeyEvent>
 #include <boost/circular_buffer.hpp>
 #include "PositionPlusAngle.h"
 
 class Robot
 {
+private:
+	bool manual;
 public:
 
 	PositionPlusAngle pos;
@@ -20,6 +23,7 @@ public:
 	Robot();
 
 	void paint(QPainter &p, int dt);
+	void keyPressEvent(QKeyEvent* evt,bool press);
 };
 
 #endif //ROBOT_H_INCLUDED
