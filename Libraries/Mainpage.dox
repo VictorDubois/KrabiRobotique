@@ -1,0 +1,37 @@
+/** @mainpage STM32F10x Libraries Documentation
+ *
+ *  @section ManRef Manuels de référence
+ * <a href=../../manuals/datasheet_STM32F103xB.pdf>le Datasheet du STM32F103RB</a> \n
+ * <a href=../../manuals/reference_manual_STM32F103xB.pdf>le manuel de référence du STM32F103RB</a> \n
+ * <a href=../../manuals/stm32_cortex-m3_programming_manual.pdf>le manuel de programmation</a> de l’architecture ARM Cortex-M3 \n
+ * <a href=../../manuals/STM32-H103.pdf>la brochure de la carte STM32-H103</a> \n
+ * <a href=../../manuals/STM32-H103-sch.gif>le schéma électrique de la carte STM32-H103</a> \n
+ *
+ * @section Modules
+ * @ref CMSIS
+ * @ref MISC
+ * @ref ADC
+ * @ref BKP
+ * @ref CAN
+ * @ref CRC
+ * @ref DAC
+ * @ref DBGMCU
+ * @ref DMA
+ * @ref EXTI
+ * @ref FLASH
+ * @ref FSMC
+ * @ref GPIO
+ * @ref I2C
+ * @ref IWDG
+ * @ref PWR
+ * @ref RCC
+ * @ref RTC
+ * @ref SDIO
+ * @ref SPI
+ * @ref TIM
+ * @ref USART
+ * @ref WWDG
+ *
+ * @section Doc Documentation du projet robotique
+ * C’est par <a href=../../../doc/html/index.html> ici</a>
+ */
