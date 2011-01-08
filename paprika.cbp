@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Beat’em up" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_compiler__stm32_architecture" />
+		<Build>
+			<Target title="Debug">
+				<Option output="main.out" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="main.out" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fno-rtti -fno-exceptions" />
+			<Add option="-DSTM32F10X_MD" />
+			<Add option="-DROBOTHW" />
+			<Add option="-DROUES" />
+			<Add directory="include" />
+			<Add directory="Libraries/CMSIS/Core/CM3" />
+			<Add directory="Libraries/STM32F10x_StdPeriph_Driver/inc" />
+		</Compiler>
+		<Linker>
+			<Add option="-Tstm32LinkerScript.cmd" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="arm-none-eabi-objcopy -Obinary main.out main.bin" />
+			<Add after="arm-none-eabi-objdump -S main.out &gt; main.list" />
+			<Mode after="always" />
+		</ExtraCommands>
+		<Unit filename="Libraries/CMSIS/Core/CM3/startup/gcc/startup_stm32f10x_md.s" />
+		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/misc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="include/Angle.h" />
+		<Unit filename="include/Hctl_Handler.h" />
+		<Unit filename="include/Moteur.h" />
+		<Unit filename="include/Position.h" />
+		<Unit filename="include/PositionPlusAngle.h" />
+		<Unit filename="include/Rouleau.h" />
+		<Unit filename="include/ValeursRoues.h" />
+		<Unit filename="include/asservissement.h" />
+		<Unit filename="include/capteurs.h" />
+		<Unit filename="include/distance.h" />
+		<Unit filename="include/memory.h" />
+		<Unit filename="include/odometrie.h" />
+		<Unit filename="include/pid_filter_angle.h" />
+		<Unit filename="include/pid_filter_distance.h" />
+		<Unit filename="include/pwm_handler.h" />
+		<Unit filename="include/quadrature_coder_handler.h" />
+		<Unit filename="include/rateau.h" />
+		<Unit filename="include/roue.h" />
+		<Unit filename="include/roues.h" />
+		<Unit filename="include/servo.h" />
+		<Unit filename="include/strategie.h" />
+		<Unit filename="include/timer_handler.h" />
+		<Unit filename="src/Angle.cpp" />
+		<Unit filename="src/Hctl_Handler.cpp" />
+		<Unit filename="src/Moteur.cpp" />
+		<Unit filename="src/Position.cpp" />
+		<Unit filename="src/PositionPlusAngle.cpp" />
+		<Unit filename="src/Rouleau.cpp" />
+		<Unit filename="src/ValeursRoues.cpp" />
+		<Unit filename="src/asservissement.cpp" />
+		<Unit filename="src/capteurs.cpp" />
+		<Unit filename="src/distance.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/memory.cpp" />
+		<Unit filename="src/odometrie.cpp" />
+		<Unit filename="src/pid_filter_angle.cpp" />
+		<Unit filename="src/pid_filter_distance.cpp" />
+		<Unit filename="src/pwm_handler.cpp" />
+		<Unit filename="src/quadrature_coder_handler.cpp" />
+		<Unit filename="src/rateau.cpp" />
+		<Unit filename="src/roue.cpp" />
+		<Unit filename="src/roues.cpp" />
+		<Unit filename="src/servo.cpp" />
+		<Unit filename="src/strategie.cpp" />
+		<Unit filename="src/stub.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/timer_handler.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger>
+				<remote_debugging target="Debug">
+					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="3333" additional_cmds_before="source ~/.gdbinit" />
+				</remote_debugging>
+			</debugger>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
