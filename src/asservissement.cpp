@@ -9,7 +9,7 @@
 #include "asservissement.h"
 #include "strategie.h"
 #include <math.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 #define STK_CTRL_ADDR 0xe000e010
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)
@@ -31,6 +31,7 @@ float posx[DBG_SIZE];
 float posy[DBG_SIZE];
 float angle[DBG_SIZE];
 
+#define NULL 0
 
 Asservissement * Asservissement::asservissement = NULL;
 const uint16_t Asservissement::nb_ms_between_updates = 10;
@@ -60,24 +61,26 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     angularDutySent = 0;
     en_mouvement = false;
     Asservissement::asservissement = this;
+
+        *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
+    *((uint32_t *)(STK_LOAD_ADDR)) = 9000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
+
+    NVIC_InitTypeDef SysTick_IRQ;
+
+    SysTick_IRQ.NVIC_IRQChannel = SysTick_IRQn;
+    SysTick_IRQ.NVIC_IRQChannelCmd = ENABLE;
+    SysTick_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
+    SysTick_IRQ.NVIC_IRQChannelSubPriority = 1;
+    NVIC_Init(&SysTick_IRQ);
 }
 
 int asserCount = 0;
 
-#include <iostream>
-
-float min(float a, float b)
-{
-	return a < b ? a : b;
-}
-
-float max(float a, float b)
-{
-	return a > b ? a : b;
-}
-
 void Asservissement::update(void)
 {
+    roues.gauche.tourne(0.1);
+    roues.droite.tourne(0.1);
+    return;
     //PositionPlusAngle before(odometrie.positionPlusAngle);
     asserCount++;
 
@@ -86,12 +89,12 @@ void Asservissement::update(void)
 
 #ifdef CAPTEURS
         capteurs.startConversion();
-#endif 
+#endif
         odometrie->update();
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();
-        Angle vitesse_angulaire_atteinte = odometrie->vitesseAngulaire();
-        Distance vitesse_lineaire_atteinte = odometrie->vitesseLineaire();
+        Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();
+        Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();
 
         buffer_collision <<= 1;
         bool tmp = (fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre).getValueInMillimeters()) < seuil_collision);
@@ -294,3 +297,7 @@ void Asservissement::tourne(Angle angle){
     goToDirection(odometrie->getPos().angle+angle);
 }
 
+extern "C" void SysTick_Handler()
+{
+    Asservissement::asservissement->update();
+}

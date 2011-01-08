@@ -4,23 +4,23 @@
 #include "distance.h"
 #include "PositionPlusAngle.h"
 
+#ifndef ROBOTHW
 class Odometrie
 {
 public:
 	virtual PositionPlusAngle getPos()=0;
 	virtual void setPos(PositionPlusAngle p)=0;
-	virtual Angle vitesseAngulaire()=0;
-	virtual Distance vitesseLineaire()=0;
+	virtual Angle getVitesseAngulaire()=0;
+	virtual Distance getVitesseLineaire()=0;
 	virtual void update() { };
 };
+#else
 
-
-#ifdef ROBOTHW
 #include "quadrature_coder_handler.h"
-class OdometrieD : public Odometrie
+class HwOdometrie
 {
     public:
-        Odometrie(PositionPlusAngle positionPlusAngleInitiale, QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite);
+        HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite);
         void update();
 
         QuadratureCoderHandler* roueCodeuseDroite;
@@ -31,6 +31,26 @@ class OdometrieD : public Odometrie
         Distance vitesseLineaire;
         Angle vitesseAngulaire;
 
+        void setPos(PositionPlusAngle p)
+        {
+            positionPlusAngle = p;
+        }
+
+        PositionPlusAngle getPos()
+        {
+            return positionPlusAngle;
+        }
+
+        Angle getVitesseAngulaire()
+        {
+            return vitesseAngulaire;
+        }
+
+        Distance getVitesseLineaire()
+        {
+            return vitesseLineaire;
+        }
+
     private:
         int32_t prevDeltaTicksRoueGauche;
         int32_t prevDeltaTicksRoueDroite;
@@ -40,6 +60,8 @@ class OdometrieD : public Odometrie
         const double coeffDistance;
         const double coeffAngle;
 };
+
+typedef HwOdometrie Odometrie;
 #endif //ROBOTHW
 
 #endif // ODOMETRIE_H_INCLUDED

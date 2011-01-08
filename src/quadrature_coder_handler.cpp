@@ -1,6 +1,6 @@
 #include "quadrature_coder_handler.h"
 //#include "misc.h"
-#include "stdlib.h"
+//#include "stdlib.h"
 
 QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
     //lowerTickValue = 0;

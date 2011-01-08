@@ -17,6 +17,7 @@
 #include "Moteur.h"
 #include "capteurs.h"
 #include "strategie.h"
+#include "odometrie.h"
 
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
 //Declarations
@@ -237,7 +238,7 @@ int main(void)
 initialisation();
 
 
-
+/*
     unsigned int buffer = 0xffffffff;
 
     while(buffer)
@@ -246,8 +247,8 @@ initialisation();
         bool tmp = !isTiretteEnleve();
         buffer |= tmp;
     }
-
-    Strategie strategie(isBlue());
+*/
+    Strategie strategie(isBlue(), new Asservissement(new HwOdometrie(new QuadratureCoderHandler(TIM2), new QuadratureCoderHandler(TIM1))));
     while(1);
 }
 void NMI_Handler(void)

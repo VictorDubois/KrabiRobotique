@@ -1,0 +1,6 @@
+#!/bin/bash
+
+xterm -e openocd &
+sleep 1
+telnet localhost 4444
+killall openocd

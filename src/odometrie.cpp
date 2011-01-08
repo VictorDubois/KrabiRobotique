@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <math.h>
 
-Odometrie::Odometrie(PositionPlusAngle positionPlusAngleInitiale, QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
-    positionPlusAngle(positionPlusAngleInitiale),
+HwOdometrie::HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
+    /*positionPlusAngle(positionPlusAngleInitiale),*/
     vitesseLineaire(0),
     vitesseAngulaire(0),
     entraxe(325),
@@ -20,7 +20,7 @@ Odometrie::Odometrie(PositionPlusAngle positionPlusAngleInitiale, QuadratureCode
     this->roueCodeuseDroite = roueCodeuseDroite;
 }
 
-void Odometrie::update(){
+void HwOdometrie::update(){
     //float vitesseAngulaireRoueGauche = 100*roueCodeuseGauche->getTickValue()/(2048*4); //(en tours par secondes)
     //float vitesseAngulaireRoueDroite = 100*roueCodeuseDroite->getTickValue()/(2048*4);
     //roueCodeuseGauche->getTickValue();
