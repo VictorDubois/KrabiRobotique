@@ -4,6 +4,7 @@ INCLUDES = -Iinclude -Iimpl -Imoc -I.
 
 
 paprika_SOURCES=\
+src/simul/element.cpp \
 src/simul/main.cpp \
 src/simul/main_window.cpp \
 src/simul/table.cpp \

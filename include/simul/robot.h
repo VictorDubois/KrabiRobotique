@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <boost/circular_buffer.hpp>
 #include "PositionPlusAngle.h"
+#include <Box2D/Box2D.h>
 
 class Robot
 {
@@ -19,11 +20,13 @@ public:
 	class OdoRobot* odometrie;
 	class Strategie* strategie;
 	
+	b2Body* body;
 
-	Robot();
+	Robot(b2World &world);
 
 	void paint(QPainter &p, int dt);
 	void keyPressEvent(QKeyEvent* evt,bool press);
+	void updateForces(int dt);
 };
 
 #endif //ROBOT_H_INCLUDED

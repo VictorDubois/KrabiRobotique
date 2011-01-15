@@ -23,12 +23,12 @@ public:
 		return robot->pos;
 	}
 
-	Distance vitesseLineaire()
+	Distance getVitesseLineaire()
 	{
 		return robot->deriv.position.getNorme();
 	}
 
-	Angle vitesseAngulaire()
+	Angle getVitesseAngulaire()
 	{
 		return robot->deriv.angle;
 	}
@@ -40,11 +40,8 @@ public:
 };
 
 
-Robot::Robot() : olds(10000)
+Robot::Robot(b2World & world) : olds(10000)
 {
-	pos.position.x=1000;
-	pos.position.y=500;
-	pos.angle=0;
 
 	deriv.position.x = 0;
 	deriv.position.y = 0;
@@ -55,22 +52,72 @@ Robot::Robot() : olds(10000)
 	odometrie = new OdoRobot(this);
 	asservissement = new Asservissement(odometrie);
 	strategie = new Strategie(true, asservissement);
+
+	pos.position.x=1000.;
+	pos.position.y=500.;
+	pos.angle=0;
+
 	asservissement->strategie = strategie;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(pos.position.x.getValueInMillimeters()/100., pos.position.y.getValueInMillimeters()/100.);
+	bodyDef.angle = pos.angle.getValueInRadian();
+	
+	body = world.CreateBody(&bodyDef);
+
+	b2PolygonShape box;
+	box.SetAsBox(1.,1., b2Vec2(1,1),0);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &box;
+	fixtureDef.density = 10.0f;
+	fixtureDef.friction = 0.f;
+	body->CreateFixture(&fixtureDef);
 }
+
+void Robot::updateForces(int dt)
+{
+	if(dt == 0)
+		return;
+
+	Position impulse;
+	impulse.x = (deriv.position.x*cos(pos.angle.getValueInRadian()) - deriv.position.y*sin(pos.angle.getValueInRadian()));
+	impulse.y = (deriv.position.x*sin(pos.angle.getValueInRadian()) + deriv.position.y*cos(pos.angle.getValueInRadian()));
+
+	float32 rdt = 1000./(float)dt;
+
+	b2Vec2 bimpulse = 10*(0.01*rdt*b2Vec2(impulse.x.getValueInMillimeters(),impulse.y.getValueInMillimeters()) - body->GetLinearVelocity());
+	//body->SetLinearVelocity(bimpulse);
+	body->ApplyForce(body->GetMass()*bimpulse, body->GetWorldCenter());
+	//body->SetAngularVelocity(deriv.angle.getValueInRadian()*(1000./(float)dt));
+	body->ApplyTorque((deriv.angle.getValueInRadian()*rdt - body->GetAngularVelocity())*body->GetInertia());
+
+}
+
 
 void Robot::paint(QPainter &p, int dt)
 {
-	if(manual)
+	if(dt)
 	{
-		keyPressEvent(NULL,false);
-		deriv.position.x = deriv.position.x* 0.99;
-		deriv.angle = deriv.angle * 0.9;
-	}
-	else
-	{
-		Asservissement::asservissement->update();
-		deriv.position.x = asservissement->vitesse_lineaire_a_atteindre;
-		deriv.angle = asservissement->vitesse_angulaire_a_atteindre;
+		pos.position.x = 100*body->GetWorldCenter().x;
+		pos.position.y = 100*body->GetWorldCenter().y;
+		pos.angle = body->GetAngle();
+
+		olds.push_back(pos);
+		if(manual)
+		{
+			keyPressEvent(NULL,false);
+			deriv.position.x = deriv.position.x* 0.97;
+			deriv.angle = deriv.angle * 0.9;
+		}
+		else
+		{
+			Asservissement::asservissement->update();
+			deriv.position.x = asservissement->vitesse_lineaire_a_atteindre;
+			deriv.position.y = 0;
+			deriv.angle = asservissement->vitesse_angulaire_a_atteindre;
+		}
 	}
 
 	p.setWorldTransform(QTransform().translate(pos.position.x.getValueInMillimeters(),pos.position.y.getValueInMillimeters()).rotateRadians(pos.angle.getValueInRadian()));
@@ -87,16 +134,9 @@ void Robot::paint(QPainter &p, int dt)
 	p.drawLine(0,100*pos.angle.getValueInRadian(),0,0);
 	p.setWorldTransform(QTransform());
 
-	if(dt)
-	{
-		olds.push_back(pos);
-		pos.position.x += (deriv.position.x*cos(pos.angle.getValueInRadian()) - deriv.position.y*sin(pos.angle.getValueInRadian()));
-		pos.position.y += (deriv.position.x*sin(pos.angle.getValueInRadian()) + deriv.position.y*cos(pos.angle.getValueInRadian()));
-		pos.angle += deriv.angle;
-	}
 
 	p.setPen(QColor(Qt::green));
-	for(unsigned int i=0; i < olds.size()-1; i++)
+	for(unsigned int i=0; i+1 < olds.size(); i++)
 		p.drawLine(olds[i].position.x.getValueInMillimeters(), olds[i].position.y.getValueInMillimeters(), olds[i+1].position.x.getValueInMillimeters(), olds[i+1].position.y.getValueInMillimeters());	
 }
 
@@ -111,8 +151,8 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 
 	if(manual)
 	{
-		float dinc = 0.1;
-		float ainc = 0.003;
+		float dinc = .5;
+		float ainc = 0.005;
 
 		IF_KEYSWITCH(avant,evt->key() == Qt::Key_Up)
 			deriv.position.x += dinc;
@@ -122,7 +162,6 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 			deriv.angle += ainc;
 		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
 			deriv.angle -= ainc;
-		std::cout << deriv.position.x.getValueInMillimeters() << " & " << deriv.angle.getValueInRadian() << std::endl;
 	}
 }
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <QPainter>
 
-Table::Table(QWidget* parent) : QWidget(parent)
+Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
 {
 	dt=0;
 	setAutoFillBackground(true);
@@ -12,9 +12,56 @@ Table::Table(QWidget* parent) : QWidget(parent)
 	p.setColor(QPalette::Window,QColor(Qt::darkGray));
 	setPalette(p);
 
-	robots.push_back(new Robot());
+	robots.push_back(new Robot(world));
 
-	elements.push_back(new Element(Position(300,300),Element::Pion));
+	elements.push_back(new Element(world,Position(900,900),Element::Pion));
+
+	//Geometry
+	b2BodyDef bodyDef;
+	bodyDef.position.Set(0., 0.);
+	
+	tableBody = world.CreateBody(&bodyDef);
+
+	
+	b2PolygonShape box;
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &box;
+	fixtureDef.friction = 0;
+	fixtureDef.density = 0;
+
+	box.SetAsBox(30,1, b2Vec2(0,-1),0);
+	tableBody->CreateFixture(&fixtureDef);
+
+	box.SetAsBox(1,21, b2Vec2(-1,0),0);
+	tableBody->CreateFixture(&fixtureDef);
+
+	box.SetAsBox(1,21, b2Vec2(31,0),0);
+	tableBody->CreateFixture(&fixtureDef);
+
+	box.SetAsBox(30.,1., b2Vec2(0,22),0);
+	tableBody->CreateFixture(&fixtureDef);
+
+	//Starting zones borders
+	box.SetAsBox(4.00,.11, b2Vec2(0.,4.), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+	box.SetAsBox(4.00,.11, b2Vec2(30.,4.), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+
+	//Blocked zones
+	box.SetAsBox(3.50,1.20, b2Vec2(8,21), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+	box.SetAsBox(3.50,1.20, b2Vec2(22,21), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+
+	box.SetAsBox(.11,0.65, b2Vec2(4.61,19.15), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+	box.SetAsBox(.11,0.65, b2Vec2(18.61,19.15), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+
+	box.SetAsBox(.11,0.65, b2Vec2(11.39,19.15), 0.);
+	tableBody->CreateFixture(&fixtureDef);
+	box.SetAsBox(.11,0.64, b2Vec2(25.39,19.15), 0.);
+	tableBody->CreateFixture(&fixtureDef);
 }
 
 Table::~Table()
@@ -24,6 +71,13 @@ Table::~Table()
 void Table::update(int dt)
 {
 	this->dt = dt;
+	for(unsigned int i=0; i < robots.size(); i++)
+		robots[i]->updateForces(dt);
+
+	world.Step((float)dt/1000., 10, 10);
+	world.ClearForces();
+	for(unsigned int i=0; i < elements.size(); i++)
+		elements[i]->updatePos();
 	repaint();
 }
 

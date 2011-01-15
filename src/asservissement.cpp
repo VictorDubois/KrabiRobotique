@@ -62,7 +62,8 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     en_mouvement = false;
     Asservissement::asservissement = this;
 
-        *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
+#ifdef ROBOTHW
+    *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
     *((uint32_t *)(STK_LOAD_ADDR)) = 9000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
 
     NVIC_InitTypeDef SysTick_IRQ;
@@ -72,15 +73,18 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     SysTick_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
     SysTick_IRQ.NVIC_IRQChannelSubPriority = 1;
     NVIC_Init(&SysTick_IRQ);
+#endif
 }
 
 int asserCount = 0;
 
 void Asservissement::update(void)
 {
+/*#ifdef ROBOTHW
     roues.gauche.tourne(0.1);
     roues.droite.tourne(0.1);
     return;
+#endif*/
     //PositionPlusAngle before(odometrie.positionPlusAngle);
     asserCount++;
 

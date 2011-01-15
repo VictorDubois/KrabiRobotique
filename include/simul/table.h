@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "element.h"
+#include <Box2D/Box2D.h>
 
 class Table : public QWidget
 {
@@ -10,6 +11,9 @@ private:
 	int dt;
 	std::vector<class Element*> elements;
 	std::vector<class Robot*> robots;
+
+	b2World world;
+	b2Body* tableBody;
 public:
 
 	static const int tableWidth = 3000;

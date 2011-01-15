@@ -3,6 +3,7 @@
 
 #include "Position.h"
 #include <QPainter>
+#include "Box2D/Box2D.h"
 
 class Element
 {
@@ -17,11 +18,9 @@ public:
 
 	Type type;
 
-	Element(Position p, Type t)
-	{
-		this->p = p;
-		type = t;
-	}
+	b2Body* body;
+
+	Element(b2World & world, Position p, Type t);
 
 	void paint(QPainter & pa)
 	{
@@ -29,8 +28,10 @@ public:
 		pa.setBrush(QBrush(QColor("yellow")));
 		pa.setPen(QBrush(QColor("yellow")));
 
-		pa.drawEllipse(QPoint(p.x.getValueInMillimeters(),p.x.getValueInMillimeters()),150,150);
+		pa.drawEllipse(QPoint(p.x.getValueInMillimeters(),p.y.getValueInMillimeters()),100,100);
 	}
+
+	void updatePos();
 };
 
 #endif //PION_H_INCLUDED

@@ -23,6 +23,8 @@ AX_BOOST_BASE([1.40], [AC_MSG_RESULT(yes) ] , [AC_MSG_RESULT(no) ] )
 
 CXXFLAGS=
 
+AX_DEP_CHECK(Box2D, [/usr/lib /usr/local/lib], libBox2D.so,[/usr/include /usr/local/include],Box2D/Box2D.h, -lBox2D)
+
 AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],[Turn on debugging]), [enable_debug=$enableval],[enable_debug="no"])
 AC_MSG_CHECKING(debug)
 AC_MSG_RESULT($enable_debug)
@@ -30,8 +32,8 @@ if test "x$enable_debug" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -g3 -ggdb -Wall -DDEBUG"
 fi
 
-CXXFLAGS="$CXXFLAGS   $AM_CXXFLAGS $QT_CFLAGS $BOOST_CFLAGS"
-LDFLAGS="$LDFLAGS $AM_LDFLAGS $QT_LIBS $BOOST_LDFLAGS"
+CXXFLAGS="$CXXFLAGS   $AM_CXXFLAGS $QT_CFLAGS $BOOST_CFLAGS $Box2D_CFLAGS"
+LDFLAGS="$LDFLAGS $AM_LDFLAGS $QT_LIBS $BOOST_LDFLAGS $Box2D_LIBS"
 AC_SUBST([CFLAGS])
 
 AC_HEADER_STDC
