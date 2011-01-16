@@ -81,6 +81,16 @@ void Table::update(int dt)
 	repaint();
 }
 
+QPoint getCase(unsigned int i, unsigned int j)
+{
+	return QPoint(450 + i*350, j*350);
+}
+
+QPoint getCaseCenter(unsigned int i, unsigned int j)
+{
+	return QPoint(625 + i*350, 175 + j*350);
+}
+
 void Table::paintEvent(QPaintEvent* evt)
 {
 	static float l = 0;
@@ -115,6 +125,17 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.fillRect(1128,1850,22,130,Qt::black);
 	p.fillRect(2528,1850,22,130,Qt::black);
 
+	//Extra-points
+	p.setBrush(QBrush(QColor(30,30,30)));
+	p.setPen(QBrush(QColor(30,30,30)));
+
+	p.drawEllipse(getCaseCenter(1,1), 50,50);
+	p.drawEllipse(getCaseCenter(1,4), 50,50);
+	p.drawEllipse(getCaseCenter(4,4), 50,50);
+	p.drawEllipse(getCaseCenter(4,1), 50,50);
+
+	p.drawEllipse(getCaseCenter(2,5), 50,50);
+	p.drawEllipse(getCaseCenter(3,5), 50,50);
 
 	p.setBrush(QBrush(QColor("yellow")));
 	p.setPen(QBrush(QColor("yellow")));
