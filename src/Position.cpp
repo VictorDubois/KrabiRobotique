@@ -1,7 +1,6 @@
 #include "Position.h"
+#include "distance.h"
 #include <math.h>
-
-/*Toutes les paramètres doivent être donnés en centimètre */
 
 Position::Position(Distance blah_x, Distance blah_y) : x(blah_x), y(blah_y){
 }
@@ -39,33 +38,18 @@ Position Position::operator-=(const Position &position){
 }
 
 bool Position::presqueEgales(const Position &p){
-    if(this->x.presqueEgales(p.x) && this->y.presqueEgales(p.y))
-        return true;
-    return false;
-    /*if((this->x-p.x)*(this->x-p.x) + (this->y-p.y)*(this->y-p.y) < 1.41)
-        return true;
-    return false;*/
+	return ::presqueEgales(x, p.x) && ::presqueEgales(y,p.y);
 }
 
 bool Position::operator==(const Position &p){
     return (this->x == p.x && this->y == p.y);
-    /*return (this->x-p.x) == 0
-           && (this->y-p.y) == 0;*/
 }
 
-Distance Position::getNorme(void){
-    return Distance(sqrt(x.getValueInMillimeters()*x.getValueInMillimeters()+y.getValueInMillimeters()*y.getValueInMillimeters()));
+Distance Position::getNorme(){
+    return Distance(sqrt(x*x+y*y));
 }
 
-Angle Position::getAngle(void){
-    if(x==Distance(0)){
-        return y>Distance(0) ? Angle(M_PI_2) : Angle(-M_PI_2);
-    }
-    else if(x>Distance(0)){
-        return Angle(atan(y.getValueInMillimeters()/x.getValueInMillimeters()));
-    }
-    else {
-        double tmp_val = atan(y.getValueInMillimeters()/x.getValueInMillimeters());
-        return tmp_val>0 ? Angle(-M_PI+tmp_val) : Angle(M_PI+tmp_val);
-    }
+Angle Position::getAngle()
+{
+	return atan2(y,x);
 }

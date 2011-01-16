@@ -101,7 +101,7 @@ void Asservissement::update(void)
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();
 
         buffer_collision <<= 1;
-        bool tmp = (fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre).getValueInMillimeters()) < seuil_collision);
+        bool tmp = (fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision);
         buffer_collision |= tmp;
 
 
@@ -145,15 +145,15 @@ void Asservissement::update(void)
 
         //roueGauche[caca] = odometrie.roueCodeuseGauche->getTickValue();
         //roueDroite[caca] = odometrie.roueCodeuseDroite->getTickValue();
-                        /*vitesseLin[caca] = vitesse_lineaire_atteinte.getValueInMillimeters();
-                        vitesseLinE[caca] = vitesse_lineaire_a_atteindre.getValueInMillimeters();
+                        /*vitesseLin[caca] = vitesse_lineaire_atteinte;
+                        vitesseLinE[caca] = vitesse_lineaire_a_atteindre;
                         linearDuty[caca] = linearDutySent;*/
                         /*vitesseAng[caca] = vitesse_angulaire_atteinte.getValueInRadian();
                         vitesseAngE[caca] = vitesse_angulaire_a_atteindre.getValueInRadian();
                         angularDuty[caca] = angularDutySent;*/
-                        posx[caca] = positionPlusAngleActuelle.position.x.getValueInMillimeters();
-                        posy[caca] = positionPlusAngleActuelle.position.y.getValueInMillimeters();
-                        angle[caca] = positionPlusAngleActuelle.angle.getValueInRadian(); //*angle_restant.getValueInRadian();*/distance_restante.getValueInMillimeters(); //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
+                        posx[caca] = positionPlusAngleActuelle.position.x;
+                        posy[caca] = positionPlusAngleActuelle.position.y;
+                        angle[caca] = positionPlusAngleActuelle.angle.getValueInRadian(); //*angle_restant.getValueInRadian();*/distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
                         caca++;
                     }
                     toto = 0;
@@ -225,20 +225,20 @@ Distance Asservissement::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse
 {
 
     // Le pivot est la distance que l'on parcourerait si on commencait à décélérer dès maintenant jusqu'une vitesse nulle
-    Distance pivot(vitesse_lineaire_a_atteindre.getValueInMillimeters()*vitesse_lineaire_a_atteindre.getValueInMillimeters()/(2*acceleration_lineaire.getValueInMillimeters()));
-    if( (distance_restante-pivot).getValueInMillimeters()<=0 &&
-         ((fabs((angle_restant - Angle(0)).getValueInRadian())>M_PI_2 && vitesse_lineaire_atteinte.getValueInMillimeters()<=0)
-          || (fabs((angle_restant - Angle(0)).getValueInRadian())<=M_PI_2 && vitesse_lineaire_atteinte.getValueInMillimeters()>=0))
+    Distance pivot(vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire));
+    if( (distance_restante-pivot)<=0 &&
+         ((fabs((angle_restant - Angle(0)).getValueInRadian())>M_PI_2 && vitesse_lineaire_atteinte<=0)
+          || (fabs((angle_restant - Angle(0)).getValueInRadian())<=M_PI_2 && vitesse_lineaire_atteinte>=0))
          && stop)
     {
         //On est proche de la cible et l’on doit décélerer
-        if(vitesse_lineaire_a_atteindre.getValueInMillimeters()>0)
+        if(vitesse_lineaire_a_atteindre>0.)
         {
-            return vitesse_lineaire_a_atteindre-Distance(min(vitesse_lineaire_a_atteindre.getValueInMillimeters(), acceleration_lineaire.getValueInMillimeters()));
+            return vitesse_lineaire_a_atteindre-Distance(min(vitesse_lineaire_a_atteindre, acceleration_lineaire));
         }
         else
         {
-            return vitesse_lineaire_a_atteindre-Distance(max(vitesse_lineaire_a_atteindre.getValueInMillimeters(), -acceleration_lineaire.getValueInMillimeters()));
+            return vitesse_lineaire_a_atteindre-Distance(max(vitesse_lineaire_a_atteindre, -acceleration_lineaire));
         }
 
     }
@@ -249,7 +249,7 @@ Distance Asservissement::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse
         // Alors on ajoute à la vitesse une accélération négative (jusqu'à la valeur (-vitesse_lineaire_max))
         // Autrement dit, si on avance dans la mauvaise direction on ralenti et si on recule dans la bonne direction alors on recule plus vite
         return vitesse_lineaire_a_atteindre
-               + Distance(max(-acceleration_lineaire.getValueInMillimeters(), (-vitesse_lineaire_max.getValueInMillimeters()-vitesse_lineaire_a_atteindre.getValueInMillimeters())));
+               + Distance(max(-acceleration_lineaire, (-vitesse_lineaire_max-vitesse_lineaire_a_atteindre)));
     }
     else
     {
@@ -257,7 +257,7 @@ Distance Asservissement::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse
         // Alors on ajoute à la vitesse une accélération positive (jusqu'à la valeur (vitesse_lineaire_max))
         // Autrement dit, si on recule dans la mauvaise direction on ralenti et si on avance dans la bonne direction alors on avance plus vite
         return vitesse_lineaire_a_atteindre
-               + Distance(min(acceleration_lineaire.getValueInMillimeters(), (vitesse_lineaire_max.getValueInMillimeters()-vitesse_lineaire_a_atteindre.getValueInMillimeters())));
+               + Distance(min(acceleration_lineaire, (vitesse_lineaire_max-vitesse_lineaire_a_atteindre)));
     }
 }
 

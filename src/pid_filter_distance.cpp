@@ -16,7 +16,7 @@ float PIDFilterDistance::getFilteredValue(Distance erreur){
     Distance integrale = sommeErreurs;
     Distance derivee = erreur - erreurPrecedente;
     erreurPrecedente=erreur;
-    return proportionnel.getValueInMillimeters()*Kp
-         + integrale.getValueInMillimeters()*Ki
-         + derivee.getValueInMillimeters()*Kd;
+    return proportionnel*Kp
+         + integrale*Ki
+         + derivee*Kd;
 }

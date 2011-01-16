@@ -1,26 +1,8 @@
 #ifndef DISTANCE_H_INCLUDED
 #define DISTANCE_H_INCLUDED
 
-class Distance{
-    private:
-    float value;
+typedef float Distance;
 
-    public:
-    float getValueInMillimeters() const;
-    Distance();
-    Distance(float distance_en_millimetres);
-    Distance operator+(const Distance &dist);
-    Distance operator-(const Distance &dist);
-    Distance operator-() const;
-    Distance operator*(const Distance &dist);
-    Distance operator*(float dist);
-    Distance operator=(const Distance &dist);
-    Distance operator+=(const Distance &dist);
-    Distance operator-=(const Distance &dist);
-    bool operator==(const Distance &d);
-    bool presqueEgales(const Distance &d);
-    bool operator>(const Distance &dist);
-    bool operator<(const Distance &dist);
-};
+bool presqueEgales(Distance d1, Distance d2);
 
 #endif // DISTANCE_H_INCLUDED

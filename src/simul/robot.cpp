@@ -61,7 +61,7 @@ Robot::Robot(b2World & world) : olds(10000)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(pos.position.x.getValueInMillimeters()/100., pos.position.y.getValueInMillimeters()/100.);
+	bodyDef.position.Set(pos.position.x/100., pos.position.y/100.);
 	bodyDef.angle = pos.angle.getValueInRadian();
 	
 	body = world.CreateBody(&bodyDef);
@@ -82,12 +82,12 @@ void Robot::updateForces(int dt)
 		return;
 
 	Position impulse;
-	impulse.x = (deriv.position.x*cos(pos.angle.getValueInRadian()) - deriv.position.y*sin(pos.angle.getValueInRadian()));
-	impulse.y = (deriv.position.x*sin(pos.angle.getValueInRadian()) + deriv.position.y*cos(pos.angle.getValueInRadian()));
+	impulse.x = (deriv.position.x*(float)cos(pos.angle.getValueInRadian()) - deriv.position.y*(float)sin(pos.angle.getValueInRadian()));
+	impulse.y = (deriv.position.x*(float)sin(pos.angle.getValueInRadian()) + deriv.position.y*(float)cos(pos.angle.getValueInRadian()));
 
 	float32 rdt = 1000./(float)dt;
 
-	b2Vec2 bvelocity = 0.01*rdt*b2Vec2(impulse.x.getValueInMillimeters(),impulse.y.getValueInMillimeters());
+	b2Vec2 bvelocity = 0.01*rdt*b2Vec2(impulse.x,impulse.y);
 	float bangular = deriv.angle.getValueInRadian()*rdt;
 	//body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
 	//body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
@@ -118,7 +118,7 @@ void Robot::paint(QPainter &p, int dt)
 		if(manual)
 		{
 			keyPressEvent(NULL,false);
-			deriv.position.x = deriv.position.x* 0.97;
+			deriv.position.x = deriv.position.x* 0.97f;
 			deriv.angle = deriv.angle * 0.9;
 		}
 		else
@@ -130,7 +130,7 @@ void Robot::paint(QPainter &p, int dt)
 		}
 	}
 
-	p.setWorldTransform(QTransform().translate(pos.position.x.getValueInMillimeters(),pos.position.y.getValueInMillimeters()).rotateRadians(pos.angle.getValueInRadian()));
+	p.setWorldTransform(QTransform().translate(pos.position.x,pos.position.y).rotateRadians(pos.angle.getValueInRadian()));
 
 
 	p.setPen(QColor(Qt::black));
@@ -140,14 +140,14 @@ void Robot::paint(QPainter &p, int dt)
 	p.setOpacity(1);
 
 	p.setPen(QColor(Qt::red));
-	p.drawLine(0,0,pos.position.x.getValueInMillimeters(),0);
+	p.drawLine(0,0,pos.position.x,0);
 	p.drawLine(0,100*pos.angle.getValueInRadian(),0,0);
 	p.setWorldTransform(QTransform());
 
 
 	p.setPen(QColor(Qt::green));
 	for(unsigned int i=0; i+1 < olds.size(); i++)
-		p.drawLine(olds[i].position.x.getValueInMillimeters(), olds[i].position.y.getValueInMillimeters(), olds[i+1].position.x.getValueInMillimeters(), olds[i+1].position.y.getValueInMillimeters());	
+		p.drawLine(olds[i].position.x, olds[i].position.y, olds[i+1].position.x, olds[i+1].position.y);	
 }
 
 #define IF_KEYSWITCH(n,a) \

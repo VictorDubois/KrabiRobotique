@@ -7,7 +7,7 @@ Element::Element(b2World & world, Position p, Type t)
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(p.x.getValueInMillimeters()/100., p.y.getValueInMillimeters()/100.);
+	bodyDef.position.Set(p.x/100., p.y/100.);
 	
 	body = world.CreateBody(&bodyDef);
 

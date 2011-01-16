@@ -28,7 +28,7 @@ public:
 		pa.setBrush(QBrush(QColor("yellow")));
 		pa.setPen(QBrush(QColor("yellow")));
 
-		pa.drawEllipse(QPoint(p.x.getValueInMillimeters(),p.y.getValueInMillimeters()),100,100);
+		pa.drawEllipse(QPoint(p.x,p.y),100,100);
 	}
 
 	void updatePos();
