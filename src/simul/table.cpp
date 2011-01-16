@@ -26,7 +26,7 @@ Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
 	b2PolygonShape box;
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &box;
-	fixtureDef.friction = 0;
+	fixtureDef.friction = 0.5;
 	fixtureDef.density = 0;
 
 	box.SetAsBox(30,1, b2Vec2(0,-1),0);

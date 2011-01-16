@@ -72,7 +72,7 @@ Robot::Robot(b2World & world) : olds(10000)
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &box;
 	fixtureDef.density = 10.0f;
-	fixtureDef.friction = 0.f;
+	fixtureDef.friction = 1.0f;
 	body->CreateFixture(&fixtureDef);
 }
 
@@ -87,11 +87,12 @@ void Robot::updateForces(int dt)
 
 	float32 rdt = 1000./(float)dt;
 
-	b2Vec2 bimpulse = 0.01*rdt*b2Vec2(impulse.x.getValueInMillimeters(),impulse.y.getValueInMillimeters());
+	b2Vec2 bvelocity = 0.01*rdt*b2Vec2(impulse.x.getValueInMillimeters(),impulse.y.getValueInMillimeters());
 	float bangular = deriv.angle.getValueInRadian()*rdt;
 	//body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
 	//body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
-	body->SetLinearVelocity(bimpulse);
+	
+	body->SetLinearVelocity(bvelocity);
 	body->SetAngularVelocity(bangular);
 
 }
