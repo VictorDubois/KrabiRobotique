@@ -87,11 +87,12 @@ void Robot::updateForces(int dt)
 
 	float32 rdt = 1000./(float)dt;
 
-	b2Vec2 bimpulse = 10*(0.01*rdt*b2Vec2(impulse.x.getValueInMillimeters(),impulse.y.getValueInMillimeters()) - body->GetLinearVelocity());
-	//body->SetLinearVelocity(bimpulse);
-	body->ApplyForce(body->GetMass()*bimpulse, body->GetWorldCenter());
-	//body->SetAngularVelocity(deriv.angle.getValueInRadian()*(1000./(float)dt));
-	body->ApplyTorque((deriv.angle.getValueInRadian()*rdt - body->GetAngularVelocity())*body->GetInertia());
+	b2Vec2 bimpulse = 0.01*rdt*b2Vec2(impulse.x.getValueInMillimeters(),impulse.y.getValueInMillimeters());
+	float bangular = deriv.angle.getValueInRadian()*rdt;
+	//body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
+	//body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
+	body->SetLinearVelocity(bimpulse);
+	body->SetAngularVelocity(bangular);
 
 }
 
@@ -103,6 +104,14 @@ void Robot::paint(QPainter &p, int dt)
 		pos.position.x = 100*body->GetWorldCenter().x;
 		pos.position.y = 100*body->GetWorldCenter().y;
 		pos.angle = body->GetAngle();
+
+		float rdt = (float)dt/1000.;
+		deriv.angle = body->GetAngularVelocity()*rdt;
+		float derx = 100*body->GetLinearVelocity().x*rdt;
+		float dery = 100*body->GetLinearVelocity().y*rdt;
+
+		deriv.position.x = derx*cos(pos.angle.getValueInRadian()) + dery*sin(pos.angle.getValueInRadian());
+		deriv.position.y = 0;
 
 		olds.push_back(pos);
 		if(manual)
