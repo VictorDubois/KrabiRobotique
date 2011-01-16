@@ -4,11 +4,16 @@
 #include "distance.h"
 #include "Angle.h"
 
-class Position{
-    //private:
-    //Distance x,y;
+#ifndef ROBOTHW
+#include <QPoint>
+#endif
 
-    public:
+class Position{
+public:
+#ifndef ROBOTHW
+	operator QPoint() { return QPoint(x,-y); }
+#endif
+
     Distance x,y;
     Position() { x=0; y=0; }
     Position(Distance x, Distance y);

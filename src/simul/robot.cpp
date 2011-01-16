@@ -130,7 +130,7 @@ void Robot::paint(QPainter &p, int dt)
 		}
 	}
 
-	p.setWorldTransform(QTransform().translate(pos.position.x,pos.position.y).rotateRadians(pos.angle.getValueInRadian()));
+	p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle.getValueInRadian()));
 
 
 	p.setPen(QColor(Qt::black));
@@ -147,7 +147,7 @@ void Robot::paint(QPainter &p, int dt)
 
 	p.setPen(QColor(Qt::green));
 	for(unsigned int i=0; i+1 < olds.size(); i++)
-		p.drawLine(olds[i].position.x, olds[i].position.y, olds[i+1].position.x, olds[i+1].position.y);	
+		p.drawLine(olds[i].position.x, -olds[i].position.y, olds[i+1].position.x, -olds[i+1].position.y);	
 }
 
 #define IF_KEYSWITCH(n,a) \
@@ -169,9 +169,9 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 		IF_KEYSWITCH(arriere,evt->key() == Qt::Key_Down)
 			deriv.position.x -= dinc;
 		IF_KEYSWITCH(gauche,evt->key() == Qt::Key_Right)
-			deriv.angle += ainc;
-		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
 			deriv.angle -= ainc;
+		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
+			deriv.angle += ainc;
 	}
 }
 

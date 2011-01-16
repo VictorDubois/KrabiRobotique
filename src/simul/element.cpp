@@ -4,6 +4,7 @@ Element::Element(b2World & world, Position p, Type t)
 {
 	this->p = p;
 	type = t;
+	multiplier = 0;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -55,4 +56,37 @@ void Element::updatePos()
 			angular = 0;
 	}
 	body->SetAngularVelocity(angular);
+}
+
+void Element::paint(QPainter & pa)
+{
+
+	pa.setBrush(QBrush(QColor("yellow")));
+	pa.setPen(QBrush(QColor("yellow")));
+
+	pa.drawEllipse(QPoint(p.x,-p.y),100,-100);
+
+	pa.setBrush(QBrush(QColor("black")));
+	pa.setPen(QBrush(QColor("black")));
+	QFont font;
+	font.setPointSize(30);
+	pa.setFont(font);
+
+	QString text;
+	if(type == Pawn)
+	{
+		if(multiplier > 0)
+			text = QString::number(multiplier);
+	}
+	else
+	{
+		if(type == Queen)
+			text = "Q";
+		else
+			text = "K";
+		if(multiplier > 0)
+			text = QString(" ") + QString::number(multiplier);
+	}
+
+	pa.drawText(p.x-50, -p.y+50, 100, -100, Qt::AlignCenter, text);
 }

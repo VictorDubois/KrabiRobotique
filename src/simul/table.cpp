@@ -3,6 +3,16 @@
 #include <iostream>
 #include <QPainter>
 
+Position getCase(unsigned int i, unsigned int j)
+{
+	return Position(450 + i*350, j*350);
+}
+
+Position getCaseCenter(unsigned int i, unsigned int j)
+{
+	return Position(625 + i*350, 175 + j*350);
+}
+
 Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
 {
 	dt=0;
@@ -13,8 +23,6 @@ Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
 	setPalette(p);
 
 	robots.push_back(new Robot(world));
-
-	elements.push_back(new Element(world,Position(900,900),Element::Pion));
 
 	//Geometry
 	b2BodyDef bodyDef;
@@ -62,6 +70,20 @@ Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
 	tableBody->CreateFixture(&fixtureDef);
 	box.SetAsBox(.11,0.64, b2Vec2(25.39,19.15), 0.);
 	tableBody->CreateFixture(&fixtureDef);
+
+	//Init position of elements
+	int l1 = rand() % 20; 
+	int l2 = rand() % 20; 
+	int r1 = rand() % 20; 
+	int r2 = rand() % 20; 
+
+	addCard(l1, 1);
+	addCard(l2, 2);
+	addCard(l2, 4);
+	addCard(l1, 5);
+	addCard(r1, -1);
+	addCard(r2, -2);
+	elements.push_back(new Element(world,getCase(3,3),Element::Pawn)); //Central element
 }
 
 Table::~Table()
@@ -81,49 +103,36 @@ void Table::update(int dt)
 	repaint();
 }
 
-QPoint getCase(unsigned int i, unsigned int j)
-{
-	return QPoint(450 + i*350, j*350);
-}
-
-QPoint getCaseCenter(unsigned int i, unsigned int j)
-{
-	return QPoint(625 + i*350, 175 + j*350);
-}
-
 void Table::paintEvent(QPaintEvent* evt)
 {
-	static float l = 0;
-	l+= dt*0.005;
 	QPainter p(this);
 	p.setRenderHints(QPainter::Antialiasing,true);
-	p.setWindow(QRect(0,0,tableWidth,tableHeight));
+	p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));
 	p.setWorldMatrixEnabled(true);
 
 
 	for(unsigned int i=0; i<6; i++)
 	for(unsigned int j=0; j<6; j++)
-		p.fillRect(450+i*350,j*350,350,350, ((i+j) & 1) ? Qt::red : Qt::blue);
-	p.drawEllipse(QRectF(50.0,50.0f,100,l));
+		p.fillRect(450+i*350,-j*350,350,-350, ((i+j) & 1) ? Qt::red : Qt::blue);
 	//Starting zones
-	p.fillRect(0,400,400,1700,QColor(0,146,54));
-	p.fillRect(2600,400,400,1700,QColor(0,146,54));
+	p.fillRect(0,0,400,-400,Qt::blue);
+	p.fillRect(2600,0,400,-400,Qt::red);
 	//Green zones
-	p.fillRect(0,0,400,400,Qt::red);
-	p.fillRect(2600,0,400,400,Qt::blue);
+	p.fillRect(0,-400,400,-1700,QColor(0,146,54));
+	p.fillRect(2600,-400,400,-1700,QColor(0,146,54));
 	//Starting zones borders
-	p.fillRect(0,389,400,22,Qt::black);
-	p.fillRect(2600,389,400,22,Qt::black);
+	p.fillRect(0,-389,400,-22,Qt::black);
+	p.fillRect(2600,-389,400,-22,Qt::black);
 
 	//Blocked zones
-	p.fillRect(450,1980,700,120,Qt::black);
-	p.fillRect(1850,1980,700,120,Qt::black);
+	p.fillRect(450,-1980,700,-120,Qt::black);
+	p.fillRect(1850,-1980,700,-120,Qt::black);
 
-	p.fillRect(450,1850,22,130,Qt::black);
-	p.fillRect(1850,1850,22,130,Qt::black);
+	p.fillRect(450,-1850,22,-130,Qt::black);
+	p.fillRect(1850,-1850,22,-130,Qt::black);
 
-	p.fillRect(1128,1850,22,130,Qt::black);
-	p.fillRect(2528,1850,22,130,Qt::black);
+	p.fillRect(1128,-1850,22,-130,Qt::black);
+	p.fillRect(2528,-1850,22,-130,Qt::black);
 
 	//Extra-points
 	p.setBrush(QBrush(QColor(30,30,30)));
@@ -153,5 +162,37 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
 {
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->keyPressEvent(evt, press);
+}
+
+Position getSideElemCenter(bool right, unsigned int elem)
+{
+	return Position(right ? 200 : 2800, 1810 - elem*280);
+}
+
+void Table::addCard(unsigned int n, int column)
+{
+	unsigned int k = n % 4;
+	unsigned int q = n % 3;
+	if(q >= k)
+		q++;
+
+	if(column > 0)
+	{
+		elements.push_back(new Element(world,getCase(column,k+1),Element::Pawn));
+		elements.push_back(new Element(world,getCase(column,q+1),Element::Pawn));
+	}
+	else
+	{
+		for(unsigned int i=0; i < 5; i++)
+		{
+			Element::Type t = Element::Pawn;
+			if(i == q)
+				t = Element::Queen;
+			else if(i == k)
+				t = Element::King;
+
+			elements.push_back(new Element(world,getSideElemCenter(-column-1, i),t));
+		}
+	}
 }
 

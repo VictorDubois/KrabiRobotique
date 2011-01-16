@@ -11,25 +11,19 @@ public:
 	Position p;
 	enum Type
 	{
-		Pion = 0,
-		Dame = 1,
-		Roi = 2
+		Pawn = 0,
+		Queen = 1,
+		King = 2
 	};
 
 	Type type;
+	unsigned int multiplier;
 
 	b2Body* body;
 
 	Element(b2World & world, Position p, Type t);
 
-	void paint(QPainter & pa)
-	{
-
-		pa.setBrush(QBrush(QColor("yellow")));
-		pa.setPen(QBrush(QColor("yellow")));
-
-		pa.drawEllipse(QPoint(p.x,p.y),100,100);
-	}
+	void paint(QPainter & pa);
 
 	void updatePos();
 };

@@ -31,7 +31,9 @@ float posx[DBG_SIZE];
 float posy[DBG_SIZE];
 float angle[DBG_SIZE];
 
+#ifndef NULL
 #define NULL 0
+#endif
 
 Asservissement * Asservissement::asservissement = NULL;
 const uint16_t Asservissement::nb_ms_between_updates = 10;

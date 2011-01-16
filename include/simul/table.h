@@ -14,6 +14,8 @@ private:
 
 	b2World world;
 	b2Body* tableBody;
+
+	void addCard(unsigned int n, int column);
 public:
 
 	static const int tableWidth = 3000;
