@@ -6,9 +6,10 @@ HwOdometrie::HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ Quadra
     /*positionPlusAngle(positionPlusAngleInitiale),*/
     vitesseLineaire(0),
     vitesseAngulaire(0),
-    entraxe(325),
+    entraxe(359*61.4/62.8),
     //entraxe(303),
-    rayonRoueCodeuse(50*2100/2039.77),
+    rayonRoueCodeuse(313/(2*M_PI) * 2210 / 2104),
+    //rayonRoueCodeuse(50*2100/2039.77),
     //rayonRoueCodeuse(42),
     nbTicksParTour(2048*4),
     coeffDistance((M_PI*rayonRoueCodeuse)/nbTicksParTour),
@@ -25,8 +26,8 @@ void HwOdometrie::update(){
     //float vitesseAngulaireRoueDroite = 100*roueCodeuseDroite->getTickValue()/(2048*4);
     //roueCodeuseGauche->getTickValue();
     //roueCodeuseDroite->getTickValue();
-    int32_t deltaTicksRoueGauche = -roueCodeuseGauche->getTickValue();
-    int32_t deltaTicksRoueDroite = roueCodeuseDroite->getTickValue();
+    int32_t deltaTicksRoueGauche = roueCodeuseGauche->getTickValue();
+    int32_t deltaTicksRoueDroite = -roueCodeuseDroite->getTickValue();
 
     int32_t filteredDeltaTicksRoueGauche = (deltaTicksRoueGauche+prevDeltaTicksRoueGauche)/2;
     int32_t filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2;

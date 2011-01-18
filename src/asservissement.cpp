@@ -21,16 +21,16 @@
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
-/*float vitesseLin[DBG_SIZE];
-float vitesseLinE[DBG_SIZE];
-float linearDuty[DBG_SIZE];*/
-//float vitesseAng[DBG_SIZE];
-//float vitesseAngE[DBG_SIZE];
+//float vitesseLin[DBG_SIZE];
+//float vitesseLinE[DBG_SIZE];
+/*float linearDuty[DBG_SIZE];*/
+float vitesseAng[DBG_SIZE];
+float vitesseAngE[DBG_SIZE];
 //float angularDuty[DBG_SIZE];
-float posx[DBG_SIZE];
+/*float posx[DBG_SIZE];
 float posy[DBG_SIZE];
 float angle[DBG_SIZE];
-
+*/
 #ifndef NULL
 #define NULL 0
 #endif
@@ -82,6 +82,8 @@ int asserCount = 0;
 
 void Asservissement::update(void)
 {
+    roues.gauche.tourne(0.3);
+    return;
 /*#ifdef ROBOTHW
     roues.gauche.tourne(0.1);
     roues.droite.tourne(0.1);
@@ -140,29 +142,25 @@ void Asservissement::update(void)
 
                 angularDutySent += angular_duty_component;
 
-                if(toto == 10)
-                {
                     if(caca<DBG_SIZE)
                     {
 
         //roueGauche[caca] = odometrie.roueCodeuseGauche->getTickValue();
         //roueDroite[caca] = odometrie.roueCodeuseDroite->getTickValue();
-                        /*vitesseLin[caca] = vitesse_lineaire_atteinte;
-                        vitesseLinE[caca] = vitesse_lineaire_a_atteindre;
-                        linearDuty[caca] = linearDutySent;*/
-                        /*vitesseAng[caca] = vitesse_angulaire_atteinte.getValueInRadian();
+                        //vitesseLin[caca] = vitesse_lineaire_atteinte;
+                        //vitesseLinE[caca] = vitesse_lineaire_a_atteindre;
+                        /*linearDuty[caca] = linearDutySent;*/
+                        vitesseAng[caca] = vitesse_angulaire_atteinte.getValueInRadian();
                         vitesseAngE[caca] = vitesse_angulaire_a_atteindre.getValueInRadian();
-                        angularDuty[caca] = angularDutySent;*/
-                        posx[caca] = positionPlusAngleActuelle.position.x;
-                        posy[caca] = positionPlusAngleActuelle.position.y;
-                        angle[caca] = positionPlusAngleActuelle.angle.getValueInRadian(); //*angle_restant.getValueInRadian();*/distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
+                        //angularDuty[caca] = angularDutySent;
+                        //posx[caca] = positionPlusAngleActuelle.position.x;
+                        //posy[caca] = positionPlusAngleActuelle.position.y;
+                        //angle[caca] = positionPlusAngleActuelle.angle.getValueInRadian(); //*angle_restant.getValueInRadian();*/distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
                         caca++;
                     }
-                    toto = 0;
-                }
                 toto++;
 
-                linearDutySent = min(max(linearDutySent, -0.40),0.40);
+                linearDutySent = 0; //min(max(linearDutySent, -0.40),0.40);
                 angularDutySent = min(max(angularDutySent, -0.50),0.50);
 
                 roues.gauche.tourne(min(max(linearDutySent-angularDutySent, -0.9),0.9));
