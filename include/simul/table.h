@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "element.h"
-#include <Box2D/Box2D.h>
+#include <Box2D.h>
 
 class Table : public QWidget
 {
@@ -20,6 +20,7 @@ public:
 
 	static const int tableWidth = 3000;
 	static const int tableHeight = 2100;
+	static b2AABB getWorldAABB();
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
 

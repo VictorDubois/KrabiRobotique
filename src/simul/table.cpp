@@ -13,7 +13,15 @@ Position getCaseCenter(unsigned int i, unsigned int j)
 	return Position(625 + i*350, 175 + j*350);
 }
 
-Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
+b2AABB Table::getWorldAABB()
+{
+	b2AABB a;
+	a.lowerBound.Set(-100,-100);
+	a.upperBound.Set(tableWidth+100, tableHeight+100);
+	return a;
+}
+
+Table::Table(QWidget* parent) : QWidget(parent), world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 {
 	dt=0;
 	setAutoFillBackground(true);
@@ -31,45 +39,43 @@ Table::Table(QWidget* parent) : QWidget(parent), world(b2Vec2(0.f,0.f), false)
 	tableBody = world.CreateBody(&bodyDef);
 
 	
-	b2PolygonShape box;
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &box;
-	fixtureDef.friction = 0.5;
-	fixtureDef.density = 0;
+	b2PolygonDef box;
+	box.friction = 0.5;
+	box.density = 0;
 
 	box.SetAsBox(30,1, b2Vec2(0,-1),0);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	box.SetAsBox(1,21, b2Vec2(-1,0),0);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	box.SetAsBox(1,21, b2Vec2(31,0),0);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	box.SetAsBox(30.,1., b2Vec2(0,22),0);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	//Starting zones borders
 	box.SetAsBox(4.00,.11, b2Vec2(0.,4.), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 	box.SetAsBox(4.00,.11, b2Vec2(30.,4.), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	//Blocked zones
 	box.SetAsBox(3.50,1.20, b2Vec2(8,21), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 	box.SetAsBox(3.50,1.20, b2Vec2(22,21), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	box.SetAsBox(.11,0.65, b2Vec2(4.61,19.15), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 	box.SetAsBox(.11,0.65, b2Vec2(18.61,19.15), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	box.SetAsBox(.11,0.65, b2Vec2(11.39,19.15), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 	box.SetAsBox(.11,0.64, b2Vec2(25.39,19.15), 0.);
-	tableBody->CreateFixture(&fixtureDef);
+	tableBody->CreateShape(&box);
 
 	//Init position of elements
 	int l1 = rand() % 20; 
@@ -96,8 +102,8 @@ void Table::update(int dt)
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->updateForces(dt);
 
-	world.Step((float)dt/1000., 10, 10);
-	world.ClearForces();
+	world.Step((float)dt/1000., 10);
+	//world.ClearForces();
 	for(unsigned int i=0; i < elements.size(); i++)
 		elements[i]->updatePos();
 	repaint();

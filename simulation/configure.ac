@@ -23,7 +23,7 @@ AX_BOOST_BASE([1.40], [AC_MSG_RESULT(yes) ] , [AC_MSG_RESULT(no) ] )
 
 CXXFLAGS=
 
-AX_DEP_CHECK(Box2D, [/usr/lib /usr/local/lib], libBox2D.so,[/usr/include /usr/local/include],Box2D/Box2D.h, -lBox2D)
+AX_DEP_CHECK(Box2D, [/usr/lib /usr/local/lib], libbox2d.so,[/usr/include /usr/local/include],Box2D.h, -lbox2d)
 
 AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],[Turn on debugging]), [enable_debug=$enableval],[enable_debug="no"])
 AC_MSG_CHECKING(debug)

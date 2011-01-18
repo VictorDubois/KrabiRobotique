@@ -7,20 +7,18 @@ Element::Element(b2World & world, Position p, Type t)
 	multiplier = 0;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	//bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(p.x/100., p.y/100.);
 	
 	body = world.CreateBody(&bodyDef);
 
-	b2CircleShape circle;
-	circle.m_p.Set(0.,0.);
-	circle.m_radius = 1.0f;
+	b2CircleDef circleDef;
+	circleDef.radius = 1.0f;
+	circleDef.localPosition.Set(0.,0.);
 
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &circle;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.4f;
-	body->CreateFixture(&fixtureDef);
+	circleDef.density = 1.0f;
+	circleDef.friction = 0.4f;
+	body->CreateShape(&circleDef);
 }
 
 void Element::updatePos()

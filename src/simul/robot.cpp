@@ -60,20 +60,17 @@ Robot::Robot(b2World & world) : olds(10000)
 	asservissement->strategie = strategie;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(pos.position.x/100., pos.position.y/100.);
 	bodyDef.angle = pos.angle.getValueInRadian();
 	
 	body = world.CreateBody(&bodyDef);
 
-	b2PolygonShape box;
+	b2PolygonDef box;
 	box.SetAsBox(1.,1., b2Vec2(1,1),0);
 
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &box;
-	fixtureDef.density = 10.0f;
-	fixtureDef.friction = 1.0f;
-	body->CreateFixture(&fixtureDef);
+	box.density = 10.0f;
+	box.friction = 1.0f;
+	body->CreateShape(&box);
 }
 
 void Robot::updateForces(int dt)

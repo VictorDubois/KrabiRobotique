@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 #include <boost/circular_buffer.hpp>
 #include "PositionPlusAngle.h"
-#include <Box2D/Box2D.h>
+#include <Box2D.h>
 
 class Robot
 {
