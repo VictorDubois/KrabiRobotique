@@ -65,7 +65,7 @@ void Strategie::doNthInstruction(uint16_t n){
     int cote = (is_blue ? 1:-1);
 
     if(n==1)
-        asservissement->goTo(Position(-100, 100), false);
+        asservissement->goTo(Position(100, 100), false);
     return;
 //rouleau.recracheBoule();
 //return;

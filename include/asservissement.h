@@ -41,7 +41,6 @@ class Asservissement{
         bool stop;
     public:
         Strategie* strategie;
-        short caca;
         short toto;
         Odometrie* odometrie;
         Asservissement(Odometrie* _odemetrie);

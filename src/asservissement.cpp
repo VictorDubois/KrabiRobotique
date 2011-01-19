@@ -37,28 +37,28 @@ float angle[DBG_SIZE];
 
 Asservissement * Asservissement::asservissement = NULL;
 const uint16_t Asservissement::nb_ms_between_updates = 10;
-
+uint32_t dbgInc = 0;
 Asservissement::Asservissement(Odometrie* _odometrie) :
     vitesse_lineaire_a_atteindre(0),
     vitesse_angulaire_a_atteindre(0),
-    #ifdef DONTUSE
-    vitesse_lineaire_max(2.55254403), // en mm par nb_ms_between_updates
-    vitesse_angulaire_max(M_PI/200.0), // en radian par nb_ms_between_updates
-    acceleration_lineaire(2.55254403/200.0), // en mm par nb_ms_between_updates
-    acceleration_angulaire((M_PI/200.0)/200.0), // en radian par nb_ms_between_updates
-    #else
+#if 0
     vitesse_lineaire_max(4.), // en mm par nb_ms_between_updates
     vitesse_angulaire_max(M_PI/100.0), // en radian par nb_ms_between_updates
     acceleration_lineaire(4./200.0), // en mm par nb_ms_between_updates
     acceleration_angulaire((M_PI/100.0)/200.0), // en radian par nb_ms_between_updates
-    #endif
+#else
+    vitesse_lineaire_max(4.), // en mm par nb_ms_between_updates
+    vitesse_angulaire_max(M_PI/500.0), // en radian par nb_ms_between_updates
+    acceleration_lineaire(4./200.0), // en mm par nb_ms_between_updates
+    acceleration_angulaire((M_PI/100.0)/200.0), // en radian par nb_ms_between_updates
+#endif
     seuil_collision(3.5),
     buffer_collision(0xffffffff),
     nb_echantillons_buffer_collision(10),
     destination(_odometrie->getPos().position)
 {
 	odometrie = _odometrie;
-    caca=0; toto = 0;
+    toto = 0;
     linearDutySent = 0;
     angularDutySent = 0;
     en_mouvement = false;
@@ -82,13 +82,6 @@ int asserCount = 0;
 
 void Asservissement::update(void)
 {
-    roues.gauche.tourne(0.3);
-    return;
-/*#ifdef ROBOTHW
-    roues.gauche.tourne(0.1);
-    roues.droite.tourne(0.1);
-    return;
-#endif*/
     //PositionPlusAngle before(odometrie.positionPlusAngle);
     asserCount++;
 
@@ -142,7 +135,7 @@ void Asservissement::update(void)
 
                 angularDutySent += angular_duty_component;
 
-                    if(caca<DBG_SIZE)
+                    if(dbgInc<DBG_SIZE)
                     {
 
         //roueGauche[caca] = odometrie.roueCodeuseGauche->getTickValue();
@@ -150,13 +143,13 @@ void Asservissement::update(void)
                         //vitesseLin[caca] = vitesse_lineaire_atteinte;
                         //vitesseLinE[caca] = vitesse_lineaire_a_atteindre;
                         /*linearDuty[caca] = linearDutySent;*/
-                        vitesseAng[caca] = vitesse_angulaire_atteinte.getValueInRadian();
-                        vitesseAngE[caca] = vitesse_angulaire_a_atteindre.getValueInRadian();
+                        vitesseAng[dbgInc] = vitesse_angulaire_atteinte.getValueInRadian();
+                        vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre.getValueInRadian();
                         //angularDuty[caca] = angularDutySent;
                         //posx[caca] = positionPlusAngleActuelle.position.x;
                         //posy[caca] = positionPlusAngleActuelle.position.y;
                         //angle[caca] = positionPlusAngleActuelle.angle.getValueInRadian(); //*angle_restant.getValueInRadian();*/distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
-                        caca++;
+                        dbgInc++;
                     }
                 toto++;
 
