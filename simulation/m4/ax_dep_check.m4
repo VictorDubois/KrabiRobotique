@@ -9,11 +9,13 @@ libluabindheader="/usr/include /usr/local/include"
 AC_MSG_CHECKING(for $1 libs)
 
 for l in $2; do
-	if test -f $l/$3; then
-		AC_MSG_RESULT($l/$3)
-		$1_LIBS="-L$l $6"
-		break
-	fi
+	for lib in $3; do
+		if test -f $l/$lib; then
+			AC_MSG_RESULT($l/$lib)
+			$1_LIBS="-L$l $(echo $lib | sed -e 's/^lib/-l/' -e 's/\.so$//')"
+			break
+		fi
+	done
 done
 
 if test -z "${$1_LIBS}"; then
