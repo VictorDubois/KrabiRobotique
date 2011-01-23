@@ -18,7 +18,7 @@ collision_detected(false)
 #ifdef NOBODY
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
     roueCodeuseGauche = new QuadratureCoderHandler(TIM1);
-#endif 
+#endif
     //Position positionDeDepart(335,400);
     //Angle angleDeDepart(M_PI_2);
     //Position positionDeDepart(255,275);
@@ -63,7 +63,11 @@ void Strategie::collisionDetected() {
 
 void Strategie::doNthInstruction(uint16_t n){
     int cote = (is_blue ? 1:-1);
-//êrouleau.recracheBoule();
+
+    if(n==1)
+        asservissement->goTo(Position(100, 100), false);
+    return;
+//rouleau.recracheBoule();
 //return;
 #ifdef DONTUSE
     switch(n) {

@@ -89,14 +89,16 @@ caddr_t _sbrk(int incr)
     if( heap_end + incr > stack_ptr)
     {
         write(1, "Heap and stack collision\n", 25);
-        abort();
+      //  abort();
     }
 
     heap_end += incr;
     return (caddr_t)prev_heap_end;
 }
 
-int _times(struct tms* buf)
+typedef struct tms tms;
+
+int _times(tms* buf)
 {
     return -1;
 }

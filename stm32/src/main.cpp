@@ -18,6 +18,7 @@
 #include "capteurs.h"
 #include "strategie.h"
 #include "odometrie.h"
+#include "stm32f10x.h"
 
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
 //Declarations
@@ -219,9 +220,12 @@ bool isTiretteEnleve()
  * Description: The main subroutine
  *
  *************************************************************************/
+ void toto (float x) {}
+ float a=4.5,b=5.8;
 int main(void)
 {
-
+float x = a*b;
+ toto(x);
 	*NVIC_CCR = *NVIC_CCR | 0x200; /* Set STKALIGN in NVIC */
 	// Init clock system
 	  Clk_Init();
@@ -260,6 +264,21 @@ void HardFault_Handler(void)
 {
 	return ;
 }
+
+uint32_t val = 0 ;
+/*
+extern "C" void UsageFault_Handler(void)
+{
+    val = SCB->CFSR;
+    for(;;);
+	return ;
+}
+
+extern "C" void USB_LP_CAN1_RX0_IRQHandler (void)
+{
+    for (;;);
+}*/
+
 //Functions definitions
 void myDelay(unsigned long delay )
 {
