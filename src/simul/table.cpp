@@ -113,7 +113,7 @@ void Table::paintEvent(QPaintEvent* evt)
 
 	for(unsigned int i=0; i<6; i++)
 	for(unsigned int j=0; j<6; j++)
-		p.fillRect(450+i*350,-j*350,350,-350, ((i+j) & 1) ? Qt::red : Qt::blue);
+		p.fillRect(450+i*350,-j*350,350,-350, ((i+j) & 1) ? Qt::blue : Qt::red);
 	//Starting zones
 	p.fillRect(0,0,400,-400,Qt::blue);
 	p.fillRect(2600,0,400,-400,Qt::red);
