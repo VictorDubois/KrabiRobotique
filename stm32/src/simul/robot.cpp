@@ -77,11 +77,29 @@ Robot::Robot(b2World & world) : olds(10000)
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 #endif
-	box.SetAsBox(1.,1., b2Vec2(1,1),0);
-
 	fixture.density = 10.0f;
 	fixture.friction = 1.0f;
+
+	box.SetAsBox(1.15,1.795, b2Vec2(-1.49,0),0);
 	body->CreateFixture(&fixture);
+
+	box.m_vertexCount = 4;
+	int inc = 0;
+	box.m_vertices[inc++].Set(-.97,1.07);
+	box.m_vertices[inc++].Set(.60,1.07);
+	box.m_vertices[inc++].Set(0,1.795);
+	box.m_vertices[inc++].Set(-0.97,1.795);
+	body->CreateFixture(&fixture);
+
+	inc = 0;
+	box.m_vertices[inc++].Set(-0.97,-1.795);
+	box.m_vertices[inc++].Set(0,-1.795);
+	box.m_vertices[inc++].Set(.60,-1.07);
+	box.m_vertices[inc++].Set(-.97,-1.07);
+	body->CreateFixture(&fixture);
+	//setTriangle(box, 0, 0, 
+
+
 #ifdef BOX2D_2_0_1
 	body->SetMassFromShapes();
 #endif
@@ -113,8 +131,8 @@ void Robot::paint(QPainter &p, int dt)
 {
 	if(dt)
 	{
-		pos.position.x = 100*body->GetWorldCenter().x;
-		pos.position.y = 100*body->GetWorldCenter().y;
+		pos.position.x = 100*body->GetPosition().x;
+		pos.position.y = 100*body->GetPosition().y;
 		pos.angle = body->GetAngle();
 
 		float rdt = (float)dt/1000.;
@@ -147,7 +165,20 @@ void Robot::paint(QPainter &p, int dt)
 	p.setPen(QColor(Qt::black));
 	p.setBrush(QBrush(QColor(90,90,90)));
 	p.setOpacity(.3);
-	p.drawRect(-100, -100, 200, 200);
+
+	QPoint po[10];
+	int inc = 0;
+	po[inc++] = QPoint(0,-179.5);
+	po[inc++] = QPoint(-262,-179.5);
+	po[inc++] = QPoint(-262,179.5);
+	po[inc++] = QPoint(0,179.5);
+	po[inc++] = QPoint(60,114.5);
+	po[inc++] = QPoint(60,-114.5);
+	p.drawConvexPolygon(po, 6);
+
+	p.drawChord(-103/2, -107, 2*103, 215, 16*90, 16*180);
+	//p.drawRect(-268, -179.5, 268, 359);
+	//drawTriangle(p, 0, 0,  65, 0,  60, 0);
 	p.setOpacity(1);
 
 	p.setPen(QColor(Qt::red));
