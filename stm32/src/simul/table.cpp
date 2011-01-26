@@ -116,7 +116,10 @@ void Table::update(int dt)
 {
 	this->dt = dt;
 	for(unsigned int i=0; i < robots.size(); i++)
+	{
 		robots[i]->updateForces(dt);
+		robots[i]->interact(elements);
+	}
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);

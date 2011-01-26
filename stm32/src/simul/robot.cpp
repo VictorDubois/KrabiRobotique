@@ -1,4 +1,5 @@
 #include "simul/robot.h"
+#include "simul/element.h"
 #include <cmath>
 
 
@@ -40,7 +41,7 @@ public:
 };
 
 
-Robot::Robot(b2World & world) : olds(10000)
+Robot::Robot(b2World & world) : world(world), olds(10000)
 {
 
 	deriv.position.x = 0;
@@ -48,6 +49,9 @@ Robot::Robot(b2World & world) : olds(10000)
 	deriv.angle = 0;
 
 	manual = false;
+	elem = NULL;
+	joint = NULL;
+	level = 0;
 
 	odometrie = new OdoRobot(this);
 	asservissement = new Asservissement(odometrie);
@@ -210,6 +214,32 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 	if(evt && press && evt->text() == "e" && !evt->isAutoRepeat())
 		manual = !manual;
 
+	if(evt && press && evt->text() == "i" && !evt->isAutoRepeat())
+		makeJoint();
+
+	if(evt && press && evt->text() == "u" && !evt->isAutoRepeat() && elem)
+	{
+		level = (level != 100) ? 100 : 0;
+		b2Filter filter;
+		if(level == 100)
+		{
+			filter.categoryBits = 0x4;
+			filter.maskBits = 0x3;
+		}
+		else
+		{
+			filter.maskBits = 0x3;
+			filter.categoryBits = 0x1;
+			if(elem->type != Element::Pawn)
+			{
+				filter.categoryBits = 0x2;
+				filter.maskBits |= 0x4;
+			}
+		}
+		elem->body->GetFixtureList()[0].SetFilterData(filter);
+	}
+
+
 	if(manual)
 	{
 		float dinc = .5;
@@ -224,5 +254,58 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
 			deriv.angle += ainc;
 	}
+}
+
+void Robot::makeJoint()
+{
+	if(!elem)
+		return;
+
+	if(joint)
+	{
+		world.DestroyJoint(joint);
+		joint = NULL;
+		level = 0;
+	}
+	else
+	{
+		b2WeldJointDef jointDef;
+		jointDef.bodyA = body;
+		jointDef.bodyB = elem->body;
+		jointDef.localAnchorA = body->GetLocalPoint(elem->body->GetPosition());
+		joint = world.CreateJoint(&jointDef);
+	}
+}
+
+void Robot::interact(std::vector<class Element*> &elements)
+{
+	Element* ne = NULL;
+
+	for(unsigned int i=0; i < elements.size(); i++)
+	{
+		Element* e = elements[i];
+		float d = (e->body->GetPosition() - body->GetWorldPoint(b2Vec2(1.64, 0.))).LengthSquared();
+		if(d < 0.01 && (e != elem || !ne))
+			ne = e;
+	}
+
+	if(elem && elem == ne)
+		return;
+
+	if(level == 100 && elem && ne)
+	{
+		for(std::vector<Element*>::iterator iter = elements.begin(); iter != elements.end(); iter++)
+			if(*iter == ne)
+			{
+				elements.erase(iter);
+				break;
+			}
+		//std::remove(elements.begin(), elements.end(), ne);
+		world.DestroyBody(ne->body);
+		elem->multiplier += ne->multiplier;
+		delete ne;
+	}
+	else
+		elem = ne;
 }
 

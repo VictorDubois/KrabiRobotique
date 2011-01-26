@@ -11,6 +11,7 @@ class Robot
 {
 private:
 	bool manual;
+	b2World &world;
 public:
 
 	PositionPlusAngle pos;
@@ -21,12 +22,17 @@ public:
 	class Strategie* strategie;
 	
 	b2Body* body;
+	b2Joint* joint;
+	class Element* elem;
+	unsigned int level;
 
 	Robot(b2World &world);
 
 	void paint(QPainter &p, int dt);
 	void keyPressEvent(QKeyEvent* evt,bool press);
 	void updateForces(int dt);
+	void interact(std::vector<class Element*> &elements);
+	void makeJoint();
 };
 
 #endif //ROBOT_H_INCLUDED

@@ -4,7 +4,7 @@ Element::Element(b2World & world, Position p, Type t)
 {
 	this->p = p;
 	type = t;
-	multiplier = 0;
+	multiplier = 1;
 
 	b2BodyDef bodyDef;
 #ifndef BOX2D_2_0_1
@@ -31,6 +31,17 @@ Element::Element(b2World & world, Position p, Type t)
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.4f;
 
+	//Categorie :
+	//1 - normal
+	//2 - Dame or Roi
+	//4 - Objet élevé
+	fixtureDef.filter.maskBits = 0x3;
+	fixtureDef.filter.categoryBits = 0x1;
+	if(type != Pawn)
+	{
+		fixtureDef.filter.categoryBits = 0x2;
+		fixtureDef.filter.maskBits |= 0x4;
+	}
 	body->CreateFixture(&fixtureDef);
 #ifdef BOX2D_2_0_1
 	body->SetMassFromShapes();
@@ -89,7 +100,7 @@ void Element::paint(QPainter & pa)
 	QString text;
 	if(type == Pawn)
 	{
-		if(multiplier > 0)
+		if(multiplier > 1)
 			text = QString::number(multiplier);
 	}
 	else
@@ -98,9 +109,9 @@ void Element::paint(QPainter & pa)
 			text = "Q";
 		else
 			text = "K";
-		if(multiplier > 0)
-			text = QString(" ") + QString::number(multiplier);
+		if(multiplier > 1)
+			text += QString::fromStdWString(L"×") + QString::number(multiplier);
 	}
 
-	pa.drawText(p.x-50, -p.y+50, 100, -100, Qt::AlignCenter, text);
+	pa.drawText(p.x-80, -p.y+80, 160, -160, Qt::AlignCenter, text);
 }
