@@ -88,8 +88,8 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	body->CreateFixture(&fixture);
 
 #ifdef BOX2D_2_0_1
-	b2Vec2 & v = box.m_vertices;
-	box.m_vertexCount = 4;
+	b2Vec2* v = box.vertices;
+	box.vertexCount = 4;
 #else
 	b2Vec2 v[4];
 #endif
@@ -220,6 +220,10 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 	if(evt && press && evt->text() == "u" && !evt->isAutoRepeat() && elem)
 	{
 		level = (level != 100) ? 100 : 0;
+#ifdef BOX2D_2_0_1
+#define b2Filter b2FilterData
+#define GetFixtureList GetShapeList
+#endif
 		b2Filter filter;
 		if(level == 100)
 		{
