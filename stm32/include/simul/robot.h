@@ -17,7 +17,7 @@ public:
 	PositionPlusAngle pos;
 	PositionPlusAngle deriv;
 	boost::circular_buffer<PositionPlusAngle> olds;
-	class Asservissement* asservissement;
+	class Command* command;
 	class OdoRobot* odometrie;
 	class Strategie* strategie;
 	

@@ -7,12 +7,13 @@
 
 #include <stdint.h>
 
-class Asservissement;
+class Command;
+class Odometrie;
 
 class Strategie {
     private:
     bool is_blue;
-    Asservissement* asservissement;
+    Command* command;
     void doNext();
     int instruction_nb;
     bool collision_detected;
@@ -20,7 +21,7 @@ class Strategie {
 
     public:
     void collisionDetected();
-    Strategie(bool is_blue, Asservissement* asservissement);
+    Strategie(bool is_blue, Command* command, Odometrie* odometrie);
     void foundOtherRobot();
     void done();
     void doNthInstruction(uint16_t n);

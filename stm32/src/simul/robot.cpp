@@ -44,9 +44,6 @@ public:
 Robot::Robot(b2World & world) : world(world), olds(10000)
 {
 
-	deriv.position.x = 0;
-	deriv.position.y = 0;
-	deriv.angle = 0;
 
 	manual = false;
 	elem = NULL;
@@ -54,14 +51,16 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	level = 0;
 
 	odometrie = new OdoRobot(this);
-	asservissement = new Asservissement(odometrie);
-	strategie = new Strategie(true, asservissement);
-
-	pos.position.x=1000.;
-	pos.position.y=500.;
-	pos.angle=0;
-
+	command = new Command;
+	Asservissement* asservissement = new Asservissement(odometrie, command);
+	strategie = new Strategie(true, command, odometrie);
 	asservissement->strategie = strategie;
+
+	pos = odometrie->getPos();
+	deriv.position.x = 0;
+	deriv.position.y = 0;
+	deriv.angle = 0;
+
 
 	b2BodyDef bodyDef;
 #ifndef BOX2D_2_0_1
@@ -116,6 +115,14 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 #ifdef BOX2D_2_0_1
 	body->SetMassFromShapes();
 #endif
+
+	//Little hack so that linear and angular speed of the object
+	//are those of the local coord (0,0) of the robot.
+	//We don't really care of the mass center accuracy.
+	b2MassData md;
+	body->GetMassData(&md);
+	md.center = b2Vec2(0,0);
+	body->SetMassData(&md);
 }
 
 void Robot::updateForces(int dt)
@@ -166,9 +173,9 @@ void Robot::paint(QPainter &p, int dt)
 		else
 		{
 			Asservissement::asservissement->update();
-			deriv.position.x = asservissement->vitesse_lineaire_a_atteindre;
+			deriv.position.x = command->getLinearSpeed();
 			deriv.position.y = 0;
-			deriv.angle = asservissement->vitesse_angulaire_a_atteindre;
+			deriv.angle = command->getAngularSpeed();
 		}
 	}
 

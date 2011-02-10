@@ -31,7 +31,12 @@ Angle Angle::operator+(const Angle &ang)
 
 Angle Angle::operator-(const Angle &ang)
 {
-    double tmp_val = fmod(angle-ang.angle, 2*M_PI);
+      return Angle(angle - ang.angle);
+}
+
+Angle Angle::wrap()
+{
+    double tmp_val = fmod(angle, 2*M_PI);
     if(tmp_val<0) tmp_val += M_PI*2;
     return Angle(tmp_val <= M_PI ? tmp_val : tmp_val-2*M_PI);
 }

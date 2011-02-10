@@ -21,6 +21,7 @@ class Angle
     bool presqueEgales(Angle &ang);
     Angle(const Angle &original);
     float getValueInRadian();
+    Angle wrap();
 };
 
 

@@ -10,6 +10,7 @@ src/simul/main_window.cpp \
 src/simul/table.cpp \
 src/simul/robot.cpp \
 src/asservissement.cpp \
+src/command.cpp \
 src/Position.cpp \
 src/PositionPlusAngle.cpp \
 src/distance.cpp \
