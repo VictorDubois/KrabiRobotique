@@ -23,7 +23,7 @@ Command::Command() :
     vitesse_lineaire_max(4.), // en mm par nb_ms_between_updates
     vitesse_angulaire_max(M_PI/500.0), // en radian par nb_ms_between_updates
     acceleration_lineaire(4./200.0), // en mm par nb_ms_between_updates
-    acceleration_angulaire((M_PI/100.0)/200.0) // en radian par nb_ms_between_updates
+    acceleration_angulaire((M_PI/100.0)/100.0) // en radian par nb_ms_between_updates
 #endif
 {
 }
@@ -46,7 +46,6 @@ void Command::update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_
 		vitesse_angulaire_a_atteindre = 0;
 	else
 		vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_atteinte, angle_restant);
-	std::cout << "Ook " << distance_restante << " " << vitesse_lineaire_a_atteindre << std::endl;
 }
 
 
@@ -55,10 +54,10 @@ Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineai
 {
 
     // Le pivot est la distance que l'on parcourerait si on commencait à décélérer dès maintenant jusqu'une vitesse nulle
-    Distance pivot(vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire));
+    float pivot = vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire);
     if( (distance_restante-pivot)<=0 &&
-         ((fabs((angle_restant - Angle(0)).getValueInRadian())>M_PI_2 && vitesse_lineaire_atteinte<=0)
-          || (fabs((angle_restant - Angle(0)).getValueInRadian())<=M_PI_2 && vitesse_lineaire_atteinte>=0))
+         ((fabs(angle_restant.wrap().getValueInRadian())>M_PI_2 && vitesse_lineaire_atteinte<=0)
+          || (fabs(angle_restant.wrap().getValueInRadian())<=M_PI_2 && vitesse_lineaire_atteinte>=0))
          && stop)
     {
         //On est proche de la cible et l’on doit décélerer
@@ -72,7 +71,7 @@ Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineai
         }
 
     }
-    else if(fabs((angle_restant - Angle(0)).getValueInRadian())>M_PI_2)
+    else if(fabs(angle_restant.wrap().getValueInRadian())>M_PI_2)
     {
         // Sinon, on est en phase d'accélération
         // Si la destination est derrière nous
