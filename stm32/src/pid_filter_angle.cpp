@@ -20,7 +20,7 @@ float PIDFilterAngle::getFilteredValue(Angle erreur){
     Angle integrale = sommeErreurs;
     Angle derivee = erreur - erreurPrecedente;
     erreurPrecedente=erreur;
-    return proportionnel.getValueInRadian()*Kp
-         + integrale.getValueInRadian()*Ki
-         + derivee.getValueInRadian()*Kd;
+    return proportionnel*Kp
+         + integrale*Ki
+         + derivee*Kd;
 }

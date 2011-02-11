@@ -67,7 +67,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	bodyDef.type = b2_dynamicBody;
 #endif
 	bodyDef.position.Set(pos.position.x/100., pos.position.y/100.);
-	bodyDef.angle = pos.angle.getValueInRadian();
+	bodyDef.angle = pos.angle;
 	
 	body = world.CreateBody(&bodyDef);
 
@@ -131,13 +131,13 @@ void Robot::updateForces(int dt)
 		return;
 
 	Position impulse;
-	impulse.x = (deriv.position.x*(float)cos(pos.angle.getValueInRadian()) - deriv.position.y*(float)sin(pos.angle.getValueInRadian()));
-	impulse.y = (deriv.position.x*(float)sin(pos.angle.getValueInRadian()) + deriv.position.y*(float)cos(pos.angle.getValueInRadian()));
+	impulse.x = (deriv.position.x*(float)cos(pos.angle) - deriv.position.y*(float)sin(pos.angle));
+	impulse.y = (deriv.position.x*(float)sin(pos.angle) + deriv.position.y*(float)cos(pos.angle));
 
 	float32 rdt = 1000./(float)dt;
 
 	b2Vec2 bvelocity = 0.01*rdt*b2Vec2(impulse.x,impulse.y);
-	float bangular = deriv.angle.getValueInRadian()*rdt;
+	float bangular = deriv.angle*rdt;
 	//body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
 	//body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
 	
@@ -160,7 +160,7 @@ void Robot::paint(QPainter &p, int dt)
 		float derx = 100*body->GetLinearVelocity().x*rdt;
 		float dery = 100*body->GetLinearVelocity().y*rdt;
 
-		deriv.position.x = derx*cos(pos.angle.getValueInRadian()) + dery*sin(pos.angle.getValueInRadian());
+		deriv.position.x = derx*cos(pos.angle) + dery*sin(pos.angle);
 		deriv.position.y = 0;
 
 		olds.push_back(pos);
@@ -179,7 +179,7 @@ void Robot::paint(QPainter &p, int dt)
 		}
 	}
 
-	p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle.getValueInRadian()));
+	p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle));
 
 
 	p.setPen(QColor(Qt::black));
@@ -203,7 +203,7 @@ void Robot::paint(QPainter &p, int dt)
 
 	p.setPen(QColor(Qt::red));
 	p.drawLine(0,0,pos.position.x,0);
-	p.drawLine(0,100*pos.angle.getValueInRadian(),0,0);
+	p.drawLine(0,100*pos.angle,0,0);
 	p.setWorldTransform(QTransform());
 
 

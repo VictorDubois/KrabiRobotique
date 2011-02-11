@@ -1,6 +1,6 @@
 #include "Angle.h"
 #include <math.h>
-
+#if 0
 Angle::Angle()/* : angle(ang)*/
 {
     angle = 0;
@@ -81,3 +81,4 @@ Angle Angle::operator-=(const Angle &ang)
 float Angle::getValueInRadian(){
     return angle;
 }
+#endif

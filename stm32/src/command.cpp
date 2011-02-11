@@ -37,12 +37,12 @@ void Command::update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_
 	Distance distance_restante = (vecteur_pos_actuelle_pos_arrivee).getNorme();
 	Angle angle_restant = vecteur_pos_actuelle_pos_arrivee.getAngle() - positionPlusAngleActuelle.angle;
 
-	if(false) //distance_restante < 5)
+	if(distance_restante < 5)
 		vitesse_lineaire_a_atteindre = 0;
 	else
         	vitesse_lineaire_a_atteindre = getVitesseLineaireAfterTrapeziumFilter(vitesse_lineaire_atteinte, distance_restante, angle_restant);
 
-	if(false) //fabs(angle_restant.getValueInRadian()) < 0.01)
+	if(fabs(angle_restant) < 0.01)
 		vitesse_angulaire_a_atteindre = 0;
 	else
 		vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_atteinte, angle_restant);
@@ -56,8 +56,8 @@ Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineai
     // Le pivot est la distance que l'on parcourerait si on commencait à décélérer dès maintenant jusqu'une vitesse nulle
     float pivot = vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire);
     if( (distance_restante-pivot)<=0 &&
-         ((fabs(angle_restant.wrap().getValueInRadian())>M_PI_2 && vitesse_lineaire_atteinte<=0)
-          || (fabs(angle_restant.wrap().getValueInRadian())<=M_PI_2 && vitesse_lineaire_atteinte>=0))
+         ( (fabs(wrapAngle(angle_restant))>M_PI_2 && vitesse_lineaire_atteinte<=0)
+         ||(fabs(wrapAngle(angle_restant))<=M_PI_2 && vitesse_lineaire_atteinte>=0))
          && stop)
     {
         //On est proche de la cible et l’on doit décélerer
@@ -71,7 +71,7 @@ Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineai
         }
 
     }
-    else if(fabs(angle_restant.wrap().getValueInRadian())>M_PI_2)
+    else if(fabs(wrapAngle(angle_restant))>M_PI_2)
     {
         // Sinon, on est en phase d'accélération
         // Si la destination est derrière nous
@@ -92,20 +92,20 @@ Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineai
 
 Angle Command::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_angulaire_atteinte, Angle angle_restant)
 {
-    if(fabs((angle_restant.wrap()).getValueInRadian())>M_PI_2 + 0.01)
+    if(fabs(wrapAngle(angle_restant))>M_PI_2 + 0.01)
     {
-        angle_restant = (angle_restant+Angle(M_PI)).wrap();
+        angle_restant = wrapAngle(angle_restant+Angle(M_PI));
     }
 
-    Angle pivot(vitesse_angulaire_a_atteindre.getValueInRadian()*vitesse_angulaire_a_atteindre.getValueInRadian()/(2*acceleration_angulaire.getValueInRadian()));
+    Angle pivot(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire));
 
-    if((Angle(fabs(angle_restant.getValueInRadian()))-pivot).getValueInRadian()<=0)
+    if((Angle(fabs(angle_restant))-pivot)<=0)
     {
-        return vitesse_angulaire_a_atteindre-Angle(copysign(min((float)fabs(vitesse_angulaire_a_atteindre.getValueInRadian()), acceleration_angulaire.getValueInRadian()), vitesse_angulaire_a_atteindre.getValueInRadian()));
+        return vitesse_angulaire_a_atteindre-Angle(copysign(min((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), vitesse_angulaire_a_atteindre));
     }
     else
     {
-        return vitesse_angulaire_a_atteindre + Angle(copysign(min(acceleration_angulaire.getValueInRadian(), vitesse_angulaire_max.getValueInRadian()-(float)fabs(vitesse_angulaire_a_atteindre.getValueInRadian())), angle_restant.getValueInRadian()));
+        return vitesse_angulaire_a_atteindre + Angle(copysign(min(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre)), angle_restant));
     }
 }
 
