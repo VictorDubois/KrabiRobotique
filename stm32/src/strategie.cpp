@@ -12,7 +12,7 @@
 
 #define INSTRUCTION_COLLISION 128
 
-Strategie::Strategie(bool is_blue, Command* command, Odometrie* odometrie) :
+Strategie::Strategie(bool is_blue, TrapezoidalCommand* command, Odometrie* odometrie) :
 collision_detected(false)
 {
     this->is_blue = is_blue;
@@ -66,7 +66,7 @@ void Strategie::doNthInstruction(uint16_t n){
     int cote = (is_blue ? 1:-1);
 
     if(n==1)
-        command->goTo(Position(1500, 700));
+        command->goTo(Position(1500, 1000));
     return;
 //rouleau.recracheBoule();
 //return;

@@ -51,7 +51,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	level = 0;
 
 	odometrie = new OdoRobot(this);
-	command = new Command;
+	command = new TrapezoidalCommand;
 	Asservissement* asservissement = new Asservissement(odometrie, command);
 	strategie = new Strategie(true, command, odometrie);
 	asservissement->strategie = strategie;

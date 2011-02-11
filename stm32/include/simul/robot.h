@@ -17,7 +17,7 @@ public:
 	PositionPlusAngle pos;
 	PositionPlusAngle deriv;
 	boost::circular_buffer<PositionPlusAngle> olds;
-	class Command* command;
+	class TrapezoidalCommand* command;
 	class OdoRobot* odometrie;
 	class Strategie* strategie;
 	

@@ -1,7 +1,17 @@
 #include "Angle.h"
 #include "PositionPlusAngle.h"
 
+
 class Command
+{
+public:
+	virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
+
+	virtual float getLinearSpeed() = 0;
+	virtual Angle getAngularSpeed() = 0;
+};
+
+class TrapezoidalCommand : public Command
 {
 private:
         float vitesse_lineaire_a_atteindre;
@@ -17,7 +27,7 @@ private:
         bool direction;
         bool stop;
 public:
-	Command();
+	TrapezoidalCommand();
 	void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte);
 
         void goTo(Position position, bool stop=true);

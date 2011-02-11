@@ -11,7 +11,7 @@ template<class T> T max(T a, T b)
 	return a > b ? a : b;
 }
 
-Command::Command() :
+TrapezoidalCommand::TrapezoidalCommand() :
     vitesse_lineaire_a_atteindre(0),
     vitesse_angulaire_a_atteindre(0),
 #if 0
@@ -30,7 +30,7 @@ Command::Command() :
 
 #include <iostream>
 
-void Command::update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte)
+void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte)
 {
 	Position vecteur_pos_actuelle_pos_arrivee = destination-positionPlusAngleActuelle.position;
 	
@@ -50,7 +50,7 @@ void Command::update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_
 
 
 
-Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant)
+Distance TrapezoidalCommand::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant)
 {
 
     // Le pivot est la distance que l'on parcourerait si on commencait à décélérer dès maintenant jusqu'une vitesse nulle
@@ -90,7 +90,7 @@ Distance Command::getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineai
     }
 }
 
-Angle Command::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_angulaire_atteinte, Angle angle_restant)
+Angle TrapezoidalCommand::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_angulaire_atteinte, Angle angle_restant)
 {
     if(fabs(wrapAngle(angle_restant))>M_PI_2 + 0.01)
     {
@@ -109,7 +109,7 @@ Angle Command::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_angulaire_a
     }
 }
 
-void Command::goTo(Position position, bool stop)
+void TrapezoidalCommand::goTo(Position position, bool stop)
 {
     destination = position;
     direction = false;
