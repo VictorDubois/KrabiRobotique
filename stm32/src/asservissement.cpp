@@ -9,7 +9,6 @@
 #include "asservissement.h"
 #include "strategie.h"
 #include <math.h>
-//#include <stdlib.h>
 
 #define STK_CTRL_ADDR 0xe000e010
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)
@@ -38,13 +37,13 @@ float angle[DBG_SIZE];
 Asservissement * Asservissement::asservissement = NULL;
 const uint16_t Asservissement::nb_ms_between_updates = 10;
 uint32_t dbgInc = 0;
-Asservissement::Asservissement(Odometrie* _odometrie, Command* command) :
+Asservissement::Asservissement(Odometrie* _odometrie) :
     seuil_collision(3.5),
     buffer_collision(0xffffffff),
     nb_echantillons_buffer_collision(10)
 {
 	odometrie = _odometrie;
-	this->command = command;
+	command = NULL;
     toto = 0;
     linearDutySent = 0;
     angularDutySent = 0;

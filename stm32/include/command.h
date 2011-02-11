@@ -1,10 +1,13 @@
+#ifndef COMMAND_H_INCLUDED
+#define COMMAND_H_INCLUDED
+
 #include "Angle.h"
 #include "PositionPlusAngle.h"
-
 
 class Command
 {
 public:
+	Command();
 	virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
 
 	virtual float getLinearSpeed() = 0;
@@ -48,4 +51,6 @@ public:
 	}
 
 };
+
+#endif //COMMAND_H_INCLUDED
 

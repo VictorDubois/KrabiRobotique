@@ -34,7 +34,18 @@ class Asservissement{
         short toto;
         Odometrie* odometrie;
 	Command* command;
-        Asservissement(Odometrie* _odemetrie, class Command* command);
+        Asservissement(Odometrie* _odometrie);
+
+	float getLinearSpeed()
+	{
+		return command->getLinearSpeed();
+	}
+
+	Angle getAngularSpeed()
+	{
+		return command->getAngularSpeed();
+	}
+
         static Asservissement * asservissement;
         static const uint16_t nb_ms_between_updates;
         void update(void);

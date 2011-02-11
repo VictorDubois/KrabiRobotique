@@ -1,4 +1,5 @@
 #include "command.h"
+#include "asservissement.h"
 #include <math.h>
 
 template<class T> T min(T a, T b)
@@ -9,6 +10,14 @@ template<class T> T min(T a, T b)
 template<class T> T max(T a, T b)
 {
 	return a > b ? a : b;
+}
+
+Command::Command()
+{
+	Command* & c = Asservissement::asservissement->command;
+       if(c)
+	       delete c;
+       c = this;
 }
 
 TrapezoidalCommand::TrapezoidalCommand() :

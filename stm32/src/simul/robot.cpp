@@ -51,9 +51,8 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	level = 0;
 
 	odometrie = new OdoRobot(this);
-	command = new TrapezoidalCommand;
-	Asservissement* asservissement = new Asservissement(odometrie, command);
-	strategie = new Strategie(true, command, odometrie);
+	asservissement = new Asservissement(odometrie);
+	strategie = new Strategie(true, odometrie);
 	asservissement->strategie = strategie;
 
 	pos = odometrie->getPos();
@@ -173,9 +172,9 @@ void Robot::paint(QPainter &p, int dt)
 		else
 		{
 			Asservissement::asservissement->update();
-			deriv.position.x = command->getLinearSpeed();
+			deriv.position.x = asservissement->getLinearSpeed();
 			deriv.position.y = 0;
-			deriv.angle = command->getAngularSpeed();
+			deriv.angle = asservissement->getAngularSpeed();
 		}
 	}
 

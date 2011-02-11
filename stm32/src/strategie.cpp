@@ -12,11 +12,11 @@
 
 #define INSTRUCTION_COLLISION 128
 
-Strategie::Strategie(bool is_blue, TrapezoidalCommand* command, Odometrie* odometrie) :
+Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
 collision_detected(false)
 {
     this->is_blue = is_blue;
-#ifdef NOBODY
+#ifdef NOBODY //FIXME: Ce code est-il encore vraiment utile ?
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
     roueCodeuseGauche = new QuadratureCoderHandler(TIM1);
 #endif
@@ -30,7 +30,6 @@ collision_detected(false)
     positionDeDepart.y = positionDeDepart.y*(is_blue ? 1:-1);
     angleDeDepart = angleDeDepart*(is_blue ? 1:-1);
     //command = new Asservissement(PositionPlusAngle(Position(335, 400), Angle(M_PI_2)), roueCodeuseGauche, roueCodeuseDroite);
-    this->command = command;
     odometrie->setPos(PositionPlusAngle(positionDeDepart,angleDeDepart));
     //command = new Asservissement(PositionPlusAngle(positionDeDepart, angleDeDepart), roueCodeuseGauche, roueCodeuseDroite);
     //command = new Asservissement(PositionPlusAngle(Position(0, 0), Angle(0)), roueCodeuseGauche, roueCodeuseDroite);
@@ -66,14 +65,14 @@ void Strategie::doNthInstruction(uint16_t n){
     int cote = (is_blue ? 1:-1);
 
     if(n==1)
-        command->goTo(Position(1500, 1000));
+        (new TrapezoidalCommand)->goTo(Position(1500, 1000));
     return;
 //rouleau.recracheBoule();
 //return;
 #ifdef DONTUSE
     switch(n) {
         case 1:
-            command->goTo(Position(780, cote*780), false);
+	    command->goTo(Position(780, cote*780), false);
         break;
         case 2:
             rouleau.avaleBoule();
@@ -116,6 +115,7 @@ void Strategie::doNthInstruction(uint16_t n){
     }
     #endif
 
+#if (0) 
     switch(n) {
         case 1:
             //rouleau.avaleBoule();
@@ -150,6 +150,7 @@ void Strategie::doNthInstruction(uint16_t n){
         break;
 
     }
+#endif
 /*
 if(n==0)
 {
