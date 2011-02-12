@@ -23,7 +23,7 @@ AX_BOOST_BASE([1.40], [AC_MSG_RESULT(yes) ] , [AC_MSG_RESULT(no) ] )
 
 CXXFLAGS=
 
-AX_DEP_CHECK(Box2D, [/usr/lib /usr/local/lib], [libbox2d.so libBox2D.so],[/usr/include /usr/local/include /usr/include/Box2D /usr/local/include/Box2D ],Box2D.h)
+AX_DEP_CHECK(Box2D, [/usr/local/lib /usr/lib], [libbox2d.so libBox2D.so],[ /usr/local/include/Box2D /usr/include /usr/local/include /usr/include/Box2D ],Box2D.h)
 AC_MSG_CHECKING(Box2D version)
 if test -z "$(find $(echo $Box2D_CFLAGS | sed -e 's/-I//') -name b2Fixture.h)"; then
 	Box2D_CFLAGS="$Box2D_CFLAGS -DBOX2D_2_0_1"
