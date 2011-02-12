@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-HwOdometrie::HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
+Odometrie::Odometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
     /*positionPlusAngle(positionPlusAngleInitiale),*/
     vitesseLineaire(0),
     vitesseAngulaire(0),
@@ -21,7 +21,7 @@ HwOdometrie::HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ Quadra
     this->roueCodeuseDroite = roueCodeuseDroite;
 }
 
-void HwOdometrie::update(){
+void Odometrie::update(){
     //float vitesseAngulaireRoueGauche = 100*roueCodeuseGauche->getTickValue()/(2048*4); //(en tours par secondes)
     //float vitesseAngulaireRoueDroite = 100*roueCodeuseDroite->getTickValue()/(2048*4);
     //roueCodeuseGauche->getTickValue();
@@ -42,7 +42,7 @@ void HwOdometrie::update(){
     caca++;*/
 
 	positionPlusAngle.angle += vitesseAngulaire;
-	positionPlusAngle.position += Position(Distance(tmpDist*cos(positionPlusAngle.angle.getValueInRadian())), Distance(tmpDist*sin(positionPlusAngle.angle.getValueInRadian())));
+	positionPlusAngle.position += Position(tmpDist*cos(positionPlusAngle.angle), tmpDist*sin(positionPlusAngle.angle));
 	//PositionPlusAngle didoudam = positionPlusAngle;
 	//float didou = 3;
 	prevDeltaTicksRoueGauche = deltaTicksRoueGauche;

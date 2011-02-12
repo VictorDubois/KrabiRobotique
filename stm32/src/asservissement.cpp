@@ -108,6 +108,8 @@ void Asservissement::update(void)
             //if((distance_restante > Distance(20) && !is_there_someone_in_front && !direction) || (direction && fabs(angle_restant.getValueInRadian()) > 0.1))
             //{
                 //if( (min(fabs(angle_restant.getValueInRadian()), fabs((angle_restant-Angle(M_PI)).getValueInRadian()))< M_PI_4) && !direction)
+                float vitesse_lineaire_a_atteindre = command->getLinearSpeed();
+                float vitesse_angulaire_a_atteindre = command->getAngularSpeed();
                 {
 #ifdef ROUES
                     float linear_duty_component = pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-/*blah*/vitesse_lineaire_atteinte);
@@ -130,8 +132,8 @@ void Asservissement::update(void)
                         //vitesseLin[caca] = vitesse_lineaire_atteinte;
                         //vitesseLinE[caca] = vitesse_lineaire_a_atteindre;
                         /*linearDuty[caca] = linearDutySent;*/
-                        vitesseAng[dbgInc] = vitesse_angulaire_atteinte.getValueInRadian();
-                        vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre.getValueInRadian();
+                        vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
+                        vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
                         //angularDuty[caca] = angularDutySent;
                         //posx[caca] = positionPlusAngleActuelle.position.x;
                         //posy[caca] = positionPlusAngleActuelle.position.y;

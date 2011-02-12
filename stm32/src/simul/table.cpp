@@ -94,18 +94,18 @@ Table::Table(QWidget* parent) :
 	tableBody->CreateFixture(&fixture);
 
 	//Init position of elements
-	//int l1 = rand() % 20; 
-	//int l2 = rand() % 20; 
-	//int r1 = rand() % 20; 
-	//int r2 = rand() % 20; 
+	int l1 = rand() % 20; 
+	int l2 = rand() % 20; 
+	int r1 = rand() % 20; 
+	int r2 = rand() % 20; 
 
-	//addCard(l1, 1);
-	//addCard(l2, 2);
-	//addCard(l2, 4);
-	//addCard(l1, 5);
-	//addCard(r1, -1);
-	//addCard(r2, -2);
-	//elements.push_back(new Element(world,getCase(3,3),Element::Pawn)); //Central element
+	addCard(l1, 1);
+	addCard(l2, 2);
+	addCard(l2, 4);
+	addCard(l1, 5);
+	addCard(r1, -1);
+	addCard(r2, -2);
+	elements.push_back(new Element(world,getCase(3,3),Element::Pawn)); //Central element
 }
 
 Table::~Table()

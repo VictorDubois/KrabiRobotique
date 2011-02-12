@@ -17,10 +17,10 @@ public:
 #else
 
 #include "quadrature_coder_handler.h"
-class HwOdometrie
+class Odometrie
 {
     public:
-        HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite);
+        Odometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite);
         void update();
 
         QuadratureCoderHandler* roueCodeuseDroite;
@@ -61,7 +61,6 @@ class HwOdometrie
         const double coeffAngle;
 };
 
-typedef HwOdometrie Odometrie;
 #endif //ROBOTHW
 
 #endif // ODOMETRIE_H_INCLUDED

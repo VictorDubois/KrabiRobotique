@@ -252,9 +252,12 @@ initialisation();
         buffer |= tmp;
     }
 */
-    Strategie strategie(isBlue(), new Asservissement(new HwOdometrie(new QuadratureCoderHandler(TIM2), new QuadratureCoderHandler(TIM1))));
+    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM2), new QuadratureCoderHandler(TIM1));
+    new Asservissement(odometrie);
+    Strategie strategie(isBlue(),odometrie);
     while(1);
 }
+
 void NMI_Handler(void)
 {
 	return ;

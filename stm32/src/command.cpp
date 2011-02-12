@@ -20,6 +20,16 @@ Command::Command()
        c = this;
 }
 
+Command::~Command()
+{
+
+}
+
+TrapezoidalCommand::~TrapezoidalCommand()
+{
+
+}
+
 TrapezoidalCommand::TrapezoidalCommand() :
     vitesse_lineaire_a_atteindre(0),
     vitesse_angulaire_a_atteindre(0),
@@ -37,12 +47,10 @@ TrapezoidalCommand::TrapezoidalCommand() :
 {
 }
 
-#include <iostream>
-
 void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte)
 {
 	Position vecteur_pos_actuelle_pos_arrivee = destination-positionPlusAngleActuelle.position;
-	
+
 	Distance distance_restante = (vecteur_pos_actuelle_pos_arrivee).getNorme();
 	Angle angle_restant = vecteur_pos_actuelle_pos_arrivee.getAngle() - positionPlusAngleActuelle.angle;
 

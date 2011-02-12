@@ -8,6 +8,7 @@ class Command
 {
 public:
 	Command();
+	~Command();
 	virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
 
 	virtual float getLinearSpeed() = 0;
@@ -31,6 +32,7 @@ private:
         bool stop;
 public:
 	TrapezoidalCommand();
+	~TrapezoidalCommand();
 	void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte);
 
         void goTo(Position position, bool stop=true);
