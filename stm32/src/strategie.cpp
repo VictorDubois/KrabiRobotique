@@ -27,7 +27,7 @@ collision_detected(false)
     //Angle angleDeDepart(M_PI_2);
     //Position positionDeDepart(255,275);
     //Angle angleDeDepart(0.779);
-    Position positionDeDepart(1000,700);
+    Position positionDeDepart(650,700);
     Angle angleDeDepart(0);
 
     positionDeDepart.y = positionDeDepart.y*(is_blue ? 1:-1);
@@ -66,10 +66,23 @@ void Strategie::collisionDetected() {
 
 void Strategie::doNthInstruction(uint16_t n){
     int cote = (is_blue ? 1:-1);
+switch(n) {
+	case 1:
+		(new TrapezoidalCommand)->goTo(Position(1500, 700));
+	break;
+	case 2:
+		(new TrapezoidalCommand)->goTo(Position(1000, 1300));
+	break;
+	case 3:
+		(new TrapezoidalCommand)->goTo(Position(650, 700));
+	break;
+	case 4:
+		(new TrapezoidalCommand)->goTo(Position(650, 700));
+	break;
 
-    if(n==1)
-        (new TrapezoidalCommand)->goTo(Position(1500, 1000));
-    return;
+	default:
+	break;
+	}
 //rouleau.recracheBoule();
 //return;
 #ifdef DONTUSE
