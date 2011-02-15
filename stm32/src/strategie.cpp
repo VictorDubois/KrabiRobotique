@@ -12,10 +12,13 @@
 
 #define INSTRUCTION_COLLISION 128
 
+Strategie* Strategie::strategie = NULL;
+
 Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
 collision_detected(false)
 {
     this->is_blue = is_blue;
+    strategie = this;
 #ifdef NOBODY //FIXME: Ce code est-il encore vraiment utile ?
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
     roueCodeuseGauche = new QuadratureCoderHandler(TIM1);

@@ -1,5 +1,6 @@
 #include "command.h"
 #include "asservissement.h"
+#include "strategie.h"
 #include <math.h>
 
 template<class T> T min(T a, T b)
@@ -53,6 +54,9 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 
 	Distance distance_restante = (vecteur_pos_actuelle_pos_arrivee).getNorme();
 	Angle angle_restant = vecteur_pos_actuelle_pos_arrivee.getAngle() - positionPlusAngleActuelle.angle;
+
+	if(distance_restante < 5)
+		Strategie::strategie->done();
 
 	if(distance_restante < 5)
 		vitesse_lineaire_a_atteindre = 0;

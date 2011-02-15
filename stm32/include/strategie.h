@@ -18,6 +18,8 @@ class Strategie {
     int instruction_collision_nb;
 
     public:
+    static Strategie* strategie;
+
     void collisionDetected();
     Strategie(bool is_blue, Odometrie* odometrie);
     void foundOtherRobot();
