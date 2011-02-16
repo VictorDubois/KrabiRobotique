@@ -9,7 +9,7 @@ PositionPlusAngle::PositionPlusAngle(Position pos, Angle ang) : position(pos), a
 
 PositionPlusAngle PositionPlusAngle::operator+(const Distance &distance)
 {
-    return PositionPlusAngle(Position(position.x + distance*cos(angle.getValueInRadian()), position.y + distance*sin(angle.getValueInRadian())), angle);
+    return PositionPlusAngle(Position(position.x + distance*cos(angle), position.y + distance*sin(angle)), angle);
 }
 
 PositionPlusAngle PositionPlusAngle::operator-(const Distance &distance)
@@ -34,7 +34,7 @@ bool PositionPlusAngle::operator==(PositionPlusAngle &p)
 
 
  bool PositionPlusAngle::presqueEgales(PositionPlusAngle &positionPlusAngle){
-    if((position.presqueEgales(positionPlusAngle.position)) && (angle.presqueEgales(positionPlusAngle.angle)))
+    if((position.presqueEgales(positionPlusAngle.position)) && angleEq(angle,positionPlusAngle.angle))
         return true;
     return false;
 }

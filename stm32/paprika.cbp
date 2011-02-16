@@ -90,6 +90,7 @@
 		<Unit filename="src/ValeursRoues.cpp" />
 		<Unit filename="src/asservissement.cpp" />
 		<Unit filename="src/capteurs.cpp" />
+		<Unit filename="src/command.cpp" />
 		<Unit filename="src/distance.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/memory.cpp" />

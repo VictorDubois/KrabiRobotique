@@ -16,6 +16,9 @@ for l in $2; do
 			break
 		fi
 	done
+	if test -n "${$1_LIBS}"; then
+		break
+	fi
 done
 
 if test -z "${$1_LIBS}"; then

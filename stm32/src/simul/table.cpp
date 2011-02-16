@@ -106,6 +106,7 @@ Table::Table(QWidget* parent) :
 	addCard(r1, -1);
 	addCard(r2, -2);
 	elements.push_back(new Element(world,getCase(3,3),Element::Pawn)); //Central element
+
 }
 
 Table::~Table()
