@@ -6,7 +6,13 @@
 
 class Command
 {
-public:
+public: 
+        static float vitesse_lineaire_max;
+        static float vitesse_angulaire_max;
+        static float acceleration_lineaire;
+        static float acceleration_angulaire;
+
+
 	Command();
 	~Command();
 	virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
@@ -19,12 +25,7 @@ class TrapezoidalCommand : public Command
 {
 private:
         float vitesse_lineaire_a_atteindre;
-        Angle vitesse_angulaire_a_atteindre;
-        float vitesse_lineaire_max;
-        Angle vitesse_angulaire_max;
-        float acceleration_lineaire;
-        Angle acceleration_angulaire;
-
+        float vitesse_angulaire_a_atteindre;
         Position destination;
         Angle destAngle;
         bool en_mouvement;

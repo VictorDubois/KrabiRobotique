@@ -3,6 +3,15 @@
 #include "strategie.h"
 #include <math.h>
 
+#ifndef ROBOTHW
+#include <iostream>
+#endif
+
+float Command::vitesse_lineaire_max = 4.; // en mm par nb_ms_between_updates
+float Command::vitesse_angulaire_max = 0.03; // en radian par nb_ms_between_updates
+float Command::acceleration_lineaire = 14./100.; // en mm par nb_ms_between_updates
+float Command::acceleration_angulaire = (2*M_PI/1000.0); // en radian par nb_ms_between_updates
+
 template<class T> T min(T a, T b)
 {
 	return a < b ? a : b;
@@ -33,18 +42,7 @@ TrapezoidalCommand::~TrapezoidalCommand()
 
 TrapezoidalCommand::TrapezoidalCommand() :
     vitesse_lineaire_a_atteindre(0),
-    vitesse_angulaire_a_atteindre(0),
-#if 0
-    vitesse_lineaire_max(4.), // en mm par nb_ms_between_updates
-    vitesse_angulaire_max(M_PI/100.0), // en radian par nb_ms_between_updates
-    acceleration_lineaire(4./200.0), // en mm par nb_ms_between_updates
-    acceleration_angulaire((M_PI/100.0)/200.0) // en radian par nb_ms_between_updates
-#else
-    vitesse_lineaire_max(4.), // en mm par nb_ms_between_updates
-    vitesse_angulaire_max(M_PI/500.0), // en radian par nb_ms_between_updates
-    acceleration_lineaire(4./200.0), // en mm par nb_ms_between_updates
-    acceleration_angulaire((M_PI/100.0)/100.0) // en radian par nb_ms_between_updates
-#endif
+    vitesse_angulaire_a_atteindre(0)
 {
 }
 
@@ -63,10 +61,12 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 	else
         	vitesse_lineaire_a_atteindre = getVitesseLineaireAfterTrapeziumFilter(vitesse_lineaire_atteinte, distance_restante, angle_restant);
 
-	if(fabs(angle_restant) < 0.01)
-		vitesse_angulaire_a_atteindre = 0;
-	else
+//	if(fabs(angle_restant) < 0.01)
+		//vitesse_angulaire_a_atteindre = 0;
+//	else
 		vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_atteinte, angle_restant);
+
+	std::cout << "d=" << angle_restant << " et " << vitesse_angulaire_a_atteindre << std::endl;
 }
 
 
@@ -119,6 +119,7 @@ Angle TrapezoidalCommand::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_
     }
 
     Angle pivot(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire));
+std::cout << "pivot =" << pivot << std::endl;
 
     if((Angle(fabs(angle_restant))-pivot)<=0)
     {
