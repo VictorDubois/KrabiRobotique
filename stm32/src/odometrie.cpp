@@ -26,8 +26,8 @@ void Odometrie::update(){
     //float vitesseAngulaireRoueDroite = 100*roueCodeuseDroite->getTickValue()/(2048*4);
     //roueCodeuseGauche->getTickValue();
     //roueCodeuseDroite->getTickValue();
-    int32_t deltaTicksRoueGauche = roueCodeuseGauche->getTickValue();
-    int32_t deltaTicksRoueDroite = -roueCodeuseDroite->getTickValue();
+    int32_t deltaTicksRoueGauche = -roueCodeuseGauche->getTickValue();
+    int32_t deltaTicksRoueDroite = roueCodeuseDroite->getTickValue();
 
     int32_t filteredDeltaTicksRoueGauche = (deltaTicksRoueGauche+prevDeltaTicksRoueGauche)/2;
     int32_t filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2;

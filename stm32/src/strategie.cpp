@@ -12,6 +12,10 @@
 
 #define INSTRUCTION_COLLISION 128
 
+#ifndef NULL
+#define NULL 0
+#endif
+
 Strategie* Strategie::strategie = NULL;
 
 Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
@@ -23,11 +27,8 @@ collision_detected(false)
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
     roueCodeuseGauche = new QuadratureCoderHandler(TIM1);
 #endif
-    //Position positionDeDepart(335,400);
-    //Angle angleDeDepart(M_PI_2);
-    //Position positionDeDepart(255,275);
-    //Angle angleDeDepart(0.779);
     Position positionDeDepart(200,200);
+    //Position positionDeDepart(1100,300);
     Angle angleDeDepart(0);
 
     positionDeDepart.y = positionDeDepart.y*(is_blue ? 1:-1);
@@ -66,6 +67,9 @@ void Strategie::collisionDetected() {
 
 void Strategie::doNthInstruction(uint16_t n){
     int cote = (is_blue ? 1:-1);
+    /*if(n == 1)
+		(new TrapezoidalCommand)->goTo(Position(400, 400));
+    return;*/
 switch(n) {
 	case 1:
 		(new TrapezoidalCommand)->goTo(Position(600, 200));
@@ -88,6 +92,7 @@ switch(n) {
 	default:
 	break;
 	}
+
 //rouleau.recracheBoule();
 //return;
 #ifdef DONTUSE
@@ -136,7 +141,7 @@ switch(n) {
     }
     #endif
 
-#if (0) 
+#if (0)
     switch(n) {
         case 1:
             //rouleau.avaleBoule();

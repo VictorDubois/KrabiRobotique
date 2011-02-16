@@ -16,16 +16,20 @@
 #define max(a,b) ((a)>=(b)?(a):(b))
 #define min(a,b) ((a)<=(b)?(a):(b))
 
-#define DBG_SIZE 300
+#define DBG_SIZE 600
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
-//float vitesseLin[DBG_SIZE];
-//float vitesseLinE[DBG_SIZE];
-/*float linearDuty[DBG_SIZE];*/
+float vitesseLin[DBG_SIZE];
+float vitesseLinE[DBG_SIZE];
+float linearDuty[DBG_SIZE];
+
+/*
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
-//float angularDuty[DBG_SIZE];
+float angularDuty[DBG_SIZE];
+*/
+
 /*float posx[DBG_SIZE];
 float posy[DBG_SIZE];
 float angle[DBG_SIZE];
@@ -67,6 +71,10 @@ int asserCount = 0;
 
 void Asservissement::update(void)
 {
+    //roues.gauche.tourne(0.3);
+    //roues.droite.tourne(0.3);
+    //return;
+
     //PositionPlusAngle before(odometrie.positionPlusAngle);
     asserCount++;
 
@@ -95,7 +103,8 @@ void Asservissement::update(void)
         buffer_collision |= tmp;
 
 
-        if (buffer_collision << (16 - nb_echantillons_buffer_collision)) {
+        if (true); //buffer_collision << (16 - nb_echantillons_buffer_collision))
+        {
             // Pas collision !!!
 //#ifdef CAPTEURS
 //            bool is_there_someone_in_front = capteurs.getValue(Capteurs::AvantGauche) || capteurs.getValue(Capteurs::AvantDroite) || capteurs.getValue(Capteurs::Avant);
@@ -124,29 +133,33 @@ void Asservissement::update(void)
 
                 angularDutySent += angular_duty_component;
 
-                    if(dbgInc<DBG_SIZE)
+                linearDutySent = min(max(linearDutySent, -0.40),0.40);
+                angularDutySent = min(max(angularDutySent, -0.50),0.50);
+
+                    if(toto < 1 && dbgInc<DBG_SIZE)
                     {
 
         //roueGauche[caca] = odometrie.roueCodeuseGauche->getTickValue();
         //roueDroite[caca] = odometrie.roueCodeuseDroite->getTickValue();
-                        //vitesseLin[caca] = vitesse_lineaire_atteinte;
-                        //vitesseLinE[caca] = vitesse_lineaire_a_atteindre;
-                        /*linearDuty[caca] = linearDutySent;*/
-                        vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
-                        vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                        //angularDuty[caca] = angularDutySent;
+                        vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
+                        vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
+                        linearDuty[dbgInc] = linearDutySent;
+
+                        //vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
+                        //vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
+                        //angularDuty[dbgInc] = angularDutySent;
+
                         //posx[caca] = positionPlusAngleActuelle.position.x;
                         //posy[caca] = positionPlusAngleActuelle.position.y;
                         //angle[caca] = positionPlusAngleActuelle.angle.getValueInRadian(); //*angle_restant.getValueInRadian();*/distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
                         dbgInc++;
                     }
-                toto++;
+                toto = (toto+1) % 1;
 
-                linearDutySent = 0; //min(max(linearDutySent, -0.40),0.40);
-                angularDutySent = min(max(angularDutySent, -0.50),0.50);
 
-                roues.gauche.tourne(min(max(linearDutySent-angularDutySent, -0.9),0.9));
-                roues.droite.tourne(min(max(linearDutySent+angularDutySent, -0.9),0.9));
+
+                roues.gauche.tourne(min(max(-linearDutySent+angularDutySent, -0.9),0.9));
+                roues.droite.tourne(min(max(-linearDutySent-angularDutySent, -0.9),0.9));
 #endif
             /*}
             else
@@ -171,7 +184,7 @@ void Asservissement::update(void)
             }*/
 
         }
-        else // collision
+        /*else // collision
         {
 #ifdef ROUES
             roues.gauche.tourne(0);
@@ -187,7 +200,7 @@ void Asservissement::update(void)
             //    en_mouvement = false;
             //    strategie->collisionDetected();
             //}
-        }
+        }*/
 }
 
 //void Asservissement::recule(Distance distance) {

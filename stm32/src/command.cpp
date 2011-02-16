@@ -7,9 +7,9 @@
 #include <iostream>
 #endif
 
-float Command::vitesse_lineaire_max = 4.; // en mm par nb_ms_between_updates
+float Command::vitesse_lineaire_max = 6.; // en mm par nb_ms_between_updates
 float Command::vitesse_angulaire_max = 0.03; // en radian par nb_ms_between_updates
-float Command::acceleration_lineaire = 14./100.; // en mm par nb_ms_between_updates
+float Command::acceleration_lineaire = 5./100.; // en mm par nb_ms_between_updates
 float Command::acceleration_angulaire = (2*M_PI/1000.0); // en radian par nb_ms_between_updates
 
 template<class T> T min(T a, T b)
@@ -25,8 +25,8 @@ template<class T> T max(T a, T b)
 Command::Command()
 {
 	Command* & c = Asservissement::asservissement->command;
-       if(c)
-	       delete c;
+       //if(c)
+	   //    delete c;
        c = this;
 }
 
@@ -61,12 +61,10 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 	else
         	vitesse_lineaire_a_atteindre = getVitesseLineaireAfterTrapeziumFilter(vitesse_lineaire_atteinte, distance_restante, angle_restant);
 
-//	if(fabs(angle_restant) < 0.01)
-		//vitesse_angulaire_a_atteindre = 0;
-//	else
-		vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_atteinte, angle_restant);
-
-	std::cout << "d=" << angle_restant << " et " << vitesse_angulaire_a_atteindre << std::endl;
+	if(distance_restante < 5)
+		vitesse_angulaire_a_atteindre = 0;
+	else
+		vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_a_atteindre, angle_restant);
 }
 
 
@@ -76,7 +74,7 @@ Distance TrapezoidalCommand::getVitesseLineaireAfterTrapeziumFilter(Distance vit
 
     // Le pivot est la distance que l'on parcourerait si on commencait à décélérer dès maintenant jusqu'une vitesse nulle
     float pivot = vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire);
-    if( (distance_restante-pivot)<=0 &&
+    if( fabs(distance_restante-pivot)<=0 &&
          ( (fabs(wrapAngle(angle_restant))>M_PI_2 && vitesse_lineaire_atteinte<=0)
          ||(fabs(wrapAngle(angle_restant))<=M_PI_2 && vitesse_lineaire_atteinte>=0))
          && stop)
@@ -119,7 +117,6 @@ Angle TrapezoidalCommand::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_
     }
 
     Angle pivot(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire));
-std::cout << "pivot =" << pivot << std::endl;
 
     if((Angle(fabs(angle_restant))-pivot)<=0)
     {

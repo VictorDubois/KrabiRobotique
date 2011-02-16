@@ -252,7 +252,7 @@ initialisation();
         buffer |= tmp;
     }
 */
-    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM2), new QuadratureCoderHandler(TIM1));
+    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
     new Asservissement(odometrie);
     Strategie strategie(isBlue(),odometrie);
     while(1);
