@@ -84,13 +84,13 @@ switch(n) {
 		(new TrapezoidalCommand)->goTo(Position(1150, 1000));
 	break;
 	case 5:
-		(new TrapezoidalCommand)->goTo(Position(1325 + 100, 1535));
+		(new TrapezoidalCommand)->goTo(Position(1325, 1535));
 	break;
 	case 6:
-		(new TrapezoidalCommand)->goTo(Position(1325 + 100, 1725));
+		(new TrapezoidalCommand)->goTo(Position(1325, 1725));
 	break;
 	case 7:
-		(new TrapezoidalCommand)->goTo(Position(1325 + 100, 1525));
+		(new TrapezoidalCommand)->goTo(Position(1325, 1525));
 	break;
 	default:
 	break;
