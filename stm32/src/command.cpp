@@ -7,10 +7,10 @@
 #include <iostream>
 #endif
 
-float Command::vitesse_lineaire_max = 6.; // en mm par nb_ms_between_updates
+float Command::vitesse_lineaire_max = 4.; // en mm par nb_ms_between_updates (peut monter à 6)
 float Command::vitesse_angulaire_max = 0.03; // en radian par nb_ms_between_updates
-float Command::acceleration_lineaire = 5./100.; // en mm par nb_ms_between_updates
-float Command::acceleration_angulaire = (2*M_PI/1000.0); // en radian par nb_ms_between_updates
+float Command::acceleration_lineaire = 5./1000.; // en mm par nb_ms_between_updates
+float Command::acceleration_angulaire = (2*M_PI/30000.0); // en radian par nb_ms_between_updates
 
 template<class T> T min(T a, T b)
 {
@@ -61,7 +61,7 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 	else
         	vitesse_lineaire_a_atteindre = getVitesseLineaireAfterTrapeziumFilter(vitesse_lineaire_atteinte, distance_restante, angle_restant);
 
-	if(distance_restante < 5)
+	if(distance_restante < 5 || fabs(wrapAngle(angle_restant)) < 0.07)
 		vitesse_angulaire_a_atteindre = 0;
 	else
 		vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_a_atteindre, angle_restant);

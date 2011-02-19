@@ -21,6 +21,17 @@ Odometrie::Odometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ Quadrature
     this->roueCodeuseDroite = roueCodeuseDroite;
 }
 
+float sinx(float x)
+{
+static const float a[] =
+{-.1666666664,.0083333315,-.0001984090,.0000027526,-.0000000239};
+float xsq = x*x;
+float temp = x*(1 + a[0]*xsq + a[1]*xsq*xsq + a[2]* xsq*xsq*xsq
++a[3]*xsq*xsq*xsq*xsq
++ a[4]*xsq*xsq*xsq*xsq*xsq);
+return temp;
+}
+
 void Odometrie::update(){
     //float vitesseAngulaireRoueGauche = 100*roueCodeuseGauche->getTickValue()/(2048*4); //(en tours par secondes)
     //float vitesseAngulaireRoueDroite = 100*roueCodeuseDroite->getTickValue()/(2048*4);
@@ -42,7 +53,7 @@ void Odometrie::update(){
     caca++;*/
 
 	positionPlusAngle.angle += vitesseAngulaire;
-	positionPlusAngle.position += Position(tmpDist*cos(positionPlusAngle.angle), tmpDist*sin(positionPlusAngle.angle));
+	positionPlusAngle.position += Position(tmpDist*cos(positionPlusAngle.angle), tmpDist*sinx(positionPlusAngle.angle));
 	//PositionPlusAngle didoudam = positionPlusAngle;
 	//float didou = 3;
 	prevDeltaTicksRoueGauche = deltaTicksRoueGauche;

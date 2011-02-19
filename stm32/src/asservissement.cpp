@@ -20,15 +20,17 @@
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
+/*
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
 float linearDuty[DBG_SIZE];
+*/
 
-/*
+
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
 float angularDuty[DBG_SIZE];
-*/
+
 
 /*float posx[DBG_SIZE];
 float posy[DBG_SIZE];
@@ -141,13 +143,13 @@ void Asservissement::update(void)
 
         //roueGauche[caca] = odometrie.roueCodeuseGauche->getTickValue();
         //roueDroite[caca] = odometrie.roueCodeuseDroite->getTickValue();
-                        vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
+                        /*vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
                         vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-                        linearDuty[dbgInc] = linearDutySent;
+                        linearDuty[dbgInc] = linearDutySent;*/
 
-                        //vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
-                        //vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                        //angularDuty[dbgInc] = angularDutySent;
+                        vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
+                        vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
+                        angularDuty[dbgInc] = angularDutySent;
 
                         //posx[caca] = positionPlusAngleActuelle.position.x;
                         //posy[caca] = positionPlusAngleActuelle.position.y;
