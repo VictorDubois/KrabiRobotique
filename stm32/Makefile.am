@@ -18,6 +18,7 @@ src/Rouleau.cpp \
 src/ValeursRoues.cpp \
 src/asservissement.cpp \
 src/capteurs.cpp \
+src/command.cpp \
 src/distance.cpp \
 src/main.cpp \
 src/memory.cpp \
