@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-HwOdometrie::HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
+Odometrie::Odometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
     /*positionPlusAngle(positionPlusAngleInitiale),*/
     vitesseLineaire(0),
     vitesseAngulaire(0),
@@ -21,13 +21,24 @@ HwOdometrie::HwOdometrie(/*PositionPlusAngle positionPlusAngleInitiale,*/ Quadra
     this->roueCodeuseDroite = roueCodeuseDroite;
 }
 
-void HwOdometrie::update(){
+float sinx(float x)
+{
+static const float a[] =
+{-.1666666664,.0083333315,-.0001984090,.0000027526,-.0000000239};
+float xsq = x*x;
+float temp = x*(1 + a[0]*xsq + a[1]*xsq*xsq + a[2]* xsq*xsq*xsq
++a[3]*xsq*xsq*xsq*xsq
++ a[4]*xsq*xsq*xsq*xsq*xsq);
+return temp;
+}
+
+void Odometrie::update(){
     //float vitesseAngulaireRoueGauche = 100*roueCodeuseGauche->getTickValue()/(2048*4); //(en tours par secondes)
     //float vitesseAngulaireRoueDroite = 100*roueCodeuseDroite->getTickValue()/(2048*4);
     //roueCodeuseGauche->getTickValue();
     //roueCodeuseDroite->getTickValue();
-    int32_t deltaTicksRoueGauche = roueCodeuseGauche->getTickValue();
-    int32_t deltaTicksRoueDroite = -roueCodeuseDroite->getTickValue();
+    int32_t deltaTicksRoueGauche = -roueCodeuseGauche->getTickValue();
+    int32_t deltaTicksRoueDroite = roueCodeuseDroite->getTickValue();
 
     int32_t filteredDeltaTicksRoueGauche = (deltaTicksRoueGauche+prevDeltaTicksRoueGauche)/2;
     int32_t filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2;
@@ -42,7 +53,7 @@ void HwOdometrie::update(){
     caca++;*/
 
 	positionPlusAngle.angle += vitesseAngulaire;
-	positionPlusAngle.position += Position(Distance(tmpDist*cos(positionPlusAngle.angle.getValueInRadian())), Distance(tmpDist*sin(positionPlusAngle.angle.getValueInRadian())));
+	positionPlusAngle.position += Position(tmpDist*cos(positionPlusAngle.angle), tmpDist*sinx(positionPlusAngle.angle));
 	//PositionPlusAngle didoudam = positionPlusAngle;
 	//float didou = 3;
 	prevDeltaTicksRoueGauche = deltaTicksRoueGauche;

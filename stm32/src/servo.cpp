@@ -14,7 +14,7 @@ void Servo::goToAngle(Angle angle)
     //static const float angle2pulsewidth_slope = frequence_timer*(angle180_timing - angle0_timing)/(180. - 0.);
     //static const float angle2pulsewidth_yintercept = angle0_timing*frequence_timer;
 
-	float pulseWidth = (angle.getValueInRadian()*500)/124 + 1500;
+	float pulseWidth = (angle*500)/124 + 1500;
 	pwm_handler.setPulseWidth(pulseWidth);
 	//pwm_handler.setPulseWidth((unsigned int)(angle*angle2pulsewidth_slope + angle2pulsewidth_yintercept));
 }
