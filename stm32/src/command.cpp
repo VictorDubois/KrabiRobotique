@@ -7,9 +7,9 @@
 #include <iostream>
 #endif
 
-float Command::vitesse_lineaire_max = 4.; // en mm par nb_ms_between_updates (peut monter à 6)
+float Command::vitesse_lineaire_max = 3; // en mm par nb_ms_between_updates (peut monter à 6)
 float Command::vitesse_angulaire_max = 0.03; // en radian par nb_ms_between_updates
-float Command::acceleration_lineaire = 5./1000.; // en mm par nb_ms_between_updates
+float Command::acceleration_lineaire = 0.05; // en mm par nb_ms_between_updates
 float Command::acceleration_angulaire = (2*M_PI/30000.0); // en radian par nb_ms_between_updates
 
 template<class T> T min(T a, T b)
@@ -74,7 +74,7 @@ Distance TrapezoidalCommand::getVitesseLineaireAfterTrapeziumFilter(Distance vit
 
     // Le pivot est la distance que l'on parcourerait si on commencait à décélérer dès maintenant jusqu'une vitesse nulle
     float pivot = vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire);
-    if( fabs(distance_restante-pivot)<=0 &&
+    if( (distance_restante-pivot)<=0 &&
          ( (fabs(wrapAngle(angle_restant))>M_PI_2 && vitesse_lineaire_atteinte<=0)
          ||(fabs(wrapAngle(angle_restant))<=M_PI_2 && vitesse_lineaire_atteinte>=0))
          && stop)
