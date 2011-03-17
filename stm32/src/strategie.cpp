@@ -66,7 +66,7 @@ void Strategie::collisionDetected() {
 }
 
 void Strategie::doNthInstruction(uint16_t n){
-    int cote = (is_blue ? 1:-1);
+//    int cote = (is_blue ? 1:-1);
     /*if(n == 1)
 		(new TrapezoidalCommand)->goTo(Position(400, 400));
     return;*/
@@ -81,16 +81,19 @@ switch(n) {
 		(new TrapezoidalCommand)->goTo(Position(1100, 700));
 	break;
 	case 4:
-		(new TrapezoidalCommand)->goTo(Position(1150, 1000));
+		(new TrapezoidalCommand)->goTo(Position(1150, 800)); //1000
 	break;
 	case 5:
-		(new TrapezoidalCommand)->goTo(Position(1325 + 100, 1535));
+		(new TrapezoidalCommand)->goTo(Position(2050, 850)); //1175
 	break;
 	case 6:
-		(new TrapezoidalCommand)->goTo(Position(1325 + 100, 1725));
+		(new TrapezoidalCommand)->goTo(Position(1800, 950)); //1000
 	break;
 	case 7:
-		(new TrapezoidalCommand)->goTo(Position(1325 + 100, 1525));
+		(new TrapezoidalCommand)->goTo(Position(1000, 700));
+	break;
+	case 8:
+		(new TrapezoidalCommand)->goTo(Position(900, 300), true);
 	break;
 	default:
 	break;

@@ -1,8 +1,8 @@
 #include "pid_filter_distance.h"
 
-const float PIDFilterDistance::Kp = 0.00123076923*5.;
-const float PIDFilterDistance::Ki = 0.00123076923;
-const float PIDFilterDistance::Kd = 0.00123076923*200.;//0.0307692308;
+const float PIDFilterDistance::Kp = 0.02; //0.00123076923*5.;
+const float PIDFilterDistance::Ki = 0.004; //0.00123076923;
+const float PIDFilterDistance::Kd = 0.11; //0.00123076923*200.;//0.0307692308;
 
 PIDFilterDistance::PIDFilterDistance() :
     sommeErreurs(0),
