@@ -8,37 +8,33 @@
 #include "strategie.h"
 #include <iostream>
 
-class OdoRobot : public Odometrie
+//Odometrie class implementation for the simulation
+//Yes, it's ugly ! it should not be in this file.
+//But in a separate file
+Odometrie::Odometrie(Robot* robot)
 {
-private:
-	Robot* robot;
+	this->robot = robot;
+}
 
-public:
-	OdoRobot(Robot* robot)
-	{
-		this->robot = robot;
-	}
+PositionPlusAngle Odometrie::getPos()
+{
+	return robot->pos;
+}
 
-	PositionPlusAngle getPos()
-	{
-		return robot->pos;
-	}
+Distance Odometrie::getVitesseLineaire()
+{
+	return robot->deriv.position.getNorme();
+}
 
-	Distance getVitesseLineaire()
-	{
-		return robot->deriv.position.getNorme();
-	}
+Angle Odometrie::getVitesseAngulaire()
+{
+	return robot->deriv.angle;
+}
 
-	Angle getVitesseAngulaire()
-	{
-		return robot->deriv.angle;
-	}
-
-	void setPos(PositionPlusAngle p)
-	{
-		robot->pos = p;
-	}
-};
+void Odometrie::setPos(PositionPlusAngle p)
+{
+	robot->pos = p;
+}
 
 
 Robot::Robot(b2World & world) : world(world), olds(10000)
@@ -50,7 +46,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	joint = NULL;
 	level = 0;
 
-	odometrie = new OdoRobot(this);
+	odometrie = new Odometrie(this);
 	asservissement = new Asservissement(odometrie);
 	strategie = new Strategie(true, odometrie);
 	asservissement->strategie = strategie;

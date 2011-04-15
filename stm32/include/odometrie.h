@@ -7,12 +7,15 @@
 #ifndef ROBOTHW
 class Odometrie
 {
+private:
+	class Robot* robot;
 public:
-	virtual PositionPlusAngle getPos()=0;
-	virtual void setPos(PositionPlusAngle p)=0;
-	virtual Angle getVitesseAngulaire()=0;
-	virtual Distance getVitesseLineaire()=0;
-	virtual void update() { };
+	Odometrie(Robot* robot);
+	PositionPlusAngle getPos();
+	void setPos(PositionPlusAngle p);
+	Angle getVitesseAngulaire();
+	Distance getVitesseLineaire();
+	void update() { };
 };
 #else
 
