@@ -10,7 +10,7 @@ public:
 	Pince(Robot* robot);
 	void serrerElem();
 	void lacherElem();
-	void setLevel(unsigned int h);
+	void setLevel();
         unsigned int getLevel();
 };
 

@@ -1,5 +1,6 @@
 #include "strategie.h"
 #include "odometrie.h"
+#include "pince.h"
 #include "PositionPlusAngle.h"
 #ifdef ROBOTHW
 #include "stm32f10x.h"
@@ -18,7 +19,7 @@
 
 Strategie* Strategie::strategie = NULL;
 
-Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
+Strategie::Strategie(bool is_blue, Odometrie* odometrie, Pince* pince) :
 collision_detected(false)
 {
     this->is_blue = is_blue;
@@ -30,7 +31,7 @@ collision_detected(false)
     Position positionDeDepart(200,200);
     //Position positionDeDepart(1100,300);
     Angle angleDeDepart(0);
-
+    this->pince=pince;
     positionDeDepart.y = positionDeDepart.y*(is_blue ? 1:-1);
     angleDeDepart = angleDeDepart*(is_blue ? 1:-1);
     //command = new Asservissement(PositionPlusAngle(Position(335, 400), Angle(M_PI_2)), roueCodeuseGauche, roueCodeuseDroite);
@@ -44,6 +45,7 @@ collision_detected(false)
 
 void Strategie::doNext(){
 }
+
 
 void Strategie::foundOtherRobot(){
 }
@@ -71,30 +73,77 @@ void Strategie::doNthInstruction(uint16_t n){
 		(new TrapezoidalCommand)->goTo(Position(400, 400));
     return;*/
 switch(n) {
-	case 1:
+	case 1:	
+		pince->getLevel();
 		(new TrapezoidalCommand)->goTo(Position(600, 200));
 	break;
 	case 2:
-		(new TrapezoidalCommand)->goTo(Position(900, 300));
+		(new TrapezoidalCommand)->goTo(Position(800, 300));
 	break;
 	case 3:
-		(new TrapezoidalCommand)->goTo(Position(1100, 700));
+		(new TrapezoidalCommand)->goTo(Position(850, 550));
+		
+		
+		
 	break;
 	case 4:
-		(new TrapezoidalCommand)->goTo(Position(1150, 800)); //1000
+		
+		(new TrapezoidalCommand)->goTo(Position(840,1350)); //1000
+		
+		
 	break;
 	case 5:
-		(new TrapezoidalCommand)->goTo(Position(2050, 850)); //1175
+                pince->serrerElem();
+		
+		
+		
 	break;
 	case 6:
-		(new TrapezoidalCommand)->goTo(Position(1800, 950)); //1000
+		pince->setLevel();
+		
 	break;
 	case 7:
-		(new TrapezoidalCommand)->goTo(Position(1000, 700));
+		
+		(new TrapezoidalCommand)->goTo(Position(800, 1650));
 	break;
 	case 8:
-		(new TrapezoidalCommand)->goTo(Position(900, 300), true);
+		
+		(new TrapezoidalCommand)->goTo(Position(830, 1400), true);
 	break;
+	case 9:
+	
+		pince->lacherElem();
+	break;
+	case 10:
+		
+		(new TrapezoidalCommand)->goTo(Position(830, 1150), true);
+	break;	
+	case 11:
+		
+		(new TrapezoidalCommand)->goTo(Position(300, 1500), true);
+	break;
+	case 12:
+		
+		pince->serrerElem();
+	break;
+	case 13:
+		
+		(new TrapezoidalCommand)->goTo(Position(550, 1350), true);
+	break;
+	case 14:
+		
+		pince->setLevel();
+	break;
+	case 15:
+		
+		(new TrapezoidalCommand)->goTo(Position(830, 950), true);
+	break;	
+	
+	case 16:
+		
+		(new TrapezoidalCommand)->goTo(Position(820, 1500), true);
+	break;
+		
 	default:
 	break;
 	}

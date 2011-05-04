@@ -20,6 +20,7 @@ public:
 	class Asservissement* asservissement;
 	class Odometrie* odometrie;
 	class Strategie* strategie;
+	class Pince * pince;
 	
 	b2Body* body;
 	b2Joint* joint;
@@ -33,6 +34,7 @@ public:
 	void updateForces(int dt);
 	void interact(std::vector<class Element*> &elements);
 	void makeJoint();
+	void setLevel();
 };
 
 #endif //ROBOT_H_INCLUDED

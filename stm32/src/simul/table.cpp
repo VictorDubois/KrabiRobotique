@@ -94,8 +94,10 @@ Table::Table(QWidget* parent) :
 	tableBody->CreateFixture(&fixture);
 
 	//Init position of elements
-	int l1 = rand() % 20; 
+	//int l1 = rand() % 20; 
+	int l1 =19;
 	int l2 = rand() % 20; 
+	//int l2 = 20;
 	int r1 = rand() % 20; 
 
 	addCard(l1, 1);
@@ -168,8 +170,8 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.setPen(QBrush(QColor(30,30,30)));
 
 	p.drawEllipse(getCaseCenter(1,1), 50,50);
-	p.drawEllipse(getCaseCenter(1,4), 50,50);
-	p.drawEllipse(getCaseCenter(4,4), 50,50);
+	p.drawEllipse(getCaseCenter(1,3), 50,50);
+	p.drawEllipse(getCaseCenter(4,3), 50,50);
 	p.drawEllipse(getCaseCenter(4,1), 50,50);
 
 	p.drawEllipse(getCaseCenter(2,5), 50,50);
@@ -200,7 +202,7 @@ Position getSideElemCenter(bool right, unsigned int elem)
 
 void Table::addCard(unsigned int n, int column)
 {
-	unsigned int k = n % 4;
+	unsigned int k = n % 5;
 	unsigned int q = n % 3;
 	if(q >= k)
 		q++;

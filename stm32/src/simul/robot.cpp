@@ -6,6 +6,7 @@
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategie.h"
+#include "pince.h"
 #include <iostream>
 
 //Odometrie class implementation for the simulation
@@ -47,9 +48,11 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	level = 0;
 
 	odometrie = new Odometrie(this);
+	pince = new Pince(this);
 	asservissement = new Asservissement(odometrie);
-	strategie = new Strategie(true, odometrie);
+	strategie = new Strategie(true, odometrie,pince);
 	asservissement->strategie = strategie;
+	
 
 	pos = odometrie->getPos();
 	deriv.position.x = 0;
@@ -260,6 +263,32 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
 			deriv.angle += ainc;
 	}
+}
+
+void Robot::setLevel()
+{
+    		level = (level != 100) ? 100 : 0;
+#ifdef BOX2D_2_0_1
+#define b2Filter b2FilterData
+#define GetFixtureList GetShapeList
+#endif
+		b2Filter filter;
+		if(level == 100)
+		{
+			filter.categoryBits = 0x4;
+			filter.maskBits = 0x3;
+		}
+		else
+		{
+			filter.maskBits = 0x3;
+			filter.categoryBits = 0x1;
+			if(elem->type != Element::Pawn)
+			{
+				filter.categoryBits = 0x2;
+				filter.maskBits |= 0x4;
+			}
+		}
+		elem->body->GetFixtureList()[0].SetFilterData(filter);
 }
 
 void Robot::makeJoint()
