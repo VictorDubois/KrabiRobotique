@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "misc.h"
 #include "servo.h"
-#include "rateau.h"
+#include "pince.h"
 #include "Hctl_Handler.h"
 #include "quadrature_coder_handler.h"
 #include "asservissement.h"
@@ -254,7 +254,8 @@ initialisation();
 */
     Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
     new Asservissement(odometrie);
-    Strategie strategie(isBlue(),odometrie);
+    Pince* pince = new Pince(Servo(1), Servo(2));
+    Strategie strategie(isBlue(),odometrie, pince);
     while(1);
 }
 

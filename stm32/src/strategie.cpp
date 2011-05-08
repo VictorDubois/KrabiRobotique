@@ -8,6 +8,8 @@
 #include "stm32f10x_gpio.h"
 #endif
 #include "command.h"
+#include "pince.h"
+#include "servo.h"
 #include <math.h>
 
 #define INSTRUCTION_COLLISION 128
@@ -18,7 +20,7 @@
 
 Strategie* Strategie::strategie = NULL;
 
-Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
+Strategie::Strategie(bool is_blue, Odometrie* odometrie, Pince* pince) :
 collision_detected(false)
 {
     this->is_blue = is_blue;
@@ -70,9 +72,11 @@ void Strategie::doNthInstruction(uint16_t n){
     /*if(n == 1)
 		(new TrapezoidalCommand)->goTo(Position(400, 400));
     return;*/
+
 switch(n) {
 	case 1:
-		(new TrapezoidalCommand)->goTo(Position(600, 200));
+        pince->pivote(0.5);
+		//(new TrapezoidalCommand)->goTo(Position(600, 200));
 	break;
 	case 2:
 		(new TrapezoidalCommand)->goTo(Position(900, 300));

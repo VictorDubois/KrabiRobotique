@@ -1,7 +1,36 @@
+
+
+#include "pince.h"
+#include"servo.h"
+
+
+#ifdef ROBOTHW  // vrai robot
+
+Pince::Pince(Servo serv1, Servo serv2) : serv1(1),serv2(2)
+{
+
+
+}
+
+void Pince::pivote(Angle angle)
+{
+    serv1.goToAngle(angle);
+    serv2.goToAngle(-angle);
+
+}
+
+Pince::~Pince()
+{
+
+}
+
+
+
+#else //simulation
+
 #include "simul/element.h"
 #include "simul/robot.h"
 
-#include "pince.h"
 Pince::Pince(Robot* robot)
 {
 	this->robot = robot;
@@ -27,3 +56,4 @@ void Pince::lacherElem()
    	    robot->makeJoint();
 };
 
+#endif

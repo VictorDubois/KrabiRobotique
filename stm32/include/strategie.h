@@ -8,6 +8,8 @@
 #include <stdint.h>
 
 class Odometrie;
+class Pince;
+
 
 class Strategie {
     private:
@@ -16,12 +18,12 @@ class Strategie {
     int instruction_nb;
     bool collision_detected;
     int instruction_collision_nb;
+    Pince* pince;
 
     public:
     static Strategie* strategie;
-
     void collisionDetected();
-    Strategie(bool is_blue, Odometrie* odometrie);
+    Strategie(bool is_blue, Odometrie* odometrie, Pince* pince);
     void foundOtherRobot();
     void done();
     void doNthInstruction(uint16_t n);

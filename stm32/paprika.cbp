@@ -73,9 +73,9 @@
 		<Unit filename="include/odometrie.h" />
 		<Unit filename="include/pid_filter_angle.h" />
 		<Unit filename="include/pid_filter_distance.h" />
+		<Unit filename="include/pince.h" />
 		<Unit filename="include/pwm_handler.h" />
 		<Unit filename="include/quadrature_coder_handler.h" />
-		<Unit filename="include/rateau.h" />
 		<Unit filename="include/roue.h" />
 		<Unit filename="include/roues.h" />
 		<Unit filename="include/servo.h" />
@@ -97,9 +97,9 @@
 		<Unit filename="src/odometrie.cpp" />
 		<Unit filename="src/pid_filter_angle.cpp" />
 		<Unit filename="src/pid_filter_distance.cpp" />
+		<Unit filename="src/pince.cpp" />
 		<Unit filename="src/pwm_handler.cpp" />
 		<Unit filename="src/quadrature_coder_handler.cpp" />
-		<Unit filename="src/rateau.cpp" />
 		<Unit filename="src/roue.cpp" />
 		<Unit filename="src/roues.cpp" />
 		<Unit filename="src/servo.cpp" />
