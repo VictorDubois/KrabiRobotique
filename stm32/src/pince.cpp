@@ -1,7 +1,9 @@
 
 
 #include "pince.h"
+#ifdef ROBOTHW
 #include"servo.h"
+#endif
 
 
 #ifdef ROBOTHW  // vrai robot

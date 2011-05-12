@@ -6,10 +6,10 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
+#include "servo.h"
 #endif
 #include "command.h"
 #include "pince.h"
-#include "servo.h"
 #include <math.h>
 
 #define INSTRUCTION_COLLISION 128
@@ -75,7 +75,7 @@ void Strategie::doNthInstruction(uint16_t n){
 
 switch(n) {
 	case 1:
-        pince->pivote(0.5);
+        //pince->pivote(0.5);
 		//(new TrapezoidalCommand)->goTo(Position(600, 200));
 	break;
 	case 2:

@@ -1,5 +1,6 @@
 #include "simul/robot.h"
-#include "simul/element.h"
+#include "element.h"
+#include "pince.h"
 #include <cmath>
 
 
@@ -48,7 +49,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 	odometrie = new Odometrie(this);
 	asservissement = new Asservissement(odometrie);
-	strategie = new Strategie(true, odometrie);
+	strategie = new Strategie(true, odometrie, new Pince(this));
 	asservissement->strategie = strategie;
 
 	pos = odometrie->getPos();

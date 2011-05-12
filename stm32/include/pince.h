@@ -2,7 +2,9 @@
 #define PINCE_H_INCLUDED
 
 #include"Angle.h"
+#ifdef ROBOTHW
 #include"servo.h"
+#endif //ROBOTHW
 
 #ifdef ROBOTHW //vrai robot
 
