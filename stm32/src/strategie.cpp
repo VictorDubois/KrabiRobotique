@@ -24,6 +24,8 @@ Strategie::Strategie(bool is_blue, Odometrie* odometrie, Pince* pince) :
 collision_detected(false)
 {
     this->is_blue = is_blue;
+    this->pince = pince;
+    this->odometrie = odometrie;
     strategie = this;
 #ifdef NOBODY //FIXME: Ce code est-il encore vraiment utile ?
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
@@ -195,3 +197,8 @@ if(n==0)
 }
 
 void Strategie::theEnd() { }
+
+void Strategie::updateElement(unsigned int id, Element elem)
+{
+	elements[id] = elem;
+}

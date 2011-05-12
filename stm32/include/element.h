@@ -8,6 +8,7 @@
 class Element
 {
 public:
+
 	Position p;
 	enum Type
 	{
@@ -18,6 +19,16 @@ public:
 
 	Type type;
 	unsigned int multiplier;
+
+	Element(Position p, Type t)
+	{
+		this->p = p;
+		this->type = t;
+	}
+
+	Element()
+	{
+	}
 
 #ifndef ROBOTHW
 	// /!\  Internal data for the simulation, don't use inside the Strategy class

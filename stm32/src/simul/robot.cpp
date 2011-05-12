@@ -294,6 +294,8 @@ void Robot::interact(std::vector<class Element*> &elements)
 		float d = (e->body->GetPosition() - body->GetWorldPoint(b2Vec2(1.64, 0.))).LengthSquared();
 		if(d < 0.01 && (e != elem || !ne))
 			ne = e;
+
+		strategie->updateElement(i, *(elements[i]));
 	}
 
 	if(elem && elem == ne)
