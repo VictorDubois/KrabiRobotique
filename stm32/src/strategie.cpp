@@ -22,15 +22,21 @@ Strategie* Strategie::strategie = NULL;
 Strategie::Strategie(bool is_blue, Odometrie* odometrie, Pince* pince) :
 collision_detected(false)
 {
-    this->is_blue = is_blue;
+    this->is_blue = false;
     strategie = this;
 #ifdef NOBODY //FIXME: Ce code est-il encore vraiment utile ?
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
     roueCodeuseGauche = new QuadratureCoderHandler(TIM1);
 #endif
-    Position positionDeDepart(200,200);
+    
+    
+    Position positionDeDepart(this->is_blue ? 200:3000-200,200);
     //Position positionDeDepart(1100,300);
-    Angle angleDeDepart(0);
+    Angle angleDeDepart(this->is_blue ? 0:M_PI);
+    
+    
+    
+    		  
     this->pince=pince;
     positionDeDepart.y = positionDeDepart.y*(is_blue ? 1:-1);
     angleDeDepart = angleDeDepart*(is_blue ? 1:-1);
@@ -75,20 +81,20 @@ void Strategie::doNthInstruction(uint16_t n){
 switch(n) {
 	case 1:	
 		pince->getLevel();
-		(new TrapezoidalCommand)->goTo(Position(600, 200));
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 600:3000-600, 200));
 	break;
 	case 2:
-		(new TrapezoidalCommand)->goTo(Position(800, 300));
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 800:3000-800, 300));
 	break;
 	case 3:
-		(new TrapezoidalCommand)->goTo(Position(850, 550));
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 850:3000-850, 550));
 		
 		
 		
 	break;
 	case 4:
 		
-		(new TrapezoidalCommand)->goTo(Position(840,1350)); //1000
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 840:3000-840,1350)); //1000
 		
 		
 	break;
@@ -104,11 +110,11 @@ switch(n) {
 	break;
 	case 7:
 		
-		(new TrapezoidalCommand)->goTo(Position(800, 1650));
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 800:3000-800, 1650));
 	break;
 	case 8:
 		
-		(new TrapezoidalCommand)->goTo(Position(830, 1400), true);
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 830:3000-830, 1300), true);
 	break;
 	case 9:
 	
@@ -116,11 +122,11 @@ switch(n) {
 	break;
 	case 10:
 		
-		(new TrapezoidalCommand)->goTo(Position(830, 1150), true);
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 830:3000-830, 950), true);
 	break;	
 	case 11:
 		
-		(new TrapezoidalCommand)->goTo(Position(300, 1500), true);
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 300:3000-300, 1500), true);
 	break;
 	case 12:
 		
@@ -128,7 +134,7 @@ switch(n) {
 	break;
 	case 13:
 		
-		(new TrapezoidalCommand)->goTo(Position(550, 1350), true);
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 550:3000-550, 1350), true);
 	break;
 	case 14:
 		
@@ -136,12 +142,12 @@ switch(n) {
 	break;
 	case 15:
 		
-		(new TrapezoidalCommand)->goTo(Position(830, 950), true);
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 830:3000-830, 950), true);
 	break;	
 	
 	case 16:
 		
-		(new TrapezoidalCommand)->goTo(Position(820, 1500), true);
+		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 870:3000-870, 1450), true);
 	break;
 		
 	default:

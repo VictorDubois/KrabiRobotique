@@ -95,7 +95,7 @@ Table::Table(QWidget* parent) :
 
 	//Init position of elements
 	//int l1 = rand() % 20; 
-	int l1 =19;
+	int l1 =15;
 	int l2 = rand() % 20; 
 	//int l2 = 20;
 	int r1 = rand() % 20; 
@@ -209,8 +209,10 @@ void Table::addCard(unsigned int n, int column)
 
 	if(column > 0)
 	{
-		elements.push_back(new Element(world,getCase(column,k+1),Element::Pawn));
-		elements.push_back(new Element(world,getCase(column,q+1),Element::Pawn));
+		//elements.push_back(new Element(world,getCase(column,k+1),Element::Pawn));
+		//elements.push_back(new Element(world,getCase(column,q+1),Element::Pawn));
+		elements.push_back(new Element(world,getCase(column,4),Element::Pawn));
+		elements.push_back(new Element(world,getCase(column,5),Element::Pawn));
 	}
 	else
 	{
