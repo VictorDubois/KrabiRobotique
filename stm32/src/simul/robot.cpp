@@ -1,5 +1,6 @@
 #include "simul/robot.h"
-#include "simul/element.h"
+#include "element.h"
+#include "pince.h"
 #include <cmath>
 
 
@@ -50,7 +51,10 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	odometrie = new Odometrie(this);
 	pince = new Pince(this);
 	asservissement = new Asservissement(odometrie);
-	strategie = new Strategie(true, odometrie,pince);
+
+
+	strategie = new Strategie(true, odometrie, new Pince(this));
+
 	asservissement->strategie = strategie;
 	
 
@@ -322,6 +326,8 @@ void Robot::interact(std::vector<class Element*> &elements)
 		float d = (e->body->GetPosition() - body->GetWorldPoint(b2Vec2(1.64, 0.))).LengthSquared();
 		if(d < 0.01 && (e != elem || !ne))
 			ne = e;
+
+		strategie->updateElement(i, *(elements[i]));
 	}
 
 	if(elem && elem == ne)

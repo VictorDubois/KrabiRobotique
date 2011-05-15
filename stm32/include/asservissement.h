@@ -38,12 +38,12 @@ class Asservissement{
 
 	float getLinearSpeed()
 	{
-		return command->getLinearSpeed();
+		return command ? command->getLinearSpeed() : 0;
 	}
 
 	Angle getAngularSpeed()
 	{
-		return command->getAngularSpeed();
+		return command ? command->getAngularSpeed() : 0;
 	}
 
         static Asservissement * asservissement;

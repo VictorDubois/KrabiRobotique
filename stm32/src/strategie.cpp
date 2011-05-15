@@ -7,8 +7,10 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
+#include "servo.h"
 #endif
 #include "command.h"
+#include "pince.h"
 #include <math.h>
 
 #define INSTRUCTION_COLLISION 128
@@ -22,7 +24,10 @@ Strategie* Strategie::strategie = NULL;
 Strategie::Strategie(bool is_blue, Odometrie* odometrie, Pince* pince) :
 collision_detected(false)
 {
+
     this->is_blue = false;
+    this->pince = pince;
+    this->odometrie = odometrie;
     strategie = this;
 #ifdef NOBODY //FIXME: Ce code est-il encore vraiment utile ?
     roueCodeuseDroite = new QuadratureCoderHandler(TIM2);
@@ -78,10 +83,12 @@ void Strategie::doNthInstruction(uint16_t n){
     /*if(n == 1)
 		(new TrapezoidalCommand)->goTo(Position(400, 400));
     return;*/
+
 switch(n) {
 	case 1:	
 		pince->getLevel();
 		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 600:3000-600, 200));
+
 	break;
 	case 2:
 		(new TrapezoidalCommand)->goTo(Position(this->is_blue ? 800:3000-800, 300));
@@ -246,3 +253,8 @@ if(n==0)
 }
 
 void Strategie::theEnd() { }
+
+void Strategie::updateElement(unsigned int id, Element elem)
+{
+	elements[id] = elem;
+}

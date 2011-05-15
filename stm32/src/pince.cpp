@@ -1,9 +1,13 @@
+
+
 #include "simul/element.h"
 #include "simul/robot.h"
 
 #include "pince.h"
 #include<iostream>
 using namespace std;
+
+
 Pince::Pince(Robot* robot)
 {
 	this->robot = robot;
@@ -29,4 +33,5 @@ void Pince::lacherElem()
 	if(robot->joint)
    	    robot->makeJoint();
 };
+
 

@@ -1,5 +1,7 @@
 #include "simul/table.h"
 #include "simul/robot.h"
+#include "element.h"
+
 #include <iostream>
 #include <QPainter>
 

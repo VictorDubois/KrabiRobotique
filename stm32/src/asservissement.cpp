@@ -93,15 +93,17 @@ void Asservissement::update(void)
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();
 
-	command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
+	if(command)
+		command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
+
+        float vitesse_lineaire_a_atteindre = command ? command->getLinearSpeed() : 0;
+        float vitesse_angulaire_a_atteindre = command ? command->getAngularSpeed() : 0;
 
         buffer_collision <<= 1;
-        bool tmp = (fabs((vitesse_lineaire_atteinte - command->getLinearSpeed())) < seuil_collision);
+        bool tmp = (fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision);
         buffer_collision |= tmp;
 
 
-        float vitesse_lineaire_a_atteindre = command->getLinearSpeed();
-        float vitesse_angulaire_a_atteindre = command->getAngularSpeed();
 #ifdef ROUES
         float linear_duty_component = pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
         linearDutySent += linear_duty_component;
