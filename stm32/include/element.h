@@ -2,8 +2,11 @@
 #define PION_H_INCLUDED
 
 #include "Position.h"
+
+#ifndef ROBOTHW
 #include <QPainter>
 #include "Box2D.h"
+#endif
 
 class Element
 {

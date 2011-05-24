@@ -10,15 +10,23 @@
 
 class Pince
 {
- private:
+private:
+   
+    Servo serv1;
+    Servo serv2;
+   
+public:
+    Pince(Servo serv1, Servo serv2);
+    void pivote(Angle angle);
 
- Servo serv1;
- Servo serv2;
 
- public:
- Pince(Servo serv1, Servo serv2);
- void pivote(Angle angle);
- ~Pince();
+    //Stub: Should be completed by somebody
+	void serrerElem() { }
+	void lacherElem() { }
+	void setLevel() { }
+    unsigned int getLevel() { return 0; }
+
+    ~Pince();
 
 };
 
@@ -35,7 +43,7 @@ public:
 	void serrerElem();
 	void lacherElem();
 	void setLevel();
-        unsigned int getLevel();
+    unsigned int getLevel();
 };
 
 #endif //simul

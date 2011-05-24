@@ -52,8 +52,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	pince = new Pince(this);
 	asservissement = new Asservissement(odometrie);
 
-
-	strategie = new Strategie(true, odometrie, new Pince(this));
+	strategie = new Strategie(true, odometrie, pince);
 
 	asservissement->strategie = strategie;
 	

@@ -25,6 +25,7 @@ src/memory.cpp \
 src/odometrie.cpp \
 src/pid_filter_angle.cpp \
 src/pid_filter_distance.cpp \
+src/pince.cpp \
 src/pwm_handler.cpp \
 src/quadrature_coder_handler.cpp \
 src/rateau.cpp \
@@ -49,6 +50,7 @@ include/memory.h \
 include/odometrie.h \
 include/pid_filter_angle.h \
 include/pid_filter_distance.h \
+include/pince.h \
 include/pwm_handler.h \
 include/quadrature_coder_handler.h \
 include/rateau.h \
