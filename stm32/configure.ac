@@ -35,10 +35,12 @@ AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],[Turn on debugging]), [en
 AC_MSG_CHECKING(debug)
 AC_MSG_RESULT($enable_debug)
 if test "x$enable_debug" = "xyes"; then
-	CXXFLAGS="$CXXFLAGS"
+	CXXFLAGS="$CXXFLAGS -g3 -ggdb -Wall -Wextra"
+else
+    CXXFLAGS="-Os"
 fi
 
-CXXFLAGS="$CXXFLAGS $CFLAGS -g3 -ggdb -Wall "
+CXXFLAGS="$CXXFLAGS $CFLAGS "
 LDFLAGS="$LDFLAGS -nostartfiles -Tstm32LinkerScript.cmd"
 AC_SUBST([CFLAGS])
 
