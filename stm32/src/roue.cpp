@@ -4,6 +4,7 @@ Roue::Roue(unsigned char OCx, GPIO_TypeDef * GPIOx_Sens, uint16_t GPIO_Pin_Sens)
     this->GPIOx_Sens = GPIOx_Sens;
     this->GPIO_Pin_Sens = GPIO_Pin_Sens;
 
+	//On propage l'horloge
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
@@ -15,7 +16,7 @@ Roue::Roue(unsigned char OCx, GPIO_TypeDef * GPIOx_Sens, uint16_t GPIO_Pin_Sens)
     GPIO_InitStructureSortie.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
     GPIO_Init(GPIOB, &GPIO_InitStructureSortie);
 
-    // initialiser pins d'entrÃ©e sur le STM du port B
+    // initialiser pins d'entrÃ©e sur le STM du port x_sens
     GPIO_InitTypeDef GPIO_InitStructureSortie2;
     GPIO_InitStructureSortie2.GPIO_Pin =  GPIO_Pin_Sens;
     GPIO_InitStructureSortie2.GPIO_Mode = GPIO_Mode_Out_PP;

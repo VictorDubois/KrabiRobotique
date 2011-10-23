@@ -1,6 +1,6 @@
 #include "timer_handler.h"
 
-void Timer::enableClock() ///<Propage le signal de l’horloge système au timer.
+void Timer::enableClock() //<Propage le signal de l’horloge système au timer.
 {
     switch(m_timer)
     {
@@ -19,7 +19,7 @@ void Timer::enableClock() ///<Propage le signal de l’horloge système au timer
     }
 }
 
-TIM_TypeDef* Timer::getTIMx() //< Retourne le timer (TIM1, TIM2 ou TIM3), voire TIM_TypeDef.
+TIM_TypeDef* Timer::getTIMx() //< Retourne le timer (TIM1, TIM2 ou TIM3), voir TIM_TypeDef.
 {
     switch(m_timer){
         case 1:
@@ -33,14 +33,11 @@ TIM_TypeDef* Timer::getTIMx() //< Retourne le timer (TIM1, TIM2 ou TIM3), voire 
         default:
             return TIM4;
     }
-    //if(m_timer == 1)
-    //    return TIM1;
-    //return (TIM_TypeDef*)(0x40001400 - (m_timer-1)*0x400);
 }
 
 Timer::Timer(uint8_t timer, uint16_t period, uint16_t prescaler, ClkDivision clockDivision)
 {
-    assert_param( timer >= 0 && timer <= 4);
+    assert_param( timer > 0 && timer <= 4); //on vérifie que le timer entre 1 et 4
     m_timer = timer;
     m_period = period;
     m_prescaler = prescaler;

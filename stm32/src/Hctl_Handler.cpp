@@ -94,101 +94,46 @@ uint8_t Hctl_Handler::Pina(){
 
 uint8_t Hctl_Handler::Get_hi(){
 
-    for(int a = 0; a < HCTL_BCL; a++);
-    uint8_t Hi_old = Pina();
-   /* uint8_t Hi_new = Pina();
-    if( Hi_new == Hi_old ){
-        return Hi_new;
-    }
-    else return Get_hi(); */
+    for(int a = 0; a < HCTL_BCL; a++);	//On attend que les bits aient changé avant de calculer la nouvelle valeur
 
-    return Hi_old;
+    return Pina();
 }
 
 uint32_t Hctl_Handler::regarderRoue(BitAction valeurPinXY){
 
     GPIO_WriteBit(GPIOC, GPIO_Pin_4, valeurPinXY);    // on sélectionne la roue
 
-    GPIO_WriteBit(GPIOC,GPIO_Pin_5,Bit_SET);        // on met l'OE en valeur basse pour pouvoir lire le compteur
+    GPIO_WriteBit(GPIOC,GPIO_Pin_5,Bit_RESET);        // on met l'OE en valeur basse pour pouvoir lire le compteur
     for(int a = 0; a < HCTL_BCL; a++);
 
     /**D4 : bit de poids fort*/
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
-
-    GPIO_WriteBit(GPIOC, GPIO_Pin_5, Bit_RESET);
-
-    /*uint8_t h4 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
-    uint8_t g4 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11);
-    uint8_t f4 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10);
-    uint8_t e4 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3);
-
-    uint8_t d4 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2);
-    uint8_t c4 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1);
-    uint8_t b4 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0);
-    uint8_t a4 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7);*/
     uint8_t D4 = Get_hi();
 
 
     /**D3*/
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-
-    /*uint8_t h3 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
-    uint8_t g3 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11);
-    uint8_t f3 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10);
-    uint8_t e3 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3);
-
-    uint8_t d3 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2);
-    uint8_t c3 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1);
-    uint8_t b3 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0);
-    uint8_t a3 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7);*/
-
     uint8_t D3 = Get_hi();
 
     /**D2*/
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
-
-    /*uint8_t h2 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
-    uint8_t g2 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11);
-    uint8_t f2 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10);
-    uint8_t e2 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3);
-
-    uint8_t d2 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2);
-    uint8_t c2 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1);
-    uint8_t b2 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0);
-    uint8_t a2 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7);*/
-
     uint8_t D2 = Get_hi();
 
     /**D1 : bit de poids faible*/
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-
-    /*uint8_t h1 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
-    uint8_t g1 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11);
-    uint8_t f1 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10);
-    uint8_t e1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3);
-
-    uint8_t d1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2);
-    uint8_t c1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1);
-    uint8_t b1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0);
-    uint8_t a1 = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7);*/
-
     uint8_t D1 = Get_hi();
 
     GPIO_WriteBit(GPIOC,GPIO_Pin_5,Bit_SET);    // on remet l'OE en valeur haute pour que le compteur soit MàJ
     for(int a = 0; a < HCTL_BCL; a++);
 
-    /*uint8_t D1 = reconstituerOctet(h1,g1,f1,e1,d1,c1,b1,a1);
-    uint8_t D2 = reconstituerOctet(h2,g2,f2,e2,d2,c2,b2,a2);
-    uint8_t D3 = reconstituerOctet(h3,g3,f3,e3,d3,c3,b3,a3);
-    uint8_t D4 = reconstituerOctet(h4,g4,f4,e4,d4,c4,b4,a4);*/
-
     return reconstituerCompteur(D4,D3,D2,D1);
 }
 
+/*Boucle infini
 ValeursRoues Hctl_Handler::faireUnTour() {
     for(;;) {
         uint32_t a = 0;
@@ -206,4 +151,5 @@ ValeursRoues Hctl_Handler::faireUnTour() {
         etatPC11 = GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_11);
     }
         return roues;
-}
+}*/
+

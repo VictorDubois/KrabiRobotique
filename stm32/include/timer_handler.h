@@ -19,12 +19,12 @@ class Timer
     private:
         uint8_t m_timer;     ///< Numéro du timer
         uint16_t m_prescaler; ///< Facteur de division de l’horloge : @f$ fr\acute{e}quence du timer = \frac{72 MHz}{ timClockDivision (timPrescaler + 1)} @f$ .
-        ClkDivision m_div; ///< Division d’horloge supplémentaire, voire Timer::ClkDivision.
+        ClkDivision m_div; ///< Division d’horloge supplémentaire, voir Timer::ClkDivision.
         uint16_t m_period; ///< Période du timer.
         void enableClock(); ///<Propage le signal de l’horloge système au timer.
 
     public:
-        TIM_TypeDef* getTIMx(); ///< Retourne le timer (TIM1, TIM2 ou TIM3), voire TIM_TypeDef.
+        TIM_TypeDef* getTIMx(); ///< Retourne le timer (TIM1, TIM2, TIM3 ou TIM4), voire TIM_TypeDef.
         /**@brief Initialise le timer.
         * @param timer le numéro du timer (de 1 à 4).
         * @param period période du timer.
