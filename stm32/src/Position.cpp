@@ -1,8 +1,22 @@
 #include "Position.h"
-#include "distance.h"
-#include <math.h>
 
 Position::Position(Distance blah_x, Distance blah_y) : x(blah_x), y(blah_y){
+}
+
+Distance Position::getX(){
+    return x;
+}
+
+Distance Position::getY(){
+    return y;
+}
+
+void Position::setX(Distance x){
+    this->x=x;
+}
+
+void Position::setY(Distance y){
+    this->y=y;
 }
 
 Position Position::operator+(const Position &position){
@@ -38,7 +52,7 @@ Position Position::operator-=(const Position &position){
 }
 
 bool Position::presqueEgales(const Position &p){
-	return ::presqueEgales(x, p.x) && ::presqueEgales(y,p.y);
+	return DistancePresqueEgales(x, p.x) && DistancePresqueEgales(y,p.y);
 }
 
 bool Position::operator==(const Position &p){

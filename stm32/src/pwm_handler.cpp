@@ -1,5 +1,4 @@
 #include "pwm_handler.h"
-#include "timer_handler.h"
 
 
 PWMHandler::PWMHandler(Timer *tim, unsigned char OCx)

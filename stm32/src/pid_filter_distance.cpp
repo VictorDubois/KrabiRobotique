@@ -1,8 +1,9 @@
 #include "pid_filter_distance.h"
 
-const float PIDFilterDistance::Kp = 0.02; //0.00123076923*5.;
-const float PIDFilterDistance::Ki = 0.004; //0.00123076923;
-const float PIDFilterDistance::Kd = 0.11; //0.00123076923*200.;//0.0307692308;
+const float PIDFilterDistance::Kp = FILTER_LINEAIRE_KP;
+const float PIDFilterDistance::Kd = FILTER_LINEAIRE_KD;
+const float PIDFilterDistance::Ki = FILTER_LINEAIRE_KI;
+
 
 PIDFilterDistance::PIDFilterDistance() :
     sommeErreurs(0),
@@ -11,7 +12,7 @@ PIDFilterDistance::PIDFilterDistance() :
 }
 
 float PIDFilterDistance::getFilteredValue(Distance erreur){
-    sommeErreurs=sommeErreurs*0.83+erreur;
+    sommeErreurs=sommeErreurs*FILTER_LINEAIRE_COEF+erreur;
     Distance proportionnel = erreur;
     Distance integrale = sommeErreurs;
     Distance derivee = erreur - erreurPrecedente;

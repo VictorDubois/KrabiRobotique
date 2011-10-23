@@ -1,59 +1,41 @@
 #ifndef COMMAND_H_INCLUDED
 #define COMMAND_H_INCLUDED
 
-#include "Angle.h"
+#include "variable.h"
 #include "PositionPlusAngle.h"
 
+#ifndef ROBOTHW
+#include <iostream>
+#endif
+
+/**@brief Classe abstraite généralisant l'utilisation des commandes */
 class Command
 {
-public: 
+    public:
+        /**@brief vitesse linéaire que l'on ne peut dépasser */
         static float vitesse_lineaire_max;
+        /**@brief vitesse angulaire que l'on ne peut dépasser */
         static float vitesse_angulaire_max;
+        /**@brief acceleration linéaire que l'on ne peut dépasser */
         static float acceleration_lineaire;
+        /**@brief acceleration angulaire que l'on ne peut dépasser */
         static float acceleration_angulaire;
-
-
-	Command();
-	~Command();
-	virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
-
-	virtual float getLinearSpeed() = 0;
-	virtual Angle getAngularSpeed() = 0;
+        /**@brief Constructeur par défaut. Il permet d'attribuer les commandes à l'asservissement qui fera en sorte que les commandes soient exécutées */
+        Command();
+        /**@brief Destructeur de la classe */
+        ~Command();
+        /**@brief Fonction appellée à chaque mise à jours ( 20ms) pour donner les différents vitesse à appliquer. Cette fonction est à déclarer dans les classes héritants de commande*/
+        virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
+        /**@brief Retourne la vitesse linéaire que l'on veut atteindre. Cette fonction est à déclarer dans les classes héritants de commande*/
+        virtual float getLinearSpeed() = 0;
+        /**@brief Retourne la vitesse angulaire que l'on veut atteindre. Cette fonction est à déclarer dans les classes héritants de commande*/
+        virtual Angle getAngularSpeed() = 0;
 };
 
-class TrapezoidalCommand : public Command
-{
-private:
-        float vitesse_lineaire_a_atteindre;
-        float vitesse_angulaire_a_atteindre;
-        Position destination;
-        Angle destAngle;
-        bool en_mouvement;
-        bool direction;
-        bool stop;
-public:
-	TrapezoidalCommand();
-	~TrapezoidalCommand();
-	void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte);
-
-        void goTo(Position position, bool stop=true);
-        void goToDirection(Angle angle);
-        void recule(Distance distance);
-        void tourne(Angle angle);
-        Distance getVitesseLineaireAfterTrapeziumFilter(Distance vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant);
-        Angle getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_angulaire_atteinte, Angle angle_restant);
-
-	float getLinearSpeed()
-	{
-		return vitesse_lineaire_a_atteindre;
-	}
-
-	Angle getAngularSpeed()
-	{
-		return vitesse_angulaire_a_atteindre;
-	}
-
-};
+//On l'inclue à la fin du header parce que les déclarations n'en ont pas besoin mais les fonctions en on besoin.
+//Si on l'inclue avant les déclaration, le header de asservissement a besoin de command mais celui ci n'est pas encore
+//déclarer et il y a des soucie. Faites attentions aux inclusions cycliques, c'est fourbe
+#include "asservissement.h"
 
 #endif //COMMAND_H_INCLUDED
 

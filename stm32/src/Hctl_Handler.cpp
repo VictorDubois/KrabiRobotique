@@ -1,9 +1,4 @@
-#include <stdint.h>
 #include "Hctl_Handler.h"
-#include "Position.h"
-#include "ValeursRoues.h"
-#include "stm32f10x_gpio.h"
-#include "stm32f10x_rcc.h"
 
 Hctl_Handler::Hctl_Handler()
 {
@@ -35,14 +30,9 @@ Hctl_Handler::Hctl_Handler()
     GPIO_WriteBit(GPIOC,GPIO_Pin_10,Bit_RESET);
     GPIO_WriteBit(GPIOC,GPIO_Pin_11,Bit_RESET);
 
-    for(int lol=0; lol<5000; lol++);
+    //for(int lol=0;lol<5000;lol++);
 
-    /*do {
-
-        etatPC10 = GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_10);
-        etatPC11 = GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_11);  // uint8_t ? a priori on lit un bit...
-
-    }while(etatPC11 != Bit_SET && etatPC10 != Bit_SET); */
+    while(GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_11) != Bit_SET && GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_10) != Bit_SET);  // on attend que ce soit bien remis à zero
 
     GPIO_WriteBit(GPIOC,GPIO_Pin_10,Bit_SET);   // on laisse pas Ã©ternellement le RST Ã  1...
     GPIO_WriteBit(GPIOC,GPIO_Pin_11,Bit_SET);
@@ -88,15 +78,6 @@ uint8_t Hctl_Handler::reconstituerOctet(uint8_t a, uint8_t b, uint8_t c, uint8_t
     return (a+b+c+d+e+f+g+h);
 }
 
-/*
-0 pour Y
-1 pour X
-*/
-/*
-SEL1 : pin6
-SEL2 : pin7
-*/
-
 uint8_t Hctl_Handler::Pina(){
     uint8_t h = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
     uint8_t g = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11);
@@ -113,7 +94,7 @@ uint8_t Hctl_Handler::Pina(){
 
 uint8_t Hctl_Handler::Get_hi(){
 
-    for(int a = 0; a < 25*75000; a++);
+    for(int a = 0; a < HCTL_BCL; a++);
     uint8_t Hi_old = Pina();
    /* uint8_t Hi_new = Pina();
     if( Hi_new == Hi_old ){
@@ -129,7 +110,7 @@ uint32_t Hctl_Handler::regarderRoue(BitAction valeurPinXY){
     GPIO_WriteBit(GPIOC, GPIO_Pin_4, valeurPinXY);    // on sélectionne la roue
 
     GPIO_WriteBit(GPIOC,GPIO_Pin_5,Bit_SET);        // on met l'OE en valeur basse pour pouvoir lire le compteur
-    for(int a = 0; a < 25*75000; a++);
+    for(int a = 0; a < HCTL_BCL; a++);
 
     /**D4 : bit de poids fort*/
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
@@ -198,7 +179,7 @@ uint32_t Hctl_Handler::regarderRoue(BitAction valeurPinXY){
     uint8_t D1 = Get_hi();
 
     GPIO_WriteBit(GPIOC,GPIO_Pin_5,Bit_SET);    // on remet l'OE en valeur haute pour que le compteur soit MàJ
-    for(int a = 0; a < 5000; a++);
+    for(int a = 0; a < HCTL_BCL; a++);
 
     /*uint8_t D1 = reconstituerOctet(h1,g1,f1,e1,d1,c1,b1,a1);
     uint8_t D2 = reconstituerOctet(h2,g2,f2,e2,d2,c2,b2,a2);

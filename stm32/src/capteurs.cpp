@@ -1,20 +1,10 @@
 #include "capteurs.h"
-#include "stm32f10x_gpio.h"
 
-bool isBlueDidou()
+Capteurs::Capteurs(): threshold(SEUIL_DETECTION), isConverted(false)
 {
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)  == Bit_SET;
-}
+     uint8_t Channels[] = {10,11,12,13,15};
+      NbrOfChannel = 5;
 
-// Cote bleu-jaune :
-// 2cm = 2300-2800
-// 10cm = 1200/1300-1400/1500
-// 20cm = 650-800
-
-Capteurs::Capteurs(): threshold(/*42.*/isBlueDidou() ? 1000. : 1000.), isConverted(false)
-{
-    uint8_t Channels[] = {8, 10, 11, 12};
-    NbrOfChannel = 4;
     // rawData contient les résultats bruts des conversions
     data = new uint16_t[NbrOfChannel];
     output = new uint32_t[NbrOfChannel];
@@ -49,8 +39,7 @@ Capteurs::Capteurs(): threshold(/*42.*/isBlueDidou() ? 1000. : 1000.), isConvert
 
     // Définition des canaux à convertir
     //ADC_RegularChannelConfig (ADC_TypeDef *ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime)
-    int i;
-    for (i=0; i<NbrOfChannel; i++) {
+    for (int i=0; i<NbrOfChannel; i++) {
         ADC_RegularChannelConfig (ADC1, Channels[i], i+1, ADC_SampleTime_1Cycles5);
     }
     // active le transfert des résultats de conversion en SRAM
@@ -74,8 +63,6 @@ Capteurs::Capteurs(): threshold(/*42.*/isBlueDidou() ? 1000. : 1000.), isConvert
     // Channel1 : cf p.192 tableau 58
     DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     DMA_Cmd(DMA1_Channel1, ENABLE);
-
-
 }
 
 void Capteurs::startConversion()
@@ -92,7 +79,6 @@ bool Capteurs::conversionFinished()
 
 void Capteurs::convertirDonnees()
 {
-    int i;
     isConverted = true;
     while (!conversionFinished());    // au cas où l'interrupt de l'asservissement tombe avant la fin de l'acquisition/conversion
     /***********************************************
@@ -103,18 +89,19 @@ void Capteurs::convertirDonnees()
      **                                           **
      **                                           **
      ***********************************************/
-    for(i=0;i<NbrOfChannel;i++) {
-
+    for(int i=0;i<NbrOfChannel;i++)  { // Ceci est un compteur binaire, qui ajoute un bit à droite chaque fois qu'un objet est detecté
         output[i] <<= 1;
         output[i] |= (data[i] > threshold);
-
-        //data[i] = (data[i] > threshold);
     }
 }
 
-uint16_t Capteurs::getValue(Capteurs::Direction direction)
+uint16_t Capteurs::getValue(Capteurs::Direction direction) // Retourne vrai si et seulement si le seuil du capteur a été dépassé pendant plus de 8 coups d'horloge car àxff = 8bits à 1
 {
     if (!isConverted)
         convertirDonnees();
     return (output[direction] & 0xff) == 0xff;
+}
+
+uint8_t Capteurs::getNbrOfChannel(){
+    return NbrOfChannel;
 }

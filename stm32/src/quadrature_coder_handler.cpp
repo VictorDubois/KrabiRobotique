@@ -1,7 +1,6 @@
 #include "quadrature_coder_handler.h"
-//#include "misc.h"
-//#include "stdlib.h"
 
+//Objet permettant de savoir le nombre de tick fait par la roux codeuse
 QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
     //lowerTickValue = 0;
     this->coder_tim_port = coder_tim_port;
@@ -79,14 +78,14 @@ QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
 
     //TIM_ITConfig(coder_tim_port, TIM_IT_Update, ENABLE);
 
-    //Enable coder_tim_port Peripheral
+    //Met à disposition le timer
     TIM_Cmd(coder_tim_port, ENABLE);
 
 }
 
 int16_t QuadratureCoderHandler::getTickValue(){
-    //uint32_t caca = TIM_GetCounter(coder_tim_port);
-    int16_t caca = TIM_GetCounter(coder_tim_port);
-    TIM_SetCounter(coder_tim_port, 0);
-    return caca;
+
+    int16_t tick = TIM_GetCounter(coder_tim_port);    //On enregistre le nbr de tick depuis la derniére remise à zero
+    TIM_SetCounter(coder_tim_port, 0);                          //On remet à zero
+    return tick;                                      //On retourne ces ticks
 }

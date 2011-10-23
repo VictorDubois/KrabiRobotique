@@ -1,12 +1,8 @@
 #include "pid_filter_angle.h"
 
-/*const float PIDFilterAngle::Kp = 1.;//15.0;//150.0;//30.0;//75.0;//150.0;
-const float PIDFilterAngle::Ki = 0.2;//0.02;
-const float PIDFilterAngle::Kd = 20.0;//12500.0;//1250.0;*/
-
-const float PIDFilterAngle::Kp = 0.4; //1.;
-const float PIDFilterAngle::Ki = 0.2; //0.2;
-const float PIDFilterAngle::Kd = 80.;//30.; //40.0;
+const float PIDFilterAngle::Kp = FILTER_ANGLE_KP;
+const float PIDFilterAngle::Kd = FILTER_ANGLE_KD;
+const float PIDFilterAngle::Ki = FILTER_ANGLE_KI;
 
 PIDFilterAngle::PIDFilterAngle() :
     sommeErreurs(0),
@@ -15,7 +11,7 @@ PIDFilterAngle::PIDFilterAngle() :
 }
 
 float PIDFilterAngle::getFilteredValue(Angle erreur){
-    sommeErreurs=sommeErreurs*0.83+erreur;
+    sommeErreurs=sommeErreurs*FILTER_ANGLE_COEF+erreur;
     Angle proportionnel = erreur;
     Angle integrale = sommeErreurs;
     Angle derivee = erreur - erreurPrecedente;

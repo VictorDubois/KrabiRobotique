@@ -1,7 +1,4 @@
 #include "PositionPlusAngle.h"
-#include "Position.h"
-#include "Angle.h"
-#include <math.h>
 
 PositionPlusAngle::PositionPlusAngle(Position pos, Angle ang) : position(pos), angle(ang)
 {
@@ -9,7 +6,7 @@ PositionPlusAngle::PositionPlusAngle(Position pos, Angle ang) : position(pos), a
 
 PositionPlusAngle PositionPlusAngle::operator+(const Distance &distance)
 {
-    return PositionPlusAngle(Position(position.x + distance*cos(angle), position.y + distance*sin(angle)), angle);
+    return PositionPlusAngle(Position(position.getX() + distance*cos(angle), position.getY() + distance*sin(angle)), angle);
 }
 
 PositionPlusAngle PositionPlusAngle::operator-(const Distance &distance)
@@ -27,20 +24,30 @@ PositionPlusAngle PositionPlusAngle::operator=(const PositionPlusAngle &position
 
 bool PositionPlusAngle::operator==(PositionPlusAngle &p)
     {
-        if ((position==p.position) && (angle==p.angle))
-            return true;
-        return false;
+        return ((position==p.position) && (angle==p.angle));
     }
 
 
  bool PositionPlusAngle::presqueEgales(PositionPlusAngle &positionPlusAngle){
-    if((position.presqueEgales(positionPlusAngle.position)) && angleEq(angle,positionPlusAngle.angle))
-        return true;
-    return false;
+    return(position.presqueEgales(positionPlusAngle.position) && angleEq(angle,positionPlusAngle.angle));
 }
 
 PositionPlusAngle::PositionPlusAngle(const PositionPlusAngle &original) : position(original.position), angle(original.angle)
 {
 }
 
+Position PositionPlusAngle::getPosition(){
+    return position;
+}
 
+void PositionPlusAngle::setPosition(Position p){
+    position=p;
+}
+
+Angle PositionPlusAngle::getAngle(){
+    return angle;
+}
+
+void PositionPlusAngle::setAngle(Angle a){
+    angle=a;
+}

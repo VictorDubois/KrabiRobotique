@@ -1,5 +1,4 @@
 #include "ValeursRoues.h"
-#include <stdint.h>
 
 ValeursRoues::ValeursRoues(uint32_t gauche_d, uint32_t droite_d){
     this->gauche = gauche_d;
