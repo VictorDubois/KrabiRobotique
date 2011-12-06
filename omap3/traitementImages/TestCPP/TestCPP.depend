@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1302210822 source:/home/mohamed/ProjetS4/TestCPP/main.cpp
+	<iostream>
+	<string>
+	<fstream>
+
+1302191236 source:/home/mohamed/ProjetS4/TestCPP/math.cpp
+	"math.h"
+
+1302191489 /home/mohamed/ProjetS4/TestCPP/math.h
+
