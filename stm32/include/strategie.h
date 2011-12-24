@@ -10,6 +10,10 @@
 #include "servo.h"
 #endif
 
+#ifndef ROBOTHW
+#include "element.h"
+#endif
+
 #include <stdint.h>
 #include "PositionPlusAngle.h"
 #include "TrapezoidalCommand.h"
@@ -43,6 +47,11 @@ class Strategie {
         void done();
         /**@brief Fonction lançant l'exécution de l'instruction n */
         void doNthInstruction(uint16_t n);
+#ifndef ROBOTHW
+	/**@brief */
+	void updateElement(unsigned int id, Element elem);
+#endif
+
 };
 
 #endif // STRATEGIE_H_INCLUDED

@@ -28,7 +28,8 @@ Table::Table(QWidget* parent) :
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
-	world(b2Vec2(0.f,0.f), false)
+//	world(b2Vec2(0.f,0.f), false)
+	world(b2Vec2(0.f,0.f))
 #endif
 {
 	dt=0;

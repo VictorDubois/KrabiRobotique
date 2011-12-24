@@ -1,6 +1,7 @@
 #ifndef QUADRATURE_CODER_HANDLER_H_INCLUDED
 #define QUADRATURE_CODER_HANDLER_H_INCLUDED
 
+#ifdef ROBOTHW
 #include <stdint.h>
 #include "stm32f10x.h"
 #include "stm32f10x_tim.h"
@@ -20,5 +21,6 @@ class QuadratureCoderHandler{
         int16_t getTickValue();
 };
 
+#endif // ROBOTHW
 
 #endif // QUADRATURE_CODER_HANDLER_H_INCLUDED

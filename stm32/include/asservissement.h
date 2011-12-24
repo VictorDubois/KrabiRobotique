@@ -24,7 +24,9 @@
 #define STK_CTRL_ADDR 0xe000e010
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)
 
+#ifdef ROBOTHW
 #define CAPTEURS
+#endif
 
 /**@brief classe permettant de vérifier que le robot fait bien ce qu'on lui dit et de corriger les erreurs */
 class Asservissement{

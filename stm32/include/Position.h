@@ -5,9 +5,17 @@
 #include "distance.h"
 #include <math.h>
 
+#ifndef ROBOTHW
+#include <QPoint>
+#endif
+
+
 /**@brief Classe permettant de stocker des positions en coordonnées cartésienne */
 class Position{
     public:
+#ifndef ROBOTHW
+	operator QPoint() {return QPoint(x,-y);}
+#endif
         /**@brief Constructeur par défaut avec des coordonnées nulles. */
         Position() { x=0; y=0; }
         /**@brief Constructeur avec des coordonnées prédéfinies. */
@@ -38,10 +46,10 @@ class Position{
         void setX(Distance x);
         /**@brief Pour modifier Y */
         void setY(Distance y);
-
-    private:
         /**@brief Coordonnées */
         Distance x,y;
+
+    private:
 };
 
 #endif

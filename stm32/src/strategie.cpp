@@ -43,7 +43,7 @@ void Strategie::collisionDetected(){
 
 
 void Strategie::doNthInstruction(uint16_t n){
-    int cote = (is_blue ? 1:-1);
+ /*   int cote = (is_blue ? 1:-1);
 
     switch(n) {
         case 1:
@@ -70,7 +70,7 @@ void Strategie::doNthInstruction(uint16_t n){
      /*   case 8:
                 (new TrapezoidalCommand)->goTo(Position(750,cote*1500),true);
         break;
-    */    case 9:
+    * /    case 9:
                 (new TrapezoidalCommand)->goTo(Position(1450,cote*1050),true);
         break;
         case 10:
@@ -97,8 +97,19 @@ void Strategie::doNthInstruction(uint16_t n){
         case 17:
                 (new TrapezoidalCommand)->goTo(Position(1000,cote*1400),true);
        break;
-*/        	default:
+      	default:
 	break;
-	}
+
+
+
+	}*/
 }
 
+
+#ifndef ROBOTHW
+void Strategie::updateElement(unsigned int id, Element elem)
+{
+	return;
+}
+
+#endif

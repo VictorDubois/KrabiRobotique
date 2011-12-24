@@ -8,6 +8,24 @@
 #include <stdint.h>
 #include <math.h>
 
+#ifndef ROBOTHW
+
+class Odometrie
+{
+private:
+	class Robot* robot;
+public:
+	Odometrie(Robot* robot);
+	PositionPlusAngle getPos();
+	void setPos(PositionPlusAngle p);
+	Angle getVitesseAngulaire();
+	Distance getVitesseLineaire();
+	void update() { };
+};
+
+#else
+
+
 /**@brief Classe permettant de connaitre la position du robot*/
 class Odometrie
 {
@@ -53,5 +71,7 @@ class Odometrie
         /**@brief coéfficient pour relier le nombre de tick de chaque roue à l'angle réalisé */
         const double coeffAngle;
 };
+
+#endif // ROBOTHW
 
 #endif // ODOMETRIE_H_INCLUDED

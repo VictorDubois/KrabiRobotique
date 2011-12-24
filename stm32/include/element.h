@@ -3,6 +3,10 @@
 
 #include "Position.h"
 
+#ifndef ROBOTHW
+#include <QPainter>
+#include "Box2D.h"
+#endif
 
 class Element
 {
@@ -32,13 +36,13 @@ public:
 #ifndef ROBOTHW
 	// /!\  Internal data for the simulation, don't use inside the Strategy class
 
-//	b2Body* body;
+	b2Body* body;
 
-//	Element(b2World & world, Position p, Type t);
+	Element(b2World & world, Position p, Type t);
 
-//	void paint(QPainter & pa);
+	void paint(QPainter & pa);
 
-//	void updatePos();
+	void updatePos();
 #endif
 };
 

@@ -1,6 +1,6 @@
 #include "element.h"
 
-Element::Element(b2World & world, Position p, Type t)
+ Element::Element(b2World & world, Position p, Type t)
 {
 	this->p = p;
 	type = t;

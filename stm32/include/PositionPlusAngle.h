@@ -35,11 +35,11 @@ class PositionPlusAngle
         Angle getAngle();
         /**@brief Envoi de l'angle */
         void setAngle(Angle a);
-    private:
         /**@brief position du robot par rapport à l'angle de la table */
         Position position;
         /**@brief angle du robot par rapport au coté de la table */
         Angle angle;
+    private:
 
 };
 

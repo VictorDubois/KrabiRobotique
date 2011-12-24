@@ -5,6 +5,7 @@
 #include "element.h"
 #include <Box2D.h>
 
+
 class Table : public QWidget
 {
 private:
