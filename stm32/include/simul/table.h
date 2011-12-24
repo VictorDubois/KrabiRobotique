@@ -20,7 +20,7 @@ private:
 public:
 
 	static const int tableWidth = 3000;
-	static const int tableHeight = 2100;
+	static const int tableHeight = 2000;
 	static b2AABB getWorldAABB();
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;

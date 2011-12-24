@@ -145,51 +145,70 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.setWorldMatrixEnabled(true);
 
 
-	for(unsigned int i=0; i<6; i++)
-	for(unsigned int j=0; j<6; j++)
-		p.fillRect(450+i*350,-j*350,350,-350, ((i+j) & 1) ? Qt::blue : Qt::red);
+	//Mer
+	p.fillRect(0,0,3000,-2000,QColor(39,129,187)); // Blue
 	//Starting zones
-	p.fillRect(0,0,400,-400,Qt::blue);
-	p.fillRect(2600,0,400,-400,Qt::red);
-	//Green zones
-	p.fillRect(0,-400,400,-1700,QColor(0,146,54));
-	p.fillRect(2600,-400,400,-1700,QColor(0,146,54));
-	//Starting zones borders
-	p.fillRect(0,-389,400,-22,Qt::black);
-	p.fillRect(2600,-389,400,-22,Qt::black);
+	p.fillRect(0,0,500,-500,QColor(160,0,28)); //Red
+	p.fillRect(2500,0,500,-500,QColor(133,61,125)); //Violet
+	//Boat
+	p.setBrush(QBrush(QColor(119,76,59))); //Brown
+	p.setPen(QBrush(QColor(119,76,59)));
 
-	//Blocked zones
-	p.fillRect(450,-1980,700,-120,Qt::black);
-	p.fillRect(1850,-1980,700,-120,Qt::black);
+	static const QPointF redBoat[4] = {QPointF(0, -500),QPointF(0, -2000), QPointF(325, -2000), QPointF(400, -500) };
+	p.drawPolygon(redBoat, 4, Qt::OddEvenFill);
 
-	p.fillRect(450,-1850,22,-130,Qt::black);
-	p.fillRect(1850,-1850,22,-130,Qt::black);
+	static const QPointF violetBoat[4] = {QPointF(2600, -500),QPointF(2675, -2000), QPointF(3000, -2000), QPointF(3000, -500) };
+	p.drawPolygon(violetBoat, 4, Qt::OddEvenFill);
 
-	p.fillRect(1128,-1850,22,-130,Qt::black);
-	p.fillRect(2528,-1850,22,-130,Qt::black);
+	//Circle of the map
+	p.setBrush(QBrush(QColor(242,191,0))); // Jaune
+	p.setPen(QBrush(QColor(242,191,0)));
+	float diameter = 800;
+	p.drawEllipse(QRectF(1500 -diameter / 2.0, -diameter / 2.0, diameter, diameter));
 
-	//Extra-points
-	p.setBrush(QBrush(QColor(30,30,30)));
-	p.setPen(QBrush(QColor(30,30,30)));
+	p.setBrush(QBrush(QColor(75,155,62))); // Vert
+	p.setPen(QBrush(QColor(75,155,62)));
+	diameter = 600;
+	p.drawEllipse(QRectF(1500 -diameter / 2.0, -diameter / 2.0, diameter, diameter));
+	
+	//Island
+	p.setBrush(QBrush(QColor(242,191,0))); // Jaune
+	p.setPen(QBrush(QColor(242,191,0)));
+	diameter = 600;
+	p.drawEllipse(QRectF(1100 -diameter / 2.0, -1000 -diameter / 2.0, diameter, diameter));
+	p.drawEllipse(QRectF(1900 -diameter / 2.0, -1000 -diameter / 2.0, diameter, diameter));
+	p.fillRect(1100,-800,800,-400,QColor(242,191,0));
+	p.setBrush(QBrush(QColor(39,129,187))); // Blue
+        p.setPen(QBrush(QColor(39,129,187)));
+	diameter = 237*2;
+	p.drawEllipse(QRectF(1500 -diameter / 2.0, -1358 -diameter / 2.0, diameter, diameter));
+	p.drawEllipse(QRectF(1500 -diameter / 2.0, -1000+358 -diameter / 2.0, diameter, diameter));
 
-	p.drawEllipse(getCaseCenter(1,1), 50,50);
-	p.drawEllipse(getCaseCenter(1,3), 50,50);
-	p.drawEllipse(getCaseCenter(4,3), 50,50);
-	p.drawEllipse(getCaseCenter(4,1), 50,50);
+	p.setBrush(QBrush(QColor(75,155,62))); // Vert
+	p.setPen(QBrush(QColor(75,155,62)));
+	diameter = 150; // arbre central
+	p.drawEllipse(QRectF(1500 -diameter / 2.0, -1000 -diameter / 2.0, diameter, diameter));
 
-	p.drawEllipse(getCaseCenter(2,5), 50,50);
-	p.drawEllipse(getCaseCenter(3,5), 50,50);
+	diameter = 400; // autour des totems
+	p.drawEllipse(QRectF(1100 -diameter / 2.0, -1000 -diameter / 2.0, diameter, diameter));
+	p.drawEllipse(QRectF(1900 -diameter / 2.0, -1000 -diameter / 2.0, diameter, diameter));
 
-	p.setBrush(QBrush(QColor("yellow")));
-	p.setPen(QBrush(QColor("yellow")));
+	//Lignes noires de suivie
+	p.fillRect(500,-450,150,-20,Qt::black);
+	p.fillRect(630,-450,20,-1550,Qt::black);
 
-	for(unsigned int i=0; i < elements.size(); i++)
-		elements[i]->paint(p);
+	p.fillRect(2350,-450,150,-20,Qt::black);
+	p.fillRect(2350,-450,20,-1550,Qt::black);
+
+	//Totem
+	p.fillRect(975,-875,250,-250,QColor(119,76,59));
+	p.fillRect(1775,-875,250,-250,QColor(119,76,59));
 
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->paint(p,dt);
 
 	dt = 0;
+
 }
 
 void Table::keyPressEvent(QKeyEvent* evt, bool press)
