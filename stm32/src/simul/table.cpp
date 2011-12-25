@@ -34,7 +34,7 @@ Table::Table(QWidget* parent) :
 {
 	dt=0;
 	setAutoFillBackground(true);
-	
+
 	QPalette p = palette();
 	p.setColor(QPalette::Window,QColor(Qt::darkGray));
 	setPalette(p);
@@ -44,10 +44,10 @@ Table::Table(QWidget* parent) :
 	//Geometry
 	b2BodyDef bodyDef;
 	bodyDef.position.Set(0., 0.);
-	
+
 	tableBody = world.CreateBody(&bodyDef);
 
-	
+
 #ifdef BOX2D_2_0_1
 	b2PolygonDef box;
 	b2PolygonDef &fixture = box;
@@ -65,23 +65,37 @@ Table::Table(QWidget* parent) :
 	box.SetAsBox(30,1, b2Vec2(0,-1),0);
 	tableBody->CreateFixture(&fixture);
 
-	box.SetAsBox(1,21, b2Vec2(-1,0),0);
+	box.SetAsBox(1,20, b2Vec2(-1,0),0);
 	tableBody->CreateFixture(&fixture);
 
-	box.SetAsBox(1,21, b2Vec2(31,0),0);
+	box.SetAsBox(1,20, b2Vec2(31,0),0);
 	tableBody->CreateFixture(&fixture);
 
-	box.SetAsBox(30.,1., b2Vec2(0,22),0);
+	box.SetAsBox(30.,1., b2Vec2(0,21),0);
 	tableBody->CreateFixture(&fixture);
 
 	//Starting zones borders
-	box.SetAsBox(4.00,.11, b2Vec2(0.,4.), 0.);
+	box.SetAsBox(4.00,.11, b2Vec2(0.,5.1), 0.);
 	tableBody->CreateFixture(&fixture);
-	box.SetAsBox(4.00,.11, b2Vec2(30.,4.), 0.);
+	box.SetAsBox(4.00,.11, b2Vec2(30.,5.1), 0.);
 	tableBody->CreateFixture(&fixture);
 
 	//Blocked zones
-	box.SetAsBox(3.50,1.20, b2Vec2(8,21), 0.);
+    box.SetAsBox(1.25,1.25, b2Vec2(11.,10.), 0.); //Totem rouge
+	tableBody->CreateFixture(&fixture);
+    box.SetAsBox(1.25,1.25, b2Vec2(19.,10.), 0.); //Totem violet
+	tableBody->CreateFixture(&fixture);
+    box.SetAsBox(0.2,0.2, b2Vec2(15.,10.), 0.); //Arbre TODO : à transformer en cercle
+	tableBody->CreateFixture(&fixture);
+
+
+	//Boat
+    box.SetAsBox(0.11,3.75, b2Vec2(3.24,16.3), 0.0666); //Red Boat
+	tableBody->CreateFixture(&fixture);
+    box.SetAsBox(0.11,3.75, b2Vec2(26.76,16.3), 6.216); //Violet Boat
+	tableBody->CreateFixture(&fixture);
+
+/*	box.SetAsBox(3.50,1.20, b2Vec2(8,21), 0.);
 	tableBody->CreateFixture(&fixture);
 	box.SetAsBox(3.50,1.20, b2Vec2(22,21), 0.);
 	tableBody->CreateFixture(&fixture);
@@ -97,11 +111,11 @@ Table::Table(QWidget* parent) :
 	tableBody->CreateFixture(&fixture);
 
 	//Init position of elements
-	//int l1 = rand() % 20; 
+	//int l1 = rand() % 20;
 	int l1 =15;
-	int l2 = rand() % 20; 
+	int l2 = rand() % 20;
 	//int l2 = 20;
-	int r1 = rand() % 20; 
+	int r1 = rand() % 20;
 
 	addCard(l1, 1);
 	addCard(l2, 2);
@@ -110,7 +124,7 @@ Table::Table(QWidget* parent) :
 	addCard(r1, -1);
 	addCard(r1, -2);
 	elements.push_back(new Element(world,getCase(3,3),Element::Pawn)); //Central element
-
+*/
 }
 
 Table::~Table()
@@ -170,7 +184,7 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.setPen(QBrush(QColor(75,155,62)));
 	diameter = 600;
 	p.drawEllipse(QRectF(1500 -diameter / 2.0, -diameter / 2.0, diameter, diameter));
-	
+
 	//Island
 	p.setBrush(QBrush(QColor(242,191,0))); // Jaune
 	p.setPen(QBrush(QColor(242,191,0)));
