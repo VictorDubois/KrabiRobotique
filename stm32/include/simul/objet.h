@@ -1,0 +1,48 @@
+#ifndef OBJET_H
+#define OBJET_H
+#ifndef ROBOTWH
+
+#include "Position.h"
+#include "Angle.h"
+#include <QPainter>
+#include "Box2D.h"
+
+/**@brief Classe permettant de gérer les différents objets pouvant être déplacé sur la table (pièce, lingot) */
+class Objet
+{
+    public:
+        /**@brief Énumération permettant de classifier les différents objets */
+        /**@enum Objet::Type énumére les différents types d'objets possible de créer */
+        enum Type
+        {
+            blackCoin = 0, /*!< Représente un pièce noire*/
+            whiteCoin = 1, /*!< Représente un pièce blanche*/
+            goldBar = 2 /*!< Représente un lingot*/
+        };
+        /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p. */
+        /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/
+        /**@param P Position initial de l'objet*/
+        /**@param type Type de l'objet créé */
+        Objet(b2World & world, Position p, Type type);
+        /**@brief Destructeur de la classe */
+        ~Objet();
+        /**@brief Permet de dessiner l'objet à l'écran */
+        /**@param pa Pointeur vers le QPainter qui dessine à l'écran */
+        void paint(QPainter & pa);
+        /**@brief Met à jour la position de l'objet sur la table ainsi que la ses vitesses */
+        void updatePos();
+
+    protected:
+    private:
+        /**@brief Contient la position de l'objet. */
+        Position p;
+        /**@brief Angle actuel de l'objet par rapport au repert de la table (utile seulement pour les objets de type goldBar) */
+        Angle theta;
+        /**@brief Contient le type de l'objet*/
+        Type type;
+        /**@brief Pointeur vers un objet de type b2Body afin de représenter l'objet par Box2D*/
+        b2Body* body;
+};
+
+#endif // ROBOTWH
+#endif // OBJET_H
