@@ -1,6 +1,8 @@
 #include "simul/table.h"
 #include "simul/robot.h"
+#include "simul/objet.h"
 #include "element.h"
+
 
 #include <iostream>
 #include <QPainter>
@@ -40,6 +42,10 @@ Table::Table(QWidget* parent) :
 	setPalette(p);
 
 	robots.push_back(new Robot(world));
+    objets.push_back(new Objet(world, Position(1500.,1800.), Objet::blackCoin));
+    objets.push_back(new Objet(world, Position(1200.,1800.), Objet::whiteCoin));
+    objets.push_back(new Objet(world, Position(1800.,1800.), Objet::goldBar));
+
 
 	//Geometry
 	b2BodyDef bodyDef;
@@ -95,6 +101,8 @@ Table::Table(QWidget* parent) :
     box.SetAsBox(0.11,3.75, b2Vec2(26.76,16.3), 6.216); //Violet Boat
 	tableBody->CreateFixture(&fixture);
 
+
+
 /*	box.SetAsBox(3.50,1.20, b2Vec2(8,21), 0.);
 	tableBody->CreateFixture(&fixture);
 	box.SetAsBox(3.50,1.20, b2Vec2(22,21), 0.);
@@ -146,8 +154,8 @@ void Table::update(int dt)
 	world.Step((float)dt/1000., 10, 10);
 	world.ClearForces();
 #endif
-	for(unsigned int i=0; i < elements.size(); i++)
-		elements[i]->updatePos();
+	for(unsigned int i=0; i < objets.size(); i++)
+		objets[i]->updatePos();
 	repaint();
 }
 
@@ -217,6 +225,9 @@ void Table::paintEvent(QPaintEvent* evt)
 	//Totem
 	p.fillRect(975,-875,250,-250,QColor(119,76,59));
 	p.fillRect(1775,-875,250,-250,QColor(119,76,59));
+
+    for (unsigned int i=0; i < objets.size(); i++)
+        objets[i]->paint(p);
 
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->paint(p,dt);
