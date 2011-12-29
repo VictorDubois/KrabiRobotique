@@ -2,6 +2,8 @@
 #include "simul/robot.h"
 #include "simul/objet.h"
 #include "element.h"
+#include "cstdlib"
+#include "time.h"
 
 
 #include <iostream>
@@ -41,10 +43,47 @@ Table::Table(QWidget* parent) :
 	p.setColor(QPalette::Window,QColor(Qt::darkGray));
 	setPalette(p);
 
+    srand(time(NULL));
+    int alea1 = rand()%11 ; // On génére deux nombres aléatoires pour définir quelles pièces seront noires
+    int alea2 = alea1;
+    while (alea2 == alea1)
+        alea2 = rand()%11;
+    Objet::Type couleur[11];
+    for (unsigned int i = 0; i<11;i++)
+        couleur[i] = Objet::whiteCoin;
+    couleur[alea1] = Objet::blackCoin;
+    couleur[alea2] = Objet::blackCoin;
+
+
+    //création des robots
 	robots.push_back(new Robot(world));
-    objets.push_back(new Objet(world, Position(1500.,1800.), Objet::blackCoin));
-    objets.push_back(new Objet(world, Position(1200.,1800.), Objet::whiteCoin));
-    objets.push_back(new Objet(world, Position(1800.,1800.), Objet::goldBar));
+	//création des objets (par pair devant avoir la même couleur)
+    objets.push_back(new Objet(world, Position(2000.,500.), couleur[0]));
+    objets.push_back(new Objet(world, Position(1000.,500.), couleur[0]));
+    objets.push_back(new Objet(world, Position(450.,1700.), couleur[1]));
+    objets.push_back(new Objet(world, Position(2550.,1700.), couleur[1]));
+    objets.push_back(new Objet(world, Position(1590.,1700.), couleur[2]));
+    objets.push_back(new Objet(world, Position(1410.,1700.), couleur[2]));
+    objets.push_back(new Objet(world, Position(1500.,1610.), couleur[3]));
+    objets.push_back(new Objet(world, Position(1500.,1790.), couleur[3]));
+    objets.push_back(new Objet(world, Position(1100.,750.), couleur[4]));
+    objets.push_back(new Objet(world, Position(1900.,750.), couleur[4]));
+    objets.push_back(new Objet(world, Position(1100.,1250.), couleur[5]));
+    objets.push_back(new Objet(world, Position(1900.,1250.), couleur[5]));
+    objets.push_back(new Objet(world, Position(850.,1000.), couleur[6]));
+    objets.push_back(new Objet(world, Position(2150.,1000.), couleur[6]));
+    objets.push_back(new Objet(world, Position(950.,850.), couleur[7]));
+    objets.push_back(new Objet(world, Position(2050.,850.), couleur[7]));
+    objets.push_back(new Objet(world, Position(950.,1150.), couleur[8]));
+    objets.push_back(new Objet(world, Position(2050.,1150.), couleur[8]));
+    objets.push_back(new Objet(world, Position(1250.,850.), couleur[9]));
+    objets.push_back(new Objet(world, Position(1750.,850.), couleur[9]));
+    objets.push_back(new Objet(world, Position(1250.,1150.), couleur[10]));
+    objets.push_back(new Objet(world, Position(1750.,1150.), couleur[10]));
+
+    objets.push_back(new Objet(world, Position(1500.,2000-647.), Objet::goldBar,0.));
+    objets.push_back(new Objet(world, Position(400.,500+285.), Objet::goldBar,1.637));
+    objets.push_back(new Objet(world, Position(2600.,500+285.), Objet::goldBar,1.504));
 
 
 	//Geometry
@@ -102,37 +141,6 @@ Table::Table(QWidget* parent) :
 	tableBody->CreateFixture(&fixture);
 
 
-
-/*	box.SetAsBox(3.50,1.20, b2Vec2(8,21), 0.);
-	tableBody->CreateFixture(&fixture);
-	box.SetAsBox(3.50,1.20, b2Vec2(22,21), 0.);
-	tableBody->CreateFixture(&fixture);
-
-	box.SetAsBox(.11,0.65, b2Vec2(4.61,19.15), 0.);
-	tableBody->CreateFixture(&fixture);
-	box.SetAsBox(.11,0.65, b2Vec2(18.61,19.15), 0.);
-	tableBody->CreateFixture(&fixture);
-
-	box.SetAsBox(.11,0.65, b2Vec2(11.39,19.15), 0.);
-	tableBody->CreateFixture(&fixture);
-	box.SetAsBox(.11,0.64, b2Vec2(25.39,19.15), 0.);
-	tableBody->CreateFixture(&fixture);
-
-	//Init position of elements
-	//int l1 = rand() % 20;
-	int l1 =15;
-	int l2 = rand() % 20;
-	//int l2 = 20;
-	int r1 = rand() % 20;
-
-	addCard(l1, 1);
-	addCard(l2, 2);
-	addCard(l2, 4);
-	addCard(l1, 5);
-	addCard(r1, -1);
-	addCard(r1, -2);
-	elements.push_back(new Element(world,getCase(3,3),Element::Pawn)); //Central element
-*/
 }
 
 Table::~Table()
@@ -145,7 +153,7 @@ void Table::update(int dt)
 	for(unsigned int i=0; i < robots.size(); i++)
 	{
 		robots[i]->updateForces(dt);
-		robots[i]->interact(elements);
+//		robots[i]->interact(elements);
 	}
 
 #ifdef BOX2D_2_0_1
@@ -246,33 +254,3 @@ Position getSideElemCenter(bool right, unsigned int elem)
 {
 	return Position(right ? 200 : 2800, 1810 - elem*280);
 }
-
-void Table::addCard(unsigned int n, int column)
-{
-	unsigned int k = n % 5;
-	unsigned int q = n % 3;
-	if(q >= k)
-		q++;
-
-	if(column > 0)
-	{
-		//elements.push_back(new Element(world,getCase(column,k+1),Element::Pawn));
-		//elements.push_back(new Element(world,getCase(column,q+1),Element::Pawn));
-		elements.push_back(new Element(world,getCase(column,4),Element::Pawn));
-		elements.push_back(new Element(world,getCase(column,5),Element::Pawn));
-	}
-	else
-	{
-		for(unsigned int i=0; i < 5; i++)
-		{
-			Element::Type t = Element::Pawn;
-			if(i == q)
-				t = Element::Queen;
-			else if(i == k)
-				t = Element::King;
-
-			elements.push_back(new Element(world,getSideElemCenter(-column-1, i),t));
-		}
-	}
-}
-

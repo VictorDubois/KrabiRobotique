@@ -1,14 +1,12 @@
 #include "simul/objet.h"
 
-Objet::Objet(b2World & world, Position p, Type type)
-{
-    this->p = p;
-    this->type = type;
-    theta = 0.;
 
+Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(type),  theta(theta)
+{
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(p.x/100.,p.y/100.);
+    bodyDef.angle = theta;
 
     body = world.CreateBody(&bodyDef);
 
@@ -27,9 +25,23 @@ Objet::Objet(b2World & world, Position p, Type type)
     }
     else
     {
+        b2Vec2 vertices[4];
+        vertices[0].Set(0.0f, 0.0f);
+        vertices[3].Set(-0.7f, 0.0f);
+        vertices[2].Set(-0.7f, 1.5f);
+        vertices[1].Set(0.0f, 1.5f);
+        int32 count = 4;
+        b2PolygonShape polygon;
+        polygon.Set(vertices, count);
 
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &polygon;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
     }
-
 }
 
 Objet::~Objet()
@@ -62,7 +74,11 @@ void Objet::paint(QPainter &pa)
             pa.setBrush(QBrush(QColor("yellow")));
             pa.setPen(QBrush(QColor("yellow")));
 
-            pa.drawRect(p.x,-p.y,150,-70);
+            pa.translate(QPointF(p.x-75,-p.y+35));
+            pa.rotate(theta*180/3.14);
+            pa.drawRect(0,0,150,-70);
+            pa.rotate(-theta*180/3.14);
+            pa.translate(QPointF(-p.x+75,p.y-35));
             break;
         }
     }
@@ -73,6 +89,7 @@ void Objet::updatePos()
 {
     p.x = 100*body->GetPosition().x;
     p.y = 100*body->GetPosition().y;
+    theta = body->GetAngle();
 
     float friction = 0.5;
 	b2Vec2 velocity = body->GetLinearVelocity();
