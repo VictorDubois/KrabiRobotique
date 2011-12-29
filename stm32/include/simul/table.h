@@ -2,7 +2,6 @@
 #define TABLE_H_INCLUDED
 
 #include <QWidget>
-#include "element.h"
 #include <Box2D.h>
 
 
@@ -10,7 +9,6 @@ class Table : public QWidget
 {
 private:
 	int dt;
-	std::vector<class Element*> elements;
     std::vector<class Objet*> objets;
 	std::vector<class Robot*> robots;
 

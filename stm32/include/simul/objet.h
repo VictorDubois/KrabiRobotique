@@ -19,11 +19,12 @@ class Objet
             whiteCoin = 1, /*!< Représente un pièce blanche*/
             goldBar = 2 /*!< Représente un lingot*/
         };
-        /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p. */
+        /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p avec pour angle initial theta. */
         /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/
         /**@param P Position initial de l'objet*/
         /**@param type Type de l'objet créé */
-        Objet(b2World & world, Position p, Type type);
+        /**@param theta Angle initial de l'objet crée en radian */
+        Objet(b2World & world, Position p, Type type, Angle theta = 0.);
         /**@brief Destructeur de la classe */
         ~Objet();
         /**@brief Permet de dessiner l'objet à l'écran */
@@ -34,7 +35,7 @@ class Objet
 
     protected:
     private:
-        /**@brief Contient la position de l'objet. */
+        /**@brief Contient la position du centre de l'objet. */
         Position p;
         /**@brief Angle actuel de l'objet par rapport au repert de la table (utile seulement pour les objets de type goldBar) */
         Angle theta;
