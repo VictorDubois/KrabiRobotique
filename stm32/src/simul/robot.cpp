@@ -1,61 +1,55 @@
 #include "simul/robot.h"
-#include "element.h"
-#include "pince.h"
 #include <cmath>
 
 
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategie.h"
-#include "pince.h"
 #include <iostream>
 
 //Odometrie class implementation for the simulation
 //Yes, it's ugly ! it should not be in this file.
 //But in a separate file
-Odometrie::Odometrie(Robot* robot)
+Odometrie::Odometrie(Robot* robot) : robot(robot)
 {
-	this->robot = robot;
 }
 
 PositionPlusAngle Odometrie::getPos()
 {
-	return robot->pos;
+	return robot->getPos();
 }
 
 Distance Odometrie::getVitesseLineaire()
 {
-	return robot->deriv.position.getNorme();
+	return robot->getVitesseLineaire();
 }
 
 Angle Odometrie::getVitesseAngulaire()
 {
-	return robot->deriv.angle;
+	return robot->getVitesseAngulaire();
 }
 
 void Odometrie::setPos(PositionPlusAngle p)
 {
-	robot->pos = p;
+	robot->setPos(p);
 }
 
+/////////
 
 Robot::Robot(b2World & world) : world(world), olds(10000)
 {
 
 
 	manual = false;
-	elem = NULL;
-	joint = NULL;
 	level = 0;
 
 	odometrie = new Odometrie(this);
-	pince = new Pince(this);
 	asservissement = new Asservissement(odometrie);
 
 	strategie = new Strategie(true, odometrie);
 
 	//asservissement->strategie = strategie;
-	
+
 
 	pos = odometrie->getPos();
 	deriv.position.x = 0;
@@ -69,7 +63,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 #endif
 	bodyDef.position.Set(pos.position.x/100., pos.position.y/100.);
 	bodyDef.angle = pos.angle;
-	
+
 	body = world.CreateBody(&bodyDef);
 
 #ifdef BOX2D_2_0_1
@@ -126,6 +120,14 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	body->SetMassData(&md);
 }
 
+Robot::~Robot()
+{
+    delete asservissement;
+    delete odometrie;
+    delete strategie;
+    world.DestroyBody(body);
+}
+
 void Robot::updateForces(int dt)
 {
 	if(dt == 0)
@@ -141,7 +143,7 @@ void Robot::updateForces(int dt)
 	float bangular = deriv.angle*rdt;
 	//body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
 	//body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
-	
+
 	body->SetLinearVelocity(bvelocity);
 	body->SetAngularVelocity(bangular);
 
@@ -210,7 +212,7 @@ void Robot::paint(QPainter &p, int dt)
 
 	p.setPen(QColor(Qt::green));
 	for(unsigned int i=0; i+1 < olds.size(); i++)
-		p.drawLine(olds[i].position.x, -olds[i].position.y, olds[i+1].position.x, -olds[i+1].position.y);	
+		p.drawLine(olds[i].position.x, -olds[i].position.y, olds[i+1].position.x, -olds[i+1].position.y);
 }
 
 #define IF_KEYSWITCH(n,a) \
@@ -222,10 +224,8 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 	if(evt && press && evt->text() == "e" && !evt->isAutoRepeat())
 		manual = !manual;
 
-	if(evt && press && evt->text() == "i" && !evt->isAutoRepeat())
-		makeJoint();
 
-	if(evt && press && evt->text() == "u" && !evt->isAutoRepeat() && elem)
+	if(evt && press && evt->text() == "u" && !evt->isAutoRepeat())
 	{
 		level = (level != 100) ? 100 : 0;
 #ifdef BOX2D_2_0_1
@@ -242,13 +242,7 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 		{
 			filter.maskBits = 0x3;
 			filter.categoryBits = 0x1;
-			if(elem->type != Element::Pawn)
-			{
-				filter.categoryBits = 0x2;
-				filter.maskBits |= 0x4;
-			}
 		}
-		elem->body->GetFixtureList()[0].SetFilterData(filter);
 	}
 
 
@@ -285,67 +279,28 @@ void Robot::setLevel()
 		{
 			filter.maskBits = 0x3;
 			filter.categoryBits = 0x1;
-			if(elem->type != Element::Pawn)
-			{
-				filter.categoryBits = 0x2;
-				filter.maskBits |= 0x4;
-			}
+
 		}
-		elem->body->GetFixtureList()[0].SetFilterData(filter);
 }
 
-void Robot::makeJoint()
+PositionPlusAngle Robot::getPos()
 {
-	if(!elem)
-		return;
-
-	if(joint)
-	{
-		world.DestroyJoint(joint);
-		joint = NULL;
-		level = 0;
-	}
-	else
-	{
-		b2WeldJointDef jointDef;
-		jointDef.bodyA = body;
-		jointDef.bodyB = elem->body;
-		jointDef.localAnchorA = body->GetLocalPoint(elem->body->GetPosition());
-		joint = world.CreateJoint(&jointDef);
-	}
+    return pos;
 }
 
-void Robot::interact(std::vector<class Element*> &elements)
+void Robot::setPos(PositionPlusAngle p)
 {
-	Element* ne = NULL;
+    pos = p;
+    return;
+}
 
-	for(unsigned int i=0; i < elements.size(); i++)
-	{
-		Element* e = elements[i];
-		float d = (e->body->GetPosition() - body->GetWorldPoint(b2Vec2(1.64, 0.))).LengthSquared();
-		if(d < 0.01 && (e != elem || !ne))
-			ne = e;
+Angle Robot::getVitesseAngulaire()
+{
+    return deriv.angle;
+}
 
-		strategie->updateElement(i, *(elements[i]));
-	}
-
-	if(elem && elem == ne)
-		return;
-
-	if(level == 100 && elem && ne)
-	{
-		for(std::vector<Element*>::iterator iter = elements.begin(); iter != elements.end(); iter++)
-			if(*iter == ne)
-			{
-				elements.erase(iter);
-				break;
-			}
-		//std::remove(elements.begin(), elements.end(), ne);
-		world.DestroyBody(ne->body);
-		elem->multiplier += ne->multiplier;
-		delete ne;
-	}
-	else
-		elem = ne;
+Distance Robot::getVitesseLineaire()
+{
+    return deriv.position.getNorme();
 }
 

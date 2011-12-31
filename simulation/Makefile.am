@@ -18,8 +18,7 @@ src/distance.cpp \
 src/Angle.cpp \
 src/strategie.cpp \
 src/pid_filter_angle.cpp \
-src/pid_filter_distance.cpp \
-src/pince.cpp 
+src/pid_filter_distance.cpp 
 
 paprika_INCLS=\
 include/simul/main.h \
