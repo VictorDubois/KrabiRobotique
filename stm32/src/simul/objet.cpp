@@ -1,7 +1,7 @@
 #include "simul/objet.h"
 
 
-Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(type),  theta(theta)
+Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(type),  theta(theta), world(&world)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -26,10 +26,10 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(t
     else
     {
         b2Vec2 vertices[4];
-        vertices[0].Set(0.0f, 0.0f);
-        vertices[3].Set(-0.7f, 0.0f);
-        vertices[2].Set(-0.7f, 1.5f);
-        vertices[1].Set(0.0f, 1.5f);
+        vertices[0].Set(0.35f, -0.75f);
+        vertices[3].Set(-0.35f, -0.75f);
+        vertices[2].Set(-0.35f, 0.75f);
+        vertices[1].Set(0.35f, 0.75f);
         int32 count = 4;
         b2PolygonShape polygon;
         polygon.Set(vertices, count);
@@ -46,7 +46,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(t
 
 Objet::~Objet()
 {
-    //dtor
+    world->DestroyBody(body);
 }
 
 void Objet::paint(QPainter &pa)

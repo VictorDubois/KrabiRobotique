@@ -11,8 +11,8 @@
 class Objet
 {
     public:
+        /**@enum Type */
         /**@brief Énumération permettant de classifier les différents objets */
-        /**@enum Objet::Type énumére les différents types d'objets possible de créer */
         enum Type
         {
             blackCoin = 0, /*!< Représente un pièce noire*/
@@ -43,6 +43,8 @@ class Objet
         Type type;
         /**@brief Pointeur vers un objet de type b2Body afin de représenter l'objet par Box2D*/
         b2Body* body;
+        /**@brief Pointeur vers l'objet de type b2World dans lequel notre objet est définie */
+        b2World* world;
 };
 
 #endif // ROBOTWH

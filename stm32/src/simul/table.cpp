@@ -145,6 +145,10 @@ Table::Table(QWidget* parent) :
 
 Table::~Table()
 {
+    for (unsigned int i = 0; i<robots.size();i++)
+        delete robots[i];
+    for (unsigned int i = 0; i<objets.size();i++)
+        delete objets[i];
 }
 
 void Table::update(int dt)

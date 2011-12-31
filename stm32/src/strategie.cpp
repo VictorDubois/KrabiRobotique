@@ -43,7 +43,7 @@ void Strategie::collisionDetected(){
 
 
 void Strategie::doNthInstruction(uint16_t n){
- /*   int cote = (is_blue ? 1:-1);
+/*   int cote = (is_blue ? 1:-1);
 
     switch(n) {
         case 1:
@@ -102,14 +102,8 @@ void Strategie::doNthInstruction(uint16_t n){
 
 
 
-	}*/
+	}
+    */
 }
 
 
-#ifndef ROBOTHW
-void Strategie::updateElement(unsigned int id, Element elem)
-{
-	return;
-}
-
-#endif
