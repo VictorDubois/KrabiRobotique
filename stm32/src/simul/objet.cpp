@@ -26,10 +26,11 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(t
     else
     {
         b2Vec2 vertices[4];
-        vertices[0].Set(0.35f, -0.75f);
-        vertices[3].Set(-0.35f, -0.75f);
-        vertices[2].Set(-0.35f, 0.75f);
-        vertices[1].Set(0.35f, 0.75f);
+        vertices[0].Set(0.0f, -0.70f);
+        vertices[1].Set(0.0f, 0.0f);
+        vertices[2].Set(-1.5f, 0.0f);
+        vertices[3].Set(-1.5f, -0.70f);
+
         int32 count = 4;
         b2PolygonShape polygon;
         polygon.Set(vertices, count);
@@ -74,11 +75,11 @@ void Objet::paint(QPainter &pa)
             pa.setBrush(QBrush(QColor("yellow")));
             pa.setPen(QBrush(QColor("yellow")));
 
-            pa.translate(QPointF(p.x-75,-p.y+35));
-            pa.rotate(theta*180/3.14);
-            pa.drawRect(0,0,150,-70);
+            pa.translate(QPointF(p.x,-p.y));
             pa.rotate(-theta*180/3.14);
-            pa.translate(QPointF(-p.x+75,p.y-35));
+            pa.drawRect(0,0,150,-70);
+            pa.rotate(theta*180/3.14);
+            pa.translate(QPointF(-p.x,p.y));
             break;
         }
     }
@@ -89,7 +90,9 @@ void Objet::updatePos()
 {
     p.x = 100*body->GetPosition().x;
     p.y = 100*body->GetPosition().y;
-    theta = body->GetAngle();
+    theta = body->GetAngle()-3.14;
+
+
 
     float friction = 0.5;
 	b2Vec2 velocity = body->GetLinearVelocity();
@@ -104,7 +107,7 @@ void Objet::updatePos()
 		body->SetLinearVelocity(velocity);
 	}
 
-	float angularFriction = 0.1;
+	float angularFriction = 0.5;
 	float angular = body->GetAngularVelocity();
 	if(angular > 0)
 	{

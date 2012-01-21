@@ -81,9 +81,9 @@ Table::Table(QWidget* parent) :
     objets.push_back(new Objet(world, Position(1250.,1150.), couleur[10]));
     objets.push_back(new Objet(world, Position(1750.,1150.), couleur[10]));
 
-    objets.push_back(new Objet(world, Position(1500.,2000-647.), Objet::goldBar,0.));
-    objets.push_back(new Objet(world, Position(400.,500+285.), Objet::goldBar,1.637));
-    objets.push_back(new Objet(world, Position(2600.,500+285.), Objet::goldBar,1.504));
+    objets.push_back(new Objet(world, Position(1500+75.,2000-647+35.), Objet::goldBar,0.));
+    objets.push_back(new Objet(world, Position(400.,500+285+150.), Objet::goldBar,1.637));
+    objets.push_back(new Objet(world, Position(2600-35.,500+285+150.), Objet::goldBar,1.504));
 
 
 	//Geometry
