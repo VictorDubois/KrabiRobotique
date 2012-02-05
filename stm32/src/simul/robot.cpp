@@ -78,7 +78,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	fixture.density = 10.0f;
 	fixture.friction = 1.0f;
 
-	box.SetAsBox(0.45f,1.8f,b2Vec2(-0.,0),0);
+	box.SetAsBox(.5f,1.40f,b2Vec2(-0.,0),0);
 	body->CreateFixture(&fixture);
 
 #ifdef BOX2D_2_0_1
@@ -88,20 +88,20 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	b2Vec2 v[4];
 #endif
 	int inc = 0;
-	v[inc++].Set(1.80+0.45,1.80);
-	v[inc++].Set(.0+0.45,1.80);
-	v[inc++].Set(0+0.45,1.);
-	v[inc++].Set(1.80+0.45,1.);
+	v[inc++].Set(2.08+0.5,1.40);
+	v[inc++].Set(0.0+.5,1.40);
+	v[inc++].Set(0+.5,1.1);
+	v[inc++].Set(1.40+.5,1.1);
 #ifndef BOX2D_2_0_1
 	box.Set(v, 4);
 #endif
 	body->CreateFixture(&fixture);
 
 	inc = 0;
-	v[inc++].Set(1.80+0.45,-1.);
-	v[inc++].Set(0.+0.45,-1.);
-	v[inc++].Set(.0+0.45,-1.80);
-    v[inc++].Set(1.80+0.45,-1.80);
+	v[inc++].Set(1.40+0.5,-1.1);
+	v[inc++].Set(0.+0.5,-1.1);
+	v[inc++].Set(.0+0.5,-1.40);
+    v[inc++].Set(2.08+0.5,-1.40);
 #ifndef BOX2D_2_0_1
 	box.Set(v, 4);
 #endif
@@ -191,14 +191,14 @@ void Robot::paint(QPainter &p, int dt)
 
 	QPoint po[10];
 	int inc = 0;
-	po[inc++] = QPoint(-90+45,180.);
-	po[inc++] = QPoint(-90+45,-180.);
-	po[inc++] = QPoint(180+45,-180);
-	po[inc++] = QPoint(180+45,-100);
-	po[inc++] = QPoint(0+45,-100);
-	po[inc++] = QPoint(0+45,100);
-    po[inc++] = QPoint(180+45,100);
-	po[inc++] = QPoint(180+45,180);
+	po[inc++] = QPoint(-100+50,140.);
+	po[inc++] = QPoint(-100+45,-140.);
+	po[inc++] = QPoint(208+50,-140);
+	po[inc++] = QPoint(140+50,-110);
+	po[inc++] = QPoint(0+50,-110);
+	po[inc++] = QPoint(0+50,110);
+    po[inc++] = QPoint(140+50,110);
+	po[inc++] = QPoint(208+50,140);
 	p.drawConvexPolygon(po, 8);
 
 //	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
