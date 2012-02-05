@@ -15,7 +15,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(t
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circle;
-        circle.m_radius = 0.6f;
+        circle.m_radius = 0.4f; //0.6f
         circle.m_p.Set(0.,0.);
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.4f;
