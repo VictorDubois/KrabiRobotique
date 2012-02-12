@@ -15,6 +15,12 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
     this->roueCodeuseDroite = roueCodeuseDroite;
 }
 
+Odometrie::~Odometrie()
+{
+    delete roueCodeuseGauche;
+    delete roueCodeuseDroite;
+}
+
 /* Je ne vois pas l'utilité mais à remettre si ça bug
 float sinx(float x)
 {

@@ -34,6 +34,8 @@ class Odometrie
          *@param QuadratureCoderHandler* roueCodeuseGauche pour connaitre le nombre de tour fait par la roue gauche.
          *@param QuadratureCoderHandler* roueCodeuseDroite pour connaitre le nombre de tour fait par la roue droite. */
         Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite);
+        /**@brief Destructeur de la classe */
+        ~Odometrie();
         /**@brief Fonction utilisé à chaque mise à jour ( 20ms) pour enregistrer la nouvelle position du robot */
         void update();
         /**@brief Pour indiquer au robot qu'il est à une nouvelle position */
