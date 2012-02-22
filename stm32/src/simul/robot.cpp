@@ -7,11 +7,14 @@
 #include "strategie.h"
 #include <iostream>
 
+Odometrie* Odometrie::odometrie = NULL;
+
 //Odometrie class implementation for the simulation
 //Yes, it's ugly ! it should not be in this file.
 //But in a separate file
 Odometrie::Odometrie(Robot* robot) : robot(robot)
 {
+    Odometrie::odometrie = this;
 }
 
 PositionPlusAngle Odometrie::getPos()

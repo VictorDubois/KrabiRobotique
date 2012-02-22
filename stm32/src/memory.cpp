@@ -10,7 +10,7 @@ void * operator new(size_t size) throw()
     {
         base = memory_ptr;
         base->s.nextFree = memory_ptr;
-        base->s.size = 7000;
+        base->s.size = 2499;
         nextFreeMemory = memory_ptr;
 
     }

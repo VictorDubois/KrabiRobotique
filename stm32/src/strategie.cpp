@@ -1,4 +1,6 @@
 #include "strategie.h"
+#include "TrapezoidalCommand.h"
+#include "CommandAvancerToutDroit.h"
 
 
 Strategie* Strategie::strategie = NULL;
@@ -45,65 +47,86 @@ void Strategie::collisionDetected(){
 
 void Strategie::doNthInstruction(uint16_t n){
    int cote = (is_blue ? 1:-1);
+   CommandAvancerToutDroit* tmp = NULL;
 
     switch(n) {
-        case 1:
-                (new TrapezoidalCommand)->goTo(Position(500, cote*250),true);
-        break;
-        case 2:
-                (new TrapezoidalCommand)->goTo(Position(1000, cote*450),true);
-        break;
-        case 3:
-               (new TrapezoidalCommand)->goTo(Position(1500, cote*275),true);
-        break;
-        case 4:
-                (new TrapezoidalCommand)->goTo(Position(1300, cote*300),true);
-        break;
-        case 5:
-               (new TrapezoidalCommand)->goTo(Position(2000, cote*500),true);
-        break;
-        case 6:
-                (new TrapezoidalCommand)->goTo(Position(1000, cote*650),true);
-        break;
-        case 7:
-                (new TrapezoidalCommand)->goTo(Position(400, cote*750),true);
-        break;
-        case 8:
-                (new TrapezoidalCommand)->goTo(Position(650,cote*900),true);
+       case 1:
+                (tmp = new CommandAvancerToutDroit(1000.));
 
         break;
-      case 9:
-           //     (new TrapezoidalCommand)->goTo(Position(650,cote*1000),true);
+     /*   case 2:
+                delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(1000, cote*450),true);
         break;
-     /*   case 10:
-                (new TrapezoidalCommand)->goTo(Position(1420,cote*1200),true);
+        case 3:
+                delete tmp;
+               (tmp = new TrapezoidalCommand)->goTo(Position(1500, cote*275),true);
+        break;
+        case 4:
+                delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(1300, cote*300),true);
+
+        break;
+        */
+  /*      case 5:
+          delete tmp;
+               (tmp = new TrapezoidalCommand)->goTo(Position(2000, cote*500),true);
+        break;
+        case 6:
+                delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(1000, cote*650),true);
+        break;
+        case 7:
+                delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(400, cote*750),true);
+                delete tmp;
+        break;
+        case 8:
+                delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(650,cote*900),true);
+        break;
+*/
+  /*    case 9:
+          // delete tmp;
+           //     (tmp = new TrapezoidalCommand)->goTo(Position(650,cote*1000),true);
+        break;
+<     /*   case 10:
+            delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(1420,cote*1200),true);
         break;
         case 11:
-                (new TrapezoidalCommand)->goTo(Position(1420,cote*1050),true);
+                delete tmp;
+                (tmp = new TrapezoidalCommand)->goTo(Position(1420,cote*1050),true);
         break;
    /*     case 12:
-   //             (new TrapezoidalCommand)->goTo(Position(720,cote*1730),true);
+           delete tmp;
+   //             (tmp = new TrapezoidalCommand)->goTo(Position(720,cote*1730),true);
         break;
         case 13:
-                (new TrapezoidalCommand)->goTo(Position(1820,cote*680),true);
+                (tmp = new TrapezoidalCommand)->goTo(Position(1820,cote*680),true);
+                delete tmp;
         break;
         case 14:
-                (new TrapezoidalCommand)->goTo(Position(1980,cote*1450),true);
+                (tmp = new TrapezoidalCommand)->goTo(Position(1980,cote*1450),true);
+                delete tmp;
         break;
         case 15:
-                (new TrapezoidalCommand)->goTo(Position(2050,cote*1700),true);
+                (tmp = new TrapezoidalCommand)->goTo(Position(2050,cote*1700),true);
+                delete tmp;
         break;
         case 16:
-                (new TrapezoidalCommand)->goTo(Position(1000,cote*300),true);
+                (tmp = new TrapezoidalCommand)->goTo(Position(1000,cote*300),true);
+                delete tmp;
         break;
         case 17:
-                (new TrapezoidalCommand)->goTo(Position(1000,cote*1400),true);
-       break;
+                (tmp = new TrapezoidalCommand)->goTo(Position(1000,cote*1400),true);
+                delete tmp;
+       break;*/
       	default:
 	break;
 
 
-*/
+
 	}
 
 }

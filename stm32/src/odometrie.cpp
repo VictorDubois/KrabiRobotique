@@ -1,5 +1,6 @@
 #include "odometrie.h"
 
+
 Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
     vitesseLineaire(0),
     vitesseAngulaire(0),
@@ -13,6 +14,7 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
     prevDeltaTicksRoueGauche = 0;
     this->roueCodeuseGauche = roueCodeuseGauche;
     this->roueCodeuseDroite = roueCodeuseDroite;
+    Odometrie::odometrie = this;
 }
 
 Odometrie::~Odometrie()
