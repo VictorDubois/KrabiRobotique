@@ -1,5 +1,6 @@
 #include "odometrie.h"
 
+Odometrie* Odometrie::odometrie = NULL;
 
 Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
     vitesseLineaire(0),
@@ -23,14 +24,7 @@ Odometrie::~Odometrie()
     delete roueCodeuseDroite;
 }
 
-/* Je ne vois pas l'utilité mais à remettre si ça bug
-float sinx(float x)
-{
-    static const float a[] = {-.1666666664,.0083333315,-.0001984090,.0000027526,-.0000000239};
-    float xsq = x*x;
-    float temp = x*(1 + a[0]*xsq + a[1]*xsq*xsq + a[2]* xsq*xsq*xsq+a[3]*xsq*xsq*xsq*xsq+ a[4]*xsq*xsq*xsq*xsq*xsq);
-    return temp;
-}*/
+
 
 void Odometrie::update(){
     int32_t deltaTicksRoueGauche = -roueCodeuseGauche->getTickValue(); //On a le moins pour prendre en compte que les deux roux codeuses sont monté dans des sens opposées car pas du même coté du robot
@@ -49,10 +43,11 @@ void Odometrie::update(){
     vitesseAngulaire = Angle(tmpDeltaAngle);
 
 	positionPlusAngle.setAngle(positionPlusAngle.getAngle()+vitesseAngulaire);
-	positionPlusAngle.setPosition(positionPlusAngle.getPosition()+ Position(tmpDist*cos(positionPlusAngle.getAngle()), tmpDist*sin(positionPlusAngle.getAngle())));    //mettre sinx si ça marche pas et non sin
+	positionPlusAngle.setPosition(positionPlusAngle.getPosition() + Position(tmpDist*cosx(positionPlusAngle.getAngle()), tmpDist*sinx(positionPlusAngle.getAngle())));    //mettre sinx si ça marche pas et non sin
 
 	prevDeltaTicksRoueGauche = deltaTicksRoueGauche;    //Pour prendre la vitesse moyenne en utilisant le deplacement précédents.
 	prevDeltaTicksRoueDroite = deltaTicksRoueDroite;    //idem pour l'angle
+
 }
 
 void Odometrie::setPos(PositionPlusAngle p)

@@ -60,7 +60,7 @@ class Asservissement{
         /**@brief Constructeur de l'asservissement (avec forcement l'odometrie) */
         Asservissement(Odometrie* _odometrie);
         /**@brief Pour connaitre la vitesse lineaire attendu du robot */
-        Distance getLinearSpeed();
+        Vitesse getLinearSpeed();
         /**@brief Pour connaitre la vitesse angulaire attendu du robot */
         Angle getAngularSpeed();
         /**@brief On stock l'asservissement en statique car un seul peut exister en meme temps */

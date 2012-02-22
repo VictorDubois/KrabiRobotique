@@ -61,8 +61,10 @@ void Asservissement::update(void)
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
 
         if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
-       //     command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
+        {
+        //     command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
               command->update();
+        }
 
 
         //Puis on les récupéres
@@ -91,14 +93,14 @@ void Asservissement::update(void)
 
     if (testcap)
     {   //Si on détecte quelque chose, on s'arréte
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
         roues.gauche.tourne(0.);
         roues.droite.tourne(0.);
     }
     else
     {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
         // à tourner et avancer correctement
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
         roues.gauche.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }

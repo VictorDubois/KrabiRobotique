@@ -2,6 +2,7 @@
 #define ODOMETRIE_H_INCLUDED
 
 #include "variable.h"
+#include "Angle.h"
 #include "distance.h"
 #include "PositionPlusAngle.h"
 #include "quadrature_coder_handler.h"
