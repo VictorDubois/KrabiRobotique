@@ -21,6 +21,8 @@ public:
 	Angle getVitesseAngulaire();
 	Distance getVitesseLineaire();
 	void update() { };
+	/**@brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme*/
+    static Odometrie* odometrie;
 };
 
 #else
@@ -46,6 +48,8 @@ class Odometrie
         Angle getVitesseAngulaire();
         /**@brief Pour connaitre la vitesse linéaire du robot */
         Distance getVitesseLineaire();
+        /**@brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme*/
+        static Odometrie* odometrie;
 
     private:
         /**@brief Permet de connaitre le nombre de tick envoyés par la roue codeuse droite donc connaitre le nombre de tour de celle ci */

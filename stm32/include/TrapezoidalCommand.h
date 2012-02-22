@@ -62,7 +62,10 @@ class TrapezoidalCommand : public Command
         float getLinearSpeed();
         /**@brief Retourne la vitesse angulaire à atteindre par le robot */
         Angle getAngularSpeed();
-
+        /**@brief Indique si le robot a atteind sa destination ou non*/
+        bool destinationAtteinte();
+        /**@brief Indique si le robot a atteind sa destination ou non*/
+        bool fini;
 };
 
 #endif

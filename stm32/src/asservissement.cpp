@@ -61,7 +61,9 @@ void Asservissement::update(void)
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
 
         if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
-            command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
+       //     command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
+              command->update();
+
 
         //Puis on les récupéres
         float vitesse_lineaire_a_atteindre = getLinearSpeed();

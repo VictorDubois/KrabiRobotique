@@ -1,13 +1,17 @@
 #include "TrapezoidalCommand.h"
 
+
 TrapezoidalCommand::~TrapezoidalCommand()
 {
+       Command* & c = Asservissement::asservissement->command;
+       c = NULL;
 }
 
 TrapezoidalCommand::TrapezoidalCommand() :
     Command(),      //apparement ça fonctionne sans mais c'est bizarre
     vitesse_lineaire_a_atteindre(0),
-    vitesse_angulaire_a_atteindre(0)
+    vitesse_angulaire_a_atteindre(0),
+    fini(false)
 {
 }
 
@@ -33,6 +37,7 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 		angle_restant = vecteur_pos_actuelle_pos_arrivee.getAngle() - positionPlusAngleActuelle.getAngle();
 
 		if(distance_restante < DISTANCE_ARRET){
+		    fini = true;
 			Strategie::strategie->done();
 			vitesse_lineaire_a_atteindre = 0;
 		}
@@ -54,6 +59,7 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 		if(fabs(wrapAngle(angle_restant)) < ANGLE_ARRET)
 		{
 			vitesse_angulaire_a_atteindre = 0;
+			fini = true;
 			Strategie::strategie->done();
         }
 		else
@@ -65,6 +71,7 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 		if(fabs(destination.getX()) < ANGLE_ARRET)
         {
 			vitesse_angulaire_a_atteindre = 0;
+			fini = true;
 			Strategie::strategie->done();
         }
 		else
@@ -77,6 +84,7 @@ void TrapezoidalCommand::update(PositionPlusAngle positionPlusAngleActuelle, Ang
 		if(destination.getX() < DISTANCE_ARRET)
         {
 			Strategie::strategie->done();
+			fini = true;
 			vitesse_lineaire_a_atteindre = 0;
         }
 		else
@@ -144,6 +152,7 @@ Angle TrapezoidalCommand::getVitesseAngulaireAfterTrapeziumFilter(Angle vitesse_
 //aller à une position
 void TrapezoidalCommand::goTo(Position position, bool stop)
 {
+    fini = false;
     destination = position;
     direction = false;
     en_mouvement = true;
@@ -153,6 +162,7 @@ void TrapezoidalCommand::goTo(Position position, bool stop)
 //faire face à une position
 void TrapezoidalCommand::face(Position position, bool stop)
 {
+    fini = false;
 	destination = position;
 	direction = true;
 	en_mouvement = false;
@@ -162,6 +172,7 @@ void TrapezoidalCommand::face(Position position, bool stop)
 //tourner du premier chiffre des positions (en degre)
 void TrapezoidalCommand::tourne(Position position, bool stop)
 {
+    fini = false;
 	destination = position;
 	destination.setX(DEGTORAD(destination.getX()));
 	direction = false;
@@ -172,9 +183,14 @@ void TrapezoidalCommand::tourne(Position position, bool stop)
 //avancer tout droit
 void TrapezoidalCommand::avance(Position position, bool stop)
 {
+    fini = false;
 	destination = position;
 	direction = true;
 	en_mouvement = true;
 	this->stop = stop;
 }
 
+bool TrapezoidalCommand::destinationAtteinte()
+{
+    return fini;
+}

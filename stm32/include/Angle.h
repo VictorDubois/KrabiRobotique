@@ -5,6 +5,8 @@
 
 /**@brief On définie un Angle comme étant un double pour que l'on comprenne mieux le programme. */
 typedef double Angle;
+typedef double VitesseAngulaire;
+typedef double AccelerationAngulaire;
 
 /**@brief Retourne la valeur de l'angle dans un float entre -PI et PI. */
 float wrapAngle(Angle angle);

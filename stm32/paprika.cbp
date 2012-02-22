@@ -60,20 +60,21 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/Angle.h" />
+		<Unit filename="include/CommandAvancerToutDroit.h" />
 		<Unit filename="include/Hctl_Handler.h" />
 		<Unit filename="include/Moteur.h" />
 		<Unit filename="include/Position.h" />
 		<Unit filename="include/PositionPlusAngle.h" />
-		<Unit filename="include/Rouleau.h" />
+		<Unit filename="include/TrapezoidalCommand.h" />
 		<Unit filename="include/ValeursRoues.h" />
 		<Unit filename="include/asservissement.h" />
 		<Unit filename="include/capteurs.h" />
+		<Unit filename="include/command.h" />
 		<Unit filename="include/distance.h" />
 		<Unit filename="include/memory.h" />
 		<Unit filename="include/odometrie.h" />
 		<Unit filename="include/pid_filter_angle.h" />
 		<Unit filename="include/pid_filter_distance.h" />
-		<Unit filename="include/pince.h" />
 		<Unit filename="include/pwm_handler.h" />
 		<Unit filename="include/quadrature_coder_handler.h" />
 		<Unit filename="include/roue.h" />
@@ -82,11 +83,12 @@
 		<Unit filename="include/strategie.h" />
 		<Unit filename="include/timer_handler.h" />
 		<Unit filename="src/Angle.cpp" />
+		<Unit filename="src/CommandAvancerToutDroit.cpp" />
 		<Unit filename="src/Hctl_Handler.cpp" />
 		<Unit filename="src/Moteur.cpp" />
 		<Unit filename="src/Position.cpp" />
 		<Unit filename="src/PositionPlusAngle.cpp" />
-		<Unit filename="src/Rouleau.cpp" />
+		<Unit filename="src/TrapezoidalCommand.cpp" />
 		<Unit filename="src/ValeursRoues.cpp" />
 		<Unit filename="src/asservissement.cpp" />
 		<Unit filename="src/capteurs.cpp" />
@@ -97,7 +99,6 @@
 		<Unit filename="src/odometrie.cpp" />
 		<Unit filename="src/pid_filter_angle.cpp" />
 		<Unit filename="src/pid_filter_distance.cpp" />
-		<Unit filename="src/pince.cpp" />
 		<Unit filename="src/pwm_handler.cpp" />
 		<Unit filename="src/quadrature_coder_handler.cpp" />
 		<Unit filename="src/roue.cpp" />
