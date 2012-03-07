@@ -54,4 +54,28 @@ class Strategie {
 
 };
 
+class Action {
+    public:
+        Action();
+        virtual ~Action();
+        virtual bool executer() = 0;
+};
+
+class ListeDActions {
+    private:
+        Action** actions;
+        const int nbActionsMax=30;// taille du tableau
+        int nbActions;
+    public:
+        ListeDActions();
+        ~ListeDActions();
+        void ajouter(Action* action);
+        void initialiserTableauDeBase();
+        void supprimerPremiereAction();
+        Action* premiereAction();
+        void reordonnerSerieDAction(int n);
+        //bien penser au cas où elle n'est pas dans la liste
+        Action* chercherMeilleureAction(int x, int y);
+};
+
 #endif // STRATEGIE_H_INCLUDED
