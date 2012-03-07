@@ -61,8 +61,14 @@ bool Position::operator==(const Position &p){
 
 float sqrtx(float x)
 {
-    float h=x-1;
-    return 1 + h*(0.5-h*(0.125+h*(0.0625-h*0.0390625)));
+    float r0 = 10.;
+    float r1 = (r0+x/r0)/2.;
+    while (fabs(r1-r0)>0.00001)
+    {
+        r0 = r1;
+        r1 = (r0+x/r0)/2.;
+    }
+    return r1;
 }
 
 Distance Position::getNorme(){
@@ -90,5 +96,5 @@ Angle atan2x(float y,float x)
 
 Angle Position::getAngle()
 {
-	return atan2x(y,x);
+	return atan2(y,x);
 }

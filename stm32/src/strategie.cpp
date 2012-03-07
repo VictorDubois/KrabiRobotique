@@ -1,6 +1,9 @@
 #include "strategie.h"
 #include "TrapezoidalCommand.h"
 #include "CommandAvancerToutDroit.h"
+#include "CommandTouner.h"
+#include "CommandGoTo.h"
+
 
 
 Strategie* Strategie::strategie = NULL;
@@ -47,11 +50,13 @@ void Strategie::collisionDetected(){
 
 void Strategie::doNthInstruction(uint16_t n){
    int cote = (is_blue ? 1:-1);
-   CommandAvancerToutDroit* tmp = NULL;
+  // CommandAvancerToutDroit* tmp = NULL;
+  CommandGoTo* tmp = NULL;
 
     switch(n) {
        case 1:
-                (tmp = new CommandAvancerToutDroit(1000.));
+              // (tmp = new CommandAvancerToutDroit(1000.));
+               (tmp = new CommandGoTo(Position(800.,400.)));
 
         break;
      /*   case 2:
