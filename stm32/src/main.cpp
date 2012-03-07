@@ -304,10 +304,11 @@ void test_capteurs_sharp ()
 
 int main()
 {
+
 	*NVIC_CCR = *NVIC_CCR | 0x200; /* Set STKALIGN in NVIC */
 
-    //On initialise les horloges
-    Clk_Init();
+   //On initialise les horloges
+   Clk_Init();
 
     //On définit quelques horloges supplémentaires
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -332,6 +333,7 @@ while(1)
     }
 }
 */
+
 
     unsigned int buffer = 0xffffffff;
 
@@ -372,8 +374,10 @@ while(1)
 
 
 
-    Strategie strategie(isBlue(),odometrie);
 //  test_capteurs_sharp ();
+
+    Strategie strategie(isBlue(),odometrie);
+
     while(1);
 }
 

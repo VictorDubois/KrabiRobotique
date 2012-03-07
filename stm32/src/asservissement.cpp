@@ -100,7 +100,7 @@ void Asservissement::update(void)
     else
     {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
         // à tourner et avancer correctement
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
         roues.gauche.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }
