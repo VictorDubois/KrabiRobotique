@@ -19,6 +19,9 @@ src/ValeursRoues.cpp \
 src/asservissement.cpp \
 src/capteurs.cpp \
 src/command.cpp \
+src/CommandAvancerToutDroit.cpp \
+src/commandTourner.cpp \
+src/commandGoTo.cpp \
 src/distance.cpp \
 src/main.cpp \
 src/memory.cpp \
@@ -45,6 +48,10 @@ include/Rouleau.h \
 include/ValeursRoues.h \
 include/asservissement.h \
 include/capteurs.h \
+include/CommandGoTo.h \
+include/CommandAvancerToutDroit.h \
+include/CommandTourner.h \
+include/command.h \
 include/distance.h \
 include/memory.h \
 include/odometrie.h \

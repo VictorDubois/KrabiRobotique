@@ -62,7 +62,7 @@
 		<Unit filename="include/Angle.h" />
 		<Unit filename="include/CommandAvancerToutDroit.h" />
 		<Unit filename="include/CommandGoTo.h" />
-		<Unit filename="include/CommandTouner.h" />
+		<Unit filename="include/CommandTourner.h" />
 		<Unit filename="include/Hctl_Handler.h" />
 		<Unit filename="include/Moteur.h" />
 		<Unit filename="include/Position.h" />
@@ -88,7 +88,7 @@
 		<Unit filename="src/Angle.cpp" />
 		<Unit filename="src/CommandAvancerToutDroit.cpp" />
 		<Unit filename="src/CommandGoTo.cpp" />
-		<Unit filename="src/CommandTouner.cpp" />
+		<Unit filename="src/CommandTourner.cpp" />
 		<Unit filename="src/Hctl_Handler.cpp" />
 		<Unit filename="src/Moteur.cpp" />
 		<Unit filename="src/Position.cpp" />
