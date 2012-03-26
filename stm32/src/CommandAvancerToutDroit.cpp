@@ -39,7 +39,7 @@ Angle CommandAvancerToutDroit::getAngularSpeed()
 void CommandAvancerToutDroit::update()
 {
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
-        Angle angle_restant = (destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle();
+        Angle angle_restant = wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle());
 
 		if( distance_restante < DISTANCE_ARRET)
         {

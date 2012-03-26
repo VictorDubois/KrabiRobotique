@@ -6,7 +6,7 @@ PositionPlusAngle::PositionPlusAngle(Position pos, Angle ang) : position(pos), a
 
 PositionPlusAngle PositionPlusAngle::operator+(const Distance &distance)
 {
-    return PositionPlusAngle(Position(position.getX() + distance*cosx(angle), position.getY() + distance*sinx(angle)), angle);
+    return PositionPlusAngle(Position(position.getX() + distance*cos(angle), position.getY() + distance*sin(angle)), angle);
 }
 
 PositionPlusAngle PositionPlusAngle::operator-(const Distance &distance)

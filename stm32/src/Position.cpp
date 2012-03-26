@@ -59,7 +59,7 @@ bool Position::operator==(const Position &p){
     return (this->x == p.x && this->y == p.y);
 }
 
-float sqrtx(float x)
+/*float sqrtx(float x)
 {
     float r0 = 10.;
     float r1 = (r0+x/r0)/2.;
@@ -69,13 +69,13 @@ float sqrtx(float x)
         r1 = (r0+x/r0)/2.;
     }
     return r1;
-}
+}*/
 
 Distance Position::getNorme(){
-    return Distance(sqrtx(x*x+y*y));
+    return Distance(sqrt(x*x+y*y));
 }
 
-Angle atanx(float x)
+/*Angle atanx(float x)
 {
     float y = x*x;
     return x*(1-y*(0.3333333333+y*(0.2-y*0.142857143)));
@@ -93,7 +93,7 @@ Angle atan2x(float y,float x)
         return (x>0 ? -f : (x=0 ? -M_PI_2 : -(M_PI-f) ));
     }
 }
-
+*/
 Angle Position::getAngle()
 {
 	return atan2(y,x);

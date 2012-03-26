@@ -17,6 +17,9 @@ class CommandGoTo : public Command
         Angle getAngularSpeed();
         /** @brief Fonction appeller toutes les 20 ms permettant de mettre à jour les ordres envoyé à l'asservicement */
         void update();
+        /** @brief Permet de routourner la trajectoir du robot *
+            @return Retourne un tableau de taille PATH_LENTGH contenant les positions et angles respectif du robot tous les MS_BETWEEN_UPDATE ms */
+        static PositionPlusAngle** path(Position DestinationFinale);
     private:
         /** @brief C'est la vitesse linéaire qu'on aimerait que le robot atteigne à le fin */
         Vitesse vitesseFinale;
@@ -29,12 +32,13 @@ class CommandGoTo : public Command
         /** @brief Pour connaitre la vitesse linéaire à atteindre par le robot
         *   @param Distance vitesse_lineaire_atteinte est la vitesse actuelle du robot.
         *   @param Distance distance_restante est la distance qu'il reste à parcourir par le robot.
-        *   @param Angle angle_restant est l'angle qu'il reste à parcourir par le robot.*/
-        Vitesse getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant);
+        *   @param Angle angle_restant est l'angle qu'il reste à parcourir par le robot.
+        *   @param Vitesse vitesseFinale Vitesse que l'on souhaite que le robot ait à la fin de la commande*/
+        static Vitesse getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant, Vitesse vitesseFinale);
         /** @brief Pour connaitre la vitesse angulaire à atteindre par le robot
         *   @param VitesseAngulaire vitesse_angulaire_atteinte est la vitesse angulaire actuelle du robot.
         *   @param Angle angle_restant est l'angle qu'il reste à parcourir par le robot.*/
-        VitesseAngulaire getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_atteinte, Angle angle_restant);
+        static VitesseAngulaire getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_atteinte, Angle angle_restant);
 };
 
 #endif // COMMANDGOTO_H

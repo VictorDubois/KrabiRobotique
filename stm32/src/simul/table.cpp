@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <QPainter>
+#include "CommandGoTo.h"
 
 Position getCase(unsigned int i, unsigned int j)
 {
@@ -57,7 +58,7 @@ Table::Table(QWidget* parent) :
 
     //création des robots
 	robots.push_back(new Robot(world));
-	//création des objets (par pair devant avoir la même couleur)
+/*	//création des objets (par pair devant avoir la même couleur)
     objets.push_back(new Objet(world, Position(2000.,500.), couleur[0]));
     objets.push_back(new Objet(world, Position(1000.,500.), couleur[0]));
     objets.push_back(new Objet(world, Position(450.,1700.), couleur[1]));
@@ -140,7 +141,7 @@ Table::Table(QWidget* parent) :
     box.SetAsBox(0.11,3.75, b2Vec2(26.76,16.3), 6.216); //Violet Boat
 	tableBody->CreateFixture(&fixture);
 
-
+*/
 }
 
 Table::~Table()
@@ -245,6 +246,17 @@ void Table::paintEvent(QPaintEvent* evt)
 		robots[i]->paint(p,dt);
 
 	dt = 0;
+
+    // Dessin d'un trajet
+	PositionPlusAngle** path = CommandGoTo::path(Position(1500,1500));
+    p.setPen(QColor(Qt::black));
+	for(unsigned int i=0; i+1 < PATH_LENGTH; i++)
+		p.drawLine(path[i]->position.x, -path[i]->position.y, path[i+1]->position.x, -path[i+1]->position.y);
+    for (unsigned int i=0; i < PATH_LENGTH; i++)
+    {
+        delete path[i];
+    }
+    delete path;
 
 }
 
