@@ -131,3 +131,12 @@ PositionPlusAngle** CommandGoTo::path(Position DestinationFinale)
     }
     return trajectoire;
 }
+
+void CommandGoTo::deletePath(PositionPlusAngle** path)
+{
+   for (int i=1; i<PATH_LENGTH; i++)
+   {
+       delete path[i];
+   }
+   delete path;
+}

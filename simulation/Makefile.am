@@ -19,10 +19,10 @@ src/Angle.cpp \
 src/strategie.cpp \
 src/pid_filter_angle.cpp \
 src/pid_filter_distance.cpp \
-src/TrapezoidalCommand.cpp \ 
 src/CommandAvancerToutDroit.cpp \
 src/CommandTourner.cpp \
-src/CommandGoTo.cpp 
+src/CommandGoTo.cpp\ 
+src/action.cpp 
 
 paprika_INCLS=\
 include/simul/main.h \
