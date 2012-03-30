@@ -47,9 +47,9 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	level = 0;
 
 	odometrie = new Odometrie(this);
-	asservissement = new Asservissement(odometrie);
 
 	strategie = new Strategie(true, odometrie);
+	asservissement = new Asservissement(odometrie, strategie);
 
 	//asservissement->strategie = strategie;
 

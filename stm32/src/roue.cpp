@@ -28,7 +28,7 @@ Roue::Roue(unsigned char OCx, GPIO_TypeDef * GPIOx_Sens, uint16_t GPIO_Pin_Sens)
 
 void Roue::tourne(float rapport)
 {
-   // rapport = -0.5;
+   // rapport = 0.5;
     if(rapport >= 0){
         GPIO_WriteBit(GPIOx_Sens, GPIO_Pin_Sens, Bit_RESET);
     }

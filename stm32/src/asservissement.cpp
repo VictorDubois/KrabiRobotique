@@ -1,13 +1,38 @@
 #include "asservissement.h"
+#include "strategie.h"
+
+#define DBG_SIZE 600
+
+//int roueGauche[DBG_SIZE];
+//int roueDroite[DBG_SIZE];
+
+float vitesseLin[DBG_SIZE];
+float vitesseLinE[DBG_SIZE];
+//float linearDuty[DBG_SIZE];
+
+
+
+float vitesseAng[DBG_SIZE];
+float vitesseAngE[DBG_SIZE];
+//float angularDuty[DBG_SIZE];
+
+//float posx[DBG_SIZE];
+//float posy[DBG_SIZE];
+float angle[DBG_SIZE];
+uint32_t dbgInc = 0;
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
+int toto = 0;
+int caca = 0;
 
-Asservissement::Asservissement(Odometrie* _odometrie) :
+Asservissement::Asservissement(Odometrie* _odometrie, Strategie* _strategie) :
     seuil_collision(SEUIL_COLISION),
     buffer_collision(0xffffffff)
 {
+
 	odometrie = _odometrie;
+	strategie = _strategie;
 	command = NULL;
     linearDutySent = 0;
     angularDutySent = 0;
@@ -60,9 +85,14 @@ void Asservissement::update(void)
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
 
+        if (strategie)
+        {
+            strategie->update();
+        }
+
         if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
         {
-        //     command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
+//             command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
               command->update();
         }
 
@@ -85,13 +115,38 @@ void Asservissement::update(void)
         linearDutySent = MIN(MAX(linearDutySent, LINEARE_DUTY_MIN),LINEARE_DUTY_MAX);
         angularDutySent = MIN(MAX(angularDutySent, ANGULARE_DUTY_MIN),ANGULARE_DUTY_MAX);
 
+// Pour afficher les courbes :
+            if(toto < 1 && dbgInc<DBG_SIZE)
+            {
+
+        //roueGauche[caca] = odometrie->roueCodeuseGauche->getTickValue();
+        //roueDroite[caca] = odometrie->roueCodeuseDroite->getTickValue();
+                   vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
+                   vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
+             //      linearDuty[dbgInc] = linearDutySent;
+
+                   vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
+                   vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
+               //    angularDuty[dbgInc] = angularDutySent;
+
+               //    posx[caca] = positionPlusAngleActuelle.position.x;
+               //    posy[caca] = positionPlusAngleActuelle.position.y;
+                   angle[caca] = positionPlusAngleActuelle.angle; //*angle_restant.getValueInRadian();*///distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
+                   dbgInc++;
+                   caca++;
+               }
+           toto = (toto+1) % 1;
+
+
+
+
 #ifdef CAPTEURS
     bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
 #else
     bool testcap = false;
 #endif
 
-    if (testcap)
+    if (testcap || GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
         roues.gauche.tourne(0.);
