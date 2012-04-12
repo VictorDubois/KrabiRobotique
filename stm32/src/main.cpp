@@ -376,7 +376,8 @@ while(1)
 
 //  test_capteurs_sharp ();
 
-    Strategie strategie(isBlue(),odometrie);
+Strategie* strategie = new Strategie(isBlue(),odometrie);
+
 
     while(1);
 }

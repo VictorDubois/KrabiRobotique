@@ -1,5 +1,8 @@
 #include "strategie.h"
 #include "CommandGoTo.h"
+#include "CommandAvancerToutDroit.h"
+#include "CommandTourner.h"
+
 
 
 Strategie* Strategie::strategie = NULL;
@@ -9,7 +12,7 @@ collision_detected(false), listeActions(NULL)
 {
     this->is_blue = is_blue;
     this->odometrie = odometrie;
-    strategie = this;
+    Strategie::strategie = this;
     Position positionDeDepart(POS_DEPART_X,POS_DEPART_Y);
     Angle angleDeDepart(0);
 
@@ -22,24 +25,26 @@ collision_detected(false), listeActions(NULL)
     //command->strategie = this;
     instruction_nb=1;
     doNthInstruction(instruction_nb);
-    listeActions= new ListeDActions(odometrie);
-    listeActions->creerPremiereAction();
+  //  listeActions= new ListeDActions(odometrie);
+  //  listeActions->creerPremiereAction();
 }
 
 void Strategie::update(){
 
-  if(listeActions->getActionActuelle()->executer())
+ /* if(listeActions->getActionActuelle()->executer())
     {
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
-
-/*    if (instruction_nb != 0)
+*/
+    if (instruction_nb != 0)
     {
-        new CommandGoTo(Position(500,0));
+      //new CommandGoTo(Position(800,200));
+        //new CommandTourner(Angle(M_PI));
+        new CommandAvancerToutDroit(2000);
         instruction_nb = 0;
     }
-*/
+
    /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;

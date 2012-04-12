@@ -28,6 +28,8 @@
 #define CAPTEURS
 #endif
 
+class Strategie;
+
 /**@brief classe permettant de vérifier que le robot fait bien ce qu'on lui dit et de corriger les erreurs */
 class Asservissement{
     private:
