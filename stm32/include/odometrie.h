@@ -51,8 +51,10 @@ class Odometrie
         Distance getVitesseLineaire();
         /**@brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme*/
         static Odometrie* odometrie;
+        int dist;
+        int tg;
+        int td;
 
-    private:
         /**@brief Permet de connaitre le nombre de tick envoyés par la roue codeuse droite donc connaitre le nombre de tour de celle ci */
         QuadratureCoderHandler* roueCodeuseDroite;
         /**@brief Permet de connaitre le nombre de tick envoyés par la roue codeuse gauche donc connaitre le nombre de tour de celle ci */
@@ -77,6 +79,7 @@ class Odometrie
         const double coeffDistance;
         /**@brief coéfficient pour relier le nombre de tick de chaque roue à l'angle réalisé */
         const double coeffAngle;
+    private:
 };
 
 #endif // ROBOTHW

@@ -1,6 +1,6 @@
-#include "CommandTouner.h"
+#include "CommandTourner.h"
 
-CommandTouner::CommandTouner(Angle angle) :
+CommandTourner::CommandTourner(Angle angle) :
     Command(),
     vitesseAngulaireFinale(0),
     vitesse_lineaire_a_atteindre(0),
@@ -9,7 +9,7 @@ CommandTouner::CommandTouner(Angle angle) :
     destination = PositionPlusAngle(Odometrie::odometrie->getPos().getPosition(), wrapAngle(Odometrie::odometrie->getPos().getAngle() + angle) );
 }
 
-CommandTouner::CommandTouner(Angle angle, VitesseAngulaire vitesseAngulaireFinale) :
+CommandTourner::CommandTourner(Angle angle, VitesseAngulaire vitesseAngulaireFinale) :
     Command(),
     vitesseAngulaireFinale(vitesseAngulaireFinale),
     vitesse_lineaire_a_atteindre(0),
@@ -18,26 +18,26 @@ CommandTouner::CommandTouner(Angle angle, VitesseAngulaire vitesseAngulaireFinal
     destination = PositionPlusAngle(Odometrie::odometrie->getPos().getPosition(), wrapAngle(Odometrie::odometrie->getPos().getAngle() + angle) );
 }
 
-CommandTouner::~CommandTouner()
+CommandTourner::~CommandTourner()
 {
     //dtor
 }
 
-Vitesse CommandTouner::getLinearSpeed(void)
+Vitesse CommandTourner::getLinearSpeed(void)
 {
     return vitesse_lineaire_a_atteindre;
 }
 
-VitesseAngulaire CommandTouner::getAngularSpeed(void)
+VitesseAngulaire CommandTourner::getAngularSpeed(void)
 {
     return vitesse_angulaire_a_atteindre;
 }
 
 
-void CommandTouner::update(void)
+void CommandTourner::update(void)
 {
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
-        Angle angle_restant = (destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle();
+        Angle angle_restant = (destination.getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle();
 
 		if( distance_restante < DISTANCE_ARRET)
         {
@@ -45,7 +45,7 @@ void CommandTouner::update(void)
         }
 		else
         {
-            vitesse_lineaire_a_atteindre = getVitesseLineaireAfterTrapeziumFilter(Odometrie::odometrie->getVitesseLineaire(), distance_restante);
+            vitesse_lineaire_a_atteindre = getVitesseLineaireAfterTrapeziumFilter(Odometrie::odometrie->getVitesseLineaire(), distance_restante,angle_restant);
         }
         if (Angle(fabs(angle_restant)) < ANGLE_ARRET)
         {
@@ -58,7 +58,7 @@ void CommandTouner::update(void)
 }
 
 
-Vitesse CommandTouner::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_lineaire_atteinte, Distance distance_restante)
+Vitesse CommandTourner::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant)
 {
         Distance pivot = vitesse_lineaire_a_atteindre*vitesse_lineaire_a_atteindre/(2*acceleration_lineaire); // La distance pivot est la distance qu'il resterait à parcourir si le robot commençait maintenant à décélérer avec sa décélération maximale (acceleration_lineaire) (Vaa-Vf)^2/2a+(Vaa-Vf)*Vf/a (calculer l'aire sous la courbe de vitesse)
 
@@ -80,7 +80,7 @@ Vitesse CommandTouner::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_li
 }
 
 
-VitesseAngulaire CommandTouner::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_atteinte, Angle angle_restant)
+VitesseAngulaire CommandTourner::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_atteinte, Angle angle_restant)
 {
     Angle pivot = (vitesse_angulaire_a_atteindre-vitesseAngulaireFinale)*((vitesse_angulaire_a_atteindre-vitesseAngulaireFinale)/2+vitesseAngulaireFinale)/acceleration_angulaire; // idem qu'en linéaire
 

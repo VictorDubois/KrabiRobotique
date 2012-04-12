@@ -26,13 +26,12 @@ const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 int toto = 0;
 int caca = 0;
 
-Asservissement::Asservissement(Odometrie* _odometrie, Strategie* _strategie) :
+Asservissement::Asservissement(Odometrie* _odometrie) :
     seuil_collision(SEUIL_COLISION),
     buffer_collision(0xffffffff)
 {
 
 	odometrie = _odometrie;
-	strategie = _strategie;
 	command = NULL;
     linearDutySent = 0;
     angularDutySent = 0;
@@ -85,9 +84,10 @@ void Asservissement::update(void)
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
 
-        if (strategie)
+        if (Strategie::strategie)
         {
-            strategie->update();
+            Strategie::strategie->update();
+            Strategie::strategie = NULL;
         }
 
         if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre

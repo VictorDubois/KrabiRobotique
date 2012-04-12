@@ -67,8 +67,8 @@
 		<Unit filename="include/Moteur.h" />
 		<Unit filename="include/Position.h" />
 		<Unit filename="include/PositionPlusAngle.h" />
-		<Unit filename="include/TrapezoidalCommand.h" />
 		<Unit filename="include/ValeursRoues.h" />
+		<Unit filename="include/action.h" />
 		<Unit filename="include/asservissement.h" />
 		<Unit filename="include/capteurs.h" />
 		<Unit filename="include/command.h" />
@@ -93,8 +93,8 @@
 		<Unit filename="src/Moteur.cpp" />
 		<Unit filename="src/Position.cpp" />
 		<Unit filename="src/PositionPlusAngle.cpp" />
-		<Unit filename="src/TrapezoidalCommand.cpp" />
 		<Unit filename="src/ValeursRoues.cpp" />
+		<Unit filename="src/action.cpp" />
 		<Unit filename="src/asservissement.cpp" />
 		<Unit filename="src/capteurs.cpp" />
 		<Unit filename="src/command.cpp" />

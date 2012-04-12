@@ -18,8 +18,11 @@ class CommandGoTo : public Command
         /** @brief Fonction appeller toutes les 20 ms permettant de mettre à jour les ordres envoyé à l'asservicement */
         void update();
         /** @brief Permet de routourner la trajectoir du robot *
-            @return Retourne un tableau de taille PATH_LENTGH contenant les positions et angles respectif du robot tous les MS_BETWEEN_UPDATE ms */
+        *   @return Retourne un tableau de taille PATH_LENTGH contenant les positions et angles respectif du robot tous les MS_BETWEEN_UPDATE ms */
         static PositionPlusAngle** path(Position DestinationFinale);
+        /** @brief  Supprime le chemin de la mémoire *
+        *   @return path Chemin que l'on souhaite supprimer */
+        static void deletePath (PositionPlusAngle** path);
     private:
         /** @brief C'est la vitesse linéaire qu'on aimerait que le robot atteigne à le fin */
         Vitesse vitesseFinale;

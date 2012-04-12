@@ -8,8 +8,8 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
     entraxe(TAILLE_ENTRAXE),
     rayonRoueCodeuse(RAYON_ROUE),
     nbTicksParTour(NBR_TICK_PAR_TOUR),
-    coeffDistance(1.266695*(M_PI*rayonRoueCodeuse)/nbTicksParTour),  //soit la distance parcouru par un demi tour de roue
-    coeffAngle(2*coeffDistance/entraxe) // soit l'angle = opposé sur hypothénus en faisant une approximation à l'ordre 1
+    coeffDistance((M_PI*rayonRoueCodeuse)/nbTicksParTour),  //soit la distance parcouru par un demi tour de roue
+    coeffAngle(-2*coeffDistance/entraxe) // soit l'angle = opposé sur hypothénus en faisant une approximation à l'ordre 1
 {
     dist=0;
     tg = 0;
@@ -30,8 +30,8 @@ Odometrie::~Odometrie()
 
 
 void Odometrie::update(){
-    int32_t deltaTicksRoueGauche = -roueCodeuseGauche->getTickValue(); //On a le moins pour prendre en compte que les deux roux codeuses sont monté dans des sens opposées car pas du même coté du robot
-    int32_t deltaTicksRoueDroite = roueCodeuseDroite->getTickValue();
+    int32_t deltaTicksRoueGauche = roueCodeuseGauche->getTickValue(); //On a le moins pour prendre en compte que les deux roux codeuses sont monté dans des sens opposées car pas du même coté du robot
+    int32_t deltaTicksRoueDroite = -roueCodeuseDroite->getTickValue();
     //Remettre ce coefficient si ça bug mais juste en lisant le code j'en vois pas l'utilité
     if (deltaTicksRoueDroite > 0)
         deltaTicksRoueDroite*=1.50;

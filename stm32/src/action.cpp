@@ -279,21 +279,21 @@ void  ListeDActions::initialiserTableauDeBase()
     for(int i = 0 ; i < nbActionsMax ; i++)
         nbActionsBase[i] = 0;
 
-/*    actions[0]=new ActionBase[4];
+    actions[0]=new ActionBase[4];
     actions[0][0].position = Position(500,1500);//1
     actions[0][1].position = Position(1100,1215);//2
     actions[0][2].position = Position(1200,1000);//3
     actions[0][3].position = Position(860,1215);//3b
     actions[0][3].reculer = true; // a reculon
     nbActionsBase[0] = 4;
-*/
 
-    actions[0]=new ActionBase[1];
+
+/*    actions[0]=new ActionBase[1];
     actions[0][0].position = Position(1500,500);//1
     nbActionsBase[0] = 2;
+*/
 
-
-/*    actions[1]=new ActionBase[8];
+    actions[1]=new ActionBase[8];
     actions[1][0].position = Position(860,600);//3c
     actions[1][1].position = Position(175,450);//3d
     actions[1][2].position = Position(0,647);//4
@@ -304,7 +304,7 @@ void  ListeDActions::initialiserTableauDeBase()
     actions[1][7].position = Position(860,1000);//9
     actions[1][7].reculer = true; // a reculon
     nbActionsBase[1] = 8;
-*/
+
 
     nbActions=1;
 }
