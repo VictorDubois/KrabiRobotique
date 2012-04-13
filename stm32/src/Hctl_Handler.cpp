@@ -1,3 +1,4 @@
+#ifdef RIEN_A_FAIRE  // Le code ne sert à rien, on le supprime donc de la compilation
 #include "Hctl_Handler.h"
 
 Hctl_Handler::Hctl_Handler()
@@ -153,3 +154,4 @@ ValeursRoues Hctl_Handler::faireUnTour() {
         return roues;
 }*/
 
+#endif
