@@ -1,3 +1,4 @@
+#ifdef RIEN_A_FAIRE
 #ifndef HCTL_HANDLER_H_INCLUDED
 #define HCTL_HANDLER_H_INCLUDED
 
@@ -32,3 +33,4 @@ class Hctl_Handler
 };
 
 #endif // HCTLHANDLER_H_INCLUDED
+#endif

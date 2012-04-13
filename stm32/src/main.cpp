@@ -166,6 +166,7 @@ On l'appellera ensuite dans le main au tout début pour tout initialiser d'un co
 */
 void initialisation()
 {
+#ifdef STM32F10X_MD //Pin pour le stm32 h103
     //Patte coté de la partie bleu ou jaune
     GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_11;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
@@ -235,6 +236,88 @@ void initialisation()
    GPIO_Init(GPIOB, &GPIO_InitStructure);
    GPIO_WriteBit(GPIOB, GPIO_Pin_9, Bit_SET);
 */
+#endif //STM32F10X_MD
+
+#ifdef STM32F10X_CL //Pin pour le stm32 h107
+    //Patte coté de la partie bleu ou jaune
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_4;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+
+    //Tirette
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+
+        //Fin de Course 1
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+        //Fin de course 2
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+        //Fin de course 3
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_2;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+            //Fin de course 4
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    //Pattes des servos
+//    GPIO_WriteBit(GPIOA,GPIO_Pin_6,Bit_SET);  //servo 1 (bras gauche)
+//    GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+//    GPIO_WriteBit(GPIOA,GPIO_Pin_7,Bit_SET);  //servo 2 (bras droite)
+//    GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+//    GPIO_WriteBit(GPIOB,GPIO_Pin_0,Bit_SET);  //servo 3 (balais)
+//    GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+//    GPIO_WriteBit(GPIOB,GPIO_Pin_1,Bit_SET);  //servo 4 (UltraSon)
+//    GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+
+
+  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED
+   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
+   GPIO_Init(GPIOC, &GPIO_InitStructure);
+   GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+
+
+#endif //STM32F10X_CL
+
 }
 
 /* Inutil puisqu'elle n'est pas utilisé
@@ -251,13 +334,23 @@ void positionnement(bool is_blue)
 //Dis si on est du coté bleu
 bool isBlue()
 {
+#ifdef STM32F10X_MD //Pin pour le stm32 h103
     return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET;
+#endif
+#ifdef STM32F10X_CL //Pin pour le stm32 h107
+    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)  == Bit_RESET;
+#endif
 }
 
 //Dis si la tirette est enleve
 bool isTiretteEnleve()
 {
+#ifdef STM32F10X_MD //Pin pour le stm32 h103
     return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10)  == Bit_SET;
+#endif
+#ifdef STM32F10X_CL //Pin pour le stm32 h107
+    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5)  == Bit_SET;
+#endif
 }
 
 /* fonction inutilisé
@@ -314,7 +407,13 @@ int main()
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+#ifdef STM32F10X_MD
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA, ENABLE);
+#endif
+#ifdef STM32F10X_CL
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, ENABLE);
+#endif
+
 
     //Appel de la fonction qui permet d'initialiser tous les PINS
     initialisation();
@@ -424,13 +523,23 @@ void Clk_Init()
   // On attend qu'elle soit allume
   while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
   // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
+#ifdef STM32F10X_MD //Pour le stm32 h103
   RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_9); // 72MHz
+#endif
+#ifdef STM32F10X_CL
+  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9); // ??MHz
+#endif
   // On demarre le PLL une fois la config entre
   RCC_PLLCmd(ENABLE);
   // On attend qu'il soit vraiment allume
   while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
   // On demare les composant interne au microcontroleur
+#ifdef STM32F10X_MD //Pour le stm32 h103
   RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
+#endif
+#ifdef STM32F10X_CL
+  RCC_OTGFSCLKConfig(RCC_OTGFSCLKSource_PLLVCO_Div3);
+#endif
   RCC_ADCCLKConfig(RCC_PCLK2_Div8);
   RCC_PCLK2Config(RCC_HCLK_Div8);
   RCC_PCLK1Config(RCC_HCLK_Div2);

@@ -148,14 +148,24 @@ void Asservissement::update(void)
 
     if (testcap || GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
+        #ifdef STM32F10X_MD
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
+        #endif
+        #ifdef STM32F10X_CL
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //ON
+        #endif
         roues.gauche.tourne(0.);
         roues.droite.tourne(0.);
     }
     else
     {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
         // à tourner et avancer correctement
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+        #ifdef STM32F10X_MD
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
+        #endif
+        #ifdef STM32F10X_CL
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //OFF
+        #endif
         roues.gauche.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }
