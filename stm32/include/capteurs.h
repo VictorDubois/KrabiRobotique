@@ -6,7 +6,9 @@
 #include "stm32f10x_dma.h"
 #include "stm32f10x_gpio.h"
 
-/**@brief Classe gérant les capteurs infrarouges de distance. */
+/** @brief Classe gérant les capteurs infrarouges de distance. */
+/** @warning Cette classe est rendu obsolètes par les classes héritants de Sensor et de Sensors */
+/** @deprecated Utiliser plutôt les classes héritants de Sensor et de Sensors */
 class Capteurs
 {
 private:

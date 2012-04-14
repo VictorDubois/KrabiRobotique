@@ -25,7 +25,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fno-rtti -fno-exceptions" />
-			<Add option="-DSTM32F10X_MD" />
+			<Add option="-DSTM32F10X_CL" />
 			<Add option="-DROBOTHW" />
 			<Add option="-DROUES" />
 			<Add directory="include" />
@@ -59,14 +59,21 @@
 		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="include/AnalogSensor.h" />
 		<Unit filename="include/Angle.h" />
 		<Unit filename="include/CommandAvancerToutDroit.h" />
 		<Unit filename="include/CommandGoTo.h" />
 		<Unit filename="include/CommandTourner.h" />
 		<Unit filename="include/Hctl_Handler.h" />
+		<Unit filename="include/LigthBarrierSensor.h" />
+		<Unit filename="include/LimitSwitchSensor.h" />
 		<Unit filename="include/Moteur.h" />
 		<Unit filename="include/Position.h" />
 		<Unit filename="include/PositionPlusAngle.h" />
+		<Unit filename="include/Sensor.h" />
+		<Unit filename="include/Sensors.h" />
+		<Unit filename="include/SharpSensor.h" />
+		<Unit filename="include/UltrasoundSensor.h" />
 		<Unit filename="include/ValeursRoues.h" />
 		<Unit filename="include/action.h" />
 		<Unit filename="include/asservissement.h" />
@@ -85,14 +92,21 @@
 		<Unit filename="include/strategie.h" />
 		<Unit filename="include/timer_handler.h" />
 		<Unit filename="include/variable.h" />
+		<Unit filename="src/AnalogSensor.cpp" />
 		<Unit filename="src/Angle.cpp" />
 		<Unit filename="src/CommandAvancerToutDroit.cpp" />
 		<Unit filename="src/CommandGoTo.cpp" />
 		<Unit filename="src/CommandTourner.cpp" />
 		<Unit filename="src/Hctl_Handler.cpp" />
+		<Unit filename="src/LigthBarrierSensor.cpp" />
+		<Unit filename="src/LimitSwitchSensor.cpp" />
 		<Unit filename="src/Moteur.cpp" />
 		<Unit filename="src/Position.cpp" />
 		<Unit filename="src/PositionPlusAngle.cpp" />
+		<Unit filename="src/Sensor.cpp" />
+		<Unit filename="src/Sensors.cpp" />
+		<Unit filename="src/SharpSensor.cpp" />
+		<Unit filename="src/UltrasoundSensor.cpp" />
 		<Unit filename="src/ValeursRoues.cpp" />
 		<Unit filename="src/action.cpp" />
 		<Unit filename="src/asservissement.cpp" />
