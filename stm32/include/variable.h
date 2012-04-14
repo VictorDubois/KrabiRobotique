@@ -36,7 +36,12 @@
 #define ANGULARE_DUTY_MIN -0.60
 
 //CAPTEURS
+    /// @brief SEUIL_DETECTION Seuil de detection des capteurs sharp. Au dessus de cette valeur, un objet sera considéré comme présent devant le capteur.
 #define SEUIL_DETECTION 2000.
+    /// @brief COEFFICIENT_LIN_ULTRASON Coefficient multiplicateur utilisé pour transformé la valeur analogique rendu par le capteur ultrason en une distance en metres.
+#define COEFFICIENT_LIN_ULTRASON 2.54/2.
+    /// @brief NB_CAPTEUR_A_ADC Nombre de capteur nécéssitant d'utiliser un ADC
+#define NB_CAPTEUR_A_ADC 6
 
 //COMMAND
 #define VITESSE_LINEAIRE_MAX 4

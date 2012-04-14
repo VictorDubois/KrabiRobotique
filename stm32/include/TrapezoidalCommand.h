@@ -9,6 +9,7 @@
 #include "odometrie.h"
 
 /**@brief Cette classe permet de donner des ordres au robot et de les lui faire exécuter */
+/**@deprecated Utiliser plutôt les classes héritants de la classe Command */
 class TrapezoidalCommand : public Command
 {
     private:
