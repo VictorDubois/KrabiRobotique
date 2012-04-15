@@ -13,7 +13,7 @@ class AnalogSensor : public Sensor
     public:
         /** @brief Constructeur d'un capteur analogique de base *
         *   @param Channel Numéro du canal du convertisseur analogiqueNumérique utilisé *
-        *   @param pData Pointeur vers les données brutes du capteur directement sortie du ADC */
+        *   @param pData Pointeur vers le tableau de données brutes des capteur directement sortie du ADC. Ce pointeur doit bien pointer vers la première case du tableau et pas vers la case de données brutes utile de ce capteur.  */
         AnalogSensor(uint8_t channel, uint16_t* pData);
         /** @brief Destructeur de la classe */
         virtual ~AnalogSensor();
@@ -21,18 +21,24 @@ class AnalogSensor : public Sensor
         *   @return Retourne une structure OutputSensor contenant les données traitées du capteur */
         virtual OutputSensor getValue() = 0;
 
-        /** @brief Methode de classe permettant d'initialiser la convertion ADC du stm32. Cette méthode doit seulement être appelé une seule fois *
-        *   @warning Attention, cette methode devrait être appelé qu'une seule et unique fois. *
+        /** @brief Methode de classe permettant d'initialiser la convertion ADC du stm32. Cette méthode doit seulement être appelé une seule fois avant toutes déclarration d'un objet de classe héritant d'AnalogSensor*
+        *   @warning Attention, cette methode devrait être appelé qu'une seule et unique fois avant toutes déclarration d'un objet de classe héritant d'AnalogSensor. *
         *   @param nbChannelADC Nombre de canal ADC utilisé au total *
         *   @return Pointeur vers le tableau de d'uint16_t dans lequel sera stocké les données numériques brute sortie du convertisseur analogique numérique. */
-        static uint16_t* initialiserADC(int nbChannel);
+        static uint16_t* initialiserADC_Debut(int nbChannel);
+        /** @brief Methode de classe permettant de finir l'initialisation la convertion ADC du stm32. Cette méthode doit seulement être appelé une seule fois après toutes déclarration d'un objet de classe héritant d'AnalogSensor*
+        *   @warning Attention, cette methode devrait être appelé qu'une seule et unique fois après toutes déclarration d'un objet de classe héritant d'AnalogSensor. *
+        *   @param data Pointeur vers le tableau de d'uint16_t dans lequel sera stocké les données numériques brute sortie du convertisseur analogique numérique.
+        *   @param nbChannelADC Nombre de canal ADC utilisé au total */
+        static void initialiserADC_Fin(uint16_t* data, int nbChannel);
 
     protected:
         /** @brief Numéro du canal du convertisseur analogiqueNumérique utilisé */
         uint8_t channel;
-        /** @brief Pointeur vers les données brutes du capteur directement sortie du ADC */
+        /** @brief Pointeur vers la case de données brutes du capteur directement sortie du ADC */
         uint16_t* data;
     private:
+        static int nbCapteurDejaInitialise;
 };
 
 #endif // ANALOGSENSOR_H

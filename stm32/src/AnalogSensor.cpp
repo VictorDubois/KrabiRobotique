@@ -1,9 +1,16 @@
 #include "AnalogSensor.h"
 
+int AnalogSensor::nbCapteurDejaInitialise = 0;
+
 AnalogSensor::AnalogSensor(uint8_t channel, uint16_t* pData)
 {
     this->channel = channel;
-    this->data = pData;
+    this->data = pData + AnalogSensor::nbCapteurDejaInitialise;
+
+    AnalogSensor::nbCapteurDejaInitialise = AnalogSensor::nbCapteurDejaInitialise + 1;
+
+    ADC_RegularChannelConfig (ADC1, channel, AnalogSensor::nbCapteurDejaInitialise , ADC_SampleTime_1Cycles5);
+
 }
 
 AnalogSensor::~AnalogSensor()
@@ -12,7 +19,7 @@ AnalogSensor::~AnalogSensor()
 }
 
 
-uint16_t* AnalogSensor::initialiserADC(int nbChannel)
+uint16_t* AnalogSensor::initialiserADC_Debut(int nbChannel)
 {
    uint16_t* data = new uint16_t[nbChannel];
 
@@ -40,6 +47,8 @@ uint16_t* AnalogSensor::initialiserADC(int nbChannel)
     ADC_StartCalibration(ADC1);
     // Et on attend que ce soit fini
     while(ADC_GetCalibrationStatus(ADC1));
+    return data;
+}
 
 /*    // Définition des canaux à convertir
     //ADC_RegularChannelConfig (ADC_TypeDef *ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime)
@@ -47,6 +56,9 @@ uint16_t* AnalogSensor::initialiserADC(int nbChannel)
         ADC_RegularChannelConfig (ADC1, Channels[i], i+1, ADC_SampleTime_1Cycles5);
     }
  */   // active le transfert des résultats de conversion en SRAM
+
+void AnalogSensor::initialiserADC_Fin( uint16_t* data, int nbChannel)
+{
     ADC_DMACmd(ADC1, ENABLE);
 
     DMA_InitTypeDef DMA_InitStructure;
@@ -67,6 +79,4 @@ uint16_t* AnalogSensor::initialiserADC(int nbChannel)
     // Channel1 : cf p.192 tableau 58
     DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     DMA_Cmd(DMA1_Channel1, ENABLE);
-
-    return data;
 }
