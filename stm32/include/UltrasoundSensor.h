@@ -23,8 +23,7 @@ class UltrasoundSensor : public AnalogSensor
         static float coeff;
     protected:
     private:
-        /** @brief Moyenne de la sortie numérique pour filtrer le signal numérique reçu. Ce compteur agit comme un filtre passe bas. */
-        uint32_t mean;
+
 };
 
 #endif // ULTRASOUNDSENSOR_H
