@@ -1,5 +1,6 @@
 #include "Sensors.h"
 
+
 Sensors::Sensors()
 {
     uint16_t* data = AnalogSensor::initialiserADC_Debut(NB_CAPTEUR_A_ADC);
@@ -55,16 +56,16 @@ Sensors::~Sensors()
 
 Sensors::SharpNameVector  Sensors::detectedSharp()
 {
-    SharpNameVector result(1,SharpSensor::NONE);
+    SharpNameVector result;
+    result.reserve(nbSharp);
     for (int i = 0; i< nbSharp; i++)
     {
        if (sharps[i]->getValue().b)
        {
-    //        result.push_back(sharps[i]->getName());
+            result.push_back(sharps[i]->getName());
        }
     }
-    if (result.size()==0) // Si on detecte rien, on retourne NONE.
-//        result.push_back(SharpSensor::NONE);
+    result.resize();
     return result;
 }
 
@@ -76,5 +77,19 @@ bool Sensors::detectedSharp(SharpSensor::SharpName name)
             return sharps[i]->getValue().b;
     }
     return false; // Si aucun capteur n'a ce nom (exemple NONE)
+}
+
+Sensors::LimitSwitchNameVector Sensors::detectedLimitSwitch()
+{
+    LimitSwitchNameVector result(nbLimitSwitch);
+    for (int i = 0; i<nbLimitSwitch; i++)
+    {
+        if (limitSwitchs[i]->getValue().b)
+        {
+            result.push_back(limitSwitchs[i]->getName());
+        }
+    }
+    result.resize();
+    return result;
 }
 

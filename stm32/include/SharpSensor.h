@@ -11,8 +11,6 @@ class SharpSensor : public AnalogSensor
         /** @brief Permet de nommer les différents capteurs */
         enum SharpName
         {
-            /** @brief Aucun des capteurs sharps du robot */
-            NONE,
             /** @brief Capteur arrière */
             BACK,
             /** @brief Capteur avant gauche */
