@@ -3,7 +3,8 @@
 
 Sensors::Sensors()
 {
-    uint16_t* data = AnalogSensor::initialiserADC_Debut(NB_CAPTEUR_A_ADC);
+    uint8_t channels[NB_CAPTEUR_A_ADC] = {10, 11, 12, 13, 14, 15};
+    uint16_t* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
     // On initialise le nombre de capteur de chaque type
@@ -35,7 +36,7 @@ Sensors::Sensors()
     limitSwitchs[2] = new LimitSwitchSensor(LimitSwitchSensor::FRONT_LEFT, GPIO_Pin_2, GPIOE);
     limitSwitchs[3] = new LimitSwitchSensor(LimitSwitchSensor::FRONT_RIGTH, GPIO_Pin_3, GPIOE);
 
-    AnalogSensor::initialiserADC_Fin(data, NB_CAPTEUR_A_ADC);
+ //   AnalogSensor::initialiserADC_Fin(data, NB_CAPTEUR_A_ADC);
 }
 
 Sensors::~Sensors()

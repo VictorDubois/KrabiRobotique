@@ -17,6 +17,7 @@
 #include "strategie.h"
 #include "odometrie.h"
 #include "stm32f10x.h"
+#include "Sensors.h"
 
 #ifdef POSITIONNEMENT
 #include "command.h"
@@ -252,7 +253,7 @@ void initialisation()
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-
+/*
         //Fin de Course 1
     GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
@@ -276,7 +277,7 @@ void initialisation()
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOE, &GPIO_InitStructure);
-
+*/
     //Pattes des servos
 //    GPIO_WriteBit(GPIOA,GPIO_Pin_6,Bit_SET);  //servo 1 (bras gauche)
 //    GPIO_Write(GPIOB, 0xffff);
@@ -308,12 +309,12 @@ void initialisation()
 
 
 
-  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED
-   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
+  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED Jaune
+   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
    GPIO_Init(GPIOC, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+   GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
 
 
 #endif //STM32F10X_CL
@@ -444,7 +445,12 @@ while(1)
     }
 
 //Une fois que la tirette est enlevée pour la 1ère fois, on lance le positionnement automatique
+#ifdef STM32F10X_MD
     Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
+#endif
+#ifdef STM32F10X_CL
+    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM5), new QuadratureCoderHandler(TIM2));
+#endif
     new Asservissement(odometrie);  // On définie l'asservissement
     Servo::initTimer();     // A faire avant tout utilisation de servo
 
@@ -477,6 +483,7 @@ while(1)
 
 Strategie* strategie = new Strategie(isBlue(),odometrie);
 
+Sensors* sensors = new Sensors();
 
     while(1);
 }
