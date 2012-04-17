@@ -2,6 +2,7 @@
 #include "strategie.h"
 
 #define DBG_SIZE 600
+#undef CAPTEURS
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
