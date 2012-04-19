@@ -19,7 +19,7 @@ class vector
         void push_back(T value);
         /** @brief Pour retourner un élément précis du vecteur *
         *   @param i Case de l'élément à retourner */
-        T* operator[](int i);
+        T operator[](int i);
         /** @brief Permet de réduire la taille du tableau en mémoire à la taille réél dont a besoin le vecteur pour stocker toutes les données */
         void resize();
         /** @brief Accesseur de size */
@@ -83,7 +83,7 @@ void vector<T>::push_back(T value)
 }
 
 template<typename T>
-T* vector<T>::operator[](int i)
+T vector<T>::operator[](int i)
 {
     if (i<size)
         return table[i];

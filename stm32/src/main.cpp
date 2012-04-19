@@ -485,6 +485,27 @@ Strategie* strategie = new Strategie(isBlue(),odometrie);
 
 Sensors* sensors = new Sensors();
 
+Sensors::SharpNameVector out;
+Sensors::LimitSwitchNameVector out2;
+
+for (int i = 0; i<10; i++)
+{
+    AnalogSensor::startConversion();
+    out = sensors->detectedSharp();
+    out2 = sensors->detectedLimitSwitch();
+}
+
+SharpSensor::SharpName o;
+LimitSwitchSensor::LimitSwitchName o2;
+if (out.getSize()> 0)
+{
+    o = out[0];
+}
+if (out2.getSize()> 0)
+{
+    o2 = out2[0];
+}
+
     while(1);
 }
 

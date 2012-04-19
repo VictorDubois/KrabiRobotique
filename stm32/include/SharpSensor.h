@@ -11,6 +11,8 @@ class SharpSensor : public AnalogSensor
         /** @brief Permet de nommer les différents capteurs */
         enum SharpName
         {
+            /** @brief Aucun capteur */
+            NONE,
             /** @brief Capteur arrière */
             BACK,
             /** @brief Capteur avant gauche */
@@ -39,13 +41,21 @@ class SharpSensor : public AnalogSensor
         /** @brief Accesseur de name */
         SharpName getName();
 
+        /** @brief Met à jour la valeur de retour du capteur en étudiant la sortie analogique. *
+        *   @warning Il faut appeler cette fonction souvent pour que la value du retour du capteur soit la plus juste possible. */
+        void updateValue();
+
         /** @brief Seuil de détection utilisé pour les calibrer les capteurs sharp. Un retour supérieur à ce seuil sera considéré comme la détection d'un obstacle */
         static uint16_t threshold;
     protected:
     private:
         /** @brief Compteur pour filtrer le signal numérique reçu. Ce compteur agit comme un filtre passe bas. */
         uint32_t counter;
+        /** @brief Nom du capteur */
         SharpName name;
+        /** @brief Valeur retourné par le capteur */
+        bool output;
+
 };
 
 #endif // SHARPSENSOR_H
