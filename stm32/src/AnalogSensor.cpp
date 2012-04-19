@@ -7,7 +7,7 @@ AnalogSensor::AnalogSensor(uint8_t channel, uint16_t* pData)
     this->channel = channel;
     this->data = pData + AnalogSensor::nbCapteurDejaInitialise;
 
-    AnalogSensor::nbCapteurDejaInitialise = AnalogSensor::nbCapteurDejaInitialise + 1; // ça sert peut être plus
+    AnalogSensor::nbCapteurDejaInitialise++;
 
 }
 
@@ -77,4 +77,17 @@ uint16_t* AnalogSensor::initialiserADC(uint8_t nbChannel, uint8_t* channels)
     DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     DMA_Cmd(DMA1_Channel1, ENABLE);
     return data;
+}
+
+
+
+void AnalogSensor::startConversion()
+{
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE); // lance une conversion
+}
+
+bool AnalogSensor::conversionFinished()
+{
+    //return (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == SET);
+    return DMA_GetFlagStatus(DMA1_FLAG_TC1);
 }

@@ -6,6 +6,7 @@ SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData) : Ana
 {
     this->name = name;
     counter = 0;
+    output = false;
 }
 
 SharpSensor::~SharpSensor()
@@ -13,15 +14,27 @@ SharpSensor::~SharpSensor()
     //dtor
 }
 
+
+
 Sensor::OutputSensor SharpSensor::getValue()
 {
-    OutputSensor output;
-    output.type = SHARP;
-    output.f = 0;
+    while(!AnalogSensor::conversionFinished());    // au cas où l'interrupt de l'asservissement tombe avant la fin de l'acquisition/conversion
+    /***********************************************
+     **                                           **
+     **                                           **
+     ** C'EST ICI QU'IL FAUT METTRE LE BREAKPOINT **
+     **     POUR AVOIR LA VALEUR DES CAPTEURS     **
+     **                                           **
+     **                                           **
+     ***********************************************/
+    OutputSensor outputR;
+    outputR.type = SHARP;
+    outputR.f = 0;
     counter <<= 1;
     counter |= (*data < threshold);
-    output.b = output.b ? !((counter & 0x0f) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 4 fois pour retourner false.
-    return output;
+    output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
+    outputR.b = output;
+    return outputR;
 }
 
 SharpSensor::SharpName SharpSensor::getName()

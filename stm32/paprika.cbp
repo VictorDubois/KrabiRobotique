@@ -92,6 +92,7 @@
 		<Unit filename="include/strategie.h" />
 		<Unit filename="include/timer_handler.h" />
 		<Unit filename="include/variable.h" />
+		<Unit filename="include/vector.h" />
 		<Unit filename="src/AnalogSensor.cpp" />
 		<Unit filename="src/Angle.cpp" />
 		<Unit filename="src/CommandAvancerToutDroit.cpp" />

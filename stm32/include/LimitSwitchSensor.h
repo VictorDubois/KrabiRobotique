@@ -10,14 +10,14 @@ class LimitSwitchSensor : public Sensor
     public:
         /** @brief Permet de nommer les différents fin de course */
         enum LimitSwitchName {
+            /** @brief Aucun capteur */
+            NONE,
             /** @brief Fin de course arrière gauche */
             BACK_LEFT,
             /** @brief Fin de course arrière droit */
             BACK_RIGTH,
-            /** @brief Fin de course avant gauche */
-            FRONT_LEFT,
-            /** @brief Fin de course avant droit */
-            FRONT_RIGTH
+            /** @brief Fin de course avant */
+            FRONT
         };
         /** @brief Permet de nommer les différents fin de course */
         typedef enum LimitSwitchName LimitSwitchName;
