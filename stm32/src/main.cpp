@@ -309,12 +309,19 @@ void initialisation()
 
 
 
-  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED Jaune
+  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED Verte
    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
    GPIO_Init(GPIOC, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
+   GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
+
+   // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED Jaune
+   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
+   GPIO_Init(GPIOC, &GPIO_InitStructure);
+   GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
 
 
 #endif //STM32F10X_CL
@@ -445,6 +452,10 @@ while(1)
     }
 
 //Une fois que la tirette est enlevée pour la 1ère fois, on lance le positionnement automatique
+#ifdef CAPTEURS
+    Sensors* sensors = new Sensors();
+#endif
+
 #ifdef STM32F10X_MD
     Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 #endif
@@ -479,32 +490,41 @@ while(1)
 
 
 
-//  test_capteurs_sharp ();
+    //  test_capteurs_sharp ();
 
-Strategie* strategie = new Strategie(isBlue(),odometrie);
+    new Strategie(isBlue(),odometrie);
 
-Sensors* sensors = new Sensors();
 
-Sensors::SharpNameVector out;
-Sensors::LimitSwitchNameVector out2;
+    /**********************  TEST CAPTEUR  */
 
-for (int i = 0; i<10; i++)
-{
-    AnalogSensor::startConversion();
-    out = sensors->detectedSharp();
-    out2 = sensors->detectedLimitSwitch();
-}
 
-SharpSensor::SharpName o;
-LimitSwitchSensor::LimitSwitchName o2;
-if (out.getSize()> 0)
-{
-    o = out[0];
-}
-if (out2.getSize()> 0)
-{
-    o2 = out2[0];
-}
+    Sensors::SharpNameVector out;
+    Sensors::LimitSwitchNameVector out2;
+
+    for (int i = 0; i<10; i++)
+    {
+        AnalogSensor::startConversion();
+        out = sensors->detectedSharp();
+        out2 = sensors->detectedLimitSwitch();
+    }
+
+    SharpSensor::SharpName o;
+    LimitSwitchSensor::LimitSwitchName o2;
+    if (out.getSize()> 0)
+    {
+        o = out[0];
+    }
+    if (out2.getSize()> 0)
+    {
+        o2 = out2[0];
+    }
+
+    Sensors::OutputSensorVector out3 = sensors->getValueUltrasound(2000);
+    Sensor::OutputSensor o3 = out3[0];
+
+    float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
+
+    /*****************************************/
 
     while(1);
 }

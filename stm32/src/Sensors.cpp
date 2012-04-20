@@ -1,8 +1,10 @@
 #include "Sensors.h"
 
+Sensors* Sensors::sensors = NULL;
 
 Sensors::Sensors()
 {
+    Sensors::sensors = this;
     uint8_t channels[NB_CAPTEUR_A_ADC] = {10, 11, 12, 13, 14, 15};
     uint16_t* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
@@ -93,3 +95,48 @@ Sensors::LimitSwitchNameVector Sensors::detectedLimitSwitch()
     return result;
 }
 
+
+Sensors::OutputSensorVector Sensors::getValueUltrasound()
+{
+    OutputSensorVector result(nbUltrasound);
+    for (int i = 0; i < nbUltrasound; i++)
+    {
+        result.push_back(ultrasounds[i]->getValue());
+    }
+    result.resize();
+    return result;
+}
+
+Sensors* Sensors::getSensors()
+{
+    return Sensors::sensors;
+}
+
+Sensors::OutputSensorVector Sensors::getValueUltrasound(uint16_t distance)
+{
+    OutputSensorVector result(nbUltrasound);
+    for (int i = 0; i < nbUltrasound; i++)
+    {
+        Sensor::OutputSensor v = ultrasounds[i]->getValue();
+         if (v.f < distance)
+         {
+             result.push_back(v);
+         }
+    }
+    result.resize();
+    return result;
+}
+
+
+float Sensors::getValueUltrasound(UltrasoundSensor::UltrasoundName name)
+{
+    for (int i = 0; i < nbUltrasound; i++)
+    {
+        ultrasounds[i]->getValue();
+         if (ultrasounds[i]->getName() == name)
+         {
+             return ultrasounds[i]->getValue().f;
+         }
+    }
+    return -1;
+}
