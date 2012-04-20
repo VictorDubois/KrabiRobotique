@@ -94,15 +94,19 @@ T vector<T>::operator[](int i)
 template<typename T>
 void vector<T>::resize()
 {
-    T* oldTable = table;
-    allocatedSize = size;
-    if (allocatedSize != 0)
-        table = new T[allocatedSize];
-    else
-        table = 0x0;
-    for (int i =0; i< size; i++)
-        table[i] = oldTable[i];
-    delete[] oldTable;
+    if (size != allocatedSize)
+    {
+
+        T* oldTable = table;
+        allocatedSize = size;
+        if (allocatedSize != 0)
+            table = new T[allocatedSize];
+        else
+            table = 0x0;
+        for (int i =0; i< size; i++)
+            table[i] = oldTable[i];
+        delete[] oldTable;
+    }
 }
 
 template<typename T>

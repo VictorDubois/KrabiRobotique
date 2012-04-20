@@ -44,8 +44,10 @@ class Asservissement{
 #ifdef ROBOTHW
         /**@brief définition des roues du robot */
         Roues roues;
+#ifdef CAPTEURS_OLD
         /**@brief définition des capteurs du robot */
         Capteurs capteurs;
+#endif //capteurs_old
 #endif
         /**@brief différence d'accélération à partir de laquel on concidére qu'il y a collision */
         float seuil_collision;

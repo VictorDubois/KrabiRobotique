@@ -2,7 +2,7 @@
 #include "strategie.h"
 
 #define DBG_SIZE 600
-#undef CAPTEURS
+
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
@@ -76,7 +76,7 @@ void Asservissement::update(void)
     }
 #endif
 
-#ifdef CAPTEURS
+#ifdef CAPTEURS_OLD
         capteurs.startConversion(); //On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
 #endif
         odometrie->update();        //Enregistre la position actuelle du robot
@@ -141,7 +141,7 @@ void Asservissement::update(void)
 
 
 
-#ifdef CAPTEURS
+#ifdef CAPTEURS_OLD
     bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
 #else
     bool testcap = false;
@@ -153,7 +153,7 @@ void Asservissement::update(void)
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
         #endif
         #ifdef STM32F10X_CL
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //ON
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
         #endif
         roues.gauche.tourne(0.);
         roues.droite.tourne(0.);
@@ -165,7 +165,7 @@ void Asservissement::update(void)
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
         #endif
         #ifdef STM32F10X_CL
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //OFF
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
         #endif
         roues.gauche.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
