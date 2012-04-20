@@ -26,7 +26,7 @@ void SharpSensor::updateValue()
      **                                           **
      ***********************************************/
     counter <<= 1;
-    counter |= (*data < threshold);
+    counter |= (*data > threshold);
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
 
 }
