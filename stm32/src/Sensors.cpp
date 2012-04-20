@@ -31,7 +31,7 @@ Sensors::Sensors()
     sharps[4] = new SharpSensor(SharpSensor::RIGTH, 15, data);
 */
     //On initialise les autres capteurs
-    ligthBarriers[0] = new LigthBarrierSensor(GPIO_Pin_6, GPIOE);
+    ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_6, GPIOE);
 
     limitSwitchs[0] = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_0, GPIOE);
     limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGTH, GPIO_Pin_1, GPIOE);
@@ -139,4 +139,44 @@ float Sensors::getValueUltrasound(UltrasoundSensor::UltrasoundName name)
          }
     }
     return -1;
+}
+
+Sensors::LigthBarrierNameVector Sensors::detectedLigthBarrier()
+{
+    LigthBarrierNameVector result(nbLigthBarrier);
+    for (int i=0; i<nbLigthBarrier; i++)
+    {
+        if(ligthBarriers[i]->getValue().b)
+        {
+            result.push_back(ligthBarriers[i]->getName());
+        }
+    }
+    result.resize();
+    return result;
+}
+
+bool Sensors::detectedLigthBarrier(LigthBarrierSensor::LigthBarrierName name)
+{
+    for (int i=0; i<nbLigthBarrier; i++)
+    {
+        if(ligthBarriers[i]->getName() == name)
+        {
+            return ligthBarriers[i]->getValue().b;
+        }
+    }
+    return false; // Si aucun capteur n'a ce nom (exemple NONE)
+}
+
+
+void Sensors::update()
+{
+    for (int i=0; i<nbSharp; i++)
+    {
+        sharps[i]->updateValue();
+    }
+    for (int i=0; i<nbLigthBarrier; i++)
+    {
+        ligthBarriers[i]->updateValue();
+    }
+    // Les autres n'ont pas besoin d'être mis à jour car on obtient la valeur directement en lisant la valeur de la pin
 }

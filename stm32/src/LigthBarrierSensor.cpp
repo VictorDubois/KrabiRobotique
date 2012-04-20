@@ -1,11 +1,13 @@
 #include "LigthBarrierSensor.h"
 
 
-LigthBarrierSensor::LigthBarrierSensor(uint16_t pin, GPIO_TypeDef* group)
+LigthBarrierSensor::LigthBarrierSensor(LigthBarrierName name, uint16_t pin, GPIO_TypeDef* group)
 {
     this->pin = pin;
     this->group = group;
     counter = 0;
+    this->name = name;
+    output = false;
 
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin =  pin;
@@ -19,14 +21,26 @@ LigthBarrierSensor::~LigthBarrierSensor()
 }
 
 
+void LigthBarrierSensor::updateValue()
+{
+    counter <<=1;
+    counter |= (GPIO_ReadInputDataBit(group,pin)==SET);
+    output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
+}
+
+
 
 Sensor::OutputSensor LigthBarrierSensor::getValue()
 {
-    OutputSensor output;
-    output.type = LIMIT_SWITCH;
-    output.f = 0;
-    counter <<=1;
-    counter |= (GPIO_ReadInputDataBit(group,pin)==SET);
-    output.b = output.b ? !((counter & 0x0f) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 4 fois pour retourner false.
-    return output;
+    OutputSensor outputR;
+    outputR.type = LIMIT_SWITCH;
+    outputR.f = 0;
+    outputR.b = output;
+    return outputR;
+}
+
+
+LigthBarrierSensor::LigthBarrierName LigthBarrierSensor::getName()
+{
+    return name;
 }

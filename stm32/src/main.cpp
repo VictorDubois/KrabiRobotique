@@ -453,7 +453,7 @@ while(1)
 
 //Une fois que la tirette est enlevée pour la 1ère fois, on lance le positionnement automatique
 #ifdef CAPTEURS
-    Sensors* sensors = new Sensors();
+     new Sensors();
 #endif
 
 #ifdef STM32F10X_MD
@@ -495,19 +495,18 @@ while(1)
     new Strategie(isBlue(),odometrie);
 
 
-    /**********************  TEST CAPTEUR  */
+    /**********************  TEST CAPTEUR  *
 
-
-    Sensors::SharpNameVector out;
-    Sensors::LimitSwitchNameVector out2;
+    Sensors* sensors = Sensors::getSensors();
 
     for (int i = 0; i<10; i++)
     {
         AnalogSensor::startConversion();
-        out = sensors->detectedSharp();
-        out2 = sensors->detectedLimitSwitch();
+        sensors->update();
     }
 
+    Sensors::SharpNameVector out = sensors->detectedSharp();
+    Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
     SharpSensor::SharpName o;
     LimitSwitchSensor::LimitSwitchName o2;
     if (out.getSize()> 0)
@@ -523,6 +522,13 @@ while(1)
     Sensor::OutputSensor o3 = out3[0];
 
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
+
+    Sensors::LigthBarrierNameVector out4 = sensors->detectedLigthBarrier();
+    LigthBarrierSensor::LigthBarrierName o4;
+    if (out4.getSize() >0 )
+        o4 = out4[0];
+
+    bool b2 = sensors->detectedLigthBarrier(LigthBarrierSensor::FRONT);
 
     /*****************************************/
 
