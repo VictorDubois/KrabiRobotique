@@ -28,6 +28,7 @@
 			<Add option="-DSTM32F10X_CL" />
 			<Add option="-DROBOTHW" />
 			<Add option="-DROUES" />
+			<Add option="-DCAPTEURS" />
 			<Add directory="include" />
 			<Add directory="Libraries/CMSIS/Core/CM3" />
 			<Add directory="Libraries/STM32F10x_StdPeriph_Driver/inc" />

@@ -3,7 +3,6 @@
 
 #define DBG_SIZE 600
 
-
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
 
@@ -154,7 +153,11 @@ void Asservissement::update(void)
 
 #ifdef CAPTEURS_OLD
     bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
+#endif
+#ifdef CAPTEURS
+    bool testcap = sensors->detectedSharp(SharpSensor::BACK);
 #else
+
     bool testcap = false;
 #endif
 

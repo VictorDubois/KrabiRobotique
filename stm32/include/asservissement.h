@@ -26,7 +26,7 @@
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)
 
 #ifdef ROBOTHW
-#define CAPTEURS
+//#define CAPTEURS déjà définie à la compilation dans le fichier paprika.cbp
 #endif
 
 class Strategie;
