@@ -88,7 +88,7 @@ T vector<T>::operator[](int i)
     if (i<size)
         return table[i];
     else
-        return table[-1];
+        return table[-1]; // Pour obtenir une erreur
 }
 
 template<typename T>

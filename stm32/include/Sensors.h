@@ -24,10 +24,12 @@ class Sensors
         typedef vector<LimitSwitchSensor::LimitSwitchName> LimitSwitchNameVector;
         /**@brief Vecteur de Sensor::OutputSensor */
         typedef vector<Sensor::OutputSensor> OutputSensorVector;
+        /**@brief Vecteur de LigthBarrierSensor::LigthBarrierName */
+        typedef vector<LigthBarrierSensor::LigthBarrierName> LigthBarrierNameVector;
 
 
         /** @brief Permet de vérifier si un capteur sharp quelconque a détecter un obstacle *
-        *   @return Returne un SharpNameVector, vecteur contenant les SharpName des capteurs sharp renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur returne un vector vide  */
+        *   @return Retourne un SharpNameVector, vecteur contenant les SharpName des capteurs sharp renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur returne un vector vide  */
         SharpNameVector detectedSharp();
         /** @brief Permet de vérifier si un capteur sharp particulier a détecter un obstacle *
         *   @param name SharpName du capteur sharp dont on souhaite obtenir la valeur.  *
@@ -35,7 +37,7 @@ class Sensors
         bool detectedSharp(SharpSensor::SharpName name);
 
         /** @brief Permet de vérifier si un fin de course quelconque est enclanché *
-        *   @return Returne un LimitSwitchNameVector, vecteur contenant les LimitSwitchName des capteurs fin de course renvoyant un true (donc étant enclanché). Si aucun capteur returne un vector vide.  */
+        *   @return Retourne un LimitSwitchNameVector, vecteur contenant les LimitSwitchName des capteurs fin de course renvoyant un true (donc étant enclanché). Si aucun capteur returne un vector vide.  */
         LimitSwitchNameVector detectedLimitSwitch();
 
         /** @brief Permet de connaître la valeur de la distance de l'objet le plus proche de l'ensemble des capteurs ultrasons *
@@ -50,11 +52,19 @@ class Sensors
         *   @param  name Nom du capteur dont on veut connaîte la distance en mm de l'objet le plus proche */
         float getValueUltrasound(UltrasoundSensor::UltrasoundName name);
 
-
+        /** @brief Permet de vérifier si une barrière optique quelconque détecte un obstacle *
+        *   @return Retourne un LigthBarrierNameVector, vecteur contenant les LigthBarrierName des barrières optiques renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur retourne un vector vide  */
+        LigthBarrierNameVector detectedLigthBarrier();
+        /** @brief Permet de vérifier si une barrière optique quelconque détecte un obstacle *
+        *   @return Retourne la valeur de la barrière optique ayant pour nom name  *
+        *   @param name Nom de la barrière dont on veut connaître le nom */
+        bool detectedLigthBarrier(LigthBarrierSensor::LigthBarrierName name);
 
         /** @brief Permet de connaîte l'adresse en mémoire de la seule et unique instance possible de cette classe */
         static Sensors* getSensors();
 
+        /** @brief Permet de mettre à jour les valeurs des capteurs avant toute récupération (doit être lancé le plus souvant possible pour maintenir des valeurs cohérentes pour les capteurs dont la valeur de retour est filtré). */
+        void update();
 
     protected:
     private:

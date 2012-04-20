@@ -14,9 +14,7 @@ SharpSensor::~SharpSensor()
     //dtor
 }
 
-
-
-Sensor::OutputSensor SharpSensor::getValue()
+void SharpSensor::updateValue()
 {
     while(!AnalogSensor::conversionFinished());    // au cas où l'interrupt de l'asservissement tombe avant la fin de l'acquisition/conversion
     /***********************************************
@@ -27,12 +25,17 @@ Sensor::OutputSensor SharpSensor::getValue()
      **                                           **
      **                                           **
      ***********************************************/
-    OutputSensor outputR;
-    outputR.type = SHARP;
-    outputR.f = 0;
     counter <<= 1;
     counter |= (*data < threshold);
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
+
+}
+
+Sensor::OutputSensor SharpSensor::getValue()
+{
+    OutputSensor outputR;
+    outputR.type = SHARP;
+    outputR.f = 0;
     outputR.b = output;
     return outputR;
 }

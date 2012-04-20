@@ -38,6 +38,9 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     angularDutySent = 0;
     Asservissement::asservissement = this;
     asserCount = 0;
+#ifdef CAPTEURS
+    sensors = Sensors::getSensors();
+#endif
 
 #ifdef ROBOTHW  //on définie les intéruptions possible du à certains port
     *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
@@ -65,6 +68,13 @@ Angle Asservissement::getAngularSpeed()
 
 void Asservissement::update(void)
 {
+#ifdef CAPTEURS_OLD
+        capteurs.startConversion(); //On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
+#endif
+#ifdef CAPTEURS
+        AnalogSensor::startConversion(); // On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
+#endif
+
     asserCount++;
 
 #ifdef ROUES
@@ -76,14 +86,15 @@ void Asservissement::update(void)
     }
 #endif
 
-#ifdef CAPTEURS_OLD
-        capteurs.startConversion(); //On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
-#endif
         odometrie->update();        //Enregistre la position actuelle du robot
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
+
+#ifdef CAPTEURS
+        sensors->update();
+#endif
 
         if (Strategie::strategie)
         {

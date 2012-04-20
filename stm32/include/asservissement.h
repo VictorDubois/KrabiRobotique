@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include "command.h"
 #include <math.h>
+#include "Sensors.h"
 
 #define STK_CTRL_ADDR 0xe000e010
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)
@@ -47,6 +48,10 @@ class Asservissement{
 #ifdef CAPTEURS_OLD
         /**@brief définition des capteurs du robot */
         Capteurs capteurs;
+#endif //capteurs_old
+#ifdef CAPTEURS
+        /**@brief Pointeur vers les capteurs du robot */
+        Sensors* sensors;
 #endif //capteurs_old
 #endif
         /**@brief différence d'accélération à partir de laquel on concidére qu'il y a collision */
