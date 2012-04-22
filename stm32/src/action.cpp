@@ -241,8 +241,11 @@ class ActionSuivreChemin : public Action
 };
 
 ListeDActions::ListeDActions(Odometrie* odo)
-    : actionActuelle(NULL), actions(NULL), nbActions(0), odom(odo), nbActionsBase(NULL)
 {
+    actionActuelle = NULL; actions = NULL;
+    nbActions = 0;
+    odom = odo;
+    nbActionsBase = NULL;
     initialiserTableauDeBase();
 }
 
