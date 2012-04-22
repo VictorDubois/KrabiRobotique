@@ -3,20 +3,20 @@
 
 
 CommandAvancerToutDroit::CommandAvancerToutDroit(Distance distance) :
-    Command(),
-    vitesse_lineaire_a_atteindre(0),
-    vitesse_angulaire_a_atteindre(0),
-    vitesseFinale(0)
+    Command()
 {
+    vitesse_lineaire_a_atteindre = 0;
+    vitesse_angulaire_a_atteindre = 0;
+    vitesseFinale = 0;
     destination = Odometrie::odometrie->getPos() + distance;
 }
 
 CommandAvancerToutDroit::CommandAvancerToutDroit(Distance distance, Vitesse vitesseFinale) :
-    Command(),
-    vitesse_lineaire_a_atteindre(0),
-    vitesse_angulaire_a_atteindre(0),
-    vitesseFinale(vitesseFinale)
+    Command()
 {
+    vitesse_lineaire_a_atteindre = 0;
+    vitesse_angulaire_a_atteindre = 0;
+    vitesseFinale = vitesseFinale;
     destination = Odometrie::odometrie->getPos() + distance;
 }
 
