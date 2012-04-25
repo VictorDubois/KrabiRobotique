@@ -1,6 +1,9 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
+#ifdef ROBOTHW
+
+
 /** @brief Classe abstraite de gestion des capteurs */
 class Sensor
 {
@@ -40,5 +43,7 @@ class Sensor
     protected:
     private:
 };
+
+#endif ROBOTHW
 
 #endif // SENSOR_H

@@ -1,6 +1,7 @@
 #ifndef ANALOGSENSOR_H
 #define ANALOGSENSOR_H
 
+#ifdef ROBOTHW
 #include <Sensor.h>
 #include <stdint.h>
 #include "stm32f10x_adc.h"
@@ -42,5 +43,8 @@ class AnalogSensor : public Sensor
         static int nbCapteurDejaInitialise;
 
 };
+
+
+#endif// ROBOTHW
 
 #endif // ANALOGSENSOR_H

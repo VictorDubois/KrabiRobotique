@@ -9,6 +9,7 @@
 #include "misc.h"
 #include "roues.h"
 #include "capteurs.h"
+#include "Sensors.h"
 #endif
 #include "variable.h"
 #include "PositionPlusAngle.h"
@@ -20,7 +21,7 @@
 #include <stdint.h>
 #include "command.h"
 #include <math.h>
-#include "Sensors.h"
+
 
 #define STK_CTRL_ADDR 0xe000e010
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)

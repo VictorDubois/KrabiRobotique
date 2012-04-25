@@ -1,6 +1,8 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
+#ifdef ROBOTHW
+
 #include "SharpSensor.h"
 #include "UltrasoundSensor.h"
 #include "LigthBarrierSensor.h"
@@ -87,5 +89,7 @@ class Sensors
         /** @brief Attribue de classe permettant de connaîte l'adresse en mémoire de la seule et unique instance possible de cette classe */
         static Sensors* sensors;
 };
+
+#endif
 
 #endif // SENSORS_H

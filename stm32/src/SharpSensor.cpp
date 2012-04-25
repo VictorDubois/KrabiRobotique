@@ -1,5 +1,8 @@
 #include "SharpSensor.h"
 
+#ifdef ROBOTHW
+
+
 uint16_t SharpSensor::threshold = SEUIL_DETECTION;
 
 SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData) : AnalogSensor(channel, pData)
@@ -44,3 +47,5 @@ SharpSensor::SharpName SharpSensor::getName()
 {
     return name;
 }
+
+#endif

@@ -1,5 +1,8 @@
 #include "UltrasoundSensor.h"
 
+#ifdef ROBOTHW
+
+
 float UltrasoundSensor::coeff = COEFFICIENT_LIN_ULTRASON;
 
 UltrasoundSensor::UltrasoundSensor(UltrasoundName name, uint8_t channel, uint16_t* pData) : AnalogSensor(channel, pData)
@@ -35,3 +38,5 @@ Sensor::OutputSensor UltrasoundSensor::getValue()
     output.f = coeff*(*data)/2.;
     return output;
 }
+
+#enfif
