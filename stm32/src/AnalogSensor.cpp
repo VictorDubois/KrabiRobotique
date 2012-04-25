@@ -1,5 +1,7 @@
 #include "AnalogSensor.h"
 
+#ifdef ROBOTHW
+
 int AnalogSensor::nbCapteurDejaInitialise = 0;
 
 AnalogSensor::AnalogSensor(uint8_t channel, uint16_t* pData)
@@ -91,3 +93,4 @@ bool AnalogSensor::conversionFinished()
     //return (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == SET);
     return DMA_GetFlagStatus(DMA1_FLAG_TC1);
 }
+#endif//ROBOT

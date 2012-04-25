@@ -1,6 +1,8 @@
 #ifndef SHARPSENSOR_H
 #define SHARPSENSOR_H
 
+#ifdef ROBOTHW
+
 #include <AnalogSensor.h>
 #include "variable.h"
 
@@ -58,4 +60,5 @@ class SharpSensor : public AnalogSensor
 
 };
 
+#endif
 #endif // SHARPSENSOR_H

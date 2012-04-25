@@ -1,6 +1,9 @@
 #ifndef ULTRASOUNDSENSOR_H
 #define ULTRASOUNDSENSOR_H
 
+#ifdef ROBOTHW
+
+
 #include <AnalogSensor.h>
 #include "variable.h"
 
@@ -40,5 +43,7 @@ class UltrasoundSensor : public AnalogSensor
         UltrasoundName name;
 
 };
+
+#enfif
 
 #endif // ULTRASOUNDSENSOR_H

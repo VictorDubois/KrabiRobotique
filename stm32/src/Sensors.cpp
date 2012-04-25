@@ -1,5 +1,7 @@
 #include "Sensors.h"
 
+#ifdef ROBOTHW
+
 Sensors* Sensors::sensors = NULL;
 
 Sensors::Sensors()
@@ -180,3 +182,5 @@ void Sensors::update()
     }
     // Les autres n'ont pas besoin d'être mis à jour car on obtient la valeur directement en lisant la valeur de la pin
 }
+
+#endif //ROBOTHW
