@@ -25,7 +25,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fno-rtti -fno-exceptions" />
-			<Add option="-DSTM32F10X_CL" />
+			<Add option="-DSTM32F10X_MD" />
 			<Add option="-DROBOTHW" />
 			<Add option="-DROUES" />
 			<Add option="-DCAPTEURS" />
