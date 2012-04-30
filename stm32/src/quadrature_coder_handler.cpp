@@ -3,14 +3,24 @@
 //Objet permettant de savoir le nombre de tick fait par la roux codeuse
 QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
     //lowerTickValue = 0;
+
     this->coder_tim_port = coder_tim_port;
 
+
+
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    TIM_ICInitTypeDef       TIM_ICInitStructure;
+//    TIM_ICInitTypeDef       TIM_ICInitStructure;
     GPIO_InitTypeDef        GPIO_InitStructure;
+
 
     //Enable GPIOA clock
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+
+
+    //Enable GPIOE clock
+#ifdef STM32F10X_CL
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+#endif
 
     //Enable timer clock
     if(coder_tim_port == TIM1){
@@ -36,11 +46,15 @@ QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
     GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_0|GPIO_Pin_1;
 #endif
 #ifdef STM32F10X_CL
-    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_0|GPIO_Pin_1;
 #endif
     GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
+#ifdef STM32F10X_CL
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_9|GPIO_Pin_11;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+#endif
 
     //Time Base configuration
     TIM_TimeBaseStructure.TIM_Prescaler     = 0;
@@ -50,29 +64,6 @@ QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
     TIM_TimeBaseInit(coder_tim_port, &TIM_TimeBaseStructure);
 
-    //On constate que, sur le STM32_h107, la roue coudeuse droite est branché sur les pin PA0 et PA1 qui posséde les TIM2 et TIM5 avec comme channel 1 et 2
-    // et la roue coudeuse gauche sur PA2 et PA3 qui posséde aussi les TIM2 et TIM3 mais sur le channel 3 et 4.
-    // On choisit le TIM2 pour la roue droite et TIM5 pour la gauche
-
-#ifdef STM32F10X_CL
-
-    if(coder_tim_port == TIM5)
-    {
-
-        //Initialize input capture structure: Ch3
-        TIM_ICStructInit(&TIM_ICInitStructure);
-        TIM_ICInitStructure.TIM_Channel     = TIM_Channel_3;
-        TIM_ICInitStructure.TIM_ICPolarity  = TIM_ICPolarity_Rising;
-        TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-        TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-        TIM_ICInitStructure.TIM_ICFilter    = 0;
-        TIM_ICInit(TIM5, &TIM_ICInitStructure);
-
-        //Initialize input capture structure: Ch4
-        TIM_ICInitStructure.TIM_Channel     = TIM_Channel_4;
-        TIM_ICInit(TIM5, &TIM_ICInitStructure);
-    }
-#endif
 
     //Encoder Interface Configuration
     TIM_EncoderInterfaceConfig(coder_tim_port,
@@ -102,6 +93,7 @@ QuadratureCoderHandler::QuadratureCoderHandler(TIM_TypeDef * coder_tim_port){
 
     //Met à disposition le timer
     TIM_Cmd(coder_tim_port, ENABLE);
+
 
 }
 

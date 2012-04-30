@@ -346,7 +346,7 @@ bool isBlue()
     return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET;
 #endif
 #ifdef STM32F10X_CL //Pin pour le stm32 h107
-    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)  == Bit_RESET;
+    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)  == Bit_SET;
 #endif
 }
 
@@ -408,8 +408,8 @@ int main()
 
 	*NVIC_CCR = *NVIC_CCR | 0x200; /* Set STKALIGN in NVIC */
 
-   //On initialise les horloges
-   Clk_Init();
+    //On initialise les horloges
+    Clk_Init();
 
     //On définit quelques horloges supplémentaires
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -460,7 +460,7 @@ while(1)
     Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 #endif
 #ifdef STM32F10X_CL
-    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM5), new QuadratureCoderHandler(TIM2));
+    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 #endif
     new Asservissement(odometrie);  // On définie l'asservissement
     Servo::initTimer();     // A faire avant tout utilisation de servo
@@ -491,6 +491,7 @@ while(1)
 
 
     //  test_capteurs_sharp ();
+
 
     new Strategie(isBlue(),odometrie);
 

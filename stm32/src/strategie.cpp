@@ -25,18 +25,19 @@ collision_detected(false), listeActions(NULL)
     //command->strategie = this;
     instruction_nb=1;
     doNthInstruction(instruction_nb);
-  //  listeActions= new ListeDActions(odometrie);
-  //  listeActions->creerPremiereAction();
+    listeActions= new ListeDActions(odometrie);
+    listeActions->creerPremiereAction();
 }
 
 void Strategie::update(){
 
- /* if(listeActions->getActionActuelle()->executer())
+ if(listeActions->getActionActuelle()->executer())
     {
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
-*/
+
+/*
     if (instruction_nb != 0)
     {
       //new CommandGoTo(Position(800,200));
@@ -44,7 +45,7 @@ void Strategie::update(){
         new CommandAvancerToutDroit(2000);
         instruction_nb = 0;
     }
-
+*/
    /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;

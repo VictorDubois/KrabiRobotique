@@ -44,6 +44,6 @@ class UltrasoundSensor : public AnalogSensor
 
 };
 
-#enfif
+#endif
 
 #endif // ULTRASOUNDSENSOR_H

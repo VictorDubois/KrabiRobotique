@@ -98,7 +98,7 @@ void Asservissement::update(void)
         if (Strategie::strategie)
         {
             Strategie::strategie->update();
-            Strategie::strategie = NULL;
+ //           Strategie::strategie = NULL;
         }
 
         if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
