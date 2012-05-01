@@ -119,8 +119,8 @@ void Asservissement::update(void)
 
 #ifdef ROUES
         //on filtre l'erreur de vitesse lineaire et angulaire
-        linearDutySent += pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
-        angularDutySent += pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
+        linearDutySent += 0 ;// pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
+        angularDutySent += -pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
         linearDutySent = MIN(MAX(linearDutySent, LINEARE_DUTY_MIN),LINEARE_DUTY_MAX);
@@ -161,7 +161,9 @@ void Asservissement::update(void)
     bool testcap = false;
 #endif
 
-    if (testcap || GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
+testcap = false;
+
+    if (testcap )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
         #ifdef STM32F10X_MD
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
