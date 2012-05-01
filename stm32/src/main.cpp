@@ -19,6 +19,7 @@
 #include "stm32f10x.h"
 #include "Sensors.h"
 
+
 #ifdef POSITIONNEMENT
 #include "command.h"
 #endif
@@ -533,7 +534,7 @@ while(1)
 
     /*****************************************/
 
-    while(1);
+   while(1);
 }
 
 /*uint32_t val = 0 ;

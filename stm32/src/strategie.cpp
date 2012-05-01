@@ -23,10 +23,11 @@ collision_detected(false), listeActions(NULL)
     //command = new Asservissement(PositionPlusAngle(positionDeDepart, angleDeDepart), roueCodeuseGauche, roueCodeuseDroite);
     //command = new Asservissement(PositionPlusAngle(Position(0, 0), Angle(0)), roueCodeuseGauche, roueCodeuseDroite);
     //command->strategie = this;
-    instruction_nb=1;
-    doNthInstruction(instruction_nb);
+ /*   instruction_nb=1;
+    doNthInstruction(instruction_nb); */
     listeActions= new ListeDActions(odometrie);
     listeActions->creerPremiereAction();
+
 }
 
 void Strategie::update(){
@@ -36,13 +37,13 @@ void Strategie::update(){
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
-
 /*
+
     if (instruction_nb != 0)
     {
-      //new CommandGoTo(Position(800,200));
-        //new CommandTourner(Angle(M_PI));
-        new CommandAvancerToutDroit(2000);
+//      new CommandGoTo(Position(800,200));
+      new CommandTourner(Angle(2*M_PI));
+//        new CommandAvancerToutDroit(2000);
         instruction_nb = 0;
     }
 */

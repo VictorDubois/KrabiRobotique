@@ -277,7 +277,7 @@ void ListeDActions::ajouter(ActionBase* actionBase)
 
 void  ListeDActions::initialiserTableauDeBase()
 {
-    actions=new ActionBase*[nbActionsMax];
+       actions=new ActionBase*[nbActionsMax];
     nbActionsBase = new int[nbActionsMax];
     for(int i = 0 ; i < nbActionsMax ; i++)
         nbActionsBase[i] = 0;
