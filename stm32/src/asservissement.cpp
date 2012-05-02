@@ -16,7 +16,7 @@ float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
 //float angularDuty[DBG_SIZE];
 
-//float posx[DBG_SIZE];
+float posx[DBG_SIZE];
 //float posy[DBG_SIZE];
 float angle[DBG_SIZE];
 uint32_t dbgInc = 0;
@@ -119,7 +119,7 @@ void Asservissement::update(void)
 
 #ifdef ROUES
         //on filtre l'erreur de vitesse lineaire et angulaire
-        linearDutySent += 0 ;// pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
+        linearDutySent +=  pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
         angularDutySent += -pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
@@ -134,15 +134,15 @@ void Asservissement::update(void)
         //roueDroite[caca] = odometrie->roueCodeuseDroite->getTickValue();
                    vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
                    vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-             //      linearDuty[dbgInc] = linearDutySent;
+ //                  linearDuty[dbgInc] = linearDutySent;
 
                    vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
                    vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-               //    angularDuty[dbgInc] = angularDutySent;
+ //                  angularDuty[dbgInc] = angularDutySent;
 
-               //    posx[caca] = positionPlusAngleActuelle.position.x;
-               //    posy[caca] = positionPlusAngleActuelle.position.y;
-                   angle[caca] = positionPlusAngleActuelle.angle; //*angle_restant.getValueInRadian();*///distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
+                   posx[caca] = positionPlusAngleActuelle.position.x;
+//                   posy[caca] = positionPlusAngleActuelle.position.y;
+//                   angle[caca] = positionPlusAngleActuelle.angle; //*angle_restant.getValueInRadian();*///distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
                    dbgInc++;
                    caca++;
                }

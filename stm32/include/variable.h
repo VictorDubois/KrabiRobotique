@@ -32,8 +32,8 @@
 #define CPT_BEFORE_RAZ 8500
 #define LINEARE_DUTY_MAX 1.00
 #define LINEARE_DUTY_MIN -1.00
-#define ANGULARE_DUTY_MAX 0.90
-#define ANGULARE_DUTY_MIN -0.90
+#define ANGULARE_DUTY_MAX 1.00
+#define ANGULARE_DUTY_MIN -1.00
 
 //CAPTEURS
     /// @brief SEUIL_DETECTION Seuil de detection des capteurs sharp. Au dessus de cette valeur, un objet sera considéré comme présent devant le capteur.
@@ -45,7 +45,7 @@
 
 //COMMAND
 #define VITESSE_LINEAIRE_MAX 4
-#define VITESSE_ANGULAIRE_MAX  0.005
+#define VITESSE_ANGULAIRE_MAX  0.02//0.005
 #define ACCELERATION_LINEAIRE_MAX  0.05//0.1//0.05
 #define ACCELERATION_ANGULAIRE_MAX (2*M_PI/20000.0) //(2*M_PI/5000.0)
 
@@ -56,9 +56,9 @@
 #define COEFF_AJOUST_ANGLE 1.354709082
 
 //PIDFILTERANGLE
-#define FILTER_ANGLE_KP 4 //0.1
-#define FILTER_ANGLE_KI 0//0.1
-#define FILTER_ANGLE_KD 0//35
+#define FILTER_ANGLE_KP 3.5 //0.1
+#define FILTER_ANGLE_KI 0.01//0.1
+#define FILTER_ANGLE_KD 0.001//35
 #define FILTER_ANGLE_COEF 1//0.83
 
 //PIDFILTERLINEAIRE
