@@ -33,8 +33,9 @@ class CommandAvancerToutDroit : public Command
         VitesseAngulaire vitesse_angulaire_a_atteindre;
         /**@brief Pour connaitre la vitesse linéaire à atteindre par le robot
         *@param Distance vitesse_lineaire_atteinte est la vitesse actuelle du robot.
-        *@param Distance distance_restante est la distance qu'il reste à parcourir par le robot.*/
-        Vitesse getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_lineaire_atteinte, Distance distance_restante);
+        *@param Distance distance_restante est la distance qu'il reste à parcourir par le robot.
+        *@param Angle angle_restant Angle restant à parcourir au robot avant d'atteindre sa destination. */
+        Vitesse getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_lineaire_atteinte, Distance distance_restante, Angle angle_restant);
         /**@brief Pour connaitre la vitesse angulaire à atteindre par le robot
         *@param VitesseAngulaire vitesse_angulaire_atteinte est la vitesse angulaire actuelle du robot.
         *@param Angle angle_restant est l'angle qu'il reste à parcourir par le robot.*/
