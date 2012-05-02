@@ -14,7 +14,7 @@ collision_detected(false), listeActions(NULL)
     this->odometrie = odometrie;
     Strategie::strategie = this;
     Position positionDeDepart(POS_DEPART_X,POS_DEPART_Y);
-    Angle angleDeDepart(M_PI);
+    Angle angleDeDepart(0);
 
     positionDeDepart.setY(positionDeDepart.getY()*(is_blue ? 1:-1));
     angleDeDepart = angleDeDepart*(is_blue ? 1:-1);

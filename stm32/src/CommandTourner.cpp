@@ -73,10 +73,14 @@ Vitesse CommandTourner::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_l
             return (vitesse_lineaire_a_atteindre + Vitesse(acceleration_lineaire) <0 ?  vitesse_lineaire_a_atteindre + Vitesse(acceleration_lineaire) : 0 );
         }
     }
-    else
-    {
-        return vitesse_lineaire_a_atteindre + Vitesse(MIN(acceleration_lineaire,vitesse_lineaire_max-vitesse_lineaire_a_atteindre)); // si vitesse_lineaire_max-vitesse_lineaire_a_atteindre > acceleration_lineaire*dt alors on est encore dans la fase assendante du trapéze.
-    }
+        else if (fabs(wrapAngle(angle_restant))<M_PI_4*3) // Le point d'arrivé est encore devant nous
+        {
+            return vitesse_lineaire_a_atteindre + Vitesse(MIN(acceleration_lineaire,vitesse_lineaire_max-10000/(distance_restante*distance_restante*distance_restante)-vitesse_lineaire_a_atteindre)); // si vitesse_lineaire_max-vitesse_lineaire_a_atteindre > acceleration_lineaire*dt alors on est encore dans la fase assendante du trapéze.
+        }
+        else // Il est maintenant derière nous donc il faut reculer
+        {
+            return vitesse_lineaire_a_atteindre + Vitesse(MAX(-acceleration_lineaire,-vitesse_lineaire_max+10000/(distance_restante*distance_restante*distance_restante)-vitesse_lineaire_a_atteindre)); // si vitesse_lineaire_max-vitesse_lineaire_a_atteindre > acceleration_lineaire*dt alors on est encore dans la fase assendante du trapéze.
+        }
 }
 
 
