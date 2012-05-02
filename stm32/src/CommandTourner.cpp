@@ -15,7 +15,7 @@ CommandTourner::CommandTourner(Angle angle, VitesseAngulaire vitesseAngulaireFin
     vitesse_lineaire_a_atteindre(0),
     vitesse_angulaire_a_atteindre(0)
 {
-    destination = PositionPlusAngle(Odometrie::odometrie->getPos().getPosition(), wrapAngle(Odometrie::odometrie->getPos().getAngle() + angle) );
+    destination = PositionPlusAngle(Odometrie::odometrie->getPos().getPosition(), /*wrapAngle*/(Odometrie::odometrie->getPos().getAngle() + angle) );
 }
 
 CommandTourner::~CommandTourner()
