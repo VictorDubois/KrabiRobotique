@@ -23,29 +23,30 @@ collision_detected(false), listeActions(NULL)
     //command = new Asservissement(PositionPlusAngle(positionDeDepart, angleDeDepart), roueCodeuseGauche, roueCodeuseDroite);
     //command = new Asservissement(PositionPlusAngle(Position(0, 0), Angle(0)), roueCodeuseGauche, roueCodeuseDroite);
     //command->strategie = this;
-    instruction_nb=1;
- /*   doNthInstruction(instruction_nb); */
-    listeActions= new ListeDActions(odometrie);
+ /*   instruction_nb=1;
+    doNthInstruction(instruction_nb); */
+    listeActions= new ListeDActions(odometrie,is_blue);
     listeActions->creerPremiereAction();
 
 }
 
 void Strategie::update(){
 
- /*if(listeActions->getActionActuelle()->executer())
+ if(listeActions->getActionActuelle()->executer())
     {
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
-*/
+/*
 
-    if (Asservissement::asservissement->command == NULL)
+    if (instruction_nb != 0)
     {
-      new CommandGoTo(Position(500,200));
- //     new CommandTourner(Angle(4*2*M_PI));
-//        new CommandAvancerToutDroit(500);
+//      new CommandGoTo(Position(800,200));
+      new CommandTourner(Angle(2*M_PI));
+//        new CommandAvancerToutDroit(2000);
+        instruction_nb = 0;
     }
-
+*/
    /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;
