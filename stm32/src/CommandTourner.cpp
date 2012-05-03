@@ -88,12 +88,14 @@ VitesseAngulaire CommandTourner::getVitesseAngulaireAfterTrapeziumFilter(Vitesse
 {
     Angle pivot = (vitesse_angulaire_a_atteindre-vitesseAngulaireFinale)*((vitesse_angulaire_a_atteindre-vitesseAngulaireFinale)/2+vitesseAngulaireFinale)/acceleration_angulaire; // idem qu'en linéaire
 
+    int signe = angle_restant > 0 ? 1 : -1;
+
     if((Angle(fabs(angle_restant))-pivot)<=0)
     {
         return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), vitesse_angulaire_a_atteindre));
     }
     else
     {
-        return vitesse_angulaire_a_atteindre + VitesseAngulaire(copysign(MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre)), angle_restant));
+        return vitesse_angulaire_a_atteindre + VitesseAngulaire((MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre))*signe));
     }
 }

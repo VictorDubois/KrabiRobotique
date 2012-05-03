@@ -31,6 +31,16 @@ class Command
         virtual Vitesse getLinearSpeed() = 0;
         /**@brief Retourne la vitesse angulaire que l'on veut atteindre. Cette fonction est à déclarer dans les classes héritants de commande*/
         virtual Angle getAngularSpeed() = 0;
+        /** @brief Permet d'arrêter le robot imédiatement.
+        *   @param doitFreiner Indique si on doit arrêter l'ordre imédiatement. */
+        static void freinageDUrgence(bool doitFreiner);
+        /** @brief Permet d'obtenir la valeur de stop et ainsi de s'avoir si on doit arrêter le robot ou pas.
+        *   @return Retourne la valeur de stop */
+        static bool getStop(void);
+
+    private:
+        /** @brief Indique si le robot doit s'arrêter imédiatement ou non. */
+        static bool stop;
 };
 
 //On l'inclue à la fin du header parce que les déclarations n'en ont pas besoin mais les fonctions en on besoin.

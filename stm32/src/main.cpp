@@ -568,6 +568,7 @@ void myDelay(unsigned long delay )
 
 void Clk_Init()
 {
+#ifdef STM32F10X_MD //Pour le stm32 h103
   // Demare l'horloge interne (8 MHz)
   RCC_HSICmd(ENABLE);
   // On attend qu'elle soit allume
@@ -579,23 +580,13 @@ void Clk_Init()
   // On attend qu'elle soit allume
   while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
   // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
-#ifdef STM32F10X_MD //Pour le stm32 h103
   RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_9); // 72MHz
-#endif
-#ifdef STM32F10X_CL
-  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9); // ??MHz
-#endif
   // On demarre le PLL une fois la config entre
   RCC_PLLCmd(ENABLE);
   // On attend qu'il soit vraiment allume
   while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
   // On demare les composant interne au microcontroleur
-#ifdef STM32F10X_MD //Pour le stm32 h103
   RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
-#endif
-#ifdef STM32F10X_CL
-  RCC_OTGFSCLKConfig(RCC_OTGFSCLKSource_PLLVCO_Div3);
-#endif
   RCC_ADCCLKConfig(RCC_PCLK2_Div8);
   RCC_PCLK2Config(RCC_HCLK_Div8);
   RCC_PCLK1Config(RCC_HCLK_Div2);
@@ -604,4 +595,49 @@ void Clk_Init()
   *(vu32 *)0x40022000 = 0x12;
   // On utilise le PLL comme horloge de reference
   RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+#endif
+
+#ifdef STM32F10X_CL //Pour le stm32 h107
+  // Demare l'horloge interne (8 MHz)
+  RCC_HSICmd(ENABLE);
+  // On attend qu'elle soit allume
+  while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
+  // Une fois demare, on utilise celle ci
+  RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
+  // Demare l'horloge externe
+  RCC_HSEConfig(RCC_HSE_ON);
+  // On attend qu'elle soit allume
+  while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
+  // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
+  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9); // 72MHz
+  // On demarre le PLL une fois la config entre
+  RCC_PLLCmd(ENABLE);
+  // On attend qu'il soit vraiment allume
+  while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
+/****/
+  // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
+  RCC_PLL2Config(RCC_PLL2Mul_9); // 72MHz
+  // On demarre le PLL une fois la config entre
+  RCC_PLL2Cmd(ENABLE);
+  // On attend qu'il soit vraiment allume
+  while(RCC_GetFlagStatus(RCC_FLAG_PLL2RDY) == RESET);
+    // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
+  RCC_PLL3Config(RCC_PLL3Mul_9); // 72MHz
+  // On demarre le PLL une fois la config entre
+  RCC_PLL3Cmd(ENABLE);
+  // On attend qu'il soit vraiment allume
+  while(RCC_GetFlagStatus(RCC_FLAG_PLL3RDY) == RESET);
+/****/
+  // On demare les composant interne au microcontroleur
+  RCC_OTGFSCLKConfig(RCC_OTGFSCLKSource_PLLVCO_Div3);
+  RCC_ADCCLKConfig(RCC_PCLK2_Div8);
+  RCC_PCLK2Config(RCC_HCLK_Div8);
+  RCC_PCLK1Config(RCC_HCLK_Div2);
+  RCC_HCLKConfig(RCC_SYSCLK_Div1);
+  // Flash 1 wait state
+  *(vu32 *)0x40022000 = 0x12;
+  // On utilise le PLL comme horloge de reference
+  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+#endif
+
 }
