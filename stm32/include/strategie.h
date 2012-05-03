@@ -19,6 +19,7 @@
 #include <math.h>
 #include "variable.h"
 #include "action.h"
+#include "ListeDActions.h"
 
 class Odometrie;    //Pour éviter les dépendance cycliques
 
