@@ -32,7 +32,7 @@ Sensors::Sensors()
     sharps[3] = new SharpSensor(SharpSensor::LEFT, 14, data);
     sharps[4] = new SharpSensor(SharpSensor::RIGTH, 15, data);
 
-#ifdef STM32F10X_
+#ifdef STM32F10X_CL
     //On initialise les autres capteurs
     ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_6, GPIOE);
 

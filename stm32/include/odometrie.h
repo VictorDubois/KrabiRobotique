@@ -54,6 +54,7 @@ class Odometrie
         int dist;
         int tg;
         int td;
+        int angl;
 
         /**@brief Permet de connaitre le nombre de tick envoyés par la roue codeuse droite donc connaitre le nombre de tour de celle ci */
         QuadratureCoderHandler* roueCodeuseDroite;

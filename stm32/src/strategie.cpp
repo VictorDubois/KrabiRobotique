@@ -41,9 +41,9 @@ void Strategie::update(){
 
     if (Asservissement::asservissement->command == NULL)
     {
-      new CommandGoTo(Position(500,200));
- //     new CommandTourner(Angle(4*2*M_PI));
-//        new CommandAvancerToutDroit(500);
+   //  new CommandGoTo(Position(700,200));
+    //  new CommandTourner(Angle(M_PI_2));
+        new CommandAvancerToutDroit(1000);
     }
 
    /* //Si tout est ok, on passe à la suite

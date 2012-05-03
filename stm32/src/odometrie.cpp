@@ -14,6 +14,7 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
     dist=0;
     tg = 0;
     td = 0;
+    angl = 0;
     prevDeltaTicksRoueDroite = 0;
     prevDeltaTicksRoueGauche = 0;
     this->roueCodeuseGauche = roueCodeuseGauche;
@@ -34,7 +35,7 @@ void Odometrie::update(){
     int32_t deltaTicksRoueDroite = -roueCodeuseDroite->getTickValue();
     //Remettre ce coefficient si ça bug mais juste en lisant le code j'en vois pas l'utilité
     if (deltaTicksRoueGauche > 0)
-        deltaTicksRoueGauche*=0.963476311;
+        deltaTicksRoueGauche*=0.9627987;
     else
         deltaTicksRoueGauche*=0.968103607;
 
@@ -57,6 +58,9 @@ void Odometrie::update(){
 
 	prevDeltaTicksRoueGauche = deltaTicksRoueGauche;    //Pour prendre la vitesse moyenne en utilisant le deplacement précédents.
 	prevDeltaTicksRoueDroite = deltaTicksRoueDroite;    //idem pour l'angle
+
+
+    angl = positionPlusAngle.getAngle()*180/M_PI;
 
 }
 
