@@ -1,5 +1,5 @@
 #include "actionSuivreChemin.h"
-#include "sensors.h"
+#include "Sensors.h"
 
 ActionSuivreChemin::ActionSuivreChemin(ActionBase* tab, int n, Odometrie* odo)
 :   chemin(NULL), taille(n), pointSuivant(0), odometrie(odo), faitquelquechose(false)
@@ -25,7 +25,7 @@ bool ActionSuivreChemin::executer()
 
     Position trajet(chemin[pointSuivant].position-odometrie->getPos().getPosition());
 
-        if(chemin[pointSuivant].reculer)
+       /* if(chemin[pointSuivant].reculer)
         {
             if(getSensors()->detectedSharp(BACK))
 
@@ -36,7 +36,7 @@ bool ActionSuivreChemin::executer()
             if(getSensors()->detectedSharp(FRONT_LEFT) || getSensors()->detectedSharp(FRONT_RIGHT))
 
 
-        }
+        }*/
 
     if (!faitquelquechose)
     {
