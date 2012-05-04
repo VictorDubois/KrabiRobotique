@@ -68,6 +68,7 @@
 		<Unit filename="include/Hctl_Handler.h" />
 		<Unit filename="include/LigthBarrierSensor.h" />
 		<Unit filename="include/LimitSwitchSensor.h" />
+		<Unit filename="include/ListeDActions.h" />
 		<Unit filename="include/Moteur.h" />
 		<Unit filename="include/Position.h" />
 		<Unit filename="include/PositionPlusAngle.h" />
@@ -77,6 +78,8 @@
 		<Unit filename="include/UltrasoundSensor.h" />
 		<Unit filename="include/ValeursRoues.h" />
 		<Unit filename="include/action.h" />
+		<Unit filename="include/actionChercherPiece.h" />
+		<Unit filename="include/actionSuivreChemin.h" />
 		<Unit filename="include/asservissement.h" />
 		<Unit filename="include/capteurs.h" />
 		<Unit filename="include/command.h" />
@@ -102,6 +105,7 @@
 		<Unit filename="src/Hctl_Handler.cpp" />
 		<Unit filename="src/LigthBarrierSensor.cpp" />
 		<Unit filename="src/LimitSwitchSensor.cpp" />
+		<Unit filename="src/ListeDActions.cpp" />
 		<Unit filename="src/Moteur.cpp" />
 		<Unit filename="src/Position.cpp" />
 		<Unit filename="src/PositionPlusAngle.cpp" />
@@ -111,6 +115,8 @@
 		<Unit filename="src/UltrasoundSensor.cpp" />
 		<Unit filename="src/ValeursRoues.cpp" />
 		<Unit filename="src/action.cpp" />
+		<Unit filename="src/actionChercherPiece.cpp" />
+		<Unit filename="src/actionSuivreChemin.cpp" />
 		<Unit filename="src/asservissement.cpp" />
 		<Unit filename="src/capteurs.cpp" />
 		<Unit filename="src/command.cpp" />
