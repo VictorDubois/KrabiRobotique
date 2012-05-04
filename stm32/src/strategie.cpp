@@ -31,22 +31,20 @@ collision_detected(false), listeActions(NULL)
 }
 
 void Strategie::update(){
-
+/*
  if(listeActions->getActionActuelle()->executer())
     {
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
-/*
-
-    if (instruction_nb != 0)
-    {
-//      new CommandGoTo(Position(800,200));
-      new CommandTourner(Angle(2*M_PI));
-//        new CommandAvancerToutDroit(2000);
-        instruction_nb = 0;
-    }
 */
+
+    if (Asservissement::asservissement->command == NULL)
+    {
+   //  new CommandGoTo(Position(700,200));
+    //  new CommandTourner(Angle(M_PI_2));
+        new CommandAvancerToutDroit(1000);
+    }
    /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;
