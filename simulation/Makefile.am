@@ -21,8 +21,11 @@ src/pid_filter_angle.cpp \
 src/pid_filter_distance.cpp \
 src/CommandAvancerToutDroit.cpp \
 src/CommandTourner.cpp \
-src/CommandGoTo.cpp\ 
-src/action.cpp 
+src/CommandGoTo.cpp\  
+src/action.cpp\
+src/actionSuivreChemin.cpp\
+src/actionChercherPiece.cpp\
+src/ListeDActions.cpp 
 
 paprika_INCLS=\
 include/simul/main.h \
