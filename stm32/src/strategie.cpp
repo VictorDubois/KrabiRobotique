@@ -10,7 +10,7 @@
 Strategie* Strategie::strategie = NULL;
 
 Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
-collision_detected(false), listeActions(NULL)
+collision_detected(false)//, listeActions(NULL)
 {
     this->is_blue = is_blue;
     this->odometrie = odometrie;
@@ -27,8 +27,8 @@ collision_detected(false), listeActions(NULL)
     //command->strategie = this;
  /*   instruction_nb=1;
     doNthInstruction(instruction_nb); */
-    listeActions= new ListeDActions(odometrie,is_blue);
-    listeActions->creerPremiereAction();
+    //listeActions= new ListeDActions(odometrie,is_blue);
+    //listeActions->creerPremiereAction();
 
 }
 
@@ -43,9 +43,9 @@ void Strategie::update(){
 
     if (Asservissement::asservissement->command == NULL)
     {
-   //  new CommandGoTo(Position(700,200));
-    //  new CommandTourner(Angle(M_PI_2));
-        new CommandAvancerToutDroit(1000);
+     new CommandGoTo(Position(1000,-400));
+   //    new CommandTourner(Angle(M_PI_2));
+    //    new CommandAvancerToutDroit(1000);
     }
    /* //Si tout est ok, on passe à la suite
     if(!collision_detected){

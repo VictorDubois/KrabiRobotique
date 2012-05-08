@@ -15,7 +15,7 @@ CommandTourner::CommandTourner(Angle angle, VitesseAngulaire vitesseAngulaireFin
     vitesse_lineaire_a_atteindre(0),
     vitesse_angulaire_a_atteindre(0)
 {
-    destination = PositionPlusAngle(Odometrie::odometrie->getPos().getPosition(), /*wrapAngle*/(Odometrie::odometrie->getPos().getAngle() + angle) );
+    destination = PositionPlusAngle(Odometrie::odometrie->getPos().getPosition(), wrapAngle(Odometrie::odometrie->getPos().getAngle() + angle) );
 }
 
 CommandTourner::~CommandTourner()
@@ -37,7 +37,7 @@ VitesseAngulaire CommandTourner::getAngularSpeed(void)
 void CommandTourner::update(void)
 {
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
-        Angle angle_restant = (destination.getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle();
+        Angle angle_restant = wrapAngle((destination.getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle());
 
 		if( distance_restante < DISTANCE_ARRET)
         {
@@ -99,3 +99,4 @@ VitesseAngulaire CommandTourner::getVitesseAngulaireAfterTrapeziumFilter(Vitesse
         return vitesse_angulaire_a_atteindre + VitesseAngulaire((MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre))*signe));
     }
 }
+

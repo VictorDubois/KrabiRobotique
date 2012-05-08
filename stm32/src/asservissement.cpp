@@ -123,7 +123,7 @@ void Asservissement::update(void)
         angularDutySent += pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
-        linearDutySent = MIN(MAX(linearDutySent, LINEARE_DUTY_MIN),LINEARE_DUTY_MAX);
+        linearDutySent =  MIN(MAX(linearDutySent, LINEARE_DUTY_MIN),LINEARE_DUTY_MAX);
         angularDutySent = MIN(MAX(angularDutySent, ANGULARE_DUTY_MIN),ANGULARE_DUTY_MAX);
 
 // Pour afficher les courbes :

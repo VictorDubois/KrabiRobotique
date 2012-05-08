@@ -44,6 +44,6 @@ class Sensor
     private:
 };
 
-#endif ROBOTHW
+#endif
 
 #endif // SENSOR_H

@@ -18,8 +18,8 @@
 #include "PositionPlusAngle.h"
 #include <math.h>
 #include "variable.h"
-#include "action.h"
-#include "ListeDActions.h"
+//#include "action.h"
+//#include "ListeDActions.h"
 
 class Odometrie;    //Pour éviter les dépendance cycliques
 
@@ -37,7 +37,7 @@ class Strategie {
         /**@brief On a besoin de la position du robot pour choisir une stratégie de déplacement */
         Odometrie* odometrie;
 
-        ListeDActions* listeActions;
+//        ListeDActions* listeActions;
 
     public:
         /**@brief On sauvegarde la stratégie en static puisqu'une seul peut avoir lieu en même temps. */
