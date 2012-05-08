@@ -12,7 +12,7 @@ Sensors::Sensors()
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
     // On initialise le nombre de capteur de chaque type
-    nbSharp = 1;//5;
+    nbSharp = 5;
     nbUltrasound = 1;
     nbLimitSwitch = 3;
     nbLigthBarrier = 1;

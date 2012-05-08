@@ -344,7 +344,7 @@ void positionnement(bool is_blue)
 bool isBlue()
 {
 #ifdef STM32F10X_MD //Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET;
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_SET;
 #endif
 #ifdef STM32F10X_CL //Pin pour le stm32 h107
     return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)  == Bit_SET;
@@ -445,12 +445,28 @@ while(1)
 
     unsigned int buffer = 0xffffffff;
 
+    //On allume une LED sur le STM avant que la tirette soit testé. Ainsi, tant que la tirette est détectée, on garde la led allumée
+    #ifdef STM32F10X_MD
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
+    #endif
+    #ifdef STM32F10X_CL
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
+    #endif
+
     //On boucle tant que la tirette est pas enlever avec 32 verification au cas ou il y ai du bruit
     while(buffer)
     {
         buffer <<= 1;
         buffer |= !isTiretteEnleve();
     }
+
+    //On éteint la LED sur le STM pour indiqué que le code continue à s'executer après que la tirette est été débranchée.
+    #ifdef STM32F10X_MD
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
+    #endif
+    #ifdef STM32F10X_CL
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
+    #endif
 
 //Une fois que la tirette est enlevée pour la 1ère fois, on lance le positionnement automatique
 #ifdef CAPTEURS
@@ -493,11 +509,9 @@ while(1)
 
     //  test_capteurs_sharp ();
 
-
     new Strategie(isBlue(),odometrie);
 
-
-    /**********************  TEST CAPTEUR  *
+    /**********************  TEST CAPTEUR  */
 
     Sensors* sensors = Sensors::getSensors();
 
@@ -508,19 +522,21 @@ while(1)
     }
 
     Sensors::SharpNameVector out = sensors->detectedSharp();
-    Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
-    SharpSensor::SharpName o;
-    LimitSwitchSensor::LimitSwitchName o2;
+  //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
+    SharpSensor::SharpName* o;
+  //  LimitSwitchSensor::LimitSwitchName o2;
     if (out.getSize()> 0)
     {
-        o = out[0];
+        o = new SharpSensor::SharpName[out.getSize()];
+        for (int i = 0; i < out.getSize();i++)
+            o[i] = out[i];
     }
-    if (out2.getSize()> 0)
+  /*  if (out2.getSize()> 0)
     {
         o2 = out2[0];
     }
-
-    Sensors::OutputSensorVector out3 = sensors->getValueUltrasound(2000);
+*/
+/*    Sensors::OutputSensorVector out3 = sensors->getValueUltrasound(2000);
     Sensor::OutputSensor o3 = out3[0];
 
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
@@ -531,7 +547,7 @@ while(1)
         o4 = out4[0];
 
     bool b2 = sensors->detectedLigthBarrier(LigthBarrierSensor::FRONT);
-
+*/
     /*****************************************/
 
    while(1);
