@@ -45,11 +45,15 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
         nbActionsBase[i] = 0;
 
     actions[0]=new ActionBase[4];
-    actions[0][0].position = Position(1000,500*cote);//1
-    actions[0][1].position = Position(400,785*cote);//2
-    actions[0][2].position = Position(300,1000*cote);//3
-    actions[0][3].position = Position(740,785*cote);//3b
-    actions[0][3].reculer = true; // a reculon
+    actions[0][0].position = Position(800,250*cote);//1
+  // actions[0][0].position = Position(300,250*cote);//1
+    actions[0][1].position = Position(1000,460*cote);//1
+  //  actions[0][1].position = Position(1250,250*cote);//1
+    actions[0][2].position = Position(900,500*cote);//1
+    actions[0][3].position = Position(400,785*cote);//2
+  //  actions[0][4].position = Position(360,800*cote);//3
+  //  actions[0][3].position = Position(740,785*cote);//3b
+  //  actions[0][3].reculer = true; // a reculon
     nbActionsBase[0] = 4;
 
 
@@ -62,8 +66,8 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
     actions[1][0].position = Position(740,1400*cote);//3c
     actions[1][1].position = Position(1325,1550*cote);//3d
     actions[1][2].position = Position(1500,1353*cote);//4
-    actions[1][3].position = Position(1270,1170*cote);//5
-    actions[1][4].position = Position(1100,1240*cote);//6
+    actions[1][3].position = Position(1500,1330*cote);//5
+    actions[1][4].position = Position(1300,1330*cote);//6
     actions[1][5].position = Position(930,1170*cote);//7
     actions[1][6].position = Position(300,700*cote);//8
     actions[1][7].position = Position(740,1000*cote);//9
