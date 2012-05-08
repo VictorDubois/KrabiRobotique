@@ -20,6 +20,7 @@ ActionSuivreChemin::~ActionSuivreChemin()
 
 bool ActionSuivreChemin::executer()
 {
+    bool timerCollision=false;
     if (taille ==0)
         return true;
 
@@ -38,19 +39,32 @@ bool ActionSuivreChemin::executer()
 
         }*/
 
+     /*   if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_LEFT) || Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH) ||
+           Sensors::getSensors()->detectedSharp(SharpSensor::BACK) || Sensors::getSensors()->detectedSharp(SharpSensor::RIGTH) ||
+           Sensors::getSensors()->detectedSharp(SharpSensor::LEFT))
+        {
+            timerCollision=true;
+            if(timerCollision<100)
+            {
+                timerCollision+=1;
+            }
+            else new CommandGoTo(odometrie->getPos().getPosition()-Position(250,0));
+        }*/
+
     if (!faitquelquechose)
     {
         faitquelquechose = true;
         new CommandGoTo(chemin[pointSuivant].position);
     }
 
-    if(trajet.x*trajet.x+trajet.y*trajet.y < 30.0f*30.0f)
+    if(trajet.x*trajet.x+trajet.y*trajet.y < 50.0f*50.0f)
     {
         pointSuivant++;
         if (pointSuivant < taille)
             new CommandGoTo(chemin[pointSuivant].position);
 
     }
+
 
     return (pointSuivant >= taille);
 
