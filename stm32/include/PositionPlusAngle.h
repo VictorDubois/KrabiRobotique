@@ -17,6 +17,8 @@ class PositionPlusAngle
         PositionPlusAngle() { }
         /**@brief Surcharge d'opérateur pour ajouter une distance. */
         PositionPlusAngle operator+(const Distance &distance);
+        /**@brief Surcharge d'opérateur pour ajouter deux PositionPlusAngle (chaque paramètre deux à deux). */
+        PositionPlusAngle operator+(PositionPlusAngle &posAngAdd);
         /**@brief Surcharge d'opérateur pour enlever une distance. */
         PositionPlusAngle operator-(const Distance &distance);
         /**@brief Surcharge d'opérateur pour assigner un PositionPlusAngle */

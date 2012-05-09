@@ -536,10 +536,10 @@ while(1)
     {
         o2 = out2[0];
     }
-*/
+
     Sensors::OutputSensorVector out3 = sensors->getValueUltrasound();
     Sensor::OutputSensor o3 = out3[0];
-/*    float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
+    float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
 
     Sensors::LigthBarrierNameVector out4 = sensors->detectedLigthBarrier();
     LigthBarrierSensor::LigthBarrierName o4;
