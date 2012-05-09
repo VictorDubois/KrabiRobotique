@@ -20,7 +20,7 @@ ActionSuivreChemin::~ActionSuivreChemin()
 
 bool ActionSuivreChemin::executer()
 {
-    bool timerCollision=false;
+    int timerCollision=0;
     if (taille ==0)
         return true;
 
@@ -29,17 +29,27 @@ bool ActionSuivreChemin::executer()
        /* if(chemin[pointSuivant].reculer)
         {
             if(getSensors()->detectedSharp(BACK))
-
-
+            {
+                if(timerCollision<100)
+                {
+                    timerCollision+=1;
+                }
+                else new CommandGoTo(odometrie->getPos().getPosition()-Position(250,0));
+            }
         }
         else
         {
             if(getSensors()->detectedSharp(FRONT_LEFT) || getSensors()->detectedSharp(FRONT_RIGHT))
-
-
+            {
+                if(timerCollision<100)
+                {
+                    timerCollision+=1;
+                }
+                else new CommandGoTo(odometrie->getPos().getPosition()-Position(250,0));
+            }
         }*/
 
-     /*   if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_LEFT) || Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH) ||
+       /* if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_LEFT) || Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH) ||
            Sensors::getSensors()->detectedSharp(SharpSensor::BACK) || Sensors::getSensors()->detectedSharp(SharpSensor::RIGTH) ||
            Sensors::getSensors()->detectedSharp(SharpSensor::LEFT))
         {
@@ -57,11 +67,11 @@ bool ActionSuivreChemin::executer()
         new CommandGoTo(chemin[pointSuivant].position);
     }
 
-    if(trajet.x*trajet.x+trajet.y*trajet.y < 50.0f*50.0f)
+    if(trajet.x*trajet.x+trajet.y*trajet.y < 60.0f*60.0f)
     {
         pointSuivant++;
         if (pointSuivant < taille)
-            new CommandGoTo(chemin[pointSuivant].position);
+            new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
 
     }
 

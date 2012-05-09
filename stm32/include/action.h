@@ -14,7 +14,7 @@ class Action {
         virtual ~Action() {}
         /** @brief Destructeur de la classe*/
         virtual bool executer() = 0; // renvoit vrai si l'action est terminee
-        /** @brief Fonction utiliser dans les classe fille pour executer une action*/
+        /** @brief Fonction utiliser dans les classes filles pour executer une action*/
 };
 
 class ActionBase
