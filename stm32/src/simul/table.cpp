@@ -248,12 +248,15 @@ void Table::paintEvent(QPaintEvent* evt)
 	dt = 0;
 
     // Dessin d'un trajet
-/*	PositionPlusAngle** path = CommandGoTo::path(Position(1500,1500));
+	PositionPlusAngle** path = CommandGoTo::path();
     	p.setPen(QColor(Qt::black));
-	for(unsigned int i=0; i+1 < PATH_LENGTH; i++)
+	if (path)
+	{
+		for(unsigned int i=0; i+1 < PATH_LENGTH; i++)
 		p.drawLine(path[i]->position.x, -path[i]->position.y, path[i+1]->position.x, -path[i+1]->position.y);
 	CommandGoTo::deletePath(path);
-*/
+	}
+
 }
 
 void Table::keyPressEvent(QKeyEvent* evt, bool press)

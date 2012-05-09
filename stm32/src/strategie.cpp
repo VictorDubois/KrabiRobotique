@@ -33,6 +33,7 @@ collision_detected(false)//, listeActions(NULL)
 }
 
 void Strategie::update(){
+    int cote = (is_blue ? 1:-1);
 /*
  if(listeActions->getActionActuelle()->executer())
     {
@@ -43,7 +44,7 @@ void Strategie::update(){
 
     if (Asservissement::asservissement->command == NULL)
     {
-     new CommandGoTo(Position(1000,-400));
+     new CommandGoTo(Position(1000,cote*400));
    //    new CommandTourner(Angle(M_PI_2));
     //    new CommandAvancerToutDroit(1000);
     }
@@ -67,7 +68,7 @@ void Strategie::collisionDetected(){
 
 
 void Strategie::doNthInstruction(uint16_t n){
-   int cote = (is_blue ? 1:-1);
+
 }
 
 
