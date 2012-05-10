@@ -126,6 +126,11 @@ void Asservissement::update(void)
         linearDutySent =  MIN(MAX(linearDutySent, LINEARE_DUTY_MIN),LINEARE_DUTY_MAX);
         angularDutySent = MIN(MAX(angularDutySent, ANGULARE_DUTY_MIN),ANGULARE_DUTY_MAX);
 
+        //On évite que le robot fasse du bruit quand il est à l'arrêt
+ //       linearDutySent = fabs(linearDutySent) > 0.05 || vitesse_lineaire_a_atteindre > 0.01 ? linearDutySent : 0;
+ //       angularDutySent = fabs(angularDutySent) > 0.05 || vitesse_angulaire_a_atteindre > 0.0001 ? angularDutySent : 0;
+
+
 // Pour afficher les courbes :
             if(toto < 1 && dbgInc<DBG_SIZE)
             {
@@ -155,15 +160,15 @@ void Asservissement::update(void)
     bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
 #endif
 #ifdef CAPTEURS
-    bool testcap = sensors->detectedSharp(SharpSensor::BACK);
+    bool testcap = sensors->detectedSharp().getSize() > 0;
 #else
 
     bool testcap = false;
 #endif
 
-testcap = false;
+//testcap = false;
 
-    if (testcap )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
+    if (testcap || Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
         #ifdef STM32F10X_MD
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
@@ -186,6 +191,7 @@ testcap = false;
         roues.gauche.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }
+
 #endif
 }
 
@@ -193,4 +199,15 @@ testcap = false;
 extern "C" void SysTick_Handler()
 {
     Asservissement::asservissement->update();
+}
+
+
+void Asservissement::setCommand(Command* command)
+{
+    Asservissement::asservissement->command = command;
+}
+
+Command* Asservissement::getCommand()
+{
+    return (Asservissement::asservissement->command);
 }

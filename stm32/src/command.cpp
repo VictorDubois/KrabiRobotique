@@ -9,15 +9,16 @@ bool Command::stop = false;
 
 Command::Command()
 {
-	Command* & c = Asservissement::asservissement->command;
-       c = this;
+	Command* c = Asservissement::getCommand();
+	if (c)
+        delete c;
+    Asservissement::setCommand(this);
     Command::stop = false;
 }
 
 Command::~Command()
 {
-       Command* & c = Asservissement::asservissement->command;
-       c = NULL;
+       Asservissement::setCommand(NULL);
 }
 
 

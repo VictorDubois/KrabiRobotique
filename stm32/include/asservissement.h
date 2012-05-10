@@ -79,6 +79,11 @@ class Asservissement{
         static const uint16_t nb_ms_between_updates;
         /**@brief fonction appellées à chaque mise à jours */
         void update(void);
+        /** @brief Permet de changer la command courante utilisée par la stratégie */
+        static void setCommand(Command* command);
+        /** @brief Permet récupérer la command courante utilisée par la stratégie */
+        static Command* getCommand();
+
 };
 
 /**@brief fonction externe appellé directement par le microcontroleur à chaque mise à jour. C'est grace à cette fonction que des actions sont exécutés à intervalle régulier */

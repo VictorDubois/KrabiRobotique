@@ -35,6 +35,8 @@ class LimitSwitchSensor : public Sensor
         OutputSensor getValue();
         /** @brief Accesseur de name */
         LimitSwitchName getName();
+        /** @brief Permet de mettre à jour la valeur de retour du capteur */
+        void  updateValue();
     protected:
     private:
         /** @brief Numéro de pin utilisée (GPIO_Pin_1, GPIO_Pin_2, ...) */
@@ -45,6 +47,8 @@ class LimitSwitchSensor : public Sensor
         uint16_t counter;
         /** @brief Nom du fin de course */
         LimitSwitchName name;
+        /** @brief Valeur de retour du capteur */
+        bool output;
 };
 
 #endif // LIMITSWITCHSENSOR_H
