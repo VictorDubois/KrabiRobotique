@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Beat’em up" />
+		<Option title="Treasure Island" />
 		<Option pch_mode="2" />
 		<Option compiler="gnu_gcc_compiler__stm32_architecture" />
 		<Build>
@@ -62,6 +62,7 @@
 		</Unit>
 		<Unit filename="include/AnalogSensor.h" />
 		<Unit filename="include/Angle.h" />
+		<Unit filename="include/Bras.h" />
 		<Unit filename="include/CommandAvancerToutDroit.h" />
 		<Unit filename="include/CommandGoTo.h" />
 		<Unit filename="include/CommandTourner.h" />
@@ -74,6 +75,7 @@
 		<Unit filename="include/PositionPlusAngle.h" />
 		<Unit filename="include/Sensor.h" />
 		<Unit filename="include/Sensors.h" />
+		<Unit filename="include/Servo.h" />
 		<Unit filename="include/SharpSensor.h" />
 		<Unit filename="include/UltrasoundSensor.h" />
 		<Unit filename="include/ValeursRoues.h" />
@@ -92,13 +94,13 @@
 		<Unit filename="include/quadrature_coder_handler.h" />
 		<Unit filename="include/roue.h" />
 		<Unit filename="include/roues.h" />
-		<Unit filename="include/servo.h" />
 		<Unit filename="include/strategie.h" />
 		<Unit filename="include/timer_handler.h" />
 		<Unit filename="include/variable.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/AnalogSensor.cpp" />
 		<Unit filename="src/Angle.cpp" />
+		<Unit filename="src/Bras.cpp" />
 		<Unit filename="src/CommandAvancerToutDroit.cpp" />
 		<Unit filename="src/CommandGoTo.cpp" />
 		<Unit filename="src/CommandTourner.cpp" />
@@ -111,6 +113,7 @@
 		<Unit filename="src/PositionPlusAngle.cpp" />
 		<Unit filename="src/Sensor.cpp" />
 		<Unit filename="src/Sensors.cpp" />
+		<Unit filename="src/Servo.cpp" />
 		<Unit filename="src/SharpSensor.cpp" />
 		<Unit filename="src/UltrasoundSensor.cpp" />
 		<Unit filename="src/ValeursRoues.cpp" />
@@ -130,7 +133,6 @@
 		<Unit filename="src/quadrature_coder_handler.cpp" />
 		<Unit filename="src/roue.cpp" />
 		<Unit filename="src/roues.cpp" />
-		<Unit filename="src/servo.cpp" />
 		<Unit filename="src/strategie.cpp" />
 		<Unit filename="src/stub.c">
 			<Option compilerVar="CC" />

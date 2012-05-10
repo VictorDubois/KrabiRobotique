@@ -3,7 +3,7 @@
 #include "stm32f10x_tim.h"
 #include <stdint.h>
 #include "misc.h"
-#include "servo.h"
+#include "Servo.h"
 //#include "Hctl_Handler.h"
 #include "quadrature_coder_handler.h"
 #include "asservissement.h"
