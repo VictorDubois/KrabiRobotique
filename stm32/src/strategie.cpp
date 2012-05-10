@@ -43,8 +43,8 @@ if (listeActions->getActionActuelle())
         listeActions->creerPremiereAction();
     }
 }
-
-/*   bool dejaVu = false;
+/*
+   bool dejaVu = false;
    if (Asservissement::asservissement->command == NULL)
     {
         new CommandGoTo(Position(1000,cote*400));
@@ -62,7 +62,7 @@ if (listeActions->getActionActuelle())
     {
         Command::freinageDUrgence(true);
     }
-   /* //Si tout est ok, on passe à la suite
+*/   /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;
         doNthInstruction(instruction_nb);

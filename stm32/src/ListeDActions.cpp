@@ -44,18 +44,18 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
     for(int i = 0 ; i < nbActionsMax ; i++)
         nbActionsBase[i] = 0;
 
-    actions[0]=new ActionBase[2];
+    actions[0]=new ActionBase[4];
     actions[0][0].position = Position(800,200*cote);//1
   //  actions[0][0].position = Position(300,250*cote);//1
     actions[0][1].position = Position(1000,460*cote);//1
   //  actions[0][1].reculer = true;//1
   //  actions[0][1].position = Position(1250,250*cote);//1
- /*   actions[0][2].position = Position(900,500*cote);//1
+    actions[0][2].position = Position(900,500*cote);//1
     actions[0][3].position = Position(300,785*cote);//2
   //  actions[0][4].position = Position(360,800*cote);//3
   //  actions[0][3].position = Position(740,785*cote);//3b
   //  actions[0][3].reculer = true; // a reculon
-  */  nbActionsBase[0] = 2;//4;
+    nbActionsBase[0] = 4;
 
 
 /*    actions[0]=new ActionBase[1];

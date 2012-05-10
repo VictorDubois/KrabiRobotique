@@ -54,7 +54,7 @@ bool ActionSuivreChemin::executer()
 
     Position trajet(chemin[pointSuivant].position-odometrie->getPos().getPosition());
 
-       /* if(chemin[pointSuivant].reculer)
+/*        if(chemin[pointSuivant].reculer)
         {
             if(getSensors()->detectedSharp(BACK))
             {
@@ -100,8 +100,8 @@ bool ActionSuivreChemin::executer()
             else new CommandGoTo(odometrie->getPos().getPosition()-Position(250,0));
         }*/
 
-    if(Sensors::getSensors()->detectedSharp().getSize()==0)
-    {
+    /*if(Sensors::getSensors()->detectedSharp().getSize()==0)
+    {*/
         if (!faitquelquechose)
         {
             faitquelquechose = true;
@@ -118,7 +118,7 @@ bool ActionSuivreChemin::executer()
 
 
         return (pointSuivant >= taille);
-    }
+//    }
 
 }
 
