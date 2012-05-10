@@ -7,7 +7,7 @@ Sensors* Sensors::sensors = NULL;
 Sensors::Sensors()
 {
     Sensors::sensors = this;
-    uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 4}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
+    uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 11}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
     uint16_t* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
@@ -15,13 +15,13 @@ Sensors::Sensors()
     nbSharp = 4;
     nbUltrasound = 1;
     nbLimitSwitch = 3;
-    nbLigthBarrier = 1;
+    nbLigthBarrier = 0;
 
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
     ultrasounds = new UltrasoundSensor*[nbUltrasound];
     limitSwitchs = new  LimitSwitchSensor*[nbLimitSwitch];
-    ligthBarriers = new LigthBarrierSensor*[nbLigthBarrier];
+    //ligthBarriers = new LigthBarrierSensor*[nbLigthBarrier];
 
     //On initialise les capteurs ayant besoin d'un ADC
     ultrasounds[0] = new UltrasoundSensor(UltrasoundSensor::FRONT, 12, data);
@@ -31,11 +31,11 @@ Sensors::Sensors()
     sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGTH, 14, data);
     sharps[2] = new SharpSensor(SharpSensor::LEFT, 2, data);
     sharps[3] = new SharpSensor(SharpSensor::RIGTH, 15, data);
-    //sharps[4] = new SharpSensor(SharpSensor::BACK, 4, data);
+    sharps[4] = new SharpSensor(SharpSensor::BACK, 11, data);
 
 #ifdef STM32F10X_CL
     //On initialise les autres capteurs
-    ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_6, GPIOE);
+    //ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_6, GPIOE);
 
     limitSwitchs[0] = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_0, GPIOE);
     limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGTH, GPIO_Pin_1, GPIOE);
@@ -43,7 +43,7 @@ Sensors::Sensors()
 #endif
 #ifdef STM32F10X_MD
     //On initialise les autres capteurs
-    ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_2, GPIOA);
+    //ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_2, GPIOA);
 
     limitSwitchs[0] = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_9, GPIOC);
     limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGTH, GPIO_Pin_10, GPIOC);
@@ -191,6 +191,10 @@ void Sensors::update()
     for (int i=0; i<nbLigthBarrier; i++)
     {
         ligthBarriers[i]->updateValue();
+    }
+    for (int i=0; i<nbLimitSwitch; i++)
+    {
+        limitSwitchs[i]->updateValue();
     }
     // Les autres n'ont pas besoin d'être mis à jour car on obtient la valeur directement en lisant la valeur de la pin
 }

@@ -540,11 +540,19 @@ while(1)
     Sensors::OutputSensorVector out3 = sensors->getValueUltrasound();
     Sensor::OutputSensor o3 = out3[0];
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
-
-    Sensors::LigthBarrierNameVector out4 = sensors->detectedLigthBarrier();
-    LigthBarrierSensor::LigthBarrierName o4;
+*/
+    Sensors::LimitSwitchNameVector out4 = sensors->detectedLimitSwitch();
+    LimitSwitchSensor::LimitSwitchName* o4;
+    o4 = new LimitSwitchSensor::LimitSwitchName[3];
+    for (int i = 0;i<3;i++) {o4[i]=LimitSwitchSensor::NONE;}
     if (out4.getSize() >0 )
-        o4 = out4[0];
+    {
+        for (int i=0;i<out4.getSize();i++)
+            o4[i] = out4[i];
+    }
+/*
+ uint8_t v = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_9);
+
 
     bool b2 = sensors->detectedLigthBarrier(LigthBarrierSensor::FRONT);
 */
