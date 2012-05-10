@@ -20,10 +20,6 @@ CommandGoTo::CommandGoTo(Position DestinationFinale, bool goBack) :
     destination =  PositionPlusAngle(DestinationFinale, (DestinationFinale - Odometrie::odometrie->getPos().getPosition()).getAngle()); // La destination est à la position finale souhaitée et on choisit d'arrivé dans la direction formé par le point de départ et le point d'arrivé
 }
 
-CommandGoTo::~CommandGoTo()
-{
-    //dtor
-}
 
 Vitesse CommandGoTo::getLinearSpeed(void)
 {
@@ -40,7 +36,7 @@ void CommandGoTo::update()
 {
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
         Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle())) : 0;//(wrapAngle(destination.getAngle() - Odometrie::odometrie->getPos().getAngle()));
-        distance_restante = fabs(wrapAngle(angle_restant)) > 0.5 ? 0 : distance_restante;
+        distance_restante = fabs(wrapAngle(angle_restant)) > 0.8 ? 0 : distance_restante;
 
 		if( distance_restante < DISTANCE_ARRET)
         {
@@ -100,11 +96,10 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
 
 VitesseAngulaire CommandGoTo::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_a_atteindre, Angle angle_restant, bool goBack)
 {
-    Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)); // idem qu'en linéaire
-
-    if((Angle((fabs(angle_restant)-fabs(pivot))))<=0)
+    Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) + M_PI; // idem qu'en linéaire
+    if((Angle((fabs(angle_restant)+M_PI-pivot)))<=0)
     {
-        return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), vitesse_angulaire_a_atteindre));
+        return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant));
     }
     else
     {

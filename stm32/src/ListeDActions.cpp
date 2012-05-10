@@ -46,7 +46,7 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
 
     actions[0]=new ActionBase[4];
     actions[0][0].position = Position(800,200*cote);//1
-  // actions[0][0].position = Position(300,250*cote);//1
+  //  actions[0][0].position = Position(300,250*cote);//1
     actions[0][1].position = Position(1000,460*cote);//1
   //  actions[0][1].reculer = true;//1
   //  actions[0][1].position = Position(1250,250*cote);//1
@@ -91,14 +91,24 @@ void ListeDActions::supprimerPremiereAction()
         }
         nbActions--;
     }
+    else
+    {
+        delete actions;
+    }
 }
 
 Action* ListeDActions::creerPremiereAction()
 {
     if (actionActuelle != NULL)
         delete actionActuelle;
-
-    actionActuelle = new ActionSuivreChemin(actions[0], nbActionsBase[0],odom);
+    if (nbActions!=0)
+    {
+        actionActuelle = new ActionSuivreChemin(actions[0], nbActionsBase[0],odom);
+    }
+    else
+    {
+        actionActuelle = NULL;
+    }
     return actionActuelle;
 }
 

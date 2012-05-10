@@ -27,28 +27,42 @@ collision_detected(false)//, listeActions(NULL)
     //command->strategie = this;
  /*   instruction_nb=1;
     doNthInstruction(instruction_nb); */
-    //listeActions= new ListeDActions(odometrie,is_blue);
-    //listeActions->creerPremiereAction();
+    listeActions= new ListeDActions(odometrie,is_blue);
+    listeActions->creerPremiereAction();
 
 }
 
 void Strategie::update(){
     int cote = (is_blue ? 1:-1);
-/*
- if(listeActions->getActionActuelle()->executer())
+
+if (listeActions->getActionActuelle())
+{
+    if(listeActions->getActionActuelle()->executer())
     {
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
-*/
-
-    if (Asservissement::asservissement->command == NULL)
+}
+/*
+   bool dejaVu = false;
+   if (Asservissement::asservissement->command == NULL)
     {
-     new CommandGoTo(Position(1000,cote*400));
-   //    new CommandTourner(Angle(M_PI_2));
+        new CommandGoTo(Position(1000,cote*400));
+     //   int i =0; i++;
+    // new CommandTourner(Angle(M_PI_2));
     //    new CommandAvancerToutDroit(1000);
     }
-   /* //Si tout est ok, on passe à la suite
+    int d = (odometrie->getPos().getPosition()-Position(1000,cote*400)).getNorme();
+    if ((odometrie->getPos().getPosition()-Position(1000,cote*400)).getNorme()< 300 && !dejaVu)
+    {
+        dejaVu = true;
+        new CommandGoTo(Position(1000,cote*1000));
+    }
+   if ((odometrie->getPos().getPosition()-Position(1000,cote*1000)).getNorme()< 300)
+    {
+        Command::freinageDUrgence(true);
+    }
+*/   /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;
         doNthInstruction(instruction_nb);

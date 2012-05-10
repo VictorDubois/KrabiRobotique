@@ -14,7 +14,7 @@ class CommandGoTo : public Command
         *   @param DestinationFinale Position final que doit avoir le robot
         *   @param goBack Indique si le robot doit avancer en reculant ou non*/
         CommandGoTo(Position DestinationFinale, bool goBack);
-        virtual ~CommandGoTo();
+   //     virtual ~CommandGoTo();
         /** @brief Retourne la vitesse lineaire à atteindre par le robot */
         Vitesse getLinearSpeed();
         /** @brief Retourne la vitesse angulaire à atteindre par le robot */
