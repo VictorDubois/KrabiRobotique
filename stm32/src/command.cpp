@@ -9,7 +9,9 @@ bool Command::stop = false;
 
 Command::Command()
 {
-	Command* c = Asservissement::getCommand();
+    Asservissement* a = Asservissement::asservissement;
+    Command * c = a->command;
+//	Command* c = Asservissement::getCommand();
 	if (c)
         delete c;
     Asservissement::setCommand(this);
