@@ -1,4 +1,4 @@
-_estack = 0x20004fff;
+_estack = 0x20010000;
 
 MEMORY
 {

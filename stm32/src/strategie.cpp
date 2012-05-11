@@ -39,6 +39,7 @@ if (listeActions->getActionActuelle())
 {
     if(listeActions->getActionActuelle()->executer())
     {
+        Command::freinageDUrgence(true);
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
