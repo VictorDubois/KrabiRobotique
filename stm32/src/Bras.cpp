@@ -14,7 +14,7 @@ Bras::Bras()
     balaiDroite = new Servo(2);
     balaiDroite->goToAngle(BALAI_D_CLOSED);
 
-    rateau = new Servo(3);
+    rateau = new Servo(4);
     rateau->goToAngle(RATEAU_HAUT);
 }
 
@@ -69,7 +69,9 @@ void Bras::monterRateau()
 
 Bras::~Bras()
 {
-    //dtor
+    delete balaiDroite;
+    delete balaiGauche;
+    delete rateau;
 }
 
 #endif // ROBOTHW

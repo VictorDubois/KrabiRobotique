@@ -29,9 +29,14 @@ void Servo::initTimer()
 	// frequence_timer = 1Mhz : Précision de 1us -> 1000 positions possible -> précision de 0.18°
 	// timPrescaler = 72e6/(frequence_timer*valeur_timClockDivision)-1
     // timPeriod = frequence_timer/frequence_impulsion
-    timer = new Timer(numero_timer, PERIOD_TIMER_MOTEUR, PRESCALER_TIMER_MOTEUR, CLOCK_TIMER_MOTEUR);
+    timer = new Timer(numero_timer, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
 }
 
 Timer *Servo::timer = NULL;
+
+Servo::~Servo()
+{
+
+}
 
 #endif // ROBOTHW
