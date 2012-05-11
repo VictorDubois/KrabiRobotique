@@ -511,7 +511,7 @@ while(1)
 
     new Strategie(isBlue(),odometrie);
 
-    /**********************  TEST CAPTEUR  */
+    /**********************  TEST CAPTEUR  /
 
     Sensors* sensors = Sensors::getSensors();
 
@@ -541,7 +541,7 @@ while(1)
     Sensor::OutputSensor o3 = out3[0];
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
 */
-    Sensors::LimitSwitchNameVector out4 = sensors->detectedLimitSwitch();
+/*    Sensors::LimitSwitchNameVector out4 = sensors->detectedLimitSwitch();
     LimitSwitchSensor::LimitSwitchName* o4;
     o4 = new LimitSwitchSensor::LimitSwitchName[3];
     for (int i = 0;i<3;i++) {o4[i]=LimitSwitchSensor::NONE;}
@@ -550,13 +550,23 @@ while(1)
         for (int i=0;i<out4.getSize();i++)
             o4[i] = out4[i];
     }
-/*
+*//*
  uint8_t v = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_9);
 
 
     bool b2 = sensors->detectedLigthBarrier(LigthBarrierSensor::FRONT);
 */
+    /******* Test Memoire **************** /
+
+    int* i = new int;
+    int* e = new int[10];
+
+    delete i;
+    delete[] e;
+
     /*****************************************/
+
+
 
    while(1);
 }

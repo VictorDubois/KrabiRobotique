@@ -81,7 +81,7 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
     else
     {
         int sGB = goBack ? -1 : 1;
-        if (distance_restante-pivot <=0)  //Le robot est assez proche (ou trop proche) du point d'arrivé pour pouvoir décélerer assez pour l'atteindre avec la vitesse final demandé.
+        if (distance_restante-DISTANCE_ARRET/2-pivot <=0)  //Le robot est assez proche (ou trop proche) du point d'arrivé pour pouvoir décélerer assez pour l'atteindre avec la vitesse final demandé.
         {
             if(vitesse_lineaire_a_atteindre>vitesseFinale)
             {
@@ -107,7 +107,7 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
 VitesseAngulaire CommandGoTo::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_a_atteindre, Angle angle_restant, bool goBack)
 {
     Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) + M_PI; // idem qu'en linéaire
-    if((Angle((fabs(angle_restant)+M_PI-pivot)))<=0)
+    if((Angle((fabs(angle_restant)+M_PI-ANGLE_ARRET/2-pivot)))<=0)
     {
         return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant));
     }

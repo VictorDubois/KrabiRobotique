@@ -17,6 +17,11 @@ Sensors::Sensors()
     nbLimitSwitch = 3;
     nbLigthBarrier = 0;
 
+    sharpNameVector = NULL;
+    outputSensorVector = NULL;
+    limitSwitchNameVector = NULL;
+    ligthBarrierNameVector = NULL;
+
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
     ultrasounds = new UltrasoundSensor*[nbUltrasound];
@@ -68,21 +73,31 @@ Sensors::~Sensors()
     delete[] ultrasounds;
     delete[] limitSwitchs;
     delete[] ligthBarriers;
+
+    if (sharpNameVector)
+        delete sharpNameVector;
+    if (ligthBarrierNameVector)
+        delete ligthBarrierNameVector;
+    if (limitSwitchNameVector)
+        delete limitSwitchNameVector;
+    if (outputSensorVector)
+        delete outputSensorVector;
 }
 
-Sensors::SharpNameVector  Sensors::detectedSharp()
+Sensors::SharpNameVector*  Sensors::detectedSharp()
 {
-    SharpNameVector result;
-    result.reserve(nbSharp);
+    if (sharpNameVector)
+        delete sharpNameVector;
+    sharpNameVector = new SharpNameVector(nbSharp);
     for (int i = 0; i< nbSharp; i++)
     {
        if (sharps[i]->getValue().b)
        {
-            result.push_back(sharps[i]->getName());
+            sharpNameVector->push_back(sharps[i]->getName());
        }
     }
-    result.resize();
-    return result;
+   // sharpNameVector->resize();
+    return sharpNameVector;
 }
 
 bool Sensors::detectedSharp(SharpSensor::SharpName name)
@@ -95,30 +110,34 @@ bool Sensors::detectedSharp(SharpSensor::SharpName name)
     return false; // Si aucun capteur n'a ce nom (exemple NONE)
 }
 
-Sensors::LimitSwitchNameVector Sensors::detectedLimitSwitch()
+Sensors::LimitSwitchNameVector* Sensors::detectedLimitSwitch()
 {
-    LimitSwitchNameVector result(nbLimitSwitch);
+    if (limitSwitchNameVector)
+        delete limitSwitchNameVector;
+    limitSwitchNameVector = new LimitSwitchNameVector(nbLimitSwitch);
     for (int i = 0; i<nbLimitSwitch; i++)
     {
         if (limitSwitchs[i]->getValue().b)
         {
-            result.push_back(limitSwitchs[i]->getName());
+            limitSwitchNameVector->push_back(limitSwitchs[i]->getName());
         }
     }
-    result.resize();
-    return result;
+    limitSwitchNameVector->resize();
+    return limitSwitchNameVector;
 }
 
 
-Sensors::OutputSensorVector Sensors::getValueUltrasound()
+Sensors::OutputSensorVector* Sensors::getValueUltrasound()
 {
-    OutputSensorVector result(nbUltrasound);
+    if (outputSensorVector)
+        delete outputSensorVector;
+    outputSensorVector = new OutputSensorVector(nbUltrasound);
     for (int i = 0; i < nbUltrasound; i++)
     {
-        result.push_back(ultrasounds[i]->getValue());
+        outputSensorVector->push_back(ultrasounds[i]->getValue());
     }
-    result.resize();
-    return result;
+    outputSensorVector->resize();
+    return outputSensorVector;
 }
 
 Sensors* Sensors::getSensors()
@@ -126,19 +145,21 @@ Sensors* Sensors::getSensors()
     return Sensors::sensors;
 }
 
-Sensors::OutputSensorVector Sensors::getValueUltrasound(uint16_t distance)
+Sensors::OutputSensorVector* Sensors::getValueUltrasound(uint16_t distance)
 {
-    OutputSensorVector result(nbUltrasound);
+    if (outputSensorVector)
+        delete outputSensorVector;
+    outputSensorVector = new OutputSensorVector(nbUltrasound);
     for (int i = 0; i < nbUltrasound; i++)
     {
         Sensor::OutputSensor v = ultrasounds[i]->getValue();
          if (v.f < distance)
          {
-             result.push_back(v);
+             outputSensorVector->push_back(v);
          }
     }
-    result.resize();
-    return result;
+    outputSensorVector->resize();
+    return outputSensorVector;
 }
 
 
@@ -155,18 +176,20 @@ float Sensors::getValueUltrasound(UltrasoundSensor::UltrasoundName name)
     return -1;
 }
 
-Sensors::LigthBarrierNameVector Sensors::detectedLigthBarrier()
+Sensors::LigthBarrierNameVector* Sensors::detectedLigthBarrier()
 {
-    LigthBarrierNameVector result(nbLigthBarrier);
+    if (ligthBarrierNameVector)
+        delete ligthBarrierNameVector;
+    ligthBarrierNameVector = new LigthBarrierNameVector(nbLigthBarrier);
     for (int i=0; i<nbLigthBarrier; i++)
     {
         if(ligthBarriers[i]->getValue().b)
         {
-            result.push_back(ligthBarriers[i]->getName());
+            ligthBarrierNameVector->push_back(ligthBarriers[i]->getName());
         }
     }
-    result.resize();
-    return result;
+    ligthBarrierNameVector->resize();
+    return ligthBarrierNameVector;
 }
 
 bool Sensors::detectedLigthBarrier(LigthBarrierSensor::LigthBarrierName name)
