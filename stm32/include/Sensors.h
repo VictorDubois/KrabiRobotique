@@ -32,7 +32,7 @@ class Sensors
 
         /** @brief Permet de vérifier si un capteur sharp quelconque a détecter un obstacle *
         *   @return Retourne un SharpNameVector, vecteur contenant les SharpName des capteurs sharp renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur returne un vector vide  */
-        SharpNameVector detectedSharp();
+        SharpNameVector* detectedSharp();
         /** @brief Permet de vérifier si un capteur sharp particulier a détecter un obstacle *
         *   @param name SharpName du capteur sharp dont on souhaite obtenir la valeur.  *
         *   @return True si un obstacle se trouve devant le capteur. */
@@ -40,15 +40,15 @@ class Sensors
 
         /** @brief Permet de vérifier si un fin de course quelconque est enclanché *
         *   @return Retourne un LimitSwitchNameVector, vecteur contenant les LimitSwitchName des capteurs fin de course renvoyant un true (donc étant enclanché). Si aucun capteur returne un vector vide.  */
-        LimitSwitchNameVector detectedLimitSwitch();
+        LimitSwitchNameVector* detectedLimitSwitch();
 
         /** @brief Permet de connaître la valeur de la distance de l'objet le plus proche de l'ensemble des capteurs ultrasons *
         *   @return Retourne un OutputSensorVector, vecteur contenant les valeurs de retour (dans un objet de type OutputSensor) de chaque capteurs ultrasons  */
-        OutputSensorVector getValueUltrasound();
+        OutputSensorVector* getValueUltrasound();
         /** @brief Permet de connaître la valeur de la distance de l'objet le plus proche de l'ensemble des capteurs ultrasons qui détecte un objet à moins de X mm *
         *   @return Retourne un OutputSensorVector, vecteur contenant les valeurs de retour (dans un objet de type OutputSensor) de chaque capteurs ultrasons ayant un objet à moins de Xmm de lui
         *   @param  distance Distance en mm maximal que l'on souhaite avoir pour un objet devant les capteurs retournés  */
-        OutputSensorVector getValueUltrasound(uint16_t distance);
+        OutputSensorVector* getValueUltrasound(uint16_t distance);
         /** @brief Permet de connaître la valeur de la distance de l'objet le plus d'un capteur ultrason précis *
         *   @return Retourne la distance en mm de l'objet le plus proche du capteur ayant pour nom name
         *   @param  name Nom du capteur dont on veut connaîte la distance en mm de l'objet le plus proche */
@@ -56,7 +56,7 @@ class Sensors
 
         /** @brief Permet de vérifier si une barrière optique quelconque détecte un obstacle *
         *   @return Retourne un LigthBarrierNameVector, vecteur contenant les LigthBarrierName des barrières optiques renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur retourne un vector vide  */
-        LigthBarrierNameVector detectedLigthBarrier();
+        LigthBarrierNameVector* detectedLigthBarrier();
         /** @brief Permet de vérifier si une barrière optique quelconque détecte un obstacle *
         *   @return Retourne la valeur de la barrière optique ayant pour nom name  *
         *   @param name Nom de la barrière dont on veut connaître le nom */
@@ -67,6 +67,9 @@ class Sensors
 
         /** @brief Permet de mettre à jour les valeurs des capteurs avant toute récupération (doit être lancé le plus souvant possible pour maintenir des valeurs cohérentes pour les capteurs dont la valeur de retour est filtré). */
         void update();
+
+        /** @brief Delete tout les vectors créé par l'instance de cette classe */
+        void deleteVectors();
 
     protected:
     private:
@@ -88,6 +91,15 @@ class Sensors
         int nbLimitSwitch;
         /** @brief Attribue de classe permettant de connaîte l'adresse en mémoire de la seule et unique instance possible de cette classe */
         static Sensors* sensors;
+        /** @brief Pointeur vers le dernier SharpNameVector définie */
+        SharpNameVector* sharpNameVector;
+        /** @brief Pointeur vers le dernier LimitSwitchNameVector définie */
+        LimitSwitchNameVector* limitSwitchNameVector;
+        /** @brief Pointeur vers le dernier LigthBarrierNameVector définie */
+        LigthBarrierNameVector* ligthBarrierNameVector;
+        /** @brief Pointeur vers le dernier OutputSensorVector définie */
+        OutputSensorVector* outputSensorVector;
+
 };
 
 #endif

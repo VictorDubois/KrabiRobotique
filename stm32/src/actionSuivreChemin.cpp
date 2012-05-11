@@ -36,14 +36,16 @@ const Distance BasZoneCapitaine = 1260-RAYON_ROBOT;
 const Distance zoneCapitaineRouge = 400+RAYON_ROBOT;
 const Distance zoneCapitaineBleu = 2600+RAYON_ROBOT;
 
-bool toucherDeccordEtRobot(Position pos,Position* posRobotAdverse)
+bool toucherDeccordEtRobot(Position pos,Position* posRobotAdverseUn,Position* posRobotAdverseDeux,Position* posRobotAdverseTrois)
 {
     bool toucher = false;
     toucher |= (pos.x<droiteTotem) && (pos.x>gaucheTotem) && (pos.y<hautTotem) && (pos.y>basTotem);
     toucher |= (pos.y<basTable) && (pos.y>hautTable) && (pos.x<gaucheTable) && (pos.x>droiteTable);
     toucher |= (pos.y>BasZoneCapitaine) && ((pos.x<zoneCapitaineRouge) || (pos.x>zoneCapitaineBleu));
     toucher |= (pos.y<hautZoneDeDepart) && ((pos.x<zoneDeDepartRouge) || (pos.x>zoneDeDepartBleu));
-
+    toucher |= ((pos.x - (posRobotAdverseUn->x))*(pos.x - (posRobotAdverseUn->x)) + (pos.y - (posRobotAdverseUn->y))*(pos.y - (posRobotAdverseUn->y))<RAYON_ROBOT);
+    toucher |= ((pos.x - (posRobotAdverseDeux->x))*(pos.x - (posRobotAdverseDeux->x)) + (pos.y - (posRobotAdverseDeux->y))*(pos.y - (posRobotAdverseDeux->y))<RAYON_ROBOT);
+    toucher |= ((pos.x - (posRobotAdverseTrois->x))*(pos.x - (posRobotAdverseTrois->x)) + (pos.y - (posRobotAdverseTrois->y))*(pos.y - (posRobotAdverseTrois->y))<RAYON_ROBOT);
 }
 
 bool ActionSuivreChemin::executer()
@@ -71,6 +73,7 @@ bool ActionSuivreChemin::executer()
             {
                 if(timerCollision<100)
                 {
+                    command::freinageDUrgence(true);
                     timerCollision+=1;
                 }
                 else if(!getSensors()->detectedSharp(FRONT_LEFT))
@@ -81,7 +84,7 @@ bool ActionSuivreChemin::executer()
                         bool toucher = false;
                         for(int i,i<,i+=5)
                         {
-                            toucher |= eviterDeccordEtRobot;
+                            toucher |= eviterDeccordEtRobot();
                         }
                     }
                 }
@@ -105,7 +108,7 @@ bool ActionSuivreChemin::executer()
         if (!faitquelquechose)
         {
             faitquelquechose = true;
-            new CommandGoTo(chemin[pointSuivant].position);
+            new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
         }
 
         if(trajet.x*trajet.x+trajet.y*trajet.y < 60.0f*60.0f)

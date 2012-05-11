@@ -3,9 +3,12 @@
 Header *memory_ptr = &_end; // fin du programme (et début du tas)
 static Header* nextFreeMemory;
 static Header* base = NULL;
+static int nbPlace = 0;
+static int sizeM = 0;
 
 void * operator new(size_t size) throw()
 {
+    nbPlace++;
     if (base == NULL)
     {
         base = memory_ptr;
@@ -20,6 +23,7 @@ void * operator new(size_t size) throw()
 
     }
     unsigned nunit = (size + sizeof(Header)-1)/sizeof(Header)+1;
+    sizeM += nunit;
     Header *p = nextFreeMemory;
     Header  *oldP = p;
     Header *ip;
@@ -69,7 +73,9 @@ void * operator new[](size_t size) throw()
 
 void operator delete(void * p)    throw()
 {
+    nbPlace--;
     Header* d = (Header*)p -1;
+    sizeM -= d->s.size;
     Header* predFree;
     for(predFree = nextFreeMemory;  !((d > predFree)&&(d<predFree->s.nextFree)); predFree = predFree->s.nextFree )
     {

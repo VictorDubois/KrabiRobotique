@@ -34,9 +34,17 @@ VitesseAngulaire CommandGoTo::getAngularSpeed(void)
 
 void CommandGoTo::update()
 {
+    if (Command::getStop())
+    {
+        vitesse_lineaire_a_atteindre = 0;
+        vitesse_angulaire_a_atteindre = 0;
+    }
+    else
+    {
+        Angle angleGB = goBack ? M_PI : 0;
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
-        Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle())) : 0;//(wrapAngle(destination.getAngle() - Odometrie::odometrie->getPos().getAngle()));
-        distance_restante = fabs(wrapAngle(angle_restant)) > 0.8 ? 0 : distance_restante;
+        Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle()+ angleGB)) : 0;//(wrapAngle(destination.getAngle() - Odometrie::odometrie->getPos().getAngle()));
+        distance_restante = fabs(wrapAngle(angle_restant)) > 0.4 ? 0 : distance_restante;
 
 		if( distance_restante < DISTANCE_ARRET)
         {
@@ -59,6 +67,7 @@ void CommandGoTo::update()
             vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(Odometrie::odometrie->getVitesseAngulaire(), wrapAngle(angle_restant+M_PI), goBack);
         }
 */
+    }
 }
 
 
@@ -71,15 +80,16 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
     }
     else
     {
-        if (distance_restante-pivot <=0)  //Le robot est assez proche (ou trop proche) du point d'arrivé pour pouvoir décélerer assez pour l'atteindre avec la vitesse final demandé.
+        int sGB = goBack ? -1 : 1;
+        if (distance_restante-DISTANCE_ARRET/2-pivot <=0)  //Le robot est assez proche (ou trop proche) du point d'arrivé pour pouvoir décélerer assez pour l'atteindre avec la vitesse final demandé.
         {
             if(vitesse_lineaire_a_atteindre>vitesseFinale)
             {
-                return (vitesse_lineaire_a_atteindre - Vitesse(acceleration_lineaire) > vitesseFinale ?  vitesse_lineaire_a_atteindre - Vitesse(acceleration_lineaire) : vitesseFinale ); // Si Vlaa - al > vitesseFinale alors Vlaa = Vlaa - al sinon Vlaa = vitesseFinale
+                return (vitesse_lineaire_a_atteindre - sGB * Vitesse(acceleration_lineaire) > vitesseFinale ?  vitesse_lineaire_a_atteindre - Vitesse(acceleration_lineaire) : vitesseFinale ); // Si Vlaa - al > vitesseFinale alors Vlaa = Vlaa - al sinon Vlaa = vitesseFinale
             }
             else
             {
-                return (vitesse_lineaire_a_atteindre + Vitesse(acceleration_lineaire) < vitesseFinale ?  vitesse_lineaire_a_atteindre + Vitesse(acceleration_lineaire) : vitesseFinale );
+                return (vitesse_lineaire_a_atteindre + sGB *Vitesse(acceleration_lineaire) < vitesseFinale ?  vitesse_lineaire_a_atteindre + Vitesse(acceleration_lineaire) : vitesseFinale );
             }
         }
         else if (!goBack)//fabs(wrapAngle(angle_restant))<3*M_PI_4) // Le point d'arrivé est encore devant nous
@@ -97,7 +107,7 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
 VitesseAngulaire CommandGoTo::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_a_atteindre, Angle angle_restant, bool goBack)
 {
     Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) + M_PI; // idem qu'en linéaire
-    if((Angle((fabs(angle_restant)+M_PI-pivot)))<=0)
+    if((Angle((fabs(angle_restant)+M_PI-ANGLE_ARRET/2-pivot)))<=0)
     {
         return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant));
     }
@@ -154,7 +164,7 @@ void CommandGoTo::deletePath(PositionPlusAngle** path)
    {
        delete path[i];
    }
-   delete path;
+   delete[] path;
 }
 
 
@@ -175,10 +185,10 @@ PositionPlusAngle** CommandGoTo::path()
         {
             PositionPlusAngle* positionPlusAngle = new PositionPlusAngle(Position(0.,0.),Angle(0.));
 
-
+            Angle angleGB = ((CommandGoTo*) Asservissement::asservissement->command)->getGoBack() ? M_PI : 0;
             Distance distance_restante = (destination.getPosition() - trajectoire[i-1]->getPosition()).getNorme();
-            Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  trajectoire[i-1]->getPosition()).getAngle() - trajectoire[i-1]->getAngle())) : (wrapAngle(destination.getAngle() - trajectoire[i-1]->getAngle()));
-            distance_restante = fabs(wrapAngle(angle_restant)) > 0.5 ? 0 : distance_restante;
+            Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle(angleGB+(destination.getPosition() -  trajectoire[i-1]->getPosition()).getAngle() - trajectoire[i-1]->getAngle())): 0;// (wrapAngle(destination.getAngle() - trajectoire[i-1]->getAngle()));
+            distance_restante = fabs(wrapAngle(angle_restant)) > 0.4 ? 0 : distance_restante;
 
             if( distance_restante < DISTANCE_ARRET)
             {

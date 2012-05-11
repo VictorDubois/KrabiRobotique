@@ -160,13 +160,13 @@ void Asservissement::update(void)
     bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
 #endif
 #ifdef CAPTEURS
-    bool testcap = sensors->detectedSharp().getSize() > 0;
+  //  bool testcap = sensors->detectedSharp()->getSize() > 0;
 #else
 
     bool testcap = false;
 #endif
 
-//testcap = false;
+bool testcap = false;
 
     if (testcap || Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
