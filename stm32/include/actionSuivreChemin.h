@@ -18,7 +18,11 @@ class ActionSuivreChemin : public Action
     /** @brief Variable utiliser pour faire demarrer la robot*/
     Odometrie* odometrie;
     /** @brief Pointeur vers l'odometrie*/
-    Position* positionRobotadverse;
+    Position* positionRobotadverseUn;
+    /** @brief */
+    Position* posRobotAdverseDeux;
+    /** @brief */
+    Position* posRobotAdverseTrois;
     /** @brief */
     public:
         ActionSuivreChemin(ActionBase* tab, int n, Odometrie* odo);
