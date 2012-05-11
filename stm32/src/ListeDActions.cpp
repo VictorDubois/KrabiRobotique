@@ -47,8 +47,8 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
     actions[0]=new ActionBase[4];
     actions[0][0].position = Position(800,200*cote);//1
   //  actions[0][0].position = Position(300,250*cote);//1
-    actions[0][1].position = Position(1000,460*cote);//1
-  //  actions[0][1].reculer = true;//1
+    actions[0][1].position = Position(200,200*cote);//1
+    actions[0][1].reculer = true;//1
   //  actions[0][1].position = Position(1250,250*cote);//1
     actions[0][2].position = Position(900,500*cote);//1
     actions[0][3].position = Position(300,785*cote);//2
