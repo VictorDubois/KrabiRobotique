@@ -105,7 +105,7 @@ bool ActionSuivreChemin::executer()
         if (!faitquelquechose)
         {
             faitquelquechose = true;
-            new CommandGoTo(chemin[pointSuivant].position);
+            new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
         }
 
         if(trajet.x*trajet.x+trajet.y*trajet.y < 60.0f*60.0f)
