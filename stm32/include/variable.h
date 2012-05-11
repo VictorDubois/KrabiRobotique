@@ -44,17 +44,17 @@
 #define NB_CAPTEUR_A_ADC 6
 
     /// @brief BALAI_G_CLOSED Angle du servomoteur pour lequel le balai gauche est fermé.
-#define BALAI_G_CLOSED 10
+#define BALAI_G_CLOSED -50
     /// @brief BALAI_D_CLOSED Angle du servomoteur pour lequel le balai droit est fermé.
-#define BALAI_D_CLOSED 10
+#define BALAI_D_CLOSED -50
     /// @brief BALAI_G_OPEN Angle du servomoteur pour lequel le balai gauche est ouvert.
-#define BALAI_G_OPEN 70
+#define BALAI_G_OPEN 50
     /// @brief BALAI_D_OPEN Angle du servomoteur pour lequel le balai droit est ouvert.
-#define BALAI_D_OPEN 70
+#define BALAI_D_OPEN 50
     /// @brief RATEAU_HAUT Angle du servomoteur pour lequel le rateau est en haut.
-#define RATEAU_HAUT 0
+#define RATEAU_HAUT -20
     /// @brief RATEAU_BAS Angle du servomoteur pour lequel le rateau est en haut.
-#define RATEAU_BAS 40
+#define RATEAU_BAS 20
 
 //COMMAND
 #define VITESSE_LINEAIRE_MAX 4
@@ -85,7 +85,14 @@
 #define RAPPORT_SUPPLEMENTAIRE 0.08
 
 //SERVO
+/// @brief NUMERO_TIMER_SERVO Numéro du Timer (TIM) sur lequel sont les servos
 #define NUMERO_TIMER_SERVO 3
+/// @brief PERIOD_TIMER_SERVO Période du timer.
+#define PERIOD_TIMER_SERVO 20000
+/// @brief PRESCALER_TIMER_SERVO Facteur de division de l’horloge : @f$ fr\acute{e}quence du timer = \frac{72 MHz}{ timClockDivision (timPrescaler + 1)} @f$ .
+#define PRESCALER_TIMER_SERVO 71
+/// @brief CLOCK_TIMER_SERVO : division d’horloge supplémentaire, voire Timer::ClkDivision.
+#define CLOCK_TIMER_SERVO Timer::Div1
 #define FREQUENCE_SERVO 1e6
 
 //STRATEGIE

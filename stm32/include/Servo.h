@@ -27,6 +27,8 @@ class Servo
 public:
     /// @brief Servo(numéro channel) Constructeur du servo
     Servo(unsigned char OCx);
+    /// @brief ~Servo() Destructeur du servo
+    ~Servo();
     /// @brief initTimer Pour initialiser le timer et créer les PWM
     static void initTimer();
     /// @brief goToAngle Fait tourner le servo vers cet angle
