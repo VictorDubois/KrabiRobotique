@@ -145,6 +145,7 @@ Servo myservoRoueGauche;
 Servo myservoRoueDroite;
 
 int bouteilleUneAPousser=0;
+int utiliseLigne=0;
 
 
   // VARIABLES DIODES //
@@ -227,10 +228,12 @@ void setup() //premiere fonction appelée.
     
     if(digitalRead(pinCalClaire)>0)
     {
-      if(digitalRead(pinCalObs)>0)//calibration auto
-      {
+      
+      
+      /*if(digitalRead(pinCalObs)>0)//calibration auto//Commentarisé : l'ancienne calibration manuelle. 
+      {*/
         CalibrationAuto();
-        while((digitalRead(pinCalClaire)>0 || digitalRead(pinCalObs)>0) && (digitalRead(pinTirr)>0 || tirretteAJamaisEtePresente))// On attend que l'utilisateur mette le robot en attente d'une nouvelle calibration (les deux interrupteurs à l'arrt ; ou que le match commence.
+        while((digitalRead(pinCalClaire)>0/* || digitalRead(pinCalObs)>0*/) && (digitalRead(pinTirr)>0 || tirretteAJamaisEtePresente))// On attend que l'utilisateur mette le robot en attente d'une nouvelle calibration (les deux interrupteurs à l'arrt ; ou que le match commence.
         {
           //On regarde si la tirrette est là :
           if (digitalRead(pinTirr)>0)
@@ -239,8 +242,8 @@ void setup() //premiere fonction appelée.
           }  
           delay(1);
         }
-      }
-      
+      //}
+      /*
       else//Calibration manuelle
       {
         if(digitalRead(pinCalGD)>0)
@@ -300,7 +303,7 @@ void setup() //premiere fonction appelée.
            Serial.println(analogRead(pinCCD));
            Serial.println(6);
         }
-      }
+      }*/
     }
     
     //On regarde si la tirrette est là :
@@ -325,6 +328,14 @@ void setup() //premiere fonction appelée.
   {
     couleurRobot = ROUGE;
   }
+  if(digitalRead(pinCalObs)==0)
+  {
+    utiliseLigne = 1;
+  }
+  else
+  {
+    utiliseLigne = 0;
+  }
 }  
   
 
@@ -345,7 +356,9 @@ void loop()//Boucle principale, appelée dès que setup() est fini.
       delay(10000);*/
       
       
-                                                         
+      
+      if(utiliseLigne)//Si on est en mode suiveur de ligne
+         {                                                
     //SEQUENCE INITIALE POUR REJOINDRE LA LIGNE.
 
 
@@ -479,6 +492,86 @@ void loop()//Boucle principale, appelée dès que setup() est fini.
   }
   Arret();
   delay(1000);
+  
+  
+  }
+  //#################################################################################
+  else//Sinon, si on est en mode sans ligne,
+  {
+    DeplacementAuto("tout droit", 2700, AUTO);
+    Arret();
+    delay(300);
+    
+    if(couleurRobot==VIOLET)
+      {
+        //tourner à droite : 
+        DeplacementAuto("droite", 900, AUTO);
+                                                         
+      }
+      else
+      {
+        //tourner à gauche : 
+        DeplacementAuto("gauche", 900, AUTO);                                                       
+      }
+      
+      Arret();
+    delay(300);
+      DeplacementAuto("reculer", 800, AUTO);//5000
+    /*  Arret();
+       delay(200);*/
+      DeplacementAuto("reculer lent", 1200, AUTO);//5000
+    Arret();
+    delay(300);
+    DeplacementAuto("tout droit", 6200, AUTO);
+    
+    if(couleurRobot==ROUGE)
+      {
+        //tourner à droite : 
+        DeplacementAuto("droite", 900, AUTO);
+                                                         
+      }
+      else
+      {
+        //tourner à gauche : 
+        DeplacementAuto("gauche", 900, AUTO);                                                       
+      }
+      
+      Arret();
+    delay(300);
+      DeplacementAuto("reculer", 1000, AUTO);//5000
+    /*  Arret();
+       delay(200);*/
+      DeplacementAuto("reculer lent", 1200, AUTO);//5000
+    Arret();
+    delay(300);
+    DeplacementAuto("tout droit", 900, AUTO);//5000
+    Arret();
+    delay(300);
+    if(couleurRobot==VIOLET)
+      {
+        //tourner à droite : 
+        DeplacementAuto("droite", 800, AUTO);
+                                                         
+      }
+      else
+      {
+        //tourner à gauche : 
+        DeplacementAuto("gauche", 800, AUTO);                                                       
+      }
+      
+       DeplacementAuto("tout droit", 1500, AUTO);
+  Arret();
+  delay(300);
+  /*
+  DeplacementAuto("pousseBouteille", 1000, AUTO);
+      Arret();
+  delay(100);*/
+  
+  
+  }
+         
+         
+         
   DeplacementAuto("pousseBouteille", 1000, AUTO);//500
   Arret();
   delay(100);
@@ -490,21 +583,21 @@ void loop()//Boucle principale, appelée dès que setup() est fini.
      if(couleurRobot==ROUGE)
       {
 //tourner à droite : 
-DeplacementAuto("droite", 1100, AUTO);
+DeplacementAuto("droite", 900, AUTO);
 
       }
       else
       {
         //tourner à gauche : 
-        DeplacementAuto("gauche", 1100, AUTO);
+        DeplacementAuto("gauche", 900, AUTO);
                                                            
       }
       Arret();
       delay(500);
-      DeplacementAuto("reculer", 800, AUTO);//5000
+      DeplacementAuto("reculer", 1000, AUTO);//5000
       Arret();
        delay(500);
-      DeplacementAuto("reculer lent", 1000, AUTO);//5000
+      DeplacementAuto("reculer lent", 1200, AUTO);//5000
       
       /*Arret();
       delay(500);
@@ -526,7 +619,7 @@ DeplacementAuto("droite", 1100, AUTO);
       Arret();
       delay(500);
       //DeplacementAuto("tout droit", 6000, AUTO);//5000
-      DeplacementAuto("tout droit", 7000, AUTO);
+      DeplacementAuto("tout droit", 6850, AUTO);
       Arret();
   delay(500);
   DeplacementAuto("reculer", 500, AUTO);//5000
