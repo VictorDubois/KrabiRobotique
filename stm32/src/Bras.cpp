@@ -8,10 +8,10 @@ Bras::Bras()
 {
     Bras::bras = this;
 
-    balaiGauche = new Servo(1);
+    balaiGauche = new Servo(2);
     balaiGauche->goToAngle(BALAI_G_CLOSED);
 
-    balaiDroite = new Servo(2);
+    balaiDroite = new Servo(1);
     balaiDroite->goToAngle(BALAI_D_CLOSED);
 
     rateau = new Servo(4);
