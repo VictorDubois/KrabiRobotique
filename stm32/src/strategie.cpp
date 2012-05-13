@@ -47,8 +47,9 @@ else
 {
     Command::freinageDUrgence(true);
 }
-/*
-   bool dejaVu = false;
+
+
+/*   bool dejaVu = false;
    if (Asservissement::asservissement->command == NULL)
     {
         new CommandGoTo(Position(1000,cote*400));
@@ -56,17 +57,17 @@ else
     // new CommandTourner(Angle(M_PI_2));
     //    new CommandAvancerToutDroit(1000);
     }
-    int d = (odometrie->getPos().getPosition()-Position(1000,cote*400)).getNorme();
-    if ((odometrie->getPos().getPosition()-Position(1000,cote*400)).getNorme()< 300 && !dejaVu)
+    if ((odometrie->getPos().getPosition()-Position(1000,cote*400)).getNorme()< DISTANCE_ARRET && !dejaVu)
     {
         dejaVu = true;
         new CommandGoTo(Position(1000,cote*1000));
+        //new CommandTourner(M_PI_2);
     }
-   if ((odometrie->getPos().getPosition()-Position(1000,cote*1000)).getNorme()< 300)
+   if ((odometrie->getPos().getPosition()-Position(1000,cote*1000)).getNorme()< DISTANCE_ARRET)
     {
         Command::freinageDUrgence(true);
     }
-*/   /* //Si tout est ok, on passe à la suite
+   /* //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;
         doNthInstruction(instruction_nb);

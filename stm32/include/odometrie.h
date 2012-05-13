@@ -71,15 +71,15 @@ class Odometrie
         /**@brief Stock le nombre de tick de la roue droite du robot à l'étape précédente pour éviter les incohérences entre deux mesures succéssives */
         int32_t prevDeltaTicksRoueDroite;
         /**@brief taille de l'entraxe du robot */
-        const double entraxe;
+        double entraxe;
         /**@brief rayon de la roue codeuse */
-        const double rayonRoueCodeuse;
+        double rayonRoueCodeuse;
         /**@brief nombre de tick enregistré pour une tour de roue codeuse */
-        const double nbTicksParTour;
+        double nbTicksParTour;
         /**@brief coéfficient pour relier le nombre de tick de chaque roue à la distance parcouru */
-        const double coeffDistance;
+        double coeffDistance;
         /**@brief coéfficient pour relier le nombre de tick de chaque roue à l'angle réalisé */
-        const double coeffAngle;
+        double coeffAngle;
         /** @brief Permet de définir une nouvelle valeur pour la position x du robot
         *   @param x Nouvelle position x du robot */
         static void setX(Distance x);

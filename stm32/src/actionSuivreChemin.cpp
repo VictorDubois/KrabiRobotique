@@ -111,7 +111,7 @@ bool ActionSuivreChemin::executer()
             new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
         }
 
-        if(trajet.x*trajet.x+trajet.y*trajet.y < 60.0f*60.0f)
+        if(trajet.x*trajet.x+trajet.y*trajet.y < DISTANCE_ARRET*DISTANCE_ARRET*1.3)
         {
             pointSuivant++;
             if (pointSuivant < taille)
