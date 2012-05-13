@@ -44,17 +44,17 @@
 #define NB_CAPTEUR_A_ADC 6
 
     /// @brief BALAI_G_CLOSED Angle du servomoteur pour lequel le balai gauche est fermé.
-#define BALAI_G_CLOSED -130
+#define BALAI_G_CLOSED 110
     /// @brief BALAI_D_CLOSED Angle du servomoteur pour lequel le balai droit est fermé.
-#define BALAI_D_CLOSED 130
+#define BALAI_D_CLOSED -150
     /// @brief BALAI_G_OPEN Angle du servomoteur pour lequel le balai gauche est ouvert.
-#define BALAI_G_OPEN 130
+#define BALAI_G_OPEN -150
     /// @brief BALAI_D_OPEN Angle du servomoteur pour lequel le balai droit est ouvert.
-#define BALAI_D_OPEN -130
+#define BALAI_D_OPEN 110
     /// @brief RATEAU_HAUT Angle du servomoteur pour lequel le rateau est en haut.
-#define RATEAU_HAUT 0
+#define RATEAU_HAUT -270
     /// @brief RATEAU_BAS Angle du servomoteur pour lequel le rateau est en haut.
-#define RATEAU_BAS 100
+#define RATEAU_BAS -200
 
 //COMMAND
 #define VITESSE_LINEAIRE_MAX 4
