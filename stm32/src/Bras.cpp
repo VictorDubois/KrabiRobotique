@@ -37,19 +37,19 @@ void Bras::fermerBalaiDroit()
 
 void Bras::fermerBalaiGauche()
 {
-    balaiDroite->goToAngle(BALAI_G_CLOSED);
+    balaiGauche->goToAngle(BALAI_G_CLOSED);
 }
 
 void Bras::fermerBalais()
 {
     balaiDroite->goToAngle(BALAI_D_CLOSED);
-    balaiDroite->goToAngle(BALAI_G_CLOSED);
+    balaiGauche->goToAngle(BALAI_G_CLOSED);
 }
 
 void Bras::ouvrirBalais()
 {
     balaiDroite->goToAngle(BALAI_D_OPEN);
-    balaiDroite->goToAngle(BALAI_G_OPEN);
+    balaiGauche->goToAngle(BALAI_G_OPEN);
 }
 
 void Bras::descendreRateau()
@@ -65,6 +65,11 @@ void Bras::dropRateau()
 void Bras::monterRateau()
 {
     rateau->goToAngle(RATEAU_HAUT);
+}
+
+Bras* Bras::getBras()
+{
+    return Bras::bras;
 }
 
 Bras::~Bras()

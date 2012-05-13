@@ -35,6 +35,9 @@ class Bras
         void descendreRateau();
         /// @brief dropRateau() Désactive le servo pour faire tomber le rateau
         void dropRateau();
+        /// @brief getBras() Renvoit le pointeur de l'objet bras (pour la stratégie)
+        Bras* getBras();
+
 
     protected:
     private:
