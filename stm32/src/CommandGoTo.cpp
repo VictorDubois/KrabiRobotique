@@ -112,13 +112,13 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
 VitesseAngulaire CommandGoTo::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_a_atteindre, Angle angle_restant, bool goBack)
 {
     Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) + M_PI; // idem qu'en linéaire
-    if((Angle((fabs(angle_restant)+M_PI/*-ANGLE_ARRET*2*/-pivot)))<=0)
+    if((Angle((fabs(angle_restant)+M_PI-ANGLE_ARRET*1.1-pivot)))<=0)
     {
-        return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant));
+        return (vitesse_angulaire_a_atteindre + vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant)))/2;
     }
     else
     {
-        return vitesse_angulaire_a_atteindre + VitesseAngulaire(copysign(MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre)), angle_restant));
+        return (vitesse_angulaire_a_atteindre + vitesse_angulaire_a_atteindre + VitesseAngulaire(copysign(MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre)), angle_restant)))/2;
     }
 }
 

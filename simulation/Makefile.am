@@ -8,7 +8,9 @@ src/simul/element.cpp \
 src/simul/objet.cpp \
 src/simul/main.cpp \
 src/simul/main_window.cpp \
+src/simul/GraphWindows.cpp \
 src/simul/table.cpp \
+src/simul/Graph.cpp \
 src/simul/robot.cpp \
 src/asservissement.cpp \
 src/command.cpp \
