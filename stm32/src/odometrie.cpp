@@ -2,15 +2,15 @@
 
 Odometrie* Odometrie::odometrie = NULL;
 
-Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite) :
-    vitesseLineaire(0),
-    vitesseAngulaire(0),
-    entraxe(TAILLE_ENTRAXE),
-    rayonRoueCodeuse(RAYON_ROUE),
-    nbTicksParTour(NBR_TICK_PAR_TOUR),
-    coeffDistance((M_PI*rayonRoueCodeuse)/nbTicksParTour),  //soit la distance parcouru par un demi tour de roue
-    coeffAngle(-2*COEFF_AJOUST_ANGLE*coeffDistance/entraxe) // soit l'angle = opposé sur hypothénus en faisant une approximation à l'ordre 1
+Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite)
 {
+    vitesseLineaire =0;
+    vitesseAngulaire=0;
+    entraxe=TAILLE_ENTRAXE;
+    rayonRoueCodeuse=RAYON_ROUE;
+    nbTicksParTour=NBR_TICK_PAR_TOUR;
+    coeffDistance=(M_PI*rayonRoueCodeuse)/nbTicksParTour;  //soit la distance parcouru par un demi tour de roue
+    coeffAngle=-2*COEFF_AJOUST_ANGLE*coeffDistance/entraxe; // soit l'angle = opposé sur hypothénus en faisant une approximation à l'ordre 1
     dist=0;
     tg = 0;
     td = 0;
@@ -46,9 +46,9 @@ void Odometrie::update(){
     double tmpDeltaAngle = (filteredDeltaTicksRoueDroite-filteredDeltaTicksRoueGauche)*coeffAngle;  //cf coef angle
 	double tmpDist = (filteredDeltaTicksRoueGauche+filteredDeltaTicksRoueDroite)*coeffDistance;     // soit le nomre moyen de tours de roue * le perimetre de la roue
 
-    dist+=tmpDist;
-    td+=filteredDeltaTicksRoueDroite;
-    tg+=filteredDeltaTicksRoueGauche;
+    dist+=tmpDist; //Pour test
+    td+=filteredDeltaTicksRoueDroite; //Pour test
+    tg+=filteredDeltaTicksRoueGauche; //Pour test
 
     vitesseLineaire = Distance(tmpDist);
     vitesseAngulaire = Angle(tmpDeltaAngle);
@@ -60,7 +60,7 @@ void Odometrie::update(){
 	prevDeltaTicksRoueDroite = deltaTicksRoueDroite;    //idem pour l'angle
 
 
-    angl = positionPlusAngle.getAngle()*180/M_PI;
+    angl = positionPlusAngle.getAngle()*180/M_PI; // Pour test
 
 }
 
