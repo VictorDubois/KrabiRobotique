@@ -27,6 +27,8 @@ class vector
         /** @brief Réserver une certaine place en mémoire avant de travailler sur le vecteur *
         *   @param taille Taille à réserver en mémoire */
         void reserve(int taille);
+        /** @brief Permet de réinitialiser le vector (size = 0) */
+        void reset();
 
     protected:
     private:
@@ -129,5 +131,10 @@ void vector<T>::reserve(int taille)
     }
 }
 
+template<typename T>
+void vector<T>::reset()
+{
+    size = 0;
+}
 
 #endif // VECTOR_H

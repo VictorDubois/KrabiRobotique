@@ -16,7 +16,7 @@ collision_detected(false)//, listeActions(NULL)
     this->odometrie = odometrie;
     Strategie::strategie = this;
     Position positionDeDepart(POS_DEPART_X,POS_DEPART_Y);
-    Angle angleDeDepart(0);
+    Angle angleDeDepart(ANGLE_DEPART);
 
     positionDeDepart.setY(positionDeDepart.getY()*(is_blue ? 1:-1));
     angleDeDepart = angleDeDepart*(is_blue ? 1:-1);
@@ -39,10 +39,13 @@ if (listeActions->getActionActuelle())
 {
     if(listeActions->getActionActuelle()->executer())
     {
-        Command::freinageDUrgence(true);
         listeActions->supprimerPremiereAction();
         listeActions->creerPremiereAction();
     }
+}
+else
+{
+    Command::freinageDUrgence(true);
 }
 /*
    bool dejaVu = false;
@@ -82,8 +85,11 @@ void Strategie::collisionDetected(){
 }
 
 
+
 void Strategie::doNthInstruction(uint16_t n){
 
 }
+
+
 
 
