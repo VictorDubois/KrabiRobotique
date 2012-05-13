@@ -17,10 +17,10 @@ Sensors::Sensors()
     nbLimitSwitch = 3;
     nbLigthBarrier = 0;
 
-    sharpNameVector = NULL;
-    outputSensorVector = NULL;
-    limitSwitchNameVector = NULL;
-    ligthBarrierNameVector = NULL;
+    sharpNameVector = new SharpNameVector(nbSharp);
+    outputSensorVector = new OutputSensorVector(nbUltrasound);
+    limitSwitchNameVector = new LimitSwitchNameVector(nbLimitSwitch);
+    ligthBarrierNameVector = new LigthBarrierNameVector(nbLigthBarrier);
 
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
@@ -55,7 +55,6 @@ Sensors::Sensors()
     limitSwitchs[2] = new LimitSwitchSensor(LimitSwitchSensor::FRONT, GPIO_Pin_11, GPIOC);
 #endif
 
-
  //   AnalogSensor::initialiserADC_Fin(data, NB_CAPTEUR_A_ADC);
 }
 
@@ -86,9 +85,7 @@ Sensors::~Sensors()
 
 Sensors::SharpNameVector*  Sensors::detectedSharp()
 {
-    if (sharpNameVector)
-        delete sharpNameVector;
-    sharpNameVector = new SharpNameVector(nbSharp);
+    sharpNameVector->reset();
     for (int i = 0; i< nbSharp; i++)
     {
        if (sharps[i]->getValue().b)
@@ -112,9 +109,7 @@ bool Sensors::detectedSharp(SharpSensor::SharpName name)
 
 Sensors::LimitSwitchNameVector* Sensors::detectedLimitSwitch()
 {
-    if (limitSwitchNameVector)
-        delete limitSwitchNameVector;
-    limitSwitchNameVector = new LimitSwitchNameVector(nbLimitSwitch);
+    limitSwitchNameVector->reset();
     for (int i = 0; i<nbLimitSwitch; i++)
     {
         if (limitSwitchs[i]->getValue().b)
@@ -122,21 +117,19 @@ Sensors::LimitSwitchNameVector* Sensors::detectedLimitSwitch()
             limitSwitchNameVector->push_back(limitSwitchs[i]->getName());
         }
     }
-    limitSwitchNameVector->resize();
+//    limitSwitchNameVector->resize();
     return limitSwitchNameVector;
 }
 
 
 Sensors::OutputSensorVector* Sensors::getValueUltrasound()
 {
-    if (outputSensorVector)
-        delete outputSensorVector;
-    outputSensorVector = new OutputSensorVector(nbUltrasound);
+    outputSensorVector->reset();
     for (int i = 0; i < nbUltrasound; i++)
     {
         outputSensorVector->push_back(ultrasounds[i]->getValue());
     }
-    outputSensorVector->resize();
+//    outputSensorVector->resize();
     return outputSensorVector;
 }
 
@@ -147,9 +140,7 @@ Sensors* Sensors::getSensors()
 
 Sensors::OutputSensorVector* Sensors::getValueUltrasound(uint16_t distance)
 {
-    if (outputSensorVector)
-        delete outputSensorVector;
-    outputSensorVector = new OutputSensorVector(nbUltrasound);
+    outputSensorVector->reset();
     for (int i = 0; i < nbUltrasound; i++)
     {
         Sensor::OutputSensor v = ultrasounds[i]->getValue();
@@ -158,7 +149,7 @@ Sensors::OutputSensorVector* Sensors::getValueUltrasound(uint16_t distance)
              outputSensorVector->push_back(v);
          }
     }
-    outputSensorVector->resize();
+//    outputSensorVector->resize();
     return outputSensorVector;
 }
 
@@ -178,9 +169,7 @@ float Sensors::getValueUltrasound(UltrasoundSensor::UltrasoundName name)
 
 Sensors::LigthBarrierNameVector* Sensors::detectedLigthBarrier()
 {
-    if (ligthBarrierNameVector)
-        delete ligthBarrierNameVector;
-    ligthBarrierNameVector = new LigthBarrierNameVector(nbLigthBarrier);
+    ligthBarrierNameVector->reset();
     for (int i=0; i<nbLigthBarrier; i++)
     {
         if(ligthBarriers[i]->getValue().b)
@@ -188,7 +177,7 @@ Sensors::LigthBarrierNameVector* Sensors::detectedLigthBarrier()
             ligthBarrierNameVector->push_back(ligthBarriers[i]->getName());
         }
     }
-    ligthBarrierNameVector->resize();
+//    ligthBarrierNameVector->resize();
     return ligthBarrierNameVector;
 }
 
@@ -220,6 +209,18 @@ void Sensors::update()
         limitSwitchs[i]->updateValue();
     }
     // Les autres n'ont pas besoin d'être mis à jour car on obtient la valeur directement en lisant la valeur de la pin
+}
+
+bool Sensors::detectedLimitSwitch(LimitSwitchSensor::LimitSwitchName limitSwitchName)
+{
+    for (int i = 0; i<nbLimitSwitch; i++)
+    {
+        if (limitSwitchs[i]->getName() == limitSwitchName)
+        {
+            return limitSwitchs[i]->getValue().b;
+        }
+    }
+    return false;
 }
 
 #endif //ROBOTHW

@@ -292,9 +292,9 @@ void Robot::setLevel()
 PositionPlusAngle Robot::getPos()
 {
     float alea1 = 0., alea2 = 0., alea3 = 0.;
-    //alea1 = 2.1*(rand() % 801 -400)/1000;
-    //alea2 = 2.1*(rand() % 801 -400)/1000;
-    //alea3 = 2.1*(rand() % 801 -400)/6000;
+ /*   alea1 = 2.1*(rand() % 801 -400)/1000;
+    alea2 = 2.1*(rand() % 801 -400)/1000;
+    alea3 = 2.1*(rand() % 801 -400)/6000; */
     PositionPlusAngle erreur(Position(alea1,alea2),Angle(alea3));
     return (pos + erreur);
 }
@@ -312,6 +312,6 @@ Angle Robot::getVitesseAngulaire()
 
 Distance Robot::getVitesseLineaire()
 {
-    return deriv.position.getNorme();
+    return deriv.position.x;
 }
 

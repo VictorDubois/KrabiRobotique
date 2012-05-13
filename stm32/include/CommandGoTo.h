@@ -58,6 +58,8 @@ class CommandGoTo : public Command
         *   @param Angle angle_restant est l'angle qu'il reste à parcourir par le robot.
         *   @param goBack Indique si on souhaite reculer ou pas. */
         static VitesseAngulaire getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_atteinte, Angle angle_restant, bool goBack);
+        /** @brief Indique si le robot a fini de tourner ou non */
+        bool aFiniTourner;
 };
 
 #endif // COMMANDGOTO_H

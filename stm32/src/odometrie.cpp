@@ -83,3 +83,29 @@ Distance Odometrie::getVitesseLineaire()
 {
     return vitesseLineaire;
 }
+
+void Odometrie::setX(Distance x)
+{
+    PositionPlusAngle posPA = Odometrie::odometrie->getPos();
+    Position pos = posPA.getPosition();
+    pos.setX(x);
+    posPA.setPosition(pos);
+    Odometrie::odometrie->setPos(posPA);
+}
+
+
+void Odometrie::setY(Distance y)
+{
+    PositionPlusAngle posPA = Odometrie::odometrie->getPos();
+    Position pos = posPA.getPosition();
+    pos.setY(y);
+    posPA.setPosition(pos);
+    Odometrie::odometrie->setPos(posPA);
+}
+
+void Odometrie::setAngle(Angle a)
+{
+    PositionPlusAngle posPA = Odometrie::odometrie->getPos();
+    posPA.setAngle(a);
+    Odometrie::odometrie->setPos(posPA);
+}

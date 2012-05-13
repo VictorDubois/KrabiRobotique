@@ -18,6 +18,7 @@
 #include "odometrie.h"
 #include "stm32f10x.h"
 #include "Sensors.h"
+#include "Calibration.h"
 
 
 #ifdef POSITIONNEMENT
@@ -505,14 +506,14 @@ while(1)
 
 #endif
 
-
+    Calibration::calibrationInitial();
 
     //  test_capteurs_sharp ();
 
     new Strategie(isBlue(),odometrie);
 
     /**********************  TEST CAPTEUR  /
-
+*//*
     Sensors* sensors = Sensors::getSensors();
 
     for (int i = 0; i<10; i++)
@@ -520,7 +521,8 @@ while(1)
         AnalogSensor::startConversion();
         sensors->update();
     }
-
+    */
+/*
     Sensors::SharpNameVector out = sensors->detectedSharp();
   //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
     SharpSensor::SharpName* o;
@@ -541,15 +543,16 @@ while(1)
     Sensor::OutputSensor o3 = out3[0];
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
 */
-/*    Sensors::LimitSwitchNameVector out4 = sensors->detectedLimitSwitch();
+/*    Sensors::LimitSwitchNameVector* out4 = sensors->detectedLimitSwitch();
     LimitSwitchSensor::LimitSwitchName* o4;
     o4 = new LimitSwitchSensor::LimitSwitchName[3];
     for (int i = 0;i<3;i++) {o4[i]=LimitSwitchSensor::NONE;}
-    if (out4.getSize() >0 )
+    if (out4->getSize() >0 )
     {
-        for (int i=0;i<out4.getSize();i++)
-            o4[i] = out4[i];
+        for (int i=0;i<out4->getSize();i++)
+            o4[i] = (*out4)[i];
     }
+    bool b = sensors->detectedLimitSwitch(LimitSwitchSensor::BACK_LEFT);
 *//*
  uint8_t v = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_9);
 
