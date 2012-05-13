@@ -63,9 +63,9 @@ class Odometrie
         /**@brief Stock la position et l'angle du robot */
         PositionPlusAngle positionPlusAngle;
         /**@brief Stock la vitesse linéaire du robot */
-        Distance vitesseLineaire;
+        Vitesse vitesseLineaire;
         /**@brief Stock la vitesse angulaire du robot */
-        Angle vitesseAngulaire;
+        VitesseAngulaire vitesseAngulaire;
         /**@brief Stock le nombre de tick de la roue gauche du robot à l'étape précédente pour éviter les incohérences entre deux mesures succéssives */
         int32_t prevDeltaTicksRoueGauche;
         /**@brief Stock le nombre de tick de la roue droite du robot à l'étape précédente pour éviter les incohérences entre deux mesures succéssives */
@@ -80,6 +80,15 @@ class Odometrie
         const double coeffDistance;
         /**@brief coéfficient pour relier le nombre de tick de chaque roue à l'angle réalisé */
         const double coeffAngle;
+        /** @brief Permet de définir une nouvelle valeur pour la position x du robot
+        *   @param x Nouvelle position x du robot */
+        static void setX(Distance x);
+        /** @brief Permet de définir une nouvelle valeur pour la position y du robot
+        *   @param Nouvelle position y du robot*/
+        static void setY(Distance y);
+        /** @brief Permet de définir une nouvelle valeur pour l'angle du robot
+        *   @param a Nouvel angle du robot */
+        static void setAngle(Angle a);
     private:
 };
 

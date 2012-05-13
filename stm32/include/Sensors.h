@@ -41,6 +41,10 @@ class Sensors
         /** @brief Permet de vérifier si un fin de course quelconque est enclanché *
         *   @return Retourne un LimitSwitchNameVector, vecteur contenant les LimitSwitchName des capteurs fin de course renvoyant un true (donc étant enclanché). Si aucun capteur returne un vector vide.  */
         LimitSwitchNameVector* detectedLimitSwitch();
+        /** @brief Permet de vérifier si un fin de course précis est enclanché *
+        *   @return Retourne true si le capteur fin de course limitSwitch est enclanché
+        *   @param limitSwitch Capteur fin de course que l'on souhaite tester*/
+        bool detectedLimitSwitch(LimitSwitchSensor::LimitSwitchName limitSwitchName);
 
         /** @brief Permet de connaître la valeur de la distance de l'objet le plus proche de l'ensemble des capteurs ultrasons *
         *   @return Retourne un OutputSensorVector, vecteur contenant les valeurs de retour (dans un objet de type OutputSensor) de chaque capteurs ultrasons  */

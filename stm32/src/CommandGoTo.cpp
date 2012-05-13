@@ -7,6 +7,7 @@ CommandGoTo::CommandGoTo(Position DestinationFinale) :
     vitesse_lineaire_a_atteindre = 0;
     vitesse_angulaire_a_atteindre = 0;
     goBack = false;
+    aFiniTourner = false;
     destination =  PositionPlusAngle(DestinationFinale, (DestinationFinale - Odometrie::odometrie->getPos().getPosition()).getAngle()); // La destination est à la position finale souhaitée et on choisit d'arrivé dans la direction formé par le point de départ et le point d'arrivé
 }
 
@@ -17,6 +18,7 @@ CommandGoTo::CommandGoTo(Position DestinationFinale, bool goBack) :
     vitesse_lineaire_a_atteindre = 0;
     vitesse_angulaire_a_atteindre = 0;
     this->goBack = goBack;
+    aFiniTourner = false;
     destination =  PositionPlusAngle(DestinationFinale, (DestinationFinale - Odometrie::odometrie->getPos().getPosition()).getAngle()); // La destination est à la position finale souhaitée et on choisit d'arrivé dans la direction formé par le point de départ et le point d'arrivé
 }
 
@@ -44,7 +46,10 @@ void CommandGoTo::update()
         Angle angleGB = goBack ? M_PI : 0;
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
         Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle()+ angleGB)) : 0;//(wrapAngle(destination.getAngle() - Odometrie::odometrie->getPos().getAngle()));
-        distance_restante = fabs(wrapAngle(angle_restant)) > 0.4 ? 0 : distance_restante;
+        distance_restante = !aFiniTourner ? 0 : distance_restante;
+
+        if (!aFiniTourner && fabs(wrapAngle(angle_restant)) < 0.2)
+            aFiniTourner = true;
 
 		if( distance_restante < DISTANCE_ARRET)
         {
@@ -81,15 +86,15 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
     else
     {
         int sGB = goBack ? -1 : 1;
-        if (distance_restante-DISTANCE_ARRET/2-pivot <=0)  //Le robot est assez proche (ou trop proche) du point d'arrivé pour pouvoir décélerer assez pour l'atteindre avec la vitesse final demandé.
+        if (distance_restante/*-DISTANCE_ARRET*3*/-pivot <=0)  //Le robot est assez proche (ou trop proche) du point d'arrivé pour pouvoir décélerer assez pour l'atteindre avec la vitesse final demandé.
         {
             if(vitesse_lineaire_a_atteindre>vitesseFinale)
             {
-                return (vitesse_lineaire_a_atteindre - sGB * Vitesse(acceleration_lineaire) > vitesseFinale ?  vitesse_lineaire_a_atteindre - Vitesse(acceleration_lineaire) : vitesseFinale ); // Si Vlaa - al > vitesseFinale alors Vlaa = Vlaa - al sinon Vlaa = vitesseFinale
+                return (vitesse_lineaire_a_atteindre - sGB * Vitesse(acceleration_lineaire) > vitesseFinale ?  vitesse_lineaire_a_atteindre - sGB * Vitesse(acceleration_lineaire) : sGB * vitesseFinale ); // Si Vlaa - al > vitesseFinale alors Vlaa = Vlaa - al sinon Vlaa = vitesseFinale
             }
             else
             {
-                return (vitesse_lineaire_a_atteindre + sGB *Vitesse(acceleration_lineaire) < vitesseFinale ?  vitesse_lineaire_a_atteindre + Vitesse(acceleration_lineaire) : vitesseFinale );
+                return (vitesse_lineaire_a_atteindre + sGB *Vitesse(acceleration_lineaire) < vitesseFinale ?  vitesse_lineaire_a_atteindre + sGB * Vitesse(acceleration_lineaire) : sGB * vitesseFinale );
             }
         }
         else if (!goBack)//fabs(wrapAngle(angle_restant))<3*M_PI_4) // Le point d'arrivé est encore devant nous
@@ -98,7 +103,7 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
         }
         else // Il est maintenant derière nous donc il faut reculer
         {
-            return vitesse_lineaire_a_atteindre + Vitesse(MAX(-acceleration_lineaire,-vitesse_lineaire_max/*+10000/(distance_restante*distance_restante*distance_restante)*/-vitesse_lineaire_a_atteindre)); // si vitesse_lineaire_max-vitesse_lineaire_a_atteindre > acceleration_lineaire*dt alors on est encore dans la fase assendante du trapéze.
+            return vitesse_lineaire_a_atteindre + Vitesse(MAX(-acceleration_lineaire,-vitesse_lineaire_max-vitesse_lineaire_a_atteindre)); // si vitesse_lineaire_max-vitesse_lineaire_a_atteindre > acceleration_lineaire*dt alors on est encore dans la fase assendante du trapéze.
         }
     }
 
@@ -107,7 +112,7 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
 VitesseAngulaire CommandGoTo::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_a_atteindre, Angle angle_restant, bool goBack)
 {
     Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) + M_PI; // idem qu'en linéaire
-    if((Angle((fabs(angle_restant)+M_PI-ANGLE_ARRET/2-pivot)))<=0)
+    if((Angle((fabs(angle_restant)+M_PI/*-ANGLE_ARRET*2*/-pivot)))<=0)
     {
         return vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant));
     }

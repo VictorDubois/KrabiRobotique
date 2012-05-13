@@ -100,7 +100,7 @@
 #define POS_DEPART_X 250
 #define POS_DEPART_Y 200
 #define RAYON_ROBOT 250
-
+#define ANGLE_DEPART 0
 //COMMAND_GO_TO
 #define PATH_LENGTH 800
 

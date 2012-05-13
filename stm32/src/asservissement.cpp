@@ -107,7 +107,6 @@ void Asservissement::update(void)
               command->update();
         }
 
-
         //Puis on les récupéres
         float vitesse_lineaire_a_atteindre = getLinearSpeed();
         float vitesse_angulaire_a_atteindre = getAngularSpeed();
@@ -160,15 +159,19 @@ void Asservissement::update(void)
     bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
 #endif
 #ifdef CAPTEURS
-  //  bool testcap = sensors->detectedSharp()->getSize() > 0;
+    bool testcap = sensors->detectedSharp()->getSize() > 0;
 #else
 
     bool testcap = false;
 #endif
 
-bool testcap = false;
+if (testcap)
+    Command::freinageDUrgence(true);
+else
+    Command::freinageDUrgence(false);
 
-    if (testcap || Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
+
+    if (Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
         #ifdef STM32F10X_MD
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
@@ -211,3 +214,4 @@ Command* Asservissement::getCommand()
 {
     return (Asservissement::asservissement->command);
 }
+
