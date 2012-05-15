@@ -91,6 +91,3 @@ void Strategie::doNthInstruction(uint16_t n){
 
 }
 
-
-
-
