@@ -67,6 +67,13 @@ void Bras::monterRateau()
     rateau->goToAngle(RATEAU_HAUT);
 }
 
+void Bras::arretUrgence()
+{
+    rateau->shutDownServo();
+    balaiDroite->shutDownServo();
+    balaiGauche->shutDownServo();
+}
+
 Bras* Bras::getBras()
 {
     return Bras::bras;
