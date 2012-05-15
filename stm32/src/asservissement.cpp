@@ -108,8 +108,8 @@ void Asservissement::update(void)
         }
 
         //Puis on les récupéres
-        float vitesse_lineaire_a_atteindre = getLinearSpeed();
-        float vitesse_angulaire_a_atteindre = getAngularSpeed();
+        float vitesse_lineaire_a_atteindre = /*0;//*/getLinearSpeed();
+        float vitesse_angulaire_a_atteindre =  /*VITESSE_ANGULAIRE_MAX; //*/getAngularSpeed();
 
         // le buffer de collision se vide si l'accélération demandé est trop forte. Normalement la commande vérifie ça.
         //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...

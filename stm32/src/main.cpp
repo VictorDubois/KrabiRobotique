@@ -514,7 +514,7 @@ while(1)
     new Strategie(isBlue(),odometrie);
 
     /**********************  TEST CAPTEUR  /
-*//*
+*/
     Sensors* sensors = Sensors::getSensors();
 
     for (int i = 0; i<10; i++)
@@ -522,7 +522,7 @@ while(1)
         AnalogSensor::startConversion();
         sensors->update();
     }
-*/
+
 /*
     Sensors::SharpNameVector out = sensors->detectedSharp();
   //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
@@ -540,10 +540,10 @@ while(1)
         o2 = out2[0];
     }
 
-    Sensors::OutputSensorVector out3 = sensors->getValueUltrasound();
-    Sensor::OutputSensor o3 = out3[0];
+*/    Sensors::OutputSensorVector* out3 = sensors->getValueUltrasound();
+    Sensor::OutputSensor o3 = (*out3)[0];
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
-*/
+
 /*
     Sensors::LimitSwitchNameVector* out4 = sensors->detectedLimitSwitch();
     LimitSwitchSensor::LimitSwitchName* o4;
