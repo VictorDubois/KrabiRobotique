@@ -6,6 +6,24 @@ float wrapAngle(Angle angle)
     if(tmp_val<0) tmp_val += M_PI*2;
     return tmp_val <= M_PI ? tmp_val : tmp_val-2*M_PI;
     */
+    float a = angle;
+    float M_2PI = 2*M_PI;
+    if (angle > 0)
+    {
+        while (a > M_PI)
+        {
+            a -= M_2PI;
+        }
+    }
+    else
+    {
+        while (a<-M_PI)
+        {
+            a += M_2PI;
+        }
+    }
+    return a;
+    /*
     if (angle >= 0)
     {
         return (fmod(angle+M_PI,2*M_PI)-M_PI);
@@ -13,7 +31,7 @@ float wrapAngle(Angle angle)
     else
     {
         return (fmod(angle-M_PI,2*M_PI)+M_PI);
-    }
+    }*/
 }
 
 bool angleEq(Angle a1, Angle a2)

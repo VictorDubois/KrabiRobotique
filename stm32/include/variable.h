@@ -19,7 +19,7 @@
 //MOTEUR
 #define NUM_TIMER_MOTEUR 4
 #define PERIOD_TIMER_MOTEUR 71
-#define PRESCALER_TIMER_MOTEUR 22000
+#define PRESCALER_TIMER_MOTEUR 11000//11000//22000
 #define CLOCK_TIMER_MOTEUR Timer::Div1
 
 //TRAPEZOIDALCOMMAND
@@ -39,7 +39,7 @@
     /// @brief SEUIL_DETECTION Seuil de detection des capteurs sharp. Au dessus de cette valeur, un objet sera considéré comme présent devant le capteur.
 #define SEUIL_DETECTION 2000.//2000.
     /// @brief COEFFICIENT_LIN_ULTRASON Coefficient multiplicateur utilisé pour transformé la valeur analogique rendu par le capteur ultrason en une distance en metres.
-#define COEFFICIENT_LIN_ULTRASON 2.54/2.
+#define COEFFICIENT_LIN_ULTRASON 2.54/2.*1.674003419
     /// @brief NB_CAPTEUR_A_ADC Nombre de capteur nécéssitant d'utiliser un ADC
 #define NB_CAPTEUR_A_ADC 6
 
@@ -58,9 +58,9 @@
 
 //COMMAND
 #define VITESSE_LINEAIRE_MAX 4
-#define VITESSE_ANGULAIRE_MAX  0.008//0.005
+#define VITESSE_ANGULAIRE_MAX  0.005//0.008//0.005
 #define ACCELERATION_LINEAIRE_MAX  0.15//0.1//0.05
-#define ACCELERATION_ANGULAIRE_MAX (2*M_PI/5000.0)//(2*M_PI/20000.0) //(2*M_PI/5000.0)
+#define ACCELERATION_ANGULAIRE_MAX (2*M_PI/20000.0)//(2*M_PI/5000.0)//(2*M_PI/20000.0) //(2*M_PI/5000.0)
 
 //ODOMETRIE
 #define TAILLE_ENTRAXE 265
@@ -70,8 +70,8 @@
 
 //PIDFILTERANGLE
 #define FILTER_ANGLE_KP 3;//3.6 //0.1
-#define FILTER_ANGLE_KI 0.05//0.01//0.1
-#define FILTER_ANGLE_KD 35//0.001//35
+#define FILTER_ANGLE_KI 0.08//0.01//0.1
+#define FILTER_ANGLE_KD 35 //35//0.001//35
 #define FILTER_ANGLE_COEF 1//0.83
 
 //PIDFILTERLINEAIRE
