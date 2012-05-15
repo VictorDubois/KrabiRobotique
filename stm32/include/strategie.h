@@ -26,8 +26,6 @@ class Odometrie;    //Pour éviter les dépendance cycliques
 /**@brief Classe définissant les actions que va réaliser le robot */
 class Strategie {
     private:
-        /**@brief True si on est du coté bleu, false sinon */
-        bool is_blue;
         /**@brief Numéro de l'instruction courante */
         int instruction_nb;
         /**@brief True si une collision a été détecté, false sinon */
@@ -50,6 +48,8 @@ class Strategie {
         void update();
         /**@brief Fonction lançant l'exécution de l'instruction n */
         void doNthInstruction(uint16_t n);
+        /**@brief True si on est du coté bleu, false sinon */
+        bool is_blue;
 #ifndef ROBOTHW
 	/**@brief */
 	void updateElement(unsigned int id, Element elem);
