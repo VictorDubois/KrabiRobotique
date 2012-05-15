@@ -4,8 +4,8 @@ CommandGoTo::CommandGoTo(Position DestinationFinale) :
     Command()
 {
     vitesseFinale = 0;
-    vitesse_lineaire_a_atteindre = 0;
-    vitesse_angulaire_a_atteindre = 0;
+    vitesse_lineaire_a_atteindre = Odometrie::odometrie->getVitesseLineaire();
+    vitesse_angulaire_a_atteindre = Odometrie::odometrie->getVitesseAngulaire();
     goBack = false;
     aFiniTourner = false;
     destination =  PositionPlusAngle(DestinationFinale, (DestinationFinale - Odometrie::odometrie->getPos().getPosition()).getAngle()); // La destination est à la position finale souhaitée et on choisit d'arrivé dans la direction formé par le point de départ et le point d'arrivé
@@ -45,10 +45,10 @@ void CommandGoTo::update()
     {
         Angle angleGB = goBack ? M_PI : 0;
         Distance distance_restante = (destination.getPosition() - (Odometrie::odometrie->getPos()).getPosition()).getNorme();
-        Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle()+ angleGB)) : 0;//(wrapAngle(destination.getAngle() - Odometrie::odometrie->getPos().getAngle()));
+        Angle angle_restant = (distance_restante > DISTANCE_ARRET) ? (wrapAngle((destination.getPosition() -  Odometrie::odometrie->getPos().getPosition()).getAngle() - Odometrie::odometrie->getPos().getAngle() - angleGB)) : 0;//(wrapAngle(destination.getAngle() - Odometrie::odometrie->getPos().getAngle()));
         distance_restante = !aFiniTourner ? 0 : distance_restante;
 
-        if (!aFiniTourner && fabs(wrapAngle(angle_restant)) < 0.2)
+        if (!aFiniTourner && fabs(wrapAngle(angle_restant)) < 0.2)//DISTANCE_ARRET)
             aFiniTourner = true;
 
 		if( distance_restante < DISTANCE_ARRET)
@@ -65,7 +65,7 @@ void CommandGoTo::update()
         }
         else //if (fabs(wrapAngle(angle_restant))<3*M_PI_4)
         {
-            vitesse_angulaire_a_atteindre = getVitesseAngulaireAfterTrapeziumFilter(Odometrie::odometrie->getVitesseAngulaire(), angle_restant, goBack);
+            vitesse_angulaire_a_atteindre = MAX(MIN(getVitesseAngulaireAfterTrapeziumFilter(Odometrie::odometrie->getVitesseAngulaire(), angle_restant, goBack),vitesse_angulaire_max),-vitesse_angulaire_max);
         }
 /*        else
         {
@@ -111,14 +111,15 @@ Vitesse CommandGoTo::getVitesseLineaireAfterTrapeziumFilter(Vitesse vitesse_line
 
 VitesseAngulaire CommandGoTo::getVitesseAngulaireAfterTrapeziumFilter(VitesseAngulaire vitesse_angulaire_a_atteindre, Angle angle_restant, bool goBack)
 {
-    Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) + M_PI; // idem qu'en linéaire
-    if((Angle((fabs(angle_restant)+M_PI-ANGLE_ARRET*1.1-pivot)))<=0)
+    Angle pivot = wrapAngle(vitesse_angulaire_a_atteindre*vitesse_angulaire_a_atteindre/(2*acceleration_angulaire)) /*+ M_PI*/; // idem qu'en linéaire
+    if((Angle(fabs(angle_restant)+/*M_PI*/-ANGLE_ARRET/**1.1*/-fabs(pivot)))<=0)
     {
-        return (vitesse_angulaire_a_atteindre + vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)fabs(vitesse_angulaire_a_atteindre), (float)acceleration_angulaire), angle_restant)))/2;
+        int s = angle_restant > 0  && vitesse_angulaire_a_atteindre < 0 ? -1 : 1;
+        return (vitesse_angulaire_a_atteindre-VitesseAngulaire(copysign(MIN((float)/*fabs(*/vitesse_angulaire_a_atteindre/*)*/, (float)acceleration_angulaire), s)));
     }
     else
     {
-        return (vitesse_angulaire_a_atteindre + vitesse_angulaire_a_atteindre + VitesseAngulaire(copysign(MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre)), angle_restant)))/2;
+        return (vitesse_angulaire_a_atteindre + VitesseAngulaire(copysign(MIN(acceleration_angulaire, vitesse_angulaire_max-(float)fabs(vitesse_angulaire_a_atteindre)), angle_restant)));
     }
 }
 

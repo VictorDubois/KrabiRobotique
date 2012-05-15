@@ -1,20 +1,20 @@
 #include "asservissement.h"
 #include "strategie.h"
 
-#define DBG_SIZE 900
+#define DBG_SIZE 600
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
 
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
-//float linearDuty[DBG_SIZE];
+float linearDuty[DBG_SIZE];
 
 
 
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
-//float angularDuty[DBG_SIZE];
+float angularDuty[DBG_SIZE];
 
 //float posx[DBG_SIZE];
 //float posy[DBG_SIZE];
@@ -104,7 +104,7 @@ void Asservissement::update(void)
         if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
         {
 //             command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
-              command->update();
+            command->update();
         }
 
         //Puis on les récupéres
@@ -138,19 +138,19 @@ void Asservissement::update(void)
         //roueDroite[caca] = odometrie->roueCodeuseDroite->getTickValue();
                    vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
                    vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-//                  linearDuty[dbgInc] = linearDutySent;
+                  linearDuty[dbgInc] = linearDutySent;
 
                    vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
                    vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-//                   angularDuty[dbgInc] = angularDutySent;
+                   angularDuty[dbgInc] = angularDutySent;
 
 //                  posx[caca] = positionPlusAngleActuelle.position.x;
 //                   posy[caca] = positionPlusAngleActuelle.position.y;
 //                   angle[caca] = positionPlusAngleActuelle.angle; //*angle_restant.getValueInRadian();*///distance_restante; //positionPlusAngleActuelle.angle.getValueInRadian()*180/M_PI;
                    dbgInc++;
                    caca++;
-               }
-           toto = (toto+1) % 1;
+            }
+           toto = (toto+1) % 3;
 
 
 
@@ -166,12 +166,16 @@ void Asservissement::update(void)
 #endif
 
 if (testcap)
+{
     Command::freinageDUrgence(true);
+    linearDutySent = 0;
+    angularDutySent = 0;
+}
 else
     Command::freinageDUrgence(false);
 
 
-    if (Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
+    if (false && Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
         #ifdef STM32F10X_MD
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
