@@ -85,6 +85,9 @@ void Asservissement::update(void)
     }
 #endif
 
+    if (asserCount< 25000/*85000*//MS_BETWEEN_UPDATE)
+    {
+
         odometrie->update();        //Enregistre la position actuelle du robot
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
@@ -107,6 +110,28 @@ void Asservissement::update(void)
             command->update();
         }
 
+#ifdef ROUES
+
+#ifdef CAPTEURS_OLD
+    bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
+#endif
+#ifdef CAPTEURS
+    bool testcap = sensors->detectedSharp()->getSize() > 0;
+#else
+
+    bool testcap = false;
+#endif
+
+if (testcap)
+{
+    Command::freinageDUrgence(true);
+  /*  linearDutySent = 0;
+    angularDutySent = 0;*/
+}
+else
+    Command::freinageDUrgence(false);
+#endif //ROUES
+
         //Puis on les récupéres
         float vitesse_lineaire_a_atteindre = /*0;//*/getLinearSpeed();
         float vitesse_angulaire_a_atteindre =  /*VITESSE_ANGULAIRE_MAX; //*/getAngularSpeed();
@@ -117,6 +142,8 @@ void Asservissement::update(void)
         buffer_collision |= fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision;
 
 #ifdef ROUES
+
+
         //on filtre l'erreur de vitesse lineaire et angulaire
         linearDutySent +=  pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
         angularDutySent += pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
@@ -155,26 +182,6 @@ void Asservissement::update(void)
 
 
 
-#ifdef CAPTEURS_OLD
-    bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
-#endif
-#ifdef CAPTEURS
-    bool testcap = sensors->detectedSharp()->getSize() > 0;
-#else
-
-    bool testcap = false;
-#endif
-
-if (testcap)
-{
-    Command::freinageDUrgence(true);
-    linearDutySent = 0;
-    angularDutySent = 0;
-}
-else
-    Command::freinageDUrgence(false);
-
-
     if (false && Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
     {   //Si on détecte quelque chose, on s'arréte
         #ifdef STM32F10X_MD
@@ -198,7 +205,12 @@ else
         roues.gauche.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }
-
+    }
+    else
+    {
+        roues.gauche.tourne(0.);
+        roues.droite.tourne(0.);
+    }
 #endif
 }
 

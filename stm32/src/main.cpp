@@ -19,6 +19,7 @@
 #include "stm32f10x.h"
 #include "Sensors.h"
 #include "Calibration.h"
+#include "Bras.h"
 
 
 #ifdef POSITIONNEMENT
@@ -482,6 +483,7 @@ while(1)
 #endif
     new Asservissement(odometrie);  // On définie l'asservissement
     Servo::initTimer();     // A faire avant tout utilisation de servo
+    new Bras();
 
 #ifdef POSITIONNEMENT
 // --- Fonction de positionnement, on charge l'odometrie et l'asservissement puis on se remet comme au début du match--- //
@@ -511,6 +513,10 @@ while(1)
 
     //  test_capteurs_sharp ();
 
+
+   /* Bras::bras->descendreRateau();
+    Bras::bras->ouvrirBalaiGauche();
+*/
     new Strategie(isBlue(),odometrie);
 
     /**********************  TEST CAPTEUR  /
@@ -523,24 +529,24 @@ while(1)
         sensors->update();
     }
 
-/*
-    Sensors::SharpNameVector out = sensors->detectedSharp();
+
+    Sensors::SharpNameVector* out = sensors->detectedSharp();
   //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
     SharpSensor::SharpName* o;
   //  LimitSwitchSensor::LimitSwitchName o2;
     o = new SharpSensor::SharpName[5];
     for (int i = 0;i<5;i++) {o[i]=SharpSensor::NONE;}
-    if (out.getSize()> 0)
+    if (out->getSize()> 0)
     {
-        for (int i = 0; i < out.getSize();i++)
-            o[i] = out[i];
+        for (int i = 0; i < out->getSize();i++)
+            o[i] = (*out)[i];
     }
   /*  if (out2.getSize()> 0)
     {
         o2 = out2[0];
     }
 
-*/    Sensors::OutputSensorVector* out3 = sensors->getValueUltrasound();
+*    Sensors::OutputSensorVector* out3 = sensors->getValueUltrasound();
     Sensor::OutputSensor o3 = (*out3)[0];
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
 

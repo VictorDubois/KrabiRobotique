@@ -45,7 +45,7 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
     for(int i = 0 ; i < nbActionsMax ; i++)
         nbActionsBase[i] = 0;
 
-
+/*
 actions[0]=new ActionBase[7];
 actions[0][0].position = Position(900,400*cote);
 actions[0][1].position = Position(900,420*cote);
@@ -55,17 +55,37 @@ actions[0][4].position = Position(850,520*cote);
 actions[0][5].position = Position(820,550*cote);
 actions[0][6].position = Position(300,1000*cote);
 nbActionsBase[0] = 7;
+*/
+if (cote==1)
+{
+actions[0]=new ActionBase[3];
+actions[0][0].position = Position(1200,500*cote);//550*cote);
+actions[0][1].position = Position(270,1050*cote);//1000*cote);
+actions[0][2].position = Position(700,1000*cote);//550*cote);
+actions[0][2].reculer = true; // a reculon
+nbActionsBase[0] = 2;
+}
+else
+{
+actions[0]=new ActionBase[3];
+actions[0][0].position = Position(1200,500*cote);//550*cote);
+actions[0][1].position = Position(200,880*cote);//1000*cote);
+actions[0][2].position = Position(450,1000*cote);//550*cote);
+actions[0][2].reculer = true; // a reculon
+nbActionsBase[0] = 2;
+}
 
-/*    actions[0]=new ActionBase[3];
-    actions[0][0].position = Position(1500,600*cote);//1
+/*/
+    actions[0]=new ActionBase[3];
+    actions[0][0].position = Position(500,250*cote);//1
   //  actions[0][0].position = Position(300,250*cote);//1
-    actions[0][1].position = Position(300,770*cote);//1
+    actions[0][1].position = Position(1200,630*cote);//1
   //  actions[0][1].reculer = true;//1
   //  actions[0][1].position = Position(1250,250*cote);//1
-    actions[0][2].position = Position(870,400*cote);//1
+    actions[0][2].position = Position(150,200*cote);//1
     actions[0][2].reculer = true; // a reculon
     nbActionsBase[0] = 3;
-*/
+
 
 /*    actions[0]=new ActionBase[1];
     actions[0][0].position = Position(1500,500);//1
