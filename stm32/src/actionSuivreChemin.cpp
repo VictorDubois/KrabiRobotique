@@ -3,6 +3,7 @@
 #include "command.h"
 #include <math.h>
 #include "strategie.h"
+#include "Bras.h"
 
 ActionSuivreChemin::ActionSuivreChemin(ActionBase* tab, int n, Odometrie* odo)
 :   chemin(NULL), taille(n), pointSuivant(0), odometrie(odo), faitquelquechose(false)
@@ -68,13 +69,13 @@ bool ActionSuivreChemin::trajetPossible(Position objectif,Position* posRobotAdve
 int ActionSuivreChemin::intOfSensors()
 {
     int nbCapteursActif=0;
-    if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH)) nbCapteursActif +=10;
+/*    if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH)) nbCapteursActif +=10;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_LEFT)) nbCapteursActif +=20;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::RIGTH)) nbCapteursActif +=1;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::LEFT)) nbCapteursActif +=2;
-    if(Sensors::getSensors()->detectedSharp(SharpSensor::BACK)) nbCapteursActif +=100;
-    if(Sensors::getSensors()->getValueUltrasound(UltrasoundSensor::FRONT)<100) nbCapteursActif +=40;
-    return nbCapteursActif;
+   // if(Sensors::getSensors()->detectedSharp(SharpSensor::BACK)) nbCapteursActif +=100;
+    if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT)) nbCapteursActif +=40;
+ */   return nbCapteursActif;
 }
 
 void ActionSuivreChemin::affectePosRobotAdverse(int capteursOuverts, int cote)
@@ -152,15 +153,48 @@ bool ActionSuivreChemin::executer()
     int timerCollision=0;
     Position positionActuelle = odometrie->getPos().getPosition();
     Angle angle = odometrie->getPos().getAngle();
+//    bras = Bras::getBras();
     if (taille ==0)
         return true;
 
     Position trajet(chemin[pointSuivant].position-positionActuelle);
 
         nbCapteurs = intOfSensors();
+
         if(nbCapteurs>0)
         {
             affectePosRobotAdverse(nbCapteurs, cote);
+            Position detectedPosition;
+            switch(nbCapteurs)
+            {
+            case 10:
+                    detectedPosition=positionActuelle+Position(330,120);
+                    if((detectedPosition.x<droiteTotem) && (detectedPosition.x>gaucheTotem) && (detectedPosition.y<hautTotem) && (detectedPosition.y>basTotem))
+                    {
+                        strategieNormal=true;
+                    }
+                    else Command::freinageDUrgence(true);
+            case 20:
+                    detectedPosition=positionActuelle+Position(330,-120);
+                    if((detectedPosition.x<droiteTotem) && (detectedPosition.x>gaucheTotem) && (detectedPosition.y<hautTotem) && (detectedPosition.y>basTotem))
+                    {
+                        strategieNormal=true;
+                    }
+                    else Command::freinageDUrgence(true);
+            case 40:
+                    detectedPosition=positionActuelle+Position(330,0);
+                    if((detectedPosition.x<droiteTotem) && (detectedPosition.x>gaucheTotem) && (detectedPosition.y<hautTotem) && (detectedPosition.y>basTotem))
+                    {
+                        strategieNormal=true;
+                    }
+                    else Command::freinageDUrgence(true);
+            default:
+                    Command::freinageDUrgence(true);
+                    break;
+            }
+        }
+
+/*
             if(trajetPossible(chemin[pointSuivant].position,positionRobotAdverseUn,positionRobotAdverseDeux,positionRobotAdverseTrois))
             {
                 strategieNormal=true;
@@ -286,7 +320,7 @@ bool ActionSuivreChemin::executer()
                 }
             }
         }
-
+*/
        /* if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_LEFT) || Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH) ||
            Sensors::getSensors()->detectedSharp(SharpSensor::BACK) || Sensors::getSensors()->detectedSharp(SharpSensor::RIGTH) ||
            Sensors::getSensors()->detectedSharp(SharpSensor::LEFT))
@@ -302,7 +336,7 @@ bool ActionSuivreChemin::executer()
 
     if(nbCapteurs==0 || strategieNormal)
     {
-        Command::freinageDUrgence(false);
+   //     Command::freinageDUrgence(false);
         timerCollision=0;
         if (!faitquelquechose)
         {
@@ -310,9 +344,18 @@ bool ActionSuivreChemin::executer()
             new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
         }
 
-        if(trajet.x*trajet.x+trajet.y*trajet.y < 60.0f*60.0f)
+        if(trajet.x*trajet.x+trajet.y*trajet.y < DISTANCE_ARRET*DISTANCE_ARRET*1.3)
         {
             pointSuivant++;
+            if(chemin[pointSuivant].balaiDroit)
+                Bras::getBras()->ouvrirBalaiDroit();
+            else Bras::getBras()->fermerBalaiDroit();
+            if(chemin[pointSuivant].balaiGauche)
+                Bras::getBras()->ouvrirBalaiGauche();
+            else Bras::getBras()->fermerBalaiGauche();
+            if(chemin[pointSuivant].rateau)
+                Bras::getBras()->monterRateau();
+            else Bras::getBras()->descendreRateau();
             if (pointSuivant < taille)
                 new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
 

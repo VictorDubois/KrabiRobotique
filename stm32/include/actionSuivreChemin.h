@@ -5,9 +5,11 @@
 #include "action.h"
 #include "odometrie.h"
 #include "CommandGoTo.h"
+#include "Bras.h"
 
 class ActionSuivreChemin : public Action
 {
+    Bras* bras;
     ActionBase* chemin;
     /** @brief Pointeur vers la premier action*/
     int taille;

@@ -8,13 +8,13 @@
 
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
-float linearDuty[DBG_SIZE];
+//float linearDuty[DBG_SIZE];
 
 
 
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
-float angularDuty[DBG_SIZE];
+//float angularDuty[DBG_SIZE];
 
 //float posx[DBG_SIZE];
 //float posy[DBG_SIZE];
@@ -22,6 +22,7 @@ float angularDuty[DBG_SIZE];
 uint32_t dbgInc = 0;
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
+bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 int toto = 0;
 int caca = 0;
@@ -85,6 +86,9 @@ void Asservissement::update(void)
     }
 #endif
 
+    if (asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini)
+    {
+
         odometrie->update();        //Enregistre la position actuelle du robot
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
@@ -107,9 +111,31 @@ void Asservissement::update(void)
             command->update();
         }
 
+#ifdef ROUES
+
+#ifdef CAPTEURS_OLD
+    bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
+#endif
+#ifdef CAPTEURS
+    bool testcap = sensors->detectedSharp()->getSize() > 0;
+#else
+
+    bool testcap = false;
+#endif
+
+if (testcap)
+{
+    Command::freinageDUrgence(true);
+  //  linearDutySent = 0;
+  //  angularDutySent = 0;
+}
+else
+    Command::freinageDUrgence(false);
+#endif //ROUES
+
         //Puis on les récupéres
-        float vitesse_lineaire_a_atteindre = getLinearSpeed();
-        float vitesse_angulaire_a_atteindre = getAngularSpeed();
+        float vitesse_lineaire_a_atteindre = /*0;//*/getLinearSpeed();
+        float vitesse_angulaire_a_atteindre =  /*VITESSE_ANGULAIRE_MAX; //*/getAngularSpeed();
 
         // le buffer de collision se vide si l'accélération demandé est trop forte. Normalement la commande vérifie ça.
         //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...
@@ -117,6 +143,8 @@ void Asservissement::update(void)
         buffer_collision |= fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision;
 
 #ifdef ROUES
+
+
         //on filtre l'erreur de vitesse lineaire et angulaire
         linearDutySent +=  pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
         angularDutySent += pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
@@ -138,11 +166,11 @@ void Asservissement::update(void)
         //roueDroite[caca] = odometrie->roueCodeuseDroite->getTickValue();
                    vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
                    vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-                  linearDuty[dbgInc] = linearDutySent;
+//                  linearDuty[dbgInc] = linearDutySent;
 
                    vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
                    vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                   angularDuty[dbgInc] = angularDutySent;
+//                   angularDuty[dbgInc] = angularDutySent;
 
 //                  posx[caca] = positionPlusAngleActuelle.position.x;
 //                   posy[caca] = positionPlusAngleActuelle.position.y;
@@ -153,26 +181,6 @@ void Asservissement::update(void)
            toto = (toto+1) % 3;
 
 
-
-
-#ifdef CAPTEURS_OLD
-    bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
-#endif
-#ifdef CAPTEURS
-    bool testcap = sensors->detectedSharp()->getSize() > 0;
-#else
-
-    bool testcap = false;
-#endif
-
-if (testcap)
-{
-    Command::freinageDUrgence(true);
-    linearDutySent = 0;
-    angularDutySent = 0;
-}
-else
-    Command::freinageDUrgence(false);
 
 
     if (false && Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
@@ -198,10 +206,21 @@ else
         roues.gauche.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }
-
+}
+else
+{
+    #ifdef STM32F10X_MD
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
+    #endif
+    #ifdef STM32F10X_CL
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
+    #endif
+    roues.gauche.tourne(0.);
+    roues.droite.tourne(0.);
+}
 #endif
 }
-
+#ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
 {
@@ -219,3 +238,9 @@ Command* Asservissement::getCommand()
     return (Asservissement::asservissement->command);
 }
 
+#endif
+
+void Asservissement::finMatch()
+{
+    Asservissement::matchFini = true;
+}

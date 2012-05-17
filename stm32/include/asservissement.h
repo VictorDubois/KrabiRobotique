@@ -83,6 +83,8 @@ class Asservissement{
         static void setCommand(Command* command);
         /** @brief Permet récupérer la command courante utilisée par la stratégie */
         static Command* getCommand();
+        static void finMatch();
+        static bool matchFini;
 
 };
 

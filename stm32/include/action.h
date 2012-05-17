@@ -25,6 +25,9 @@ class ActionBase
 
     Position position;
     bool reculer;
+    bool balaiGauche;
+    bool balaiDroit;
+    bool rateau;
 };
 
 #endif

@@ -7,13 +7,13 @@ Sensors* Sensors::sensors = NULL;
 Sensors::Sensors()
 {
     Sensors::sensors = this;
-    uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 11}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
+    uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 10}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
     uint16_t* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
     // On initialise le nombre de capteur de chaque type
-    nbSharp = 4;
-    nbUltrasound = 1;
+    nbSharp = 5;
+    nbUltrasound = 0;
     nbLimitSwitch = 3;
     nbLigthBarrier = 0;
 
@@ -29,14 +29,16 @@ Sensors::Sensors()
     //ligthBarriers = new LigthBarrierSensor*[nbLigthBarrier];
 
     //On initialise les capteurs ayant besoin d'un ADC
-    ultrasounds[0] = new UltrasoundSensor(UltrasoundSensor::FRONT, 12, data);
+    //ultrasounds[0] = new UltrasoundSensor(UltrasoundSensor::FRONT, 12, data);
+
+    sharps[0] = new SharpSensor(SharpSensor::FRONT, 12, data);
+    sharps[1] = new SharpSensor(SharpSensor::FRONT_LEFT, 13, data);
+    sharps[2] = new SharpSensor(SharpSensor::FRONT_RIGTH, 14, data);
+    sharps[3] = new SharpSensor(SharpSensor::LEFT, 2, data);
+    sharps[4] = new SharpSensor(SharpSensor::RIGTH, 15, data);
+    sharps[5] = new SharpSensor(SharpSensor::BACK, 10, data);
 
 
-    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 13, data);
-    sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGTH, 14, data);
-    sharps[2] = new SharpSensor(SharpSensor::LEFT, 2, data);
-    sharps[3] = new SharpSensor(SharpSensor::RIGTH, 15, data);
-    sharps[4] = new SharpSensor(SharpSensor::BACK, 11, data);
 
 #ifdef STM32F10X_CL
     //On initialise les autres capteurs
