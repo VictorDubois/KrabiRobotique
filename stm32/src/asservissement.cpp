@@ -8,13 +8,13 @@
 
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
-float linearDuty[DBG_SIZE];
+//float linearDuty[DBG_SIZE];
 
 
 
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
-float angularDuty[DBG_SIZE];
+//float angularDuty[DBG_SIZE];
 
 //float posx[DBG_SIZE];
 //float posy[DBG_SIZE];
@@ -22,6 +22,7 @@ float angularDuty[DBG_SIZE];
 uint32_t dbgInc = 0;
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
+bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 int toto = 0;
 int caca = 0;
@@ -85,7 +86,7 @@ void Asservissement::update(void)
     }
 #endif
 
-    if (asserCount< 25000/*85000*//MS_BETWEEN_UPDATE)
+    if (asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini)
     {
 
         odometrie->update();        //Enregistre la position actuelle du robot
@@ -125,8 +126,8 @@ void Asservissement::update(void)
 if (testcap)
 {
     Command::freinageDUrgence(true);
-  /*  linearDutySent = 0;
-    angularDutySent = 0;*/
+  //  linearDutySent = 0;
+  //  angularDutySent = 0;
 }
 else
     Command::freinageDUrgence(false);
@@ -165,11 +166,11 @@ else
         //roueDroite[caca] = odometrie->roueCodeuseDroite->getTickValue();
                    vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
                    vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-                  linearDuty[dbgInc] = linearDutySent;
+//                  linearDuty[dbgInc] = linearDutySent;
 
                    vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
                    vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                   angularDuty[dbgInc] = angularDutySent;
+//                   angularDuty[dbgInc] = angularDutySent;
 
 //                  posx[caca] = positionPlusAngleActuelle.position.x;
 //                   posy[caca] = positionPlusAngleActuelle.position.y;
@@ -205,15 +206,21 @@ else
         roues.gauche.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
         roues.droite.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
     }
-    }
-    else
-    {
-        roues.gauche.tourne(0.);
-        roues.droite.tourne(0.);
-    }
+}
+else
+{
+    #ifdef STM32F10X_MD
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
+    #endif
+    #ifdef STM32F10X_CL
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
+    #endif
+    roues.gauche.tourne(0.);
+    roues.droite.tourne(0.);
+}
 #endif
 }
-
+#ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
 {
@@ -231,3 +238,9 @@ Command* Asservissement::getCommand()
     return (Asservissement::asservissement->command);
 }
 
+#endif
+
+void Asservissement::finMatch()
+{
+    Asservissement::matchFini = true;
+}

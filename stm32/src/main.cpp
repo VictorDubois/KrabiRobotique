@@ -21,6 +21,7 @@
 #include "Calibration.h"
 #include "Bras.h"
 
+#define POSITIONNEMENT
 
 #ifdef POSITIONNEMENT
 #include "command.h"
@@ -224,6 +225,13 @@ void initialisation()
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+//    GPIO_WriteBit(GPIOA,GPIO_Pin_7,Bit_RESET);   // servo gauche
+//    GPIO_Write(GPIOB, 0xffff);
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
   // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED
    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
@@ -444,6 +452,46 @@ while(1)
 }
 */
 
+#ifdef POSITIONNEMENT
+
+//positionnement();    // Fonction inexistante???????
+
+    unsigned int buffer = 0xffffffff;
+//on attend que la tirette soit remise
+    while(buffer)
+    {
+        buffer <<= 1;
+        buffer |= isTiretteEnleve();
+    }
+
+
+    //On allume une LED sur le STM avant que la tirette soit testé. Ainsi, tant que la tirette est détectée, on garde la led allumée
+    #ifdef STM32F10X_MD
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
+    #endif
+    #ifdef STM32F10X_CL
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
+    #endif
+
+    buffer = 0xffffffff;
+//on attend que la tirette soit enlevée pour le début du match
+    while(buffer)
+    {
+        buffer <<= 1;
+        bool tmp = !isTiretteEnleve();
+        buffer |= tmp;
+    }
+
+    //On éteint la LED sur le STM pour indiqué que le code continue à s'executer après que la tirette est été débranchée.
+    #ifdef STM32F10X_MD
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
+    #endif
+    #ifdef STM32F10X_CL
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
+    #endif
+
+
+#else
 
     unsigned int buffer = 0xffffffff;
 
@@ -454,6 +502,8 @@ while(1)
     #ifdef STM32F10X_CL
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
     #endif
+
+
 
     //On boucle tant que la tirette est pas enlever avec 32 verification au cas ou il y ai du bruit
     while(buffer)
@@ -470,6 +520,8 @@ while(1)
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
     #endif
 
+#endif
+
 //Une fois que la tirette est enlevée pour la 1ère fois, on lance le positionnement automatique
 #ifdef CAPTEURS
      new Sensors();
@@ -485,28 +537,6 @@ while(1)
     Servo::initTimer();     // A faire avant tout utilisation de servo
     new Bras();
 
-#ifdef POSITIONNEMENT
-// --- Fonction de positionnement, on charge l'odometrie et l'asservissement puis on se remet comme au début du match--- //
-//positionnement();    // Fonction inexistante???????
-
-    unsigned int buffer = 0xffffffff;
-//on attend que la tirette soit remise
-    while(buffer)
-    {
-        buffer <<= 1;
-        buffer |= isTiretteEnleve();
-    }
-
-       unsigned int buffer = 0xffffffff;
-//on attend que la tirette soit enlevée pour le début du match
-    while(buffer)
-    {
-        buffer <<= 1;
-        bool tmp = isTiretteEnleve();
-        buffer |= tmp;
-    }
-
-#endif
 
 //    Calibration::calibrationInitial();
 //    Calibration::calibrerZeroX();
@@ -514,9 +544,10 @@ while(1)
     //  test_capteurs_sharp ();
 
 
-   /* Bras::bras->descendreRateau();
-    Bras::bras->ouvrirBalaiGauche();
-*/
+    Bras::bras->monterRateau();
+    Bras::bras->fermerBalaiDroit();
+    Bras::bras->fermerBalaiGauche();
+
     new Strategie(isBlue(),odometrie);
 
     /**********************  TEST CAPTEUR  /
@@ -530,17 +561,18 @@ while(1)
     }
 
 
-    Sensors::SharpNameVector* out = sensors->detectedSharp();
+/*    Sensors::SharpNameVector* out = sensors->detectedSharp();
   //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
     SharpSensor::SharpName* o;
   //  LimitSwitchSensor::LimitSwitchName o2;
-    o = new SharpSensor::SharpName[5];
+    o = new SharpSensor::SharpName[6];
     for (int i = 0;i<5;i++) {o[i]=SharpSensor::NONE;}
     if (out->getSize()> 0)
     {
         for (int i = 0; i < out->getSize();i++)
             o[i] = (*out)[i];
     }
+*/
   /*  if (out2.getSize()> 0)
     {
         o2 = out2[0];

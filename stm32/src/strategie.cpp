@@ -3,6 +3,7 @@
 #include "CommandAvancerToutDroit.h"
 #include "CommandTourner.h"
 #include "ListeDActions.h"
+#include "Bras.h"
 
 
 
@@ -46,6 +47,8 @@ if (listeActions->getActionActuelle())
 else
 {
     Command::freinageDUrgence(true);
+    Asservissement::finMatch();
+    Bras::getBras()->arretUrgence();
 }
 
 

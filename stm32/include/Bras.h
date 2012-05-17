@@ -38,7 +38,7 @@ class Bras
         /// @brief arretUrgence() Coupe tous les servo utilisés.
         void arretUrgence();
         /// @brief getBras() Renvoit le pointeur de l'objet bras (pour la stratégie)
-        Bras* getBras();
+        static Bras* getBras();
 
 
     protected:

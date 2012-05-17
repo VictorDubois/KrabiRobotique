@@ -24,7 +24,9 @@ class SharpSensor : public AnalogSensor
             /** @brief Capteur gauche */
             LEFT,
             /** @brief Capteur droit */
-            RIGTH
+            RIGTH,
+            /** @brief Capteur avant centrale */
+            FRONT
         };
         /** @brief Permet de nommer les différents capteurs */
         typedef enum SharpName SharpName;
