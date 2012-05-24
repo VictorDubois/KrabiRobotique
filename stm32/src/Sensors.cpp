@@ -12,7 +12,7 @@ Sensors::Sensors()
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
     // On initialise le nombre de capteur de chaque type
-    nbSharp = 5;
+    nbSharp = 6;
     nbUltrasound = 0;
     nbLimitSwitch = 3;
     nbLigthBarrier = 0;
@@ -223,6 +223,37 @@ bool Sensors::detectedLimitSwitch(LimitSwitchSensor::LimitSwitchName limitSwitch
         }
     }
     return false;
+}
+
+void Sensors::activeSharp(SharpSensor::SharpName name)
+{
+        for (int i=0; i<nbSharp;i++)
+        {
+            if (sharps[i]->getName() == name)
+            {
+                sharps[i]->setActif();
+                break;
+            }
+        }
+}
+
+void Sensors::desactiveSharp(SharpSensor::SharpName name)
+{
+    for (int i=0; i<nbSharp;i++)
+        {
+            if (sharps[i]->getName() == name)
+            {
+                sharps[i]->unsetActif();
+                break;
+            }
+        }
+}
+void Sensors::activeAllSharp()
+{
+        for (int i=0; i<nbSharp;i++)
+        {
+           sharps[i]->setActif();
+        }
 }
 
 #endif //ROBOTHW

@@ -4,12 +4,14 @@
 
 
 uint16_t SharpSensor::threshold = SEUIL_DETECTION;
+bool SharpSensor::estDesactive = false;
 
 SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData) : AnalogSensor(channel, pData)
 {
     this->name = name;
     counter = 0;
     output = false;
+    actif = true;
 }
 
 SharpSensor::~SharpSensor()
@@ -39,13 +41,24 @@ Sensor::OutputSensor SharpSensor::getValue()
     OutputSensor outputR;
     outputR.type = SHARP;
     outputR.f = 0;
-    outputR.b = output;
+    outputR.b = (output && actif && SharpSensor::estDesactive);
     return outputR;
 }
 
 SharpSensor::SharpName SharpSensor::getName()
 {
     return name;
+}
+
+
+void SharpSensor::setActif()
+{
+    actif = /*false;//*/true;
+}
+
+void SharpSensor::unsetActif()
+{
+    actif = false;
 }
 
 #endif

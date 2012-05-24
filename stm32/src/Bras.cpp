@@ -8,10 +8,10 @@ Bras::Bras()
 {
     Bras::bras = this;
 
-    balaiGauche = new Servo(2);
+    balaiGauche = new Servo(1);
     balaiGauche->goToAngle(BALAI_G_CLOSED);
 
-    balaiDroite = new Servo(1);
+    balaiDroite = new Servo(2);
     balaiDroite->goToAngle(BALAI_D_CLOSED);
 
     rateau = new Servo(4);
@@ -20,14 +20,14 @@ Bras::Bras()
 
 void Bras::ouvrirBalaiDroit()
 {
-    balaiGauche->goToAngle(BALAI_G_OPEN);
-    balaiDroite->goToAngle(BALAI_D_CLOSED);
+    balaiDroite->goToAngle(BALAI_D_OPEN);
+  //  balaiDroite->goToAngle(BALAI_D_CLOSED);
 }
 
 void Bras::ouvrirBalaiGauche()
 {
-    balaiGauche->goToAngle(BALAI_G_CLOSED);
-    balaiDroite->goToAngle(BALAI_D_OPEN);
+   // balaiGauche->goToAngle(BALAI_G_CLOSED);
+    balaiGauche->goToAngle(BALAI_G_OPEN);
 }
 
 void Bras::fermerBalaiDroit()

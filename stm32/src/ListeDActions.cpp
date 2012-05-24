@@ -48,70 +48,81 @@ void  ListeDActions::initialiserTableauDeBase(bool is_Blue)
 
 if (cote==1) // Violet
 {
-actions[0]=new ActionBase[3];
-actions[0][0].position = Position(1200,500*cote);//550*cote);
-actions[0][1].position = Position(270,1050*cote);//1000*cote);
-actions[0][2].position = Position(700,1000*cote);//550*cote);
+// HOMOLOGATION
+
+actions[0]=new ActionBase[4];
+actions[0][0].position = Position(1100,600*cote);//550*cote);
+//actions[0][0].position = Position(760,0*cote);//550*cote);
+actions[0][1].position = Position(260,800*cote);//1000*cote);
+actions[0][1].balaiGauche = true;
+actions[0][2].position = Position(700,800*cote);//550*cote);
 actions[0][2].reculer = true; // a reculon
+actions[0][2].wait = 5000;
 nbActionsBase[0] = 2;
+
+// *******************
+/*
+actions[0]=new ActionBase[8];
+actions[0][0].position = Position(600,250*cote);//550*cote);
+actions[0][1].position = Position(1350,760*cote);//1000*cote);
+actions[0][2].position = Position(1100,780*cote);//1000*cote);
+actions[0][2].reculer=true;
+actions[0][2].balaiDroit=true;
+actions[0][2].desactiveCapteur=true;
+actions[0][2].rateau=false;
+actions[0][3].position = Position(650,780*cote);//780*cote);//1000*cote);
+actions[0][3].reculer=true;
+actions[0][3].balaiDroit=true;
+actions[0][3].desactiveCapteur=true;
+actions[0][3].rateau=false;
+actions[0][4].position = Position(750,1000*cote);//300#1000#//1000*cote);
+actions[0][5].position = Position(750,1200*cote);
+actions[0][6].position = Position(300,850*cote);//550*cote);
+actions[0][6].rateau=false;
+actions[0][7].position = Position(700,800*cote);//550*cote);
+actions[0][7].reculer = true; // a reculon
+nbActionsBase[0] = 7;
+*/
 }
 else //Rouge
 {
-actions[0]=new ActionBase[3];
-actions[0][0].position = Position(1200,550*cote);//550*cote);
-actions[0][1].position = Position(20,830*cote);//1000*cote);
-actions[0][2].position = Position(450,1000*cote);//550*cote);
-actions[0][2].reculer = true; // a reculon
-nbActionsBase[0] = 2;
-}
 
+//HOMOLOGATION
 /*
-actions[0]=new ActionBase[7];
-actions[0][0].position = Position(900,400*cote);
-actions[0][0].rateau=false;
-actions[0][0].balaiGauche=false;
-actions[0][0].balaiDroit=false;
-actions[0][1].position = Position(900,700*cote);
-actions[0][1].rateau=true;
-actions[0][1].balaiGauche=false;
-actions[0][1].balaiDroit=false;
-actions[0][2].position = Position(700,800*cote);
-actions[0][2].rateau=false;
-actions[0][2].balaiGauche=true;
-actions[0][2].balaiDroit=false;
-actions[0][3].position = Position(880,480*cote);
-actions[0][3].rateau=false;
-actions[0][3].balaiGauche=false;
-actions[0][3].balaiDroit=true;
-actions[0][4].position = Position(850,520*cote);
-actions[0][4].rateau=true;
-actions[0][4].balaiGauche=false;
-actions[0][4].balaiDroit=true;
-actions[0][5].position = Position(820,550*cote);
-actions[0][5].rateau=false;
-actions[0][5].balaiGauche=true;
-actions[0][5].balaiDroit=false;
-actions[0][6].position = Position(300,1000*cote);
-actions[0][6].rateau=false;
-actions[0][6].balaiGauche=false;
-actions[0][6].balaiDroit=false;
-nbActionsBase[0] = 7;
+actions[0]=new ActionBase[3];
+actions[0][0].position = Position(1100,600*cote);//550*cote);
+actions[0][1].position = Position(240,800*cote);//1000*cote);
+actions[0][1].balaiDroit = true;
+actions[0][2].position = Position(700,670*cote);//550*cote);
+actions[0][2].reculer = true; // a reculon
+actions[0][2].wait = 1500;
+actions[0][3].position = Position(1350,670*cote);//550*cote);
+nbActionsBase[0] = 2;
 */
-/*    actions[0]=new ActionBase[3];
-    actions[0][0].position = Position(1500,600*cote);//1
-  //  actions[0][0].position = Position(300,250*cote);//1
-    actions[0][1].position = Position(300,770*cote);//1
-  //  actions[0][1].reculer = true;//1
-  //  actions[0][1].position = Position(1250,250*cote);//1
-    actions[0][2].position = Position(870,400*cote);//1
-    actions[0][2].reculer = true; // a reculon
-    nbActionsBase[0] = 3;
-*/
+// *******************
 
-/*    actions[0]=new ActionBase[1];
-    actions[0][0].position = Position(1500,500);//1
-    nbActionsBase[0] = 2;
-*/
+actions[0]=new ActionBase[8];
+actions[0][0].position = Position(600,250*cote);//550*cote);
+actions[0][1].position = Position(1350,740*cote);//1000*cote);
+actions[0][2].position = Position(1100,750*cote);//1000*cote);
+actions[0][2].reculer=true;
+actions[0][2].balaiGauche=true;
+actions[0][2].desactiveCapteur=true;
+actions[0][2].rateau=false;
+actions[0][3].position = Position(600,800*cote);//780*cote);//1000*cote);
+actions[0][3].reculer=true;
+actions[0][3].balaiGauche=true;
+actions[0][3].desactiveCapteur=true;
+actions[0][3].rateau=false;
+actions[0][4].position = Position(720,1000*cote);//300#1000#//1000*cote);
+actions[0][5].position = Position(720,1200*cote);
+actions[0][6].position = Position(300,850*cote);//550*cote);
+actions[0][6].rateau=false;
+actions[0][7].position = Position(800,600*cote);//550*cote);
+actions[0][7].reculer = true; // a reculon
+nbActionsBase[0] = 7;
+
+}
 
    /* actions[1]=new ActionBase[8];
     actions[1][0].position = Position(740,1400*cote);//3c

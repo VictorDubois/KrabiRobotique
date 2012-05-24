@@ -34,11 +34,11 @@ void Odometrie::update(){
     int32_t deltaTicksRoueGauche = roueCodeuseGauche->getTickValue(); //On a le moins pour prendre en compte que les deux roux codeuses sont monté dans des sens opposées car pas du même coté du robot
     int32_t deltaTicksRoueDroite = -roueCodeuseDroite->getTickValue();
     //Remettre ce coefficient si ça bug mais juste en lisant le code j'en vois pas l'utilité
-    if (deltaTicksRoueGauche > 0)
+    /*if (deltaTicksRoueGauche > 0)
         deltaTicksRoueGauche*=0.9627987;
     else
         deltaTicksRoueGauche*=0.968103607;
-
+    */
 
     int32_t filteredDeltaTicksRoueGauche = (deltaTicksRoueGauche+prevDeltaTicksRoueGauche)/2;
     int32_t filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2;

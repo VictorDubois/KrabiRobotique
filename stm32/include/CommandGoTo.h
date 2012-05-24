@@ -33,8 +33,10 @@ class CommandGoTo : public Command
         *   @return Retourne un tableau de taille PATH_LENTGH contenant les positions et angles respectif du robot tous les MS_BETWEEN_UPDATE ms */
         static PositionPlusAngle** path();
         /** @brief Accesseur de goBack
-        *   @param Retourne la valeur de goBack */
+        *   @return Retourne la valeur de goBack */
         bool getGoBack();
+        /** @brief Accesseur de aFiniTourner. Indique si on a fini de tourner */
+        bool getAFiniTourner();
     private:
         /** @brief Indique si le robot doit reculer ou non*/
         bool goBack;

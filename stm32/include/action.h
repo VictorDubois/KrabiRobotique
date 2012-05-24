@@ -28,6 +28,9 @@ class ActionBase
     bool balaiGauche;
     bool balaiDroit;
     bool rateau;
+    bool desactiveCapteur;
+    /** @brief To wait wait milli-seconde avant de lancer la commande */
+    int wait;
 };
 
 #endif
