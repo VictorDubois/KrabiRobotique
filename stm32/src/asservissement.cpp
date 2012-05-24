@@ -1,5 +1,6 @@
 #include "asservissement.h"
 #include "strategie.h"
+#include "Bras.h"
 
 #define DBG_SIZE 600
 
@@ -140,7 +141,7 @@ else
         // le buffer de collision se vide si l'accélération demandé est trop forte. Normalement la commande vérifie ça.
         //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...
         buffer_collision <<= 1;
-        buffer_collision |= fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision;
+        buffer_collision |= fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision && fabs((vitesse_angulaire_atteinte - vitesse_angulaire_a_atteindre)) < SEUIL_COLISION_ANG;
 
 #ifdef ROUES
 
@@ -183,7 +184,7 @@ else
 
 
 
-    if (false && Command::getStop() )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET)
+    if (buffer_collision == 0x0 )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
     {   //Si on détecte quelque chose, on s'arréte
         #ifdef STM32F10X_MD
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
@@ -243,4 +244,6 @@ Command* Asservissement::getCommand()
 void Asservissement::finMatch()
 {
     Asservissement::matchFini = true;
+    Bras::getBras()->arretUrgence();
+    Bras::getBras()->monterRateau();
 }

@@ -75,6 +75,17 @@ class Sensors
         /** @brief Delete tout les vectors créé par l'instance de cette classe */
         void deleteVectors();
 
+        /** @brief Active le sharp qui a pour nom name
+        *   @param name Nom du capteur qu'on souhaite activer */
+        void activeSharp(SharpSensor::SharpName name);
+        /** @brief Desactive le sharp qui a pour nom name
+        *   @param name Nom du capteur qu'on souhaite désactiver */
+        void desactiveSharp(SharpSensor::SharpName name);
+        /** @brief Active tous les capteurs */
+        void activeAllSharp();
+
+
+
     protected:
     private:
         /** @brief Tableau des capteurs sharps */

@@ -27,7 +27,8 @@
 #define ANGLE_ARRET 0.08 //0.08
 
 //ASSERVISSEMENT
-#define SEUIL_COLISION 3.5
+#define SEUIL_COLISION 1
+#define SEUIL_COLISION_ANG 0.002
 #define MS_BETWEEN_UPDATE 10
 #define CPT_BEFORE_RAZ 8500
 #define LINEARE_DUTY_MAX 1.00
@@ -44,17 +45,17 @@
 #define NB_CAPTEUR_A_ADC 6
 
     /// @brief BALAI_G_CLOSED Angle du servomoteur pour lequel le balai gauche est fermé.
-#define BALAI_G_CLOSED 110
+#define BALAI_D_CLOSED 110
     /// @brief BALAI_D_CLOSED Angle du servomoteur pour lequel le balai droit est fermé.
-#define BALAI_D_CLOSED -150
+#define BALAI_G_CLOSED -150
     /// @brief BALAI_G_OPEN Angle du servomoteur pour lequel le balai gauche est ouvert.
-#define BALAI_G_OPEN -150
+#define BALAI_D_OPEN -150
     /// @brief BALAI_D_OPEN Angle du servomoteur pour lequel le balai droit est ouvert.
-#define BALAI_D_OPEN 110
+#define BALAI_G_OPEN 110
     /// @brief RATEAU_HAUT Angle du servomoteur pour lequel le rateau est en haut.
 #define RATEAU_HAUT -270
     /// @brief RATEAU_BAS Angle du servomoteur pour lequel le rateau est en haut.
-#define RATEAU_BAS -200
+#define RATEAU_BAS -180//-200
 
 //COMMAND
 #define VITESSE_LINEAIRE_MAX 4
@@ -64,9 +65,9 @@
 
 //ODOMETRIE
 #define TAILLE_ENTRAXE 265
-#define RAYON_ROUE  40.326*1.440446508 // 40.326
+#define RAYON_ROUE  40.326*1.283614189 // 40.326
 #define NBR_TICK_PAR_TOUR 8192
-#define COEFF_AJOUST_ANGLE 0.956926608
+#define COEFF_AJOUST_ANGLE 0.986608174
 
 //PIDFILTERANGLE
 #define FILTER_ANGLE_KP 3//3.6 //0.1
@@ -97,7 +98,7 @@
 
 //STRATEGIE
 #define INSTRUCTION_COLLISION 128
-#define POS_DEPART_X 250
+#define POS_DEPART_X 260
 #define POS_DEPART_Y 250
 #define RAYON_ROBOT 250
 #define ANGLE_DEPART 0

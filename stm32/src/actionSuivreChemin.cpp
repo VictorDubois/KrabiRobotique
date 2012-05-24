@@ -345,21 +345,51 @@ bool ActionSuivreChemin::executer()
         }
 
         if(trajet.x*trajet.x+trajet.y*trajet.y < DISTANCE_ARRET*DISTANCE_ARRET*1.3)
-        {
-            pointSuivant++;
-            if(chemin[pointSuivant].balaiDroit)
-                Bras::getBras()->ouvrirBalaiDroit();
-            else Bras::getBras()->fermerBalaiDroit();
-            if(chemin[pointSuivant].balaiGauche)
-                Bras::getBras()->ouvrirBalaiGauche();
-            else Bras::getBras()->fermerBalaiGauche();
-            if(chemin[pointSuivant].rateau)
-                Bras::getBras()->monterRateau();
-            else Bras::getBras()->descendreRateau();
-            if (pointSuivant < taille)
-                new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
+            {
+                pointSuivant++;
+                if(chemin[pointSuivant].balaiDroit)
+                    Bras::getBras()->ouvrirBalaiDroit();
+                else Bras::getBras()->fermerBalaiDroit();
+                if(chemin[pointSuivant].balaiGauche)
+                    Bras::getBras()->ouvrirBalaiGauche();
+                else Bras::getBras()->fermerBalaiGauche();
+                if(chemin[pointSuivant].rateau)
+                    Bras::getBras()->monterRateau();
+                else Bras::getBras()->descendreRateau();
+                if(chemin[pointSuivant].desactiveCapteur)
+                {
+                    SharpSensor::estDesactive = false;
+                }
+                else
+                {
+                    SharpSensor::estDesactive = true;
+                }
+                if (pointSuivant < taille)
+                    {
+                        /*Sensors::getSensors()->activeAllSharp();
+                        bool aFiniTourner = ((CommandGoTo*) Asservissement::asservissement->command)->getAFiniTourner();
+                        if(aFiniTourner)
+                        {
+                            Sensors::getSensors()->desactiveSharp(SharpSensor::LEFT);
+                            Sensors::getSensors()->desactiveSharp(SharpSensor::RIGTH);
+                        }
+                        else
+                        {
+                            Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT);
+                            Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT_LEFT);
+                            Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT_RIGTH);
+                        }*/
+                if (chemin[pointSuivant].wait > 0)
+                {
+                    chemin[pointSuivant].wait--;
+                    pointSuivant--;
+                }
+                else {
+                        new CommandGoTo(chemin[pointSuivant].position,chemin[pointSuivant].reculer);
+                }
+                }
 
-        }
+            }
 
 
         return (pointSuivant >= taille);

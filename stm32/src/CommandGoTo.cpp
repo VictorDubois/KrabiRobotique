@@ -9,6 +9,10 @@ CommandGoTo::CommandGoTo(Position DestinationFinale) :
     goBack = false;
     aFiniTourner = false;
     destination =  PositionPlusAngle(DestinationFinale, (DestinationFinale - Odometrie::odometrie->getPos().getPosition()).getAngle()); // La destination est à la position finale souhaitée et on choisit d'arrivé dans la direction formé par le point de départ et le point d'arrivé
+    Sensors::getSensors()->activeAllSharp();
+    Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT);
+    Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT_LEFT);
+    Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT_RIGTH);
 }
 
 CommandGoTo::CommandGoTo(Position DestinationFinale, bool goBack) :
@@ -20,6 +24,10 @@ CommandGoTo::CommandGoTo(Position DestinationFinale, bool goBack) :
     this->goBack = goBack;
     aFiniTourner = false;
     destination =  PositionPlusAngle(DestinationFinale, (DestinationFinale - Odometrie::odometrie->getPos().getPosition()).getAngle()); // La destination est à la position finale souhaitée et on choisit d'arrivé dans la direction formé par le point de départ et le point d'arrivé
+    Sensors::getSensors()->activeAllSharp();
+    Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT);
+    Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT_LEFT);
+    Sensors::getSensors()->desactiveSharp(SharpSensor::FRONT_RIGTH);
 }
 
 
@@ -49,7 +57,12 @@ void CommandGoTo::update()
         distance_restante = !aFiniTourner ? 0 : distance_restante;
 
         if (!aFiniTourner && fabs(wrapAngle(angle_restant)) < 0.2)//DISTANCE_ARRET)
+        {
+            Sensors::getSensors()->activeAllSharp();
+            Sensors::getSensors()->desactiveSharp(SharpSensor::RIGTH);
+            Sensors::getSensors()->desactiveSharp(SharpSensor::LEFT);
             aFiniTourner = true;
+        }
 
 		if( distance_restante < DISTANCE_ARRET)
         {
@@ -216,6 +229,7 @@ PositionPlusAngle** CommandGoTo::path()
             {
                  vitesse_angulaire_atteinte = getVitesseAngulaireAfterTrapeziumFilter(vitesse_angulaire_atteinte, wrapAngle(angle_restant+M_I));
             }
+
             */
             positionPlusAngle->setAngle(trajectoire[i-1]->getAngle()+Angle(vitesse_angulaire_atteinte));
             positionPlusAngle->setPosition(trajectoire[i-1]->getPosition() + Position(Distance(vitesse_lineaire_atteinte)*cos(trajectoire[i-1]->getAngle()), Distance(vitesse_lineaire_atteinte)*sin(trajectoire[i-1]->getAngle())));    //mettre sinx si ça marche pas et non sin
@@ -239,4 +253,9 @@ PositionPlusAngle CommandGoTo::getDestination()
 bool CommandGoTo::getGoBack()
 {
     return goBack;
+}
+
+bool CommandGoTo::getAFiniTourner()
+{
+    return aFiniTourner;
 }

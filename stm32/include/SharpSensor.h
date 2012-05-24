@@ -51,6 +51,13 @@ class SharpSensor : public AnalogSensor
 
         /** @brief Seuil de détection utilisé pour les calibrer les capteurs sharp. Un retour supérieur à ce seuil sera considéré comme la détection d'un obstacle */
         static uint16_t threshold;
+
+        /** @brief Permet d'activer ce capteur sharp */
+        void setActif();
+        /** @brief Permet de désactiver ce capteur */
+        void unsetActif();
+        static bool estDesactive;
+
     protected:
     private:
         /** @brief Compteur pour filtrer le signal numérique reçu. Ce compteur agit comme un filtre passe bas. */
@@ -59,6 +66,9 @@ class SharpSensor : public AnalogSensor
         SharpName name;
         /** @brief Valeur retourné par le capteur */
         bool output;
+        /** @brief Indique si le capteur actuel est activé ou non. Si on il est à false, le capteur renvoie toujours false.*/
+        bool actif;
+
 
 };
 

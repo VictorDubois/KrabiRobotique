@@ -48,7 +48,6 @@ else
 {
     Command::freinageDUrgence(true);
     Asservissement::finMatch();
-    Bras::getBras()->arretUrgence();
 }
 
 
