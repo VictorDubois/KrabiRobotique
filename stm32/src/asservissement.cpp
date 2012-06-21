@@ -4,6 +4,7 @@
 
 #define DBG_SIZE 600
 
+
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
 
@@ -124,14 +125,14 @@ void Asservissement::update(void)
     bool testcap = false;
 #endif
 
-if (testcap)
+/*if (testcap)
 {
     Command::freinageDUrgence(true);
   //  linearDutySent = 0;
   //  angularDutySent = 0;
 }
 else
-    Command::freinageDUrgence(false);
+    Command::freinageDUrgence(false);*/
 #endif //ROUES
 
         //Puis on les récupéres
@@ -219,8 +220,11 @@ else
     roues.gauche.tourne(0.);
     roues.droite.tourne(0.);
 }
+#else
+}
 #endif
 }
+
 #ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
@@ -228,6 +232,7 @@ extern "C" void SysTick_Handler()
     Asservissement::asservissement->update();
 }
 
+#endif
 
 void Asservissement::setCommand(Command* command)
 {
@@ -239,11 +244,12 @@ Command* Asservissement::getCommand()
     return (Asservissement::asservissement->command);
 }
 
-#endif
 
 void Asservissement::finMatch()
 {
     Asservissement::matchFini = true;
+    #ifdef ROBOTHW
     Bras::getBras()->arretUrgence();
     Bras::getBras()->monterRateau();
+    #endif
 }

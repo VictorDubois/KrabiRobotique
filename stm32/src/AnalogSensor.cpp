@@ -1,7 +1,5 @@
 #include "AnalogSensor.h"
 
-#ifdef ROBOTHW
-
 int AnalogSensor::nbCapteurDejaInitialise = 0;
 
 AnalogSensor::AnalogSensor(uint8_t channel, uint16_t* pData)
@@ -21,6 +19,7 @@ AnalogSensor::~AnalogSensor()
 
 uint16_t* AnalogSensor::initialiserADC(uint8_t nbChannel, uint8_t* channels)
 {
+#ifdef ROBOTHW
    uint16_t* data = new uint16_t[nbChannel];
 
     ADC_InitTypeDef ADC_InitStructure;
@@ -79,18 +78,26 @@ uint16_t* AnalogSensor::initialiserADC(uint8_t nbChannel, uint8_t* channels)
     DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     DMA_Cmd(DMA1_Channel1, ENABLE);
     return data;
+#else
+    return (uint16_t*) 0x0;
+#endif
 }
 
 
 
 void AnalogSensor::startConversion()
 {
+    #ifdef ROBOTHW
     ADC_SoftwareStartConvCmd(ADC1, ENABLE); // lance une conversion
+    #endif
 }
 
 bool AnalogSensor::conversionFinished()
 {
+#ifdef ROBOTHW
     //return (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == SET);
     return DMA_GetFlagStatus(DMA1_FLAG_TC1);
+#else
+    return true;
+#endif
 }
-#endif//ROBOT

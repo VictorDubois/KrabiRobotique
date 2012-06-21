@@ -2,7 +2,9 @@
 #define LIMITSWITCHSENSOR_H
 
 #include <Sensor.h>
-#include "stm32f10x_gpio.h"
+#ifdef ROBOTHW
+    #include "stm32f10x_gpio.h"
+#endif
 
 /** @brief Classe des gestions des capteurs fin de course */
 class LimitSwitchSensor : public Sensor
@@ -20,13 +22,18 @@ class LimitSwitchSensor : public Sensor
             FRONT
         };
         /** @brief Permet de nommer les différents fin de course */
+
         typedef enum LimitSwitchName LimitSwitchName;
 
+        #ifdef ROBOTHW
         /** @brief Constructeur d'un capteur fin de course *
         *   @param name Nom du fin de course *
         *   @param pin Numéro de pin utilisée (GPIO_Pin_1, GPIO_Pin_2, ...) *
         *   @param group Groupe de pin utilisé (GPIOA, GPIOB, ...) */
         LimitSwitchSensor(LimitSwitchName name, uint16_t pin, GPIO_TypeDef* group);
+        #else
+        LimitSwitchSensor();
+        #endif
         /** @brief Destructeur de la classe */
         virtual ~LimitSwitchSensor();
 
@@ -39,6 +46,7 @@ class LimitSwitchSensor : public Sensor
         void  updateValue();
     protected:
     private:
+        #ifdef ROBOTHW
         /** @brief Numéro de pin utilisée (GPIO_Pin_1, GPIO_Pin_2, ...) */
         uint16_t pin;
         /** @brief Groupe de pin utilisé (GPIOA, GPIOB, ...) */
@@ -49,6 +57,7 @@ class LimitSwitchSensor : public Sensor
         LimitSwitchName name;
         /** @brief Valeur de retour du capteur */
         bool output;
+        #endif
 };
 
 #endif // LIMITSWITCHSENSOR_H

@@ -1,6 +1,7 @@
 #ifndef ASSERVISSEMENT_H_INCLUDED
 #define ASSERVISSEMENT_H_INCLUDED
 
+
 #ifdef ROBOTHW
 #include "stm32f10x.h"
 #include "stm32f10x_tim.h"
@@ -9,8 +10,8 @@
 #include "misc.h"
 #include "roues.h"
 #include "capteurs.h"
-#include "Sensors.h"
 #endif
+#include "Sensors.h"
 #include "variable.h"
 #include "PositionPlusAngle.h"
 #include "odometrie.h"
@@ -46,6 +47,7 @@ class Asservissement{
 #ifdef ROBOTHW
         /**@brief définition des roues du robot */
         Roues roues;
+#endif
 #ifdef CAPTEURS_OLD
         /**@brief définition des capteurs du robot */
         Capteurs capteurs;
@@ -54,7 +56,6 @@ class Asservissement{
         /**@brief Pointeur vers les capteurs du robot */
         Sensors* sensors;
 #endif //capteurs_old
-#endif
         /**@brief différence d'accélération à partir de laquel on concidére qu'il y a collision */
         float seuil_collision;
         /**@brief Pour savoir s'il y a eu un grand nombre de collision succéssive */

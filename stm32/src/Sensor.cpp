@@ -1,6 +1,5 @@
 #include "Sensor.h"
 
-#ifdef ROBOTHW
 
 
 Sensor::Sensor()
@@ -13,4 +12,4 @@ Sensor::~Sensor()
     //dtor
 }
 
-#endif
+

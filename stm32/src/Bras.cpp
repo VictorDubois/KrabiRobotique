@@ -1,8 +1,10 @@
 #include "Bras.h"
 
-#ifdef ROBOTHW
 
-Bras* Bras::bras = NULL;
+
+Bras* Bras::bras = 0x0;
+
+#ifdef ROBOTHW
 
 Bras::Bras()
 {
@@ -85,5 +87,34 @@ Bras::~Bras()
     delete balaiGauche;
     delete rateau;
 }
+
+#else
+
+        Bras::Bras(){Bras::bras = this;}
+        Bras::~Bras(){}
+
+
+        void Bras::ouvrirBalaiDroit(){}
+
+        void Bras::ouvrirBalaiGauche(){}
+
+        void Bras::fermerBalaiDroit(){}
+
+        void Bras::fermerBalaiGauche(){}
+
+        void Bras::fermerBalais(){}
+
+        void Bras::ouvrirBalais(){}
+
+        void Bras::monterRateau(){}
+
+        void Bras::descendreRateau(){}
+
+        void Bras::dropRateau(){}
+
+        void Bras::arretUrgence(){}
+
+        Bras* Bras::getBras(){return Bras::bras;}
+
 
 #endif // ROBOTHW

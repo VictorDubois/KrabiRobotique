@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="paprikaSimulateur" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_compiler__stm32_architecture" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/paprikaSimulateur" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="config.h" />
+		<Unit filename="../stm32/include/Angle.h" />
+		<Unit filename="../stm32/include/CommandAvancerToutDroit.h" />
+		<Unit filename="../stm32/include/CommandGoTo.h" />
+		<Unit filename="../stm32/include/CommandTourner.h" />
+		<Unit filename="../stm32/include/Hctl_Handler.h" />
+		<Unit filename="../stm32/include/Moteur.h" />
+		<Unit filename="../stm32/include/Position.h" />
+		<Unit filename="../stm32/include/PositionPlusAngle.h" />
+		<Unit filename="../stm32/include/Rouleau.h" />
+		<Unit filename="../stm32/include/TrapezoidalCommand.h" />
+		<Unit filename="../stm32/include/ValeursCapteurs.h" />
+		<Unit filename="../stm32/include/ValeursRoues.h" />
+		<Unit filename="../stm32/include/action.h" />
+		<Unit filename="../stm32/include/asservissement.h" />
+		<Unit filename="../stm32/include/capteurs.h" />
+		<Unit filename="../stm32/include/command.h" />
+		<Unit filename="../stm32/include/distance.h" />
+		<Unit filename="../stm32/include/element.h" />
+		<Unit filename="../stm32/include/initialisation.h" />
+		<Unit filename="../stm32/include/memory.h" />
+		<Unit filename="../stm32/include/odometrie.h" />
+		<Unit filename="../stm32/include/pid_filter_angle.h" />
+		<Unit filename="../stm32/include/pid_filter_distance.h" />
+		<Unit filename="../stm32/include/pince.h" />
+		<Unit filename="../stm32/include/pwm_handler.h" />
+		<Unit filename="../stm32/include/quadrature_coder_handler.h" />
+		<Unit filename="../stm32/include/rateau.h" />
+		<Unit filename="../stm32/include/roue.h" />
+		<Unit filename="../stm32/include/roues.h" />
+		<Unit filename="../stm32/include/servo.h" />
+		<Unit filename="../stm32/include/simul/Graph.h" />
+		<Unit filename="../stm32/include/simul/GraphWindows.h" />
+		<Unit filename="../stm32/include/simul/element.h" />
+		<Unit filename="../stm32/include/simul/main.h" />
+		<Unit filename="../stm32/include/simul/main_window.h" />
+		<Unit filename="../stm32/include/simul/objet.h" />
+		<Unit filename="../stm32/include/simul/robot.h" />
+		<Unit filename="../stm32/include/simul/table.h" />
+		<Unit filename="../stm32/include/strategie.h" />
+		<Unit filename="../stm32/include/timer_handler.h" />
+		<Unit filename="../stm32/include/variable.h" />
+		<Unit filename="../stm32/src/Angle.cpp" />
+		<Unit filename="../stm32/src/CommandAvancerToutDroit.cpp" />
+		<Unit filename="../stm32/src/CommandGoTo.cpp" />
+		<Unit filename="../stm32/src/CommandTourner.cpp" />
+		<Unit filename="../stm32/src/Hctl_Handler.cpp" />
+		<Unit filename="../stm32/src/ListeDActions.cpp" />
+		<Unit filename="../stm32/src/Moteur.cpp" />
+		<Unit filename="../stm32/src/Position.cpp" />
+		<Unit filename="../stm32/src/PositionPlusAngle.cpp" />
+		<Unit filename="../stm32/src/Rouleau.cpp" />
+		<Unit filename="../stm32/src/TrapezoidalCommand.cpp" />
+		<Unit filename="../stm32/src/ValeursCapteurs.cpp" />
+		<Unit filename="../stm32/src/ValeursRoues.cpp" />
+		<Unit filename="../stm32/src/action.cpp" />
+		<Unit filename="../stm32/src/actionChercherPiece.cpp" />
+		<Unit filename="../stm32/src/actionSuivreChemin.cpp" />
+		<Unit filename="../stm32/src/asservissement.cpp" />
+		<Unit filename="../stm32/src/capteurs.cpp" />
+		<Unit filename="../stm32/src/command.cpp" />
+		<Unit filename="../stm32/src/distance.cpp" />
+		<Unit filename="../stm32/src/initialisation.cpp" />
+		<Unit filename="../stm32/src/main.cpp" />
+		<Unit filename="../stm32/src/memory.cpp" />
+		<Unit filename="../stm32/src/odometrie.cpp" />
+		<Unit filename="../stm32/src/pid_filter_angle.cpp" />
+		<Unit filename="../stm32/src/pid_filter_distance.cpp" />
+		<Unit filename="../stm32/src/pince.cpp" />
+		<Unit filename="../stm32/src/pwm_handler.cpp" />
+		<Unit filename="../stm32/src/quadrature_coder_handler.cpp" />
+		<Unit filename="../stm32/src/rateau.cpp" />
+		<Unit filename="../stm32/src/roue.cpp" />
+		<Unit filename="../stm32/src/roues.cpp" />
+		<Unit filename="../stm32/src/servo.cpp" />
+		<Unit filename="../stm32/src/simul/Graph.cpp" />
+		<Unit filename="../stm32/src/simul/GraphWindows.cpp" />
+		<Unit filename="../stm32/src/simul/element.cpp" />
+		<Unit filename="../stm32/src/simul/main.cpp" />
+		<Unit filename="../stm32/src/simul/main_window.cpp" />
+		<Unit filename="../stm32/src/simul/objet.cpp" />
+		<Unit filename="../stm32/src/simul/robot.cpp" />
+		<Unit filename="../stm32/src/simul/table.cpp" />
+		<Unit filename="../stm32/src/strategie.cpp" />
+		<Unit filename="../stm32/src/stub.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../stm32/src/timer_handler.cpp" />
+		<Unit filename="../stm32/src/valeurs_roues.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -14,12 +14,18 @@ ActionSuivreChemin::ActionSuivreChemin(ActionBase* tab, int n, Odometrie* odo)
     for(int i = 0; i < n; i++)
         chemin[i] = tab[i];
 
+    positionRobotAdverseUn = new Position();
+    positionRobotAdverseDeux = new Position();
+    positionRobotAdverseTrois  = new Position();
 }
 
 ActionSuivreChemin::~ActionSuivreChemin()
 {
     if (chemin != NULL)
         delete[] chemin;
+    delete positionRobotAdverseUn;
+    delete positionRobotAdverseDeux;
+    delete positionRobotAdverseTrois;
 }
 
 const Distance gaucheTotem = 975-RAYON_ROBOT;
@@ -69,13 +75,14 @@ bool ActionSuivreChemin::trajetPossible(Position objectif,Position* posRobotAdve
 int ActionSuivreChemin::intOfSensors()
 {
     int nbCapteursActif=0;
-/*    if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH)) nbCapteursActif +=10;
+    if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_RIGTH)) nbCapteursActif +=10;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT_LEFT)) nbCapteursActif +=20;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::RIGTH)) nbCapteursActif +=1;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::LEFT)) nbCapteursActif +=2;
    // if(Sensors::getSensors()->detectedSharp(SharpSensor::BACK)) nbCapteursActif +=100;
     if(Sensors::getSensors()->detectedSharp(SharpSensor::FRONT)) nbCapteursActif +=40;
- */   return nbCapteursActif;
+
+    return Sensors::getSensors()->detectedSharp()->getSize(); //nbCapteursActif;
 }
 
 void ActionSuivreChemin::affectePosRobotAdverse(int capteursOuverts, int cote)
@@ -141,9 +148,9 @@ void ActionSuivreChemin::affectePosRobotAdverse(int capteursOuverts, int cote)
             VectTrois=Position(0,0);
             break;
     }
-    positionRobotAdverseUn=&(VectUn + odometrie->getPos().getPosition());
-    positionRobotAdverseDeux=&(VectDeux + odometrie->getPos().getPosition());
-    positionRobotAdverseTrois=&(VectTrois + odometrie->getPos().getPosition());
+    *positionRobotAdverseUn = VectUn + odometrie->getPos().getPosition();
+    *positionRobotAdverseDeux= VectDeux + odometrie->getPos().getPosition();
+    *positionRobotAdverseTrois= VectTrois + odometrie->getPos().getPosition();
 }
 
 bool ActionSuivreChemin::executer()
@@ -334,9 +341,9 @@ bool ActionSuivreChemin::executer()
             else new CommandGoTo(odometrie->getPos().getPosition()-Position(250,0));
         }*/
 
-    if(nbCapteurs==0 || strategieNormal)
+    if(nbCapteurs==0 /*|| strategieNormal*/)
     {
-   //     Command::freinageDUrgence(false);
+        Command::freinageDUrgence(false);
         timerCollision=0;
         if (!faitquelquechose)
         {
@@ -358,11 +365,11 @@ bool ActionSuivreChemin::executer()
                 else Bras::getBras()->descendreRateau();
                 if(chemin[pointSuivant].desactiveCapteur)
                 {
-                    SharpSensor::estDesactive = false;
+                    SharpSensor::estDesactive = true;
                 }
                 else
                 {
-                    SharpSensor::estDesactive = true;
+                    SharpSensor::estDesactive = false;
                 }
                 if (pointSuivant < taille)
                     {
@@ -393,6 +400,10 @@ bool ActionSuivreChemin::executer()
 
 
         return (pointSuivant >= taille);
+    }
+    else
+    {
+        return false;
     }
 
 }

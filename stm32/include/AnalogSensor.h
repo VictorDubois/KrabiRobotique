@@ -1,12 +1,13 @@
 #ifndef ANALOGSENSOR_H
 #define ANALOGSENSOR_H
 
-#ifdef ROBOTHW
 #include <Sensor.h>
 #include <stdint.h>
-#include "stm32f10x_adc.h"
-#include "stm32f10x_dma.h"
-#include "stm32f10x_gpio.h"
+#ifdef ROBOTHW
+    #include "stm32f10x_adc.h"
+    #include "stm32f10x_dma.h"
+    #include "stm32f10x_gpio.h"
+#endif
 
 /** @brief Classe abstraite de gestion des capteurs analogiques */
 class AnalogSensor : public Sensor
@@ -44,7 +45,5 @@ class AnalogSensor : public Sensor
 
 };
 
-
-#endif// ROBOTHW
 
 #endif // ANALOGSENSOR_H

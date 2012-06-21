@@ -1,6 +1,5 @@
 #include "UltrasoundSensor.h"
 
-#ifdef ROBOTHW
 
 
 float UltrasoundSensor::coeff = COEFFICIENT_LIN_ULTRASON;
@@ -35,8 +34,12 @@ Sensor::OutputSensor UltrasoundSensor::getValue()
     OutputSensor output;
     output.type = ULTRASOUND;
     output.b = false;
+    #ifdef ROBOTHW
     output.f = coeff*(*data)/2.;
+    #else
+    output.f = 0;
+    #endif
     return output;
 }
 
-#endif
+

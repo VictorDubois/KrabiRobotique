@@ -1,10 +1,12 @@
 #ifndef SHARPSENSOR_H
 #define SHARPSENSOR_H
 
-#ifdef ROBOTHW
 
 #include <AnalogSensor.h>
 #include "variable.h"
+#ifndef ROBOTHW
+    #include <QKeyEvent>
+#endif
 
 /** @brief Classe des gestions des capteurs sharps */
 class SharpSensor : public AnalogSensor
@@ -58,6 +60,10 @@ class SharpSensor : public AnalogSensor
         void unsetActif();
         static bool estDesactive;
 
+        #ifndef ROBOTHW
+        void setEvent();
+        #endif
+
     protected:
     private:
         /** @brief Compteur pour filtrer le signal numérique reçu. Ce compteur agit comme un filtre passe bas. */
@@ -68,9 +74,11 @@ class SharpSensor : public AnalogSensor
         bool output;
         /** @brief Indique si le capteur actuel est activé ou non. Si on il est à false, le capteur renvoie toujours false.*/
         bool actif;
-
+        #ifndef ROBOTHW
+        bool evt;
+        #endif
 
 };
 
-#endif
+
 #endif // SHARPSENSOR_H

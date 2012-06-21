@@ -21,6 +21,7 @@
 #include "Calibration.h"
 #include "Bras.h"
 
+
 #define POSITIONNEMENT
 
 #ifdef POSITIONNEMENT
@@ -533,7 +534,7 @@ while(1)
 #ifdef STM32F10X_CL
     Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 #endif
-    new Asservissement(odometrie);  // On définie l'asservissement
+   new Asservissement(odometrie);  // On définie l'asservissement
     Servo::initTimer();     // A faire avant tout utilisation de servo
     new Bras();
 
@@ -560,8 +561,8 @@ while(1)
         sensors->update();
     }
 
-
-/*    Sensors::SharpNameVector* out = sensors->detectedSharp();
+/*
+    Sensors::SharpNameVector* out = sensors->detectedSharp();
   //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
     SharpSensor::SharpName* o;
   //  LimitSwitchSensor::LimitSwitchName o2;
@@ -582,8 +583,8 @@ while(1)
     Sensor::OutputSensor o3 = (*out3)[0];
     float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
 
-/*
-    Sensors::LimitSwitchNameVector* out4 = sensors->detectedLimitSwitch();
+*/
+/*    Sensors::LimitSwitchNameVector* out4 = sensors->detectedLimitSwitch();
     LimitSwitchSensor::LimitSwitchName* o4;
     o4 = new LimitSwitchSensor::LimitSwitchName[3];
     for (int i = 0;i<3;i++) {o4[i]=LimitSwitchSensor::NONE;}
