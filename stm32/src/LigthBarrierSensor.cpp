@@ -1,6 +1,6 @@
 #include "LigthBarrierSensor.h"
 
-
+#ifdef ROBOTHW
 LigthBarrierSensor::LigthBarrierSensor(LigthBarrierName name, uint16_t pin, GPIO_TypeDef* group)
 {
     this->pin = pin;
@@ -23,9 +23,11 @@ LigthBarrierSensor::~LigthBarrierSensor()
 
 void LigthBarrierSensor::updateValue()
 {
+    #ifdef ROBOTHW
     counter <<=1;
     counter |= (GPIO_ReadInputDataBit(group,pin)==SET);
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
+    #endif
 }
 
 
@@ -44,3 +46,4 @@ LigthBarrierSensor::LigthBarrierName LigthBarrierSensor::getName()
 {
     return name;
 }
+#endif

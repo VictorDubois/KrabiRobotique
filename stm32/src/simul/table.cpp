@@ -263,6 +263,7 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
 {
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->keyPressEvent(evt, press);
+    Sensors::getSensors()->keyPressEvent(evt,press);
 }
 
 Position getSideElemCenter(bool right, unsigned int elem)

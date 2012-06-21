@@ -23,11 +23,19 @@ src/pid_filter_angle.cpp \
 src/pid_filter_distance.cpp \
 src/CommandAvancerToutDroit.cpp \
 src/CommandTourner.cpp \
-src/CommandGoTo.cpp\  
-src/action.cpp\
-src/actionSuivreChemin.cpp\
-src/actionChercherPiece.cpp\
-src/ListeDActions.cpp 
+src/CommandGoTo.cpp \  
+src/action.cpp \
+src/actionSuivreChemin.cpp \
+src/actionChercherPiece.cpp \
+src/Sensors.cpp \
+src/Sensor.cpp \
+src/AnalogSensor.cpp \
+src/SharpSensor.cpp \
+src/ListeDActions.cpp \
+src/LimitSwitchSensor.cpp \
+src/LigthBarrierSensor.cpp \
+src/UltrasoundSensor.cpp \
+src/Bras.cpp
 
 paprika_INCLS=\
 include/simul/main.h \

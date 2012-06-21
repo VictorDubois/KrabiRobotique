@@ -1,6 +1,6 @@
 #include "Sensors.h"
 
-#ifdef ROBOTHW
+
 
 Sensors* Sensors::sensors = NULL;
 
@@ -13,19 +13,25 @@ Sensors::Sensors()
 
     // On initialise le nombre de capteur de chaque type
     nbSharp = 6;
+#ifdef ROBOTHW
     nbUltrasound = 0;
     nbLimitSwitch = 3;
     nbLigthBarrier = 0;
+#endif
 
     sharpNameVector = new SharpNameVector(nbSharp);
+#ifdef ROBOTHW
     outputSensorVector = new OutputSensorVector(nbUltrasound);
     limitSwitchNameVector = new LimitSwitchNameVector(nbLimitSwitch);
     ligthBarrierNameVector = new LigthBarrierNameVector(nbLigthBarrier);
+#endif
 
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
+#ifdef ROBOTHW
     ultrasounds = new UltrasoundSensor*[nbUltrasound];
     limitSwitchs = new  LimitSwitchSensor*[nbLimitSwitch];
+#endif
     //ligthBarriers = new LigthBarrierSensor*[nbLigthBarrier];
 
     //On initialise les capteurs ayant besoin d'un ADC
@@ -38,7 +44,7 @@ Sensors::Sensors()
     sharps[4] = new SharpSensor(SharpSensor::RIGTH, 15, data);
     sharps[5] = new SharpSensor(SharpSensor::BACK, 10, data);
 
-
+#ifdef ROBOTHW
 
 #ifdef STM32F10X_CL
     //On initialise les autres capteurs
@@ -58,6 +64,7 @@ Sensors::Sensors()
 #endif
 
  //   AnalogSensor::initialiserADC_Fin(data, NB_CAPTEUR_A_ADC);
+ #endif //ROBOTHW
 }
 
 Sensors::~Sensors()
@@ -66,21 +73,27 @@ Sensors::~Sensors()
         delete sharps[i];
     for (int i = 0; i< nbUltrasound; i++)
         delete ultrasounds[i];
+    #ifdef ROBOTHW
     for (int i = 0; i< nbLimitSwitch; i++)
         delete limitSwitchs[i];
     for (int i = 0; i< nbLigthBarrier; i++)
         delete ligthBarriers[i];
+    #endif
     delete[] sharps;
     delete[] ultrasounds;
+    #ifdef ROBOTHW
     delete[] limitSwitchs;
     delete[] ligthBarriers;
+    #endif
 
     if (sharpNameVector)
         delete sharpNameVector;
+    #ifdef ROBOTHW
     if (ligthBarrierNameVector)
         delete ligthBarrierNameVector;
     if (limitSwitchNameVector)
         delete limitSwitchNameVector;
+    #endif
     if (outputSensorVector)
         delete outputSensorVector;
 }
@@ -109,6 +122,7 @@ bool Sensors::detectedSharp(SharpSensor::SharpName name)
     return false; // Si aucun capteur n'a ce nom (exemple NONE)
 }
 
+#ifdef ROBOTHW
 Sensors::LimitSwitchNameVector* Sensors::detectedLimitSwitch()
 {
     limitSwitchNameVector->reset();
@@ -134,6 +148,8 @@ Sensors::OutputSensorVector* Sensors::getValueUltrasound()
 //    outputSensorVector->resize();
     return outputSensorVector;
 }
+
+#endif
 
 Sensors* Sensors::getSensors()
 {
@@ -169,6 +185,7 @@ float Sensors::getValueUltrasound(UltrasoundSensor::UltrasoundName name)
     return -1;
 }
 
+#ifdef ROBOTHW
 Sensors::LigthBarrierNameVector* Sensors::detectedLigthBarrier()
 {
     ligthBarrierNameVector->reset();
@@ -195,6 +212,7 @@ bool Sensors::detectedLigthBarrier(LigthBarrierSensor::LigthBarrierName name)
     return false; // Si aucun capteur n'a ce nom (exemple NONE)
 }
 
+#endif
 
 void Sensors::update()
 {
@@ -202,6 +220,7 @@ void Sensors::update()
     {
         sharps[i]->updateValue();
     }
+#ifdef ROBOTHW
     for (int i=0; i<nbLigthBarrier; i++)
     {
         ligthBarriers[i]->updateValue();
@@ -210,9 +229,11 @@ void Sensors::update()
     {
         limitSwitchs[i]->updateValue();
     }
+#endif
     // Les autres n'ont pas besoin d'être mis à jour car on obtient la valeur directement en lisant la valeur de la pin
 }
 
+#ifdef ROBOTHW
 bool Sensors::detectedLimitSwitch(LimitSwitchSensor::LimitSwitchName limitSwitchName)
 {
     for (int i = 0; i<nbLimitSwitch; i++)
@@ -224,6 +245,7 @@ bool Sensors::detectedLimitSwitch(LimitSwitchSensor::LimitSwitchName limitSwitch
     }
     return false;
 }
+#endif
 
 void Sensors::activeSharp(SharpSensor::SharpName name)
 {
@@ -256,4 +278,12 @@ void Sensors::activeAllSharp()
         }
 }
 
-#endif //ROBOTHW
+#ifndef ROBOTHW
+void Sensors::keyPressEvent(QKeyEvent* evt, bool press)
+{
+    if(evt && press && evt->text() == "&" && !evt->isAutoRepeat())
+        sharps[0]->setEvent();
+}
+#endif
+
+

@@ -1,7 +1,6 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#ifdef ROBOTHW
 
 #include "SharpSensor.h"
 #include "UltrasoundSensor.h"
@@ -9,6 +8,9 @@
 #include "LimitSwitchSensor.h"
 #include "vector.h"
 
+#ifndef ROBOTHW
+    #include <QKeyEvent>
+#endif
 
 /** @brief Classe permettant de gérer l'ensemble des capteurs du robot
 *   @warning Une seul instance de cette classe ne doit être définie */
@@ -38,6 +40,7 @@ class Sensors
         *   @return True si un obstacle se trouve devant le capteur. */
         bool detectedSharp(SharpSensor::SharpName name);
 
+        #ifdef ROBOTHW
         /** @brief Permet de vérifier si un fin de course quelconque est enclanché *
         *   @return Retourne un LimitSwitchNameVector, vecteur contenant les LimitSwitchName des capteurs fin de course renvoyant un true (donc étant enclanché). Si aucun capteur returne un vector vide.  */
         LimitSwitchNameVector* detectedLimitSwitch();
@@ -45,6 +48,7 @@ class Sensors
         *   @return Retourne true si le capteur fin de course limitSwitch est enclanché
         *   @param limitSwitch Capteur fin de course que l'on souhaite tester*/
         bool detectedLimitSwitch(LimitSwitchSensor::LimitSwitchName limitSwitchName);
+        #endif
 
         /** @brief Permet de connaître la valeur de la distance de l'objet le plus proche de l'ensemble des capteurs ultrasons *
         *   @return Retourne un OutputSensorVector, vecteur contenant les valeurs de retour (dans un objet de type OutputSensor) de chaque capteurs ultrasons  */
@@ -58,6 +62,7 @@ class Sensors
         *   @param  name Nom du capteur dont on veut connaîte la distance en mm de l'objet le plus proche */
         float getValueUltrasound(UltrasoundSensor::UltrasoundName name);
 
+        #ifdef ROBOTHW
         /** @brief Permet de vérifier si une barrière optique quelconque détecte un obstacle *
         *   @return Retourne un LigthBarrierNameVector, vecteur contenant les LigthBarrierName des barrières optiques renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur retourne un vector vide  */
         LigthBarrierNameVector* detectedLigthBarrier();
@@ -65,6 +70,7 @@ class Sensors
         *   @return Retourne la valeur de la barrière optique ayant pour nom name  *
         *   @param name Nom de la barrière dont on veut connaître le nom */
         bool detectedLigthBarrier(LigthBarrierSensor::LigthBarrierName name);
+        #endif
 
         /** @brief Permet de connaîte l'adresse en mémoire de la seule et unique instance possible de cette classe */
         static Sensors* getSensors();
@@ -83,7 +89,9 @@ class Sensors
         void desactiveSharp(SharpSensor::SharpName name);
         /** @brief Active tous les capteurs */
         void activeAllSharp();
-
+        #ifndef ROBOTHW
+        void keyPressEvent(QKeyEvent* evt, bool press);
+        #endif
 
 
     protected:
@@ -96,6 +104,7 @@ class Sensors
         UltrasoundSensor** ultrasounds;
         /** @brief Nombre d'ultrason */
         int nbUltrasound;
+        #ifdef ROBOTHW
         /** @brief Tableau des barrières optiques */
         LigthBarrierSensor** ligthBarriers;
         /** @brief Nombre de barrières optiques */
@@ -104,19 +113,21 @@ class Sensors
         LimitSwitchSensor** limitSwitchs;
         /** @brief Nombre de capteurs fin de course */
         int nbLimitSwitch;
+        #endif
         /** @brief Attribue de classe permettant de connaîte l'adresse en mémoire de la seule et unique instance possible de cette classe */
         static Sensors* sensors;
         /** @brief Pointeur vers le dernier SharpNameVector définie */
         SharpNameVector* sharpNameVector;
+        #ifdef ROBOTHW
         /** @brief Pointeur vers le dernier LimitSwitchNameVector définie */
         LimitSwitchNameVector* limitSwitchNameVector;
         /** @brief Pointeur vers le dernier LigthBarrierNameVector définie */
         LigthBarrierNameVector* ligthBarrierNameVector;
+        #endif
         /** @brief Pointeur vers le dernier OutputSensorVector définie */
         OutputSensorVector* outputSensorVector;
 
-};
 
-#endif
+};
 
 #endif // SENSORS_H

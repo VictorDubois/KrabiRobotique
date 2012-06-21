@@ -5,6 +5,7 @@
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategie.h"
+#include "Sensors.h"
 #include <iostream>
 
 Odometrie* Odometrie::odometrie = NULL;
@@ -48,9 +49,13 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 	odometrie = new Odometrie(this);
 
+	new Sensors();
+
 	asservissement = new Asservissement(odometrie);
 
 	strategie = new Strategie(true, odometrie);
+
+
 
 	//asservissement->strategie = strategie;
 

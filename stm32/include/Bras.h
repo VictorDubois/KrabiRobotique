@@ -5,6 +5,8 @@
 
 #include "Servo.h"
 
+#endif
+
 /** @brief La classe Bras permet de contrôler les différents organes du robot actionnés par des servomoteurs
 **/
 
@@ -43,14 +45,15 @@ class Bras
 
     protected:
     private:
+    #ifdef ROBOTHW
         /// @brief balaiGauche Servomoteur controlant le balai de gauche.
         Servo* balaiGauche;
         /// @brief balaiDroite Servomoteur controlant le balai de droite.
         Servo* balaiDroite;
         /// @brief rateau Servomoteur controlant le rateau.
         Servo* rateau;
+    #endif
 
 };
 
 #endif // BALAI_H
-#endif // ROBOTHW

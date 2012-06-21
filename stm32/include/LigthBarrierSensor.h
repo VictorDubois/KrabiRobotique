@@ -2,11 +2,16 @@
 #define LIGTHBARRIERSENSOR_H
 
 #include <Sensor.h>
-#include "stm32f10x_gpio.h"
+#ifdef ROBOTHW
+    #include "stm32f10x_gpio.h"
+#endif
 
 /** @brief Classe des gestions des barriers optiques */
 class LigthBarrierSensor : public Sensor
 {
+    #ifndef ROBOTHW
+    typedef int GPIO_TypeDef;
+    #endif
     public:
 
         /** @brief Permet de nommer les différentes barrières optique */
@@ -19,11 +24,15 @@ class LigthBarrierSensor : public Sensor
         /** @brief Permet de nommer les différents fin de course */
         typedef enum LigthBarrierName LigthBarrierName;
 
+        #ifdef ROBOTHW
         /** @brief Constructeur d'une barrière optique *
         *   @param pin Numéro de pin utilisée (GPIO_Pin_1, GPIO_Pin_2, ...) *
         *   @param group Groupe de pin utilisé (GPIOA, GPIOB, ...) *
         *   @brief name Nom de la barrière optique */
         LigthBarrierSensor(LigthBarrierName name, uint16_t pin, GPIO_TypeDef* group);
+        #else
+        LigthBarrierSensor();
+        #endif
         /** @brief Destructeur de la classe */
         virtual ~LigthBarrierSensor();
 
@@ -39,6 +48,7 @@ class LigthBarrierSensor : public Sensor
 
     protected:
     private:
+    #ifdef ROBOTHW
         /** @brief Numéro de pin utilisée (GPIO_Pin_1, GPIO_Pin_2, ...) */
         uint16_t pin;
         /** @brief Groupe de pin utilisé (GPIOA, GPIOB, ...) */
@@ -49,6 +59,7 @@ class LigthBarrierSensor : public Sensor
         LigthBarrierName name;
         /** @brief Valeur retourné par le capteur */
         bool output;
+    #endif
 };
 
 #endif // LIGTHBARRIERSENSOR_H

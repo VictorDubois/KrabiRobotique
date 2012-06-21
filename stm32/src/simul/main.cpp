@@ -4,6 +4,7 @@
 #include "simul/GraphWindows.h"
 #include <ctime>
 
+
 int main(int argc, char** argv)
 {
 	srand(42);

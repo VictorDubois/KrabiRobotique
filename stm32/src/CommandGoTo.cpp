@@ -1,4 +1,6 @@
 #include "CommandGoTo.h"
+#include "Sensors.h"
+#include "SharpSensor.h"
 
 CommandGoTo::CommandGoTo(Position DestinationFinale) :
     Command()

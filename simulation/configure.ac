@@ -21,7 +21,7 @@ AC_MSG_CHECKING(for Boost >= 1.40)
 AX_BOOST_BASE([1.40], [AC_MSG_RESULT(yes) ] , [AC_MSG_RESULT(no) ] )
 
 
-CXXFLAGS=
+CXXFLAGS= 
 
 AX_DEP_CHECK(Box2D, [/usr/local/lib /usr/lib], [libbox2d.so libBox2D.so],[ /usr/local/include/Box2D /usr/include /usr/local/include /usr/include/Box2D ],Box2D.h)
 AC_MSG_CHECKING(Box2D version)
@@ -36,7 +36,7 @@ AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],[Turn on debugging]), [en
 AC_MSG_CHECKING(debug)
 AC_MSG_RESULT($enable_debug)
 if test "x$enable_debug" = "xyes"; then
-	CXXFLAGS="$CXXFLAGS -g3 -ggdb -Wall -DDEBUG"
+	CXXFLAGS="$CXXFLAGSi -DCAPTEURS -g3 -ggdb -Wall -DDEBUG"
 fi
 
 CXXFLAGS="$CXXFLAGS   $AM_CXXFLAGS $QT_CFLAGS $BOOST_CFLAGS $Box2D_CFLAGS"
