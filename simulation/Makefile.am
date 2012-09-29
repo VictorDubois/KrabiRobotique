@@ -46,7 +46,7 @@ include/simul/pion.h
 
 bin_PROGRAMS = paprika
 
-LIBS=$(AM_LDFLAGS)
+paprika_LDADD=$(LIBS)
 
 .PHONY:  cbp
 
