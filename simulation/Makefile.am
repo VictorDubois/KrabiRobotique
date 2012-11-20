@@ -9,6 +9,8 @@ src/simul/objet.cpp \
 src/simul/main.cpp \
 src/simul/main_window.cpp \
 src/simul/GraphWindows.cpp \
+src/simul/XMLReader.cpp \
+src/simul/TableGraphics.cpp \
 src/simul/table.cpp \
 src/simul/Graph.cpp \
 src/simul/robot.cpp \
@@ -40,6 +42,8 @@ src/Bras.cpp
 paprika_INCLS=\
 include/simul/main.h \
 include/simul/main_window.h \
+include/simul/XMLReader.h \
+include/simul/TableGraphics.h \
 include/simul/table.h \
 include/simul/robot.h \
 include/simul/pion.h

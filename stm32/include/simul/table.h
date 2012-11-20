@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <Box2D.h>
+#include "TableGraphics.h"
+#include "XMLReader.h"
 
 
 class Table : public QWidget
@@ -14,6 +16,7 @@ private:
 
 	b2World world;
 	b2Body* tableBody;
+	TableGraphics tableGraphics;
 
 	void addCard(unsigned int n, int column);
 public:

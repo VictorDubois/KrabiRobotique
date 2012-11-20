@@ -141,6 +141,8 @@ Table::Table(QWidget* parent) :
     box.SetAsBox(0.11,3.75, b2Vec2(26.76,16.3), 6.216); //Violet Boat
 	tableBody->CreateFixture(&fixture);
 
+	tableGraphics.load("tabledata.xml");
+	tableGraphics.addYOffset(-tableHeight); // because we want the (0,0) point to be at the bottom left.
 
 }
 
@@ -179,7 +181,7 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));
 	p.setWorldMatrixEnabled(true);
 
-
+/*
 	//Mer
 	p.fillRect(0,0,3000,-2000,QColor(39,129,187)); // Blue
 	//Starting zones
@@ -238,12 +240,16 @@ void Table::paintEvent(QPaintEvent* evt)
 	//Totem
 	p.fillRect(975,-875,250,-250,QColor(119,76,59));
 	p.fillRect(1775,-875,250,-250,QColor(119,76,59));
+	*/
 
+	tableGraphics.draw(&p);
+
+/*
     for (unsigned int i=0; i < objets.size(); i++)
         objets[i]->paint(p);
 
 	for(unsigned int i=0; i < robots.size(); i++)
-		robots[i]->paint(p,dt);
+		robots[i]->paint(p,dt);*/
 
 	dt = 0;
 
