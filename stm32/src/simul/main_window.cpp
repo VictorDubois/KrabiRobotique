@@ -18,6 +18,8 @@ MainWindow::MainWindow()
 inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 
 	table = new Table(inter);
+
+	this->setFixedSize(900,600);
 }
 
 MainWindow::~MainWindow()
