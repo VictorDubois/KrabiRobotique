@@ -15,16 +15,15 @@ class Objet
         /**@brief Énumération permettant de classifier les différents objets */
         enum Type
         {
-            blackCoin = 0, /*!< Représente un pièce noire*/
-            whiteCoin = 1, /*!< Représente un pièce blanche*/
-            goldBar = 2 /*!< Représente un lingot*/
+			glass = 0, /*!< Représente un gobelet*/
+			gift = 1 /*!< Représente un cadeau*/
         };
         /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p avec pour angle initial theta. */
         /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/
         /**@param P Position initial de l'objet*/
         /**@param type Type de l'objet créé */
         /**@param theta Angle initial de l'objet crée en radian */
-        Objet(b2World & world, Position p, Type type, Angle theta = 0.);
+		Objet(b2World & world, Position p, Type type, Angle theta = 0., QColor color = QColor());
         /**@brief Destructeur de la classe */
         ~Objet();
         /**@brief Permet de dessiner l'objet à l'écran */
@@ -45,6 +44,8 @@ class Objet
         b2Body* body;
         /**@brief Pointeur vers l'objet de type b2World dans lequel notre objet est définie */
         b2World* world;
+		/**@brief Couleur de l'objet */
+		QColor p_color;
 };
 
 #endif // ROBOTWH

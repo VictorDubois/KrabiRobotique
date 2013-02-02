@@ -55,5 +55,15 @@ COLONNE ROUGE :
 ######### FIN ZONES DEPART ###########
 <Ellipse><Color>#FFD5E1</Color><Center><x>1500</x><y>0</y></Center><Radius>500</Radius></Ellipse>
 
+<Rect><Color>#000000</ ><Position x="0" y="2000"/><Size x="3000" y="200"/></ >
+<Rect><Color>#0000AA</ ><Position x="440" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="610" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#0000AA</ ><Position x="1040" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="1210" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#0000AA</ ><Position x="1640" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="1810" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#0000AA</ ><Position x="2240" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="2410" y="1950"/><Size x="150" y="150"/></ >
+
 
 
