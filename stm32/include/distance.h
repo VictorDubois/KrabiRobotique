@@ -1,16 +1,16 @@
-#ifndef DISTANCE_H_INCLUDED
-#define DISTANCE_H_INCLUDED
+#ifndef DISTANCE_H
+#define DISTANCE_H
 
-#include <math.h>
-
-/**@brief On définie Distance comme un float pour une meilleur visibilité*/
+/// @brief On définie Distance comme un float pour une meilleur lisibilité
 typedef float Distance;
-/**@brief On définie Vitesse comme un float pour une meilleur visibilité*/
+
+/// @brief On définie Vitesse comme un float pour une meilleur lisibilité
 typedef float Vitesse;
-/**@brief On définie Acceleration comme un float pour une meilleur visibilité*/
+
+/// @brief On définie Acceleration comme un float pour une meilleur lisibilité
 typedef float Acceleration;
 
-/**@brief On vérifie qu'il y a égalité ou presque entre deux distances*/
-bool DistancePresqueEgales(Distance d1, Distance d2);
+/// @brief On vérifie qu'il y a égalité ou presque entre deux distances
+bool distancePresqueEgales(Distance d1, Distance d2);
 
-#endif // DISTANCE_H_INCLUDED
+#endif // DISTANCE_H

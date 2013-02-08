@@ -1,27 +1,29 @@
 #include "roue.h"
 
+#include "stm32f10x_rcc.h"
+#include <math.h>
+
 Roue::Roue(unsigned char OCx, GPIO_TypeDef * GPIOx_Sens, uint16_t GPIO_Pin_Sens) : Moteur(OCx){
     this->GPIOx_Sens = GPIOx_Sens;
     this->GPIO_Pin_Sens = GPIO_Pin_Sens;
 
-	//On propage l'horloge
+	// On propage l'horloge
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-    #ifdef STM32F10X_CL
+    #ifdef STM32F10X_CL // stm h107
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
     #endif
 
-
-    // initialiser pins d'entrÃ©e sur le STM du port B
+    // initialiser pins d'entrée sur le STM du port B
     GPIO_InitTypeDef GPIO_InitStructureSortie;
     GPIO_InitStructureSortie.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9; // Malheureusement c'est trop relou de trouver que c'est PB8 et PB9 a partir de TIM4_(OCx) alors on met direct les bonnes valeurs !
     GPIO_InitStructureSortie.GPIO_Mode = GPIO_Mode_AF_PP;        // Le mode sortie Out_OD
     GPIO_InitStructureSortie.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
     GPIO_Init(GPIOB, &GPIO_InitStructureSortie);
 
-    // initialiser pins d'entrÃ©e sur le STM du port x_sens
+    // initialiser pins d'entrée sur le STM du port x_sens
     GPIO_InitTypeDef GPIO_InitStructureSortie2;
     GPIO_InitStructureSortie2.GPIO_Pin =  GPIO_Pin_Sens;
     GPIO_InitStructureSortie2.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -30,14 +32,15 @@ Roue::Roue(unsigned char OCx, GPIO_TypeDef * GPIOx_Sens, uint16_t GPIO_Pin_Sens)
 
 }
 
-
 void Roue::tourne(float rapport)
 {
     //rapport = 1;
-    if(rapport >= 0){
+    if(rapport >= 0)
+    {
         GPIO_WriteBit(GPIOx_Sens, GPIO_Pin_Sens, Bit_RESET);
     }
-    else {
+    else
+    {
         GPIO_WriteBit(GPIOx_Sens, GPIO_Pin_Sens, Bit_SET);
     }
 

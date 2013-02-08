@@ -1,8 +1,11 @@
 #include "distance.h"
 
+#include <math.h>
 
-bool DistancePresqueEgales(Distance d1, Distance d2)
+// On vérifie qu'il y a égalité ou presque entre deux distances
+bool distancePresqueEgales(Distance d1, Distance d2)
 {
-    return (fabs(d1 - d2) < 10);
+    static const Distance epsilon = 10;
+    return (fabs(d1 - d2) < epsilon);
 }
 

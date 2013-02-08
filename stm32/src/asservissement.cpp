@@ -1,9 +1,10 @@
 #include "asservissement.h"
 #include "strategie.h"
-#include "Bras.h"
+#include "bras.h"
+
+#include "misc.h"
 
 #define DBG_SIZE 600
-
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
@@ -11,8 +12,6 @@
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
 //float linearDuty[DBG_SIZE];
-
-
 
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
@@ -29,12 +28,16 @@ const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 int toto = 0;
 int caca = 0;
 
+
 Asservissement::Asservissement(Odometrie* _odometrie) :
     seuil_collision(SEUIL_COLISION),
     buffer_collision(0xffffffff)
 {
 
 	odometrie = _odometrie;
+//	if (odometrie == NULL)
+//        xallumerLED();
+
 	command = NULL;
     linearDutySent = 0;
     angularDutySent = 0;
@@ -44,7 +47,7 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     sensors = Sensors::getSensors();
 #endif
 
-#ifdef ROBOTHW  //on définie les intéruptions possible du à certains port
+#ifdef ROBOTHW  //on définie les interruptions possibles dues à certains ports
     *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
     *((uint32_t *)(STK_LOAD_ADDR)) = 9000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
 
@@ -70,9 +73,10 @@ Angle Asservissement::getAngularSpeed()
 
 void Asservissement::update(void)
 {
-#ifdef CAPTEURS_OLD
-        capteurs.startConversion(); //On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
-#endif
+
+
+
+
 #ifdef CAPTEURS
         AnalogSensor::startConversion(); // On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
 #endif
@@ -88,36 +92,56 @@ void Asservissement::update(void)
     }
 #endif
 
+
+
     if (asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini)
     {
 
         odometrie->update();        //Enregistre la position actuelle du robot
 
+
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
+
+
+    /*    static int truc = 0;
+truc++;
+if ((truc/100)%2 == 0)
+{
+
+        #ifdef STM32F10X_CL
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET); //OFF
+        #endif
+
+}
+else
+{
+        #ifdef STM32F10X_CL
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
+         GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET); //ON
+        #endif
+}
+        */
+
 
 #ifdef CAPTEURS
         sensors->update();
 #endif
 
-        if (Strategie::strategie)
+        if (Strategie::strategie != NULL)
         {
             Strategie::strategie->update();
- //           Strategie::strategie = NULL;
         }
 
-        if(command) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
+        if (command != NULL) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
         {
-//             command->update(positionPlusAngleActuelle, vitesse_angulaire_atteinte, vitesse_lineaire_atteinte);
             command->update();
         }
 
 #ifdef ROUES
 
-#ifdef CAPTEURS_OLD
-    bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere);
-#endif
 #ifdef CAPTEURS
     bool testcap = sensors->detectedSharp()->getSize() > 0;
 #else
@@ -185,51 +209,37 @@ else
 
 
 
-    if (buffer_collision == 0x0 )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
-    {   //Si on détecte quelque chose, on s'arréte
-        #ifdef STM32F10X_MD
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
-        #endif
-        #ifdef STM32F10X_CL
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
-        #endif
+        if (buffer_collision == 0x0 )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
+        {   //Si on détecte quelque chose, on s'arréte
+
+            roues.gauche.tourne(0.);
+            roues.droite.tourne(0.);
+        }
+        else
+        {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
+            // à tourner et avancer correctement
+            roues.gauche.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
+            roues.droite.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
+        }
+    }
+    else
+    {
         roues.gauche.tourne(0.);
         roues.droite.tourne(0.);
     }
-    else
-    {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
-        // à tourner et avancer correctement
-        #ifdef STM32F10X_MD
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
-        #endif
-        #ifdef STM32F10X_CL
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
-        #endif
-        roues.gauche.tourne(MIN(MAX(-linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
-        roues.droite.tourne(MIN(MAX(-linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
-    }
-}
-else
-{
-    #ifdef STM32F10X_MD
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
-    #endif
-    #ifdef STM32F10X_CL
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
-    #endif
-    roues.gauche.tourne(0.);
-    roues.droite.tourne(0.);
-}
 #else
 }
 #endif
 }
+
+
 
 #ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
 {
     Asservissement::asservissement->update();
+
 }
 
 #endif

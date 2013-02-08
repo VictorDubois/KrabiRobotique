@@ -1,9 +1,10 @@
 #include "actionSuivreChemin.h"
-#include "Sensors.h"
+#include "sensors.h"
 #include "command.h"
-#include <math.h>
 #include "strategie.h"
-#include "Bras.h"
+#include "bras.h"
+
+#include <math.h>
 
 ActionSuivreChemin::ActionSuivreChemin(ActionBase* tab, int n, Odometrie* odo)
 :   chemin(NULL), taille(n), pointSuivant(0), odometrie(odo), faitquelquechose(false)

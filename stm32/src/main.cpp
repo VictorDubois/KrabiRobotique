@@ -1,723 +1,180 @@
-#include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
-#include "stm32f10x_tim.h"
-#include <stdint.h>
-#include "misc.h"
-#include "Servo.h"
-//#include "Hctl_Handler.h"
-#include "quadrature_coder_handler.h"
-#include "asservissement.h"
-#include "Position.h"
-#include "Angle.h"
-#include "PositionPlusAngle.h"
+#include "initialisation.h"
 #include "memory.h"
-#include "roues.h"
-#include "Moteur.h"
-#include "capteurs.h"
-#include "strategie.h"
+#include "servo.h"
 #include "odometrie.h"
-#include "stm32f10x.h"
-#include "Sensors.h"
-#include "Calibration.h"
-#include "Bras.h"
-
+#include "asservissement.h"
+#include "sensors.h"
+#include "quadratureCoderHandler.h"
+#include "bras.h"
+#include "strategie.h"
 
 #define POSITIONNEMENT
 
-#ifdef POSITIONNEMENT
-#include "command.h"
-#endif
-
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
-//Declarations
-void Clk_Init();
-void myDelay(unsigned long);
-void initTimer();
-int main();
 
-// VARIABLES
-
-GPIO_InitTypeDef GPIO_InitStructure;
-NVIC_InitTypeDef TIM2_IRQ;
-
-void initTimer()
-{
-    /*
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-
-    TIM_TimeBaseInitTypeDef timInit;
-    timInit.TIM_Prescaler = 36000;
-    timInit.TIM_CounterMode = TIM_CounterMode_Up;
-    timInit.TIM_Period = 2000;
-    timInit.TIM_ClockDivision = TIM_CKD_DIV2;
-    timInit.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseInit(TIM2, &timInit);
-
-    TIM2_IRQ.NVIC_IRQChannel = TIM2_IRQn;
-    TIM2_IRQ.NVIC_IRQChannelCmd = ENABLE;
-    TIM2_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
-    TIM2_IRQ.NVIC_IRQChannelSubPriority = 1;
-    NVIC_Init(&TIM2_IRQ);
-
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
-    TIM_Cmd(TIM2, ENABLE);*/
-
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-
-    TIM_TimeBaseInitTypeDef timInit;
-    timInit.TIM_Prescaler = 0;
-    timInit.TIM_CounterMode = TIM_CounterMode_Up;
-    timInit.TIM_Period = 3000;
-    timInit.TIM_ClockDivision = 0;
-    timInit.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseInit(TIM2, &timInit);
-
-    TIM_OCInitTypeDef timOCInit;
-    timOCInit.TIM_OCMode =TIM_OCMode_PWM1;
-    timOCInit.TIM_OutputState = TIM_OutputState_Enable;
-    timOCInit.TIM_Pulse = 800; /* rapport cyclique */
-    timOCInit.TIM_OCPolarity = TIM_OCPolarity_High;
-
-    TIM_OC3Init(TIM2, &timOCInit);
-
-    TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);
-
-    TIM_ARRPreloadConfig(TIM2, ENABLE);
-
-
-    TIM_Cmd(TIM2, ENABLE);
-}
-
-/* fonction inutilisé ...
-void initQuadEncoderCounter(){
-    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    //TIM_ICInitTypeDef       TIM_ICInitStructure;
-    GPIO_InitTypeDef        GPIO_InitStructure;
-
-    //Enable GPIOA clock
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-
-    //Enable timer clock
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-
-    //Setup timer for quadrature encoder interface
-    //Encoder A channel at PA0.0 (Ch1)
-    //        B channel at PA0.1 (Ch2)
-    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_0|GPIO_Pin_1;
-    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    //Time Base configuration
-    TIM_TimeBaseStructure.TIM_Prescaler     = 0;
-    TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
-    TIM_TimeBaseStructure.TIM_Period        = 0xFFFF;
-    TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-
-    //Initialize input capture structure: Ch1
-    *//*TIM_ICStructInit(&TIM_ICInitStructure);
-    TIM_ICInitStructure.TIM_Channel     = TIM_Channel_1;
-    TIM_ICInitStructure.TIM_ICPolarity  = TIM_ICPolarity_Rising;
-    TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-    TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-    TIM_ICInitStructure.TIM_ICFilter    = 0;
-    TIM_ICInit(TIM2, &TIM_ICInitStructure);*/
-
-    //Initialize input capture structure: Ch2
-   /* TIM_ICInitStructure.TIM_Channel     = TIM_Channel_2;
-    TIM_ICInit(TIM2, &TIM_ICInitStructure);*//*
-
-    //Encoder Interface Configuration
-    TIM_EncoderInterfaceConfig(TIM2,
-                               TIM_EncoderMode_TI12,
-                               TIM_ICPolarity_Rising,
-                               TIM_ICPolarity_Rising);
-
-    TIM2_IRQ.NVIC_IRQChannel = TIM2_IRQn;
-    TIM2_IRQ.NVIC_IRQChannelCmd = ENABLE;
-    TIM2_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
-    TIM2_IRQ.NVIC_IRQChannelSubPriority = 1;
-    NVIC_Init(&TIM2_IRQ);
-
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
-
-    //Enable TIM2 Peripheral
-    TIM_Cmd(TIM2,ENABLE);
-}
-*/
-/*
-bool DELenabled = true;
-
-extern "C" void TIM2_IRQHandler()
-{
-    if( TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-    int a = TIM_GetCounter(TIM2);
-    if( !DELenabled)
-        GPIOC->BRR |= 0x00001000;
-    else
-        GPIOC->BSRR |= 0x00001000;
-    DELenabled = !DELenabled;
-}*/
-/* inutilisé et vide ...
-extern "C" void WWDG_IRQHandler()
-{
-
-}
-*/
-/*Mettez toutes vos initialisations de PIN dans la fonction "initialisation"
-On l'appellera ensuite dans le main au tout début pour tout initialiser d'un coup
-*/
-void initialisation()
-{
-#ifdef STM32F10X_MD //Pin pour le stm32 h103
-    //Patte coté de la partie bleu ou jaune
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-
-    //Tirette
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-
-// GPIO_InitTypeDef GPIO_InitStructureTest;   //Alim Fdc Haut
-   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
-   GPIO_Init(GPIOA, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOA, GPIO_Pin_3, Bit_RESET);
-
-        //Fin de Course Haut ?
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-        //Fin de course bas ?
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-        //Fin de course pion ?
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-    //Pattes des servos
-//    GPIO_WriteBit(GPIOA,GPIO_Pin_6,Bit_SET);  //servo droite
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-//    GPIO_WriteBit(GPIOA,GPIO_Pin_7,Bit_RESET);   // servo gauche
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-//    GPIO_WriteBit(GPIOA,GPIO_Pin_7,Bit_RESET);   // servo gauche
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED
-   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
-   GPIO_Init(GPIOC, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
-
-/*
- // GPIO_InitTypeDef GPIO_InitStructureTest;   //TEST
-   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_9;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
-   GPIO_Init(GPIOB, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOB, GPIO_Pin_9, Bit_SET);
-*/
-#endif //STM32F10X_MD
-
-#ifdef STM32F10X_CL //Pin pour le stm32 h107
-    //Patte coté de la partie bleu ou jaune
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_4;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-
-    //Tirette
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-/*
-        //Fin de Course 1
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-        //Fin de course 2
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-        //Fin de course 3
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_2;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-            //Fin de course 4
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-*/
-    //Pattes des servos
-//    GPIO_WriteBit(GPIOA,GPIO_Pin_6,Bit_SET);  //servo 1 (bras gauche)
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-//    GPIO_WriteBit(GPIOA,GPIO_Pin_7,Bit_SET);  //servo 2 (bras droite)
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-//    GPIO_WriteBit(GPIOB,GPIO_Pin_0,Bit_SET);  //servo 3 (balais)
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-//    GPIO_WriteBit(GPIOB,GPIO_Pin_1,Bit_SET);  //servo 4 (UltraSon)
-//    GPIO_Write(GPIOB, 0xffff);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_1;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-
-
-  // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED Verte
-   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
-   GPIO_Init(GPIOC, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
-
-   // GPIO_InitTypeDef GPIO_InitStructureTest;   //LED Jaune
-   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
-   GPIO_Init(GPIOC, &GPIO_InitStructure);
-   GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-
-
-#endif //STM32F10X_CL
-
-}
-
-/* Inutil puisqu'elle n'est pas utilisé
-//Pour s'orienter si on est (ou pas) du coté bleu
-#ifdef POSITIONNEMENT
-void positionnement(bool is_blue)
-{
-    this->is_blue = is_blue;
-    int cote = (is_blue ? 1:-1);
-}
-#endif
-*/
-
-//Dis si on est du coté bleu
+// Dit si on est du cot� bleu
 bool isBlue()
 {
-#ifdef STM32F10X_MD //Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_SET;
+#ifdef STM32F10X_MD // Pin pour le stm32 h103
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) == Bit_SET;
 #endif
-#ifdef STM32F10X_CL //Pin pour le stm32 h107
-    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4)  == Bit_SET;
+#ifdef STM32F10X_CL // Pin pour le stm32 h107
+    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == Bit_SET;
 #endif
 }
 
-//Dis si la tirette est enleve
-bool isTiretteEnleve()
+// Dit si la tirette est enlev�e
+bool isTiretteEnlevee()
 {
-#ifdef STM32F10X_MD //Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10)  == Bit_SET;
+#ifdef STM32F10X_MD // Pin pour le stm32 h103
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) == Bit_SET;
 #endif
-#ifdef STM32F10X_CL //Pin pour le stm32 h107
-    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5)  == Bit_SET;
+#ifdef STM32F10X_CL // Pin pour le stm32 h107
+    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) == Bit_SET;
 #endif
 }
 
-/* fonction inutilisé
-// Fonction pour tester les capteurs en allument la led verte du stm
-void test_capteurs_sharp ()
+// allume ou �teint une LED
+void allumerLED()
 {
-#ifndef INITLED
-#define INITLED
-       // initialiser pins d'entrée sur le STM
-   GPIO_InitTypeDef GPIO_InitStructureTest;
-   GPIO_InitStructureTest.GPIO_Pin =  GPIO_Pin_12;
-   GPIO_InitStructureTest.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructureTest.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
-   GPIO_Init(GPIOC, &GPIO_InitStructureTest);
+#ifdef STM32F10X_MD // stm32 h103
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
+#endif
+#ifdef STM32F10X_CL // stm32 h107
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
+#endif
+}
+
+void eteindreLED()
+{
+#ifdef STM32F10X_MD // stm32 h103
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+#endif
+#ifdef STM32F10X_CL // stm32 h107
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
+#endif
+}
+
+// 2�me LED du stm h107 (LED jaune)
+#ifdef STM32F10X_CL
+void allumerLED2()
+{
+    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+}
+void eteindreLED2()
+{
+    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+}
 #endif
 
-    Capteurs capteurs;
-//Capteurs.capteurs();
-
-    while(true)
-    {
-    capteurs.startConversion();
-    bool testcap = capteurs.getValue(Capteurs::AvantDroitExt) || capteurs.getValue(Capteurs::AvantDroitInt) || capteurs.getValue(Capteurs::AvantGaucheExt) || capteurs.getValue(Capteurs::AvantGaucheInt) || capteurs.getValue(Capteurs::Derriere) ;
-    if (testcap)
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
-    }
-    else
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
-    }
-    }
-}
-*/
-
-/*************************************************************************
- * Function Name: main
- * Parameters: none
- * Return: Int32U
- *
- * Description: The main subroutine
- *
- *************************************************************************/
 
 int main()
 {
 
-	*NVIC_CCR = *NVIC_CCR | 0x200; /* Set STKALIGN in NVIC */
 
-    //On initialise les horloges
+	*NVIC_CCR = *NVIC_CCR | 0x200; // Set STKALIGN in NVIC
+
+    // On initialise les horloges
     Clk_Init();
 
-    //On définit quelques horloges supplémentaires
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-#ifdef STM32F10X_MD
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA, ENABLE);
-#endif
-#ifdef STM32F10X_CL
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, ENABLE);
-#endif
+    // D�finit quelques horloges suppl�mentaires
+    initAutresHorloges();
+
+    // Appel de la fonction qui permet d'initialiser tous les PINS
+    initialisationDesPIN();
 
 
-    //Appel de la fonction qui permet d'initialiser tous les PINS
-    initialisation();
+    ///// DEBUT TEST
+QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
 
-//fonction de test des fin de course
+  // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
+#define PSDFSD 8474576
+
+   while (1)
+   {
+        /*if (roueDroite->getTickValue() > 0)
+            allumerLED2();
+        else
+            eteindreLED2();*/
+  /*      if (roueGauche->getTickValue() != 0)
+            allumerLED();
+        else
+            eteindreLED();*/
+
+int16_t truc = roueDroite->getTickValue() ;
+        if (truc < 0)
+        {
+            allumerLED2();
+            eteindreLED();
+        }
+        else if (truc > 0)
+        {
+             allumerLED();
+            eteindreLED2();
+        }
+        else
+        {
+            eteindreLED2();
+            eteindreLED();
+        }
+
+        for (int i = 0 ; i < 84745 ; i++);
+
+
+   }
+
+    ///// FIN TEST
+
+    unsigned int buffer = 0xffffffff;
 /*
-while(1)
-{
-    if ((GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_10)  == Bit_RESET)||(GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_9)  == Bit_RESET))                   // TEST DES FDC seule la pin 9 fonctionne (on a branché le fdc bas sur cette pin)
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
-    }
-    else
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
-    }
-}
-*/
-
 #ifdef POSITIONNEMENT
 
-//positionnement();    // Fonction inexistante???????
-
-    unsigned int buffer = 0xffffffff;
-//on attend que la tirette soit remise
+    // on attend que la tirette soit remise
     while(buffer)
     {
         buffer <<= 1;
-        buffer |= isTiretteEnleve();
+        buffer |= isTiretteEnlevee();
     }
 
+#endif
 
-    //On allume une LED sur le STM avant que la tirette soit testé. Ainsi, tant que la tirette est détectée, on garde la led allumée
-    #ifdef STM32F10X_MD
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
-    #endif
-    #ifdef STM32F10X_CL
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
-    #endif
+    // On allume une LED sur le STM avant que la tirette soit test�. Ainsi, tant que la tirette est d�tect�e, on garde la led allum�e
+    allumerLED();
 
+    // On boucle tant que la tirette est pas enlever avec 32 verification au cas ou il y ai du bruit
     buffer = 0xffffffff;
-//on attend que la tirette soit enlevée pour le début du match
     while(buffer)
     {
         buffer <<= 1;
-        bool tmp = !isTiretteEnleve();
-        buffer |= tmp;
+        buffer |= !isTiretteEnlevee();
     }
+*/
+    // On �teint la LED sur le STM pour indiqu� que le code continue � s'executer apr�s que la tirette est �t� d�branch�e.
+    eteindreLED();
 
-    //On éteint la LED sur le STM pour indiqué que le code continue à s'executer après que la tirette est été débranchée.
-    #ifdef STM32F10X_MD
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
-    #endif
-    #ifdef STM32F10X_CL
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
-    #endif
-
-
-#else
-
-    unsigned int buffer = 0xffffffff;
-
-    //On allume une LED sur le STM avant que la tirette soit testé. Ainsi, tant que la tirette est détectée, on garde la led allumée
-    #ifdef STM32F10X_MD
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); //ON
-    #endif
-    #ifdef STM32F10X_CL
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
+    // Une fois que la tirette est enlev�e pour la 1�re fois, on lance le positionnement automatique
+    #ifdef CAPTEURS
+        new Sensors();
     #endif
 
+ Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 
+    new Asservissement(odometrie);  // On d�finit l'asservissement
 
-    //On boucle tant que la tirette est pas enlever avec 32 verification au cas ou il y ai du bruit
-    while(buffer)
-    {
-        buffer <<= 1;
-        buffer |= !isTiretteEnleve();
-    }
+    Servo::initTimer();     // A faire avant toute utilisation de servo
 
-    //On éteint la LED sur le STM pour indiqué que le code continue à s'executer après que la tirette est été débranchée.
-    #ifdef STM32F10X_MD
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); //OFF
-    #endif
-    #ifdef STM32F10X_CL
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
-    #endif
-
-#endif
-
-//Une fois que la tirette est enlevée pour la 1ère fois, on lance le positionnement automatique
-#ifdef CAPTEURS
-     new Sensors();
-#endif
-
-#ifdef STM32F10X_MD
-    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
-#endif
-#ifdef STM32F10X_CL
-    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
-#endif
-   new Asservissement(odometrie);  // On définie l'asservissement
-    Servo::initTimer();     // A faire avant tout utilisation de servo
-    new Bras();
-
-
-//    Calibration::calibrationInitial();
-//    Calibration::calibrerZeroX();
-
-    //  test_capteurs_sharp ();
-
-
-    Bras::bras->monterRateau();
+  /*   new Bras();
+   Bras::bras->monterRateau();
     Bras::bras->fermerBalaiDroit();
-    Bras::bras->fermerBalaiGauche();
+    Bras::bras->fermerBalaiGauche();*/
 
     new Strategie(isBlue(),odometrie);
 
-    /**********************  TEST CAPTEUR  /
-*/
-    Sensors* sensors = Sensors::getSensors();
 
-    for (int i = 0; i<10; i++)
-    {
-        AnalogSensor::startConversion();
-        sensors->update();
-    }
+    while(1);
 
-/*
-    Sensors::SharpNameVector* out = sensors->detectedSharp();
-  //  Sensors::LimitSwitchNameVector out2 = sensors->detectedLimitSwitch();
-    SharpSensor::SharpName* o;
-  //  LimitSwitchSensor::LimitSwitchName o2;
-    o = new SharpSensor::SharpName[6];
-    for (int i = 0;i<5;i++) {o[i]=SharpSensor::NONE;}
-    if (out->getSize()> 0)
-    {
-        for (int i = 0; i < out->getSize();i++)
-            o[i] = (*out)[i];
-    }
-*/
-  /*  if (out2.getSize()> 0)
-    {
-        o2 = out2[0];
-    }
-
-*    Sensors::OutputSensorVector* out3 = sensors->getValueUltrasound();
-    Sensor::OutputSensor o3 = (*out3)[0];
-    float v = sensors->getValueUltrasound(UltrasoundSensor::FRONT);
-
-*/
-/*    Sensors::LimitSwitchNameVector* out4 = sensors->detectedLimitSwitch();
-    LimitSwitchSensor::LimitSwitchName* o4;
-    o4 = new LimitSwitchSensor::LimitSwitchName[3];
-    for (int i = 0;i<3;i++) {o4[i]=LimitSwitchSensor::NONE;}
-    if (out4->getSize() >0 )
-    {
-        for (int i=0;i<out4->getSize();i++)
-            o4[i] = (*out4)[i];
-    }
-    bool b = sensors->detectedLimitSwitch(LimitSwitchSensor::BACK_LEFT);
-    bool c = sensors->detectedLimitSwitch(LimitSwitchSensor::BACK_RIGTH);
-*/
-/*
- uint8_t v = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_9);
-
-
-    bool b2 = sensors->detectedLigthBarrier(LigthBarrierSensor::FRONT);
-*/
-    /******* Test Memoire **************** /
-
-    int* i = new int;
-    int* e = new int[10];
-
-    delete i;
-    delete[] e;
-
-    /*****************************************/
-
-
-
-   while(1);
+    return 0;
 }
 
-/*uint32_t val = 0 ;
 
-extern "C" void UsageFault_Handler(void)
-{
-    val = SCB->CFSR;
-    for(;;);
-	return ;
-}
-
-extern "C" void USB_LP_CAN1_RX0_IRQHandler (void)
-{
-    for (;;);
-}*/
-
-//Functions definitions
-void myDelay(unsigned long delay )
-{
-  while(delay) delay--;
-}
-
-/*************************************************************************
- * Function Name: Clk_Init
- * Parameters: Int32U Frequency
- * Return: Int32U
- *
- * Description: Init clock system
- *
- *************************************************************************/
-
-void Clk_Init()
-{
-#ifdef STM32F10X_MD //Pour le stm32 h103
-  // Demare l'horloge interne (8 MHz)
-  RCC_HSICmd(ENABLE);
-  // On attend qu'elle soit allume
-  while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
-  // Une fois demare, on utilise celle ci
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
-  // Demare l'horloge externe
-  RCC_HSEConfig(RCC_HSE_ON);
-  // On attend qu'elle soit allume
-  while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
-  // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
-  RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_9); // 72MHz
-  // On demarre le PLL une fois la config entre
-  RCC_PLLCmd(ENABLE);
-  // On attend qu'il soit vraiment allume
-  while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-  // On demare les composant interne au microcontroleur
-  RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
-  RCC_ADCCLKConfig(RCC_PCLK2_Div8);
-  RCC_PCLK2Config(RCC_HCLK_Div8);
-  RCC_PCLK1Config(RCC_HCLK_Div2);
-  RCC_HCLKConfig(RCC_SYSCLK_Div1);
-  // Flash 1 wait state
-  *(vu32 *)0x40022000 = 0x12;
-  // On utilise le PLL comme horloge de reference
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-#endif
-
-#ifdef STM32F10X_CL //Pour le stm32 h107
-  // Demare l'horloge interne (8 MHz)
-  RCC_HSICmd(ENABLE);
-  // On attend qu'elle soit allume
-  while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
-  // Une fois demare, on utilise celle ci
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
-  // Demare l'horloge externe
-  RCC_HSEConfig(RCC_HSE_ON);
-  // On attend qu'elle soit allume
-  while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
-  // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
-  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9); // 72MHz
-  // On demarre le PLL une fois la config entre
-  RCC_PLLCmd(ENABLE);
-  // On attend qu'il soit vraiment allume
-  while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-/****/
-  // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
-  RCC_PLL2Config(RCC_PLL2Mul_9); // 72MHz
-  // On demarre le PLL une fois la config entre
-  RCC_PLL2Cmd(ENABLE);
-  // On attend qu'il soit vraiment allume
-  while(RCC_GetFlagStatus(RCC_FLAG_PLL2RDY) == RESET);
-    // Initialisation du PLL sur l'horloge HSE et multiplication de la frequence par 9
-  RCC_PLL3Config(RCC_PLL3Mul_9); // 72MHz
-  // On demarre le PLL une fois la config entre
-  RCC_PLL3Cmd(ENABLE);
-  // On attend qu'il soit vraiment allume
-  while(RCC_GetFlagStatus(RCC_FLAG_PLL3RDY) == RESET);
-/****/
-  // On demare les composant interne au microcontroleur
-  RCC_OTGFSCLKConfig(RCC_OTGFSCLKSource_PLLVCO_Div3);
-  RCC_ADCCLKConfig(RCC_PCLK2_Div8);
-  RCC_PCLK2Config(RCC_HCLK_Div8);
-  RCC_PCLK1Config(RCC_HCLK_Div2);
-  RCC_HCLKConfig(RCC_SYSCLK_Div1);
-  // Flash 1 wait state
-  *(vu32 *)0x40022000 = 0x12;
-  // On utilise le PLL comme horloge de reference
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-#endif
-
-}

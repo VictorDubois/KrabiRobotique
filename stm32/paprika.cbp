@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Treasure Island" />
+		<Option title="Happy Birthday" />
 		<Option pch_mode="2" />
 		<Option compiler="gnu_gcc_compiler__stm32_architecture" />
 		<Build>
 			<Target title="Debug">
-				<Option output="main.out" prefix_auto="0" extension_auto="0" />
+				<Option output="../../../../PartageVM/main.out" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
 				<Option type="0" />
 				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
@@ -16,16 +16,16 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="main.out" prefix_auto="0" extension_auto="0" />
+				<Option output="main" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fno-rtti -fno-exceptions" />
-			<Add option="-DSTM32F10X_MD" />
+			<Add option="-DSTM32F10X_CL" />
 			<Add option="-DROBOTHW" />
 			<Add option="-DROUES" />
 			<Add option="-DCAPTEURS" />
@@ -60,88 +60,82 @@
 		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="include/AnalogSensor.h" />
-		<Unit filename="include/Angle.h" />
-		<Unit filename="include/Bras.h" />
-		<Unit filename="include/Calibration.h" />
-		<Unit filename="include/CommandAvancerToutDroit.h" />
-		<Unit filename="include/CommandGoTo.h" />
-		<Unit filename="include/CommandReculer.h" />
-		<Unit filename="include/CommandTourner.h" />
-		<Unit filename="include/Hctl_Handler.h" />
-		<Unit filename="include/LigthBarrierSensor.h" />
-		<Unit filename="include/LimitSwitchSensor.h" />
-		<Unit filename="include/ListeDActions.h" />
-		<Unit filename="include/Moteur.h" />
-		<Unit filename="include/Position.h" />
-		<Unit filename="include/PositionPlusAngle.h" />
-		<Unit filename="include/Sensor.h" />
-		<Unit filename="include/Sensors.h" />
-		<Unit filename="include/Servo.h" />
-		<Unit filename="include/SharpSensor.h" />
-		<Unit filename="include/UltrasoundSensor.h" />
-		<Unit filename="include/ValeursRoues.h" />
 		<Unit filename="include/action.h" />
 		<Unit filename="include/actionChercherPiece.h" />
 		<Unit filename="include/actionSuivreChemin.h" />
+		<Unit filename="include/analogSensor.h" />
+		<Unit filename="include/angle.h" />
 		<Unit filename="include/asservissement.h" />
+		<Unit filename="include/bras.h" />
 		<Unit filename="include/capteurs.h" />
 		<Unit filename="include/command.h" />
+		<Unit filename="include/commandGoTo.h" />
+		<Unit filename="include/constantes.h" />
 		<Unit filename="include/distance.h" />
+		<Unit filename="include/element.h" />
+		<Unit filename="include/initialisation.h" />
+		<Unit filename="include/ligthBarrierSensor.h" />
+		<Unit filename="include/limitSwitchSensor.h" />
 		<Unit filename="include/memory.h" />
+		<Unit filename="include/moteur.h" />
 		<Unit filename="include/odometrie.h" />
-		<Unit filename="include/pid_filter_angle.h" />
-		<Unit filename="include/pid_filter_distance.h" />
-		<Unit filename="include/pwm_handler.h" />
-		<Unit filename="include/quadrature_coder_handler.h" />
+		<Unit filename="include/pidFilterAngle.h" />
+		<Unit filename="include/pidFilterDistance.h" />
+		<Unit filename="include/pwmHandler.h" />
+		<Unit filename="include/quadratureCoderHandler.h" />
+		<Unit filename="include/rateau.h" />
 		<Unit filename="include/roue.h" />
 		<Unit filename="include/roues.h" />
+		<Unit filename="include/sensor.h" />
+		<Unit filename="include/sensors.h" />
+		<Unit filename="include/servo.h" />
+		<Unit filename="include/sharpSensor.h" />
 		<Unit filename="include/strategie.h" />
-		<Unit filename="include/timer_handler.h" />
+		<Unit filename="include/timerHandler.h" />
+		<Unit filename="include/ultrasoundSensor.h" />
 		<Unit filename="include/variable.h" />
 		<Unit filename="include/vector.h" />
-		<Unit filename="src/AnalogSensor.cpp" />
-		<Unit filename="src/Angle.cpp" />
-		<Unit filename="src/Bras.cpp" />
-		<Unit filename="src/Calibration.cpp" />
-		<Unit filename="src/CommandAvancerToutDroit.cpp" />
-		<Unit filename="src/CommandGoTo.cpp" />
-		<Unit filename="src/CommandReculer.cpp" />
-		<Unit filename="src/CommandTourner.cpp" />
-		<Unit filename="src/Hctl_Handler.cpp" />
-		<Unit filename="src/LigthBarrierSensor.cpp" />
-		<Unit filename="src/LimitSwitchSensor.cpp" />
-		<Unit filename="src/ListeDActions.cpp" />
-		<Unit filename="src/Moteur.cpp" />
-		<Unit filename="src/Position.cpp" />
-		<Unit filename="src/PositionPlusAngle.cpp" />
-		<Unit filename="src/Sensor.cpp" />
-		<Unit filename="src/Sensors.cpp" />
-		<Unit filename="src/Servo.cpp" />
-		<Unit filename="src/SharpSensor.cpp" />
-		<Unit filename="src/UltrasoundSensor.cpp" />
-		<Unit filename="src/ValeursRoues.cpp" />
 		<Unit filename="src/action.cpp" />
 		<Unit filename="src/actionChercherPiece.cpp" />
 		<Unit filename="src/actionSuivreChemin.cpp" />
+		<Unit filename="src/analogSensor.cpp" />
+		<Unit filename="src/angle.cpp" />
 		<Unit filename="src/asservissement.cpp" />
+		<Unit filename="src/bras.cpp" />
 		<Unit filename="src/capteurs.cpp" />
 		<Unit filename="src/command.cpp" />
+		<Unit filename="src/commandGoTo.cpp" />
 		<Unit filename="src/distance.cpp" />
+		<Unit filename="src/initialisation.cpp" />
+		<Unit filename="src/ligthBarrierSensor.cpp" />
+		<Unit filename="src/limitSwitchSensor.cpp" />
+		<Unit filename="src/listeActions.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/main.cpp.bck" />
 		<Unit filename="src/memory.cpp" />
+		<Unit filename="src/moteur.cpp" />
 		<Unit filename="src/odometrie.cpp" />
-		<Unit filename="src/pid_filter_angle.cpp" />
-		<Unit filename="src/pid_filter_distance.cpp" />
-		<Unit filename="src/pwm_handler.cpp" />
-		<Unit filename="src/quadrature_coder_handler.cpp" />
+		<Unit filename="src/pidFilterAngle.cpp" />
+		<Unit filename="src/pidFilterDistance.cpp" />
+		<Unit filename="src/pince.cpp" />
+		<Unit filename="src/position.cpp" />
+		<Unit filename="src/positionPlusAngle.cpp" />
+		<Unit filename="src/pwmHandler.cpp" />
+		<Unit filename="src/quadratureCoderHandler.cpp" />
+		<Unit filename="src/rateau.cpp" />
 		<Unit filename="src/roue.cpp" />
 		<Unit filename="src/roues.cpp" />
+		<Unit filename="src/sensor.cpp" />
+		<Unit filename="src/sensors.cpp" />
+		<Unit filename="src/servo.cpp" />
+		<Unit filename="src/sharpSensor.cpp" />
 		<Unit filename="src/strategie.cpp" />
 		<Unit filename="src/stub.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/timer_handler.cpp" />
+		<Unit filename="src/timerHandler.cpp" />
+		<Unit filename="src/ultrasoundSensor.cpp" />
+		<Unit filename="src/valeursRoues.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

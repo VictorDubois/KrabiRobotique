@@ -1,7 +1,7 @@
 #ifndef RATEAU_H_INCLUDED
 #define RATEAU_H_INCLUDED
 
-#include"Angle.h"
+#include"angle.h"
 #include"servo.h"
 
 
