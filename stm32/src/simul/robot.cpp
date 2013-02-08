@@ -8,6 +8,8 @@
 #include "Sensors.h"
 #include <iostream>
 
+#define ratio_qt_box2d 0.01
+
 Odometrie* Odometrie::odometrie = NULL;
 
 //Odometrie class implementation for the simulation
@@ -44,7 +46,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 {
 
 
-	manual = false;
+	manual = true;
 	level = 0;
 
 	odometrie = new Odometrie(this);
@@ -65,7 +67,27 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	deriv.position.y = 0;
 	deriv.angle = 0;
 
+    /// Déclaration graphique (QT)
+	int inc = 0;
+	robotPolygonPoints[inc++] = QPoint(24,0);
+	robotPolygonPoints[inc++] = QPoint(36,30);
+	robotPolygonPoints[inc++] = QPoint(45,36);
+	robotPolygonPoints[inc++] = QPoint(66,42);
+	robotPolygonPoints[inc++] = QPoint(108,42);
+	robotPolygonPoints[inc++] = QPoint(133,87);
+	robotPolygonPoints[inc++] = QPoint(53,160);
+	robotPolygonPoints[inc++] = QPoint(-25,160);
+	robotPolygonPoints[inc++] = QPoint(-95,140);
+	robotPolygonPoints[inc++] = QPoint(-95,-140);
+	robotPolygonPoints[inc++] = QPoint(-25,-160);
+	robotPolygonPoints[inc++] = QPoint(53,-160);
+	robotPolygonPoints[inc++] = QPoint(133,-87);
+	robotPolygonPoints[inc++] = QPoint(108,-42);
+	robotPolygonPoints[inc++] = QPoint(66,-42);
+	robotPolygonPoints[inc++] = QPoint(45,-36);
+	robotPolygonPoints[inc++] = QPoint(36,-30);
 
+    /// Déclaration Physique (Box2D)
 	b2BodyDef bodyDef;
 #ifndef BOX2D_2_0_1
 	bodyDef.type = b2_dynamicBody;
@@ -74,6 +96,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	bodyDef.angle = pos.angle;
 
 	body = world.CreateBody(&bodyDef);
+
 
 #ifdef BOX2D_2_0_1
 	b2PolygonDef box;
@@ -87,7 +110,8 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 	fixture.density = 10.0f;
 	fixture.friction = 1.0f;
 
-	box.SetAsBox(.5f,1.40f,b2Vec2(-0.,0),0);
+    // On crée la "box" de base du robot : void b2PolygonShape::SetAsBox(float32 hx,float32 hy,const b2Vec2 & center,float32 angle)
+	box.SetAsBox(60*ratio_qt_box2d,42*ratio_qt_box2d,b2Vec2((24.f-60.f)*ratio_qt_box2d,0),0);
 	body->CreateFixture(&fixture);
 
 #ifdef BOX2D_2_0_1
@@ -96,23 +120,29 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 #else
 	b2Vec2 v[4];
 #endif
-	int inc = 0;
-	v[inc++].Set(2.08+0.5,1.40);
-	v[inc++].Set(0.0+.5,1.40);
-	v[inc++].Set(0+.5,1.1);
-	v[inc++].Set(1.40+.5,1.1);
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+	inc = 0;
+	v[inc++].Set(-95.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+	v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+	v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+	v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+	v[inc++].Set(-25.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+	v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
 #ifndef BOX2D_2_0_1
-	box.Set(v, 4);
+	box.Set(v, 6);
 #endif
 	body->CreateFixture(&fixture);
 
+    // on déclare les points de la deuxieme partie : Attention, doit être convexe et orientée dans le sens indirect
 	inc = 0;
-	v[inc++].Set(1.40+0.5,-1.1);
-	v[inc++].Set(0.+0.5,-1.1);
-	v[inc++].Set(.0+0.5,-1.40);
-    v[inc++].Set(2.08+0.5,-1.40);
+	v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+	v[inc++].Set(-25.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
+	v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
+	v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
+	v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+	v[inc++].Set(-95.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
 #ifndef BOX2D_2_0_1
-	box.Set(v, 4);
+	box.Set(v, 6);
 #endif
 	body->CreateFixture(&fixture);
 
@@ -175,7 +205,7 @@ void Robot::paint(QPainter &p, int dt)
 		deriv.position.x = derx*cos(pos.angle) + dery*sin(pos.angle);
 		deriv.position.y = 0;
 
-		olds.push_back(pos);
+		//olds.push_back(pos);
 		if(manual)
 		{
 			keyPressEvent(NULL,false);
@@ -198,17 +228,8 @@ void Robot::paint(QPainter &p, int dt)
 	p.setBrush(QBrush(QColor(90,90,90)));
 	p.setOpacity(.3);
 
-	QPoint po[10];
-	int inc = 0;
-	po[inc++] = QPoint(-100+50,140.);
-	po[inc++] = QPoint(-100+45,-140.);
-	po[inc++] = QPoint(208+50,-140);
-	po[inc++] = QPoint(140+50,-110);
-	po[inc++] = QPoint(0+50,-110);
-	po[inc++] = QPoint(0+50,110);
-    po[inc++] = QPoint(140+50,110);
-	po[inc++] = QPoint(208+50,140);
-	p.drawConvexPolygon(po, 8);
+    // on peint le robot.
+	p.drawConvexPolygon(robotPolygonPoints, 17);
 
 //	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
 	//p.drawRect(-268, -179.5, 268, 359);

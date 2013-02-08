@@ -13,8 +13,8 @@ int main(int argc, char** argv)
 	MainWindow mw;
 	mw.show();
 
-	GraphWindows gw;
-	gw.show();
+	//GraphWindows gw;
+	//gw.show();
 
 	return app.exec();
 }

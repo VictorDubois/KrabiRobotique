@@ -4,6 +4,7 @@
 #include <iostream>
 #include <QVBoxLayout>
 #include <QResizeEvent>
+#include <QShortcut>
 
 MainWindow::MainWindow()
 {
@@ -15,7 +16,7 @@ MainWindow::MainWindow()
 	QWidget* inter = new QWidget(this);
 	setCentralWidget(inter);
 
-inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
+	inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 
 	table = new Table(inter);
 
@@ -38,6 +39,8 @@ void MainWindow::keyPressEvent(QKeyEvent* evt)
 
 void MainWindow::keyReleaseEvent(QKeyEvent* evt)
 {
+    if (evt->key() == Qt::Key_Escape)
+        exit(0);
 	table->keyPressEvent(evt,false);
 }
 

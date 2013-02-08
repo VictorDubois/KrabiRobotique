@@ -7,6 +7,7 @@
 #include "PositionPlusAngle.h"
 #include <Box2D.h>
 
+#define ROBOT_POLYGON_COUNT 17
 /** @class Robot
     @brief Classe permettant de simuler l'ensemble des couches basses du robot
 
@@ -29,6 +30,7 @@ private:
 	class Strategie* strategie;
 
 	b2Body* body;
+    QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];
 public:
 
 	unsigned int level;
