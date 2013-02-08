@@ -7,7 +7,7 @@
 		<Option compiler="gnu_gcc_compiler__stm32_architecture" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../../../PartageVM/main.out" prefix_auto="0" extension_auto="0" />
+				<Option output="main.out" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
 				<Option type="0" />
 				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
@@ -16,7 +16,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="main" prefix_auto="0" extension_auto="0" />
+				<Option output="main.out" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
@@ -61,7 +61,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/action.h" />
-		<Unit filename="include/actionChercherPiece.h" />
 		<Unit filename="include/actionSuivreChemin.h" />
 		<Unit filename="include/analogSensor.h" />
 		<Unit filename="include/angle.h" />
@@ -76,11 +75,14 @@
 		<Unit filename="include/initialisation.h" />
 		<Unit filename="include/ligthBarrierSensor.h" />
 		<Unit filename="include/limitSwitchSensor.h" />
+		<Unit filename="include/listeActions.h" />
 		<Unit filename="include/memory.h" />
 		<Unit filename="include/moteur.h" />
 		<Unit filename="include/odometrie.h" />
 		<Unit filename="include/pidFilterAngle.h" />
 		<Unit filename="include/pidFilterDistance.h" />
+		<Unit filename="include/position.h" />
+		<Unit filename="include/positionPlusAngle.h" />
 		<Unit filename="include/pwmHandler.h" />
 		<Unit filename="include/quadratureCoderHandler.h" />
 		<Unit filename="include/rateau.h" />
@@ -93,10 +95,8 @@
 		<Unit filename="include/strategie.h" />
 		<Unit filename="include/timerHandler.h" />
 		<Unit filename="include/ultrasoundSensor.h" />
-		<Unit filename="include/variable.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/action.cpp" />
-		<Unit filename="src/actionChercherPiece.cpp" />
 		<Unit filename="src/actionSuivreChemin.cpp" />
 		<Unit filename="src/analogSensor.cpp" />
 		<Unit filename="src/angle.cpp" />
@@ -117,7 +117,6 @@
 		<Unit filename="src/odometrie.cpp" />
 		<Unit filename="src/pidFilterAngle.cpp" />
 		<Unit filename="src/pidFilterDistance.cpp" />
-		<Unit filename="src/pince.cpp" />
 		<Unit filename="src/position.cpp" />
 		<Unit filename="src/positionPlusAngle.cpp" />
 		<Unit filename="src/pwmHandler.cpp" />
