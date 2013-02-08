@@ -1,7 +1,7 @@
 #ifndef CAPTEURS_H_INCLUDED
 #define CAPTEURS_H_INCLUDED
 
-#include "variable.h"
+#include "constantes.h"
 #include "stm32f10x_adc.h"
 #include "stm32f10x_dma.h"
 #include "stm32f10x_gpio.h"

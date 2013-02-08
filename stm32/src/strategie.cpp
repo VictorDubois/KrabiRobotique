@@ -1,17 +1,17 @@
 #include "strategie.h"
-#include "CommandGoTo.h"
+#include "odometrie.h"
+#include "asservissement.h"
+/*#include "CommandGoTo.h"
 #include "CommandAvancerToutDroit.h"
 #include "CommandTourner.h"
-#include "ListeDActions.h"
 #include "Bras.h"
-
-
+*/
 
 
 Strategie* Strategie::strategie = NULL;
 
-Strategie::Strategie(bool is_blue, Odometrie* odometrie) :
-collision_detected(false)//, listeActions(NULL)
+Strategie::Strategie(bool is_blue, Odometrie* odometrie)
+    : collision_detected(false)//, listeActions(NULL)
 {
     this->is_blue = is_blue;
     this->odometrie = odometrie;
@@ -19,22 +19,28 @@ collision_detected(false)//, listeActions(NULL)
     Position positionDeDepart(POS_DEPART_X,POS_DEPART_Y);
     Angle angleDeDepart(ANGLE_DEPART);
 
-    positionDeDepart.setY(positionDeDepart.getY()*(is_blue ? 1:-1));
-    angleDeDepart = angleDeDepart*(is_blue ? 1:-1);
+     positionDeDepart.setY(is_blue ? positionDeDepart.getY() : -positionDeDepart.getY());
+
+    angleDeDepart = (is_blue ? angleDeDepart : -angleDeDepart);
+
     //command = new Asservissement(PositionPlusAngle(Position(335, 400), Angle(M_PI_2)), roueCodeuseGauche, roueCodeuseDroite);
+
     odometrie->setPos(PositionPlusAngle(positionDeDepart,angleDeDepart));
+
     //command = new Asservissement(PositionPlusAngle(positionDeDepart, angleDeDepart), roueCodeuseGauche, roueCodeuseDroite);
     //command = new Asservissement(PositionPlusAngle(Position(0, 0), Angle(0)), roueCodeuseGauche, roueCodeuseDroite);
     //command->strategie = this;
- /*   instruction_nb=1;
-    doNthInstruction(instruction_nb); */
-    listeActions= new ListeDActions(odometrie,is_blue);
+ //   instruction_nb=1;
+  //  doNthInstruction(instruction_nb);
+   listeActions= new ListeActions(odometrie,is_blue);
+
     listeActions->creerPremiereAction();
 
 }
 
-void Strategie::update(){
-    int cote = (is_blue ? 1:-1);
+void Strategie::update()
+{
+ //   int cote = (is_blue ? 1:-1);
 
 if (listeActions->getActionActuelle())
 {
@@ -69,7 +75,7 @@ else
     {
         Command::freinageDUrgence(true);
     }
-   /* //Si tout est ok, on passe à la suite
+    //Si tout est ok, on passe à la suite
     if(!collision_detected){
         instruction_nb++;
         doNthInstruction(instruction_nb);
@@ -86,8 +92,6 @@ void Strategie::collisionDetected(){
     instruction_collision_nb=0;
     doNthInstruction(INSTRUCTION_COLLISION);
 }
-
-
 
 void Strategie::doNthInstruction(uint16_t n){
 

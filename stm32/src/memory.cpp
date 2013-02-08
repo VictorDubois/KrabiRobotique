@@ -13,10 +13,10 @@ void * operator new(size_t size) throw()
     {
         base = memory_ptr;
         base->s.nextFree = memory_ptr;
-        #ifdef STM32F10X_MD
+        #ifdef STM32F10X_MD // stm h103
         base->s.size = 5000;   // Initialisation de la mémoire = Taille disponible dans la ram en unit de base de la mémoire (une unité = 4 octets). Ici 20kB -> 5000 unit
         #endif
-        #ifdef STM32F10X_CL
+        #ifdef STM32F10X_CL // stm h107
         base->s.size = 16000;   // Initialisation de la mémoire = Taille disponible dans la ram en unit de base de la mémoire (une unité = 4 octets). Ici 64kB -> 16000 unit
         #endif
         nextFreeMemory = memory_ptr;
