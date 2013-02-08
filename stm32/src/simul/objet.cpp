@@ -1,7 +1,7 @@
 #include "simul/objet.h"
 
 
-Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(type),  theta(theta), world(&world)
+Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) : p(p), type(type),  theta(theta), world(&world), p_color(color)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -10,26 +10,26 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(t
 
     body = world.CreateBody(&bodyDef);
 
-    if (type == blackCoin || type == whiteCoin )
+	if (type == glass )
     {
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circle;
-        circle.m_radius = 0.4f; //0.6f
+		circle.m_radius = 0.4f;
         circle.m_p.Set(0.,0.);
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.4f;
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
-    }
-    else
+	}
+	else if (type == gift )
     {
         b2Vec2 vertices[4];
-        vertices[0].Set(0.0f, -0.70f);
+		vertices[0].Set(0.0f, -0.28f);
         vertices[1].Set(0.0f, 0.0f);
         vertices[2].Set(-1.5f, 0.0f);
-        vertices[3].Set(-1.5f, -0.70f);
+		vertices[3].Set(-1.5f, -0.28f);
 
         int32 count = 4;
         b2PolygonShape polygon;
@@ -42,7 +42,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta) : p(p), type(t
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
-    }
+	}
 }
 
 Objet::~Objet()
@@ -54,45 +54,36 @@ void Objet::paint(QPainter &pa)
 {
     switch (type)
     {
-        case blackCoin:
+		case glass:
         {
-            pa.setBrush(QBrush(QColor("black")));
-            pa.setPen(QBrush(QColor("black")));
+			pa.setBrush(QBrush(p_color));
+			pa.setPen(QBrush(p_color));
 
-            pa.drawEllipse(QPoint(p.x,-p.y),60,-60);
+			pa.drawEllipse(QPoint(p.x,-p.y),40,-40);
             break;
-        }
-        case whiteCoin:
-        {
-            pa.setBrush(QBrush(QColor("white")));
-            pa.setPen(QBrush(QColor("white")));
+		}
+		case gift:
+		{
+			pa.setBrush(QBrush(p_color));
+			pa.setPen(QBrush(p_color));
 
-            pa.drawEllipse(QPoint(p.x,-p.y),60,-60);
-            break;
-        }
-        case goldBar:
-        {
-            pa.setBrush(QBrush(QColor("yellow")));
-            pa.setPen(QBrush(QColor("yellow")));
-
-            pa.translate(QPointF(p.x,-p.y));
-            pa.rotate(-theta*180/3.14);
-            pa.drawRect(0,0,150,-70);
-            pa.rotate(theta*180/3.14);
-            pa.translate(QPointF(-p.x,p.y));
-            break;
-        }
+			pa.drawRect(p.x-75, -p.y+25,150,-50);
+			break;
+		}
+		default:
+			break;
     }
     return;
 }
 
 void Objet::updatePos()
 {
+
     p.x = 100*body->GetPosition().x;
     p.y = 100*body->GetPosition().y;
+
+
     theta = body->GetAngle()-3.14;
-
-
 
     float friction = 0.5;
 	b2Vec2 velocity = body->GetLinearVelocity();
