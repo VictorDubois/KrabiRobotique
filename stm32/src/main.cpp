@@ -87,7 +87,7 @@ int main()
 
     ///// DEBUT TEST
 QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
-
+// test
   // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
 #define PSDFSD 8474576
 
