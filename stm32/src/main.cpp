@@ -8,6 +8,8 @@
 #include "quadratureCoderHandler.h"
 #include "bras.h"
 #include "strategie.h"
+#include "ax12api.h"
+#include "interfaceServosNumeriques.h"
 
 #define POSITIONNEMENT
 
@@ -86,43 +88,90 @@ int main()
 
 
     ///// DEBUT TEST
-QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
+    QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
+    //roueDroite->getTickValue() pour obtenir les ticks.
 
-  // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
+    // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
 #define PSDFSD 8474576
+    bool a = true;
 
-   while (1)
-   {
-        /*if (roueDroite->getTickValue() > 0)
+    allumerLED(); // verte
+    servosNumeriques_initServosNumeriquesRCC();
+    servosNumeriques_initGPIO();
+    servosNumeriques_initUART();
+    servosNumeriques_sendMode();
+
+    eteindreLED(); // verte eteinte
+    allumerLED2(); // orange allumee
+
+    int8_t packet[7];
+    /*packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x00;
+    packet[3] = AX12_WRITE_DATA;
+    packet[4] = AX12_GOAL_POSITION_L;
+    packet[5] = 0x00;
+    packet[6] = ~(int8_t)(0x04 + AX12_WRITE_DATA + AX12_GOAL_POSITION_L + 0x00);
+    for (int i = 0; i < 7; i++)
+        servosNumeriques_sendData(packet[i]);*/
+
+    // envoi de la position
+    packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x00;
+    packet[3] = AX12_WRITE_DATA;
+    packet[4] = AX12_GOAL_POSITION_L;
+    packet[5] = 0x00;
+    packet[6] = ~(int8_t)(0x04 + AX12_WRITE_DATA + AX12_GOAL_POSITION_L + 0x00);
+    for (int i = 0; i < 7; i++)
+        servosNumeriques_sendData(packet[i]);
+
+    // wait some time
+    for (int i = 0 ; i < 8474500 ; i++);
+
+    eteindreLED2();
+    allumerLED();
+
+    packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x00;
+    packet[3] = AX12_WRITE_DATA;
+    packet[4] = AX12_GOAL_POSITION_L;
+    packet[5] = 0xff;
+    packet[6] = ~(int8_t)(0x04 + AX12_WRITE_DATA + AX12_GOAL_POSITION_L + 0xff);
+    for (int i = 0; i < 7; i++)
+        servosNumeriques_sendData(packet[i]);
+
+    // wait some time
+    for (int i = 0 ; i < 8474500 ; i++);
+
+    eteindreLED();
+    eteindreLED2();
+
+    while(1) // do not start anything else
+    {
+
+    }
+
+    /*while (1)
+    {
+
+
+        if (a)
+        {
             allumerLED2();
+            eteindreLED();
+        }
         else
-            eteindreLED2();*/
-  /*      if (roueGauche->getTickValue() != 0)
+        {
             allumerLED();
-        else
-            eteindreLED();*/
-
-int16_t truc = roueDroite->getTickValue() ;
-        if (truc < 0)
-        {
-            allumerLED2();
-            eteindreLED();
-        }
-        else if (truc > 0)
-        {
-             allumerLED();
             eteindreLED2();
         }
-        else
-        {
-            eteindreLED2();
-            eteindreLED();
-        }
-
-        for (int i = 0 ; i < 84745 ; i++);
+        a = !a;
+        for (int i = 0 ; i < 8474500 ; i++);
 
 
-   }
+    }*/
 
     ///// FIN TEST
 
@@ -158,7 +207,7 @@ int16_t truc = roueDroite->getTickValue() ;
         new Sensors();
     #endif
 
- Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
+    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 
     new Asservissement(odometrie);  // On définit l'asservissement
 

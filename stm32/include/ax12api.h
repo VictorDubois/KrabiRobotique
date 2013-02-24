@@ -68,16 +68,18 @@
 #define AX12_SYNC_WRITE 			0x83
 #define AX12_SYNC_WRITE_PARAMS 		4
 
+#include "memory.h"
+
 /** Calcul de la checksum d'un paquet
  * Un paquet envoyé au ax12 est 0xFF 0xFF ID length param1 ... paramN checksum
  * Où la checksum vaut ~(ID+length+param1+...+paramN) avec ~ l'opérateur not
- * On tronque aux 8 bits de poids faible. 
- * 
- * \brief Calcule la checksum d'un paquet envoyé au ax12 
+ * On tronque aux 8 bits de poids faible.
+ *
+ * \brief Calcule la checksum d'un paquet envoyé au ax12
  * \param id identifient du ax12 visé (dans une chaine)
  * \param length nombre de paramètres envoyés + 2
  * \param parameters paramètres envoyés au ax12
- * 
+ *
 */
 int8_t ax12Checksum(int8_t id, int8_t length, int8_t* parameters)
 {
@@ -90,9 +92,17 @@ int8_t ax12Checksum(int8_t id, int8_t length, int8_t* parameters)
 }
 
 
-int8_t* getGoalPositionPacket(int8_t position)
+int8_t getGoalPositionPacket(int8_t position)
 {
-	return { 0xFF, 0xFF, 0x04, AX12_WRITE_DATA, AX12_GOAL_POSITION_L, position, ~(int8_t)(0x04 + AX12_WRITE_DATA + AX12_GOAL_POSITION_L + position) };
+    int8_t packet[7];
+    packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x04;
+    packet[3] = AX12_WRITE_DATA;
+    packet[4] = AX12_GOAL_POSITION_L;
+    packet[5] = position;
+    packet[6] = ~(int8_t)(0x04 + AX12_WRITE_DATA + AX12_GOAL_POSITION_L + position);
+	return 1;
 }
 
 
