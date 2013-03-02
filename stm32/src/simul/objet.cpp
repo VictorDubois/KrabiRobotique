@@ -56,16 +56,16 @@ void Objet::paint(QPainter &pa)
     {
 		case glass:
         {
-			pa.setBrush(QBrush(p_color));
-			pa.setPen(QBrush(p_color));
+            pa.setBrush(p_color);
+            pa.setPen(p_color);
 
 			pa.drawEllipse(QPoint(p.x,-p.y),40,-40);
             break;
 		}
 		case gift:
 		{
-			pa.setBrush(QBrush(p_color));
-			pa.setPen(QBrush(p_color));
+            pa.setBrush(p_color);
+            pa.setPen(p_color);
 
 			pa.drawRect(p.x-75, -p.y+25,150,-50);
 			break;

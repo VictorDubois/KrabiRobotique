@@ -3,9 +3,10 @@
 
 #include <QPainter>
 #include <QKeyEvent>
+#include </usr/local/include/Box2D/Box2D.h>
 #include <boost/circular_buffer.hpp>
-#include "PositionPlusAngle.h"
-#include <Box2D.h>
+#include "positionPlusAngle.h"
+#include "odometrie.h"
 
 #define ROBOT_POLYGON_COUNT 17
 /** @class Robot
