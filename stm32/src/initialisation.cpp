@@ -50,7 +50,7 @@ void Clk_Init()
     // On attend qu'elle soit allumée
     while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
     // Initialisation du PLL sur l'horloge HSE et multiplication de la fréquence par 9
-    RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9); // 72MHz
+    RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_4); // 9 - 72MHz 4 - 32MHz
     // On démarre le PLL une fois la config entre
     RCC_PLLCmd(ENABLE);
     // On attend qu'il soit vraiment allumé

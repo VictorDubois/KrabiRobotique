@@ -7,16 +7,18 @@
 
 void servosNumeriques_initGPIO()
 {
+    GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
+
     GPIO_InitTypeDef GPIO_InitStructure;
- 	// port D pin 8 : un servo numérique en réception
+ 	// port D pin 8 TX : un servo numérique en Ecriture
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz; // La vitesse de rafraichissement du port
     GPIO_Init(GPIOD, &GPIO_InitStructure);
 
- 	// port D pin 9 : un servo numérique en écriture
+ 	// port D pin 9 RX : un servo numérique en Lecture
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz; // La vitesse de rafraichissement du port
     GPIO_Init(GPIOD, &GPIO_InitStructure);
 
@@ -32,13 +34,13 @@ void servosNumeriques_initServosNumeriquesRCC()
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 }
 
-void servosNumeriques_initUART()
+void servosNumeriques_initUART(int baudRate)
 {
     USART_InitTypeDef USART_InitStruct;
     USART_ClockInitTypeDef USART_ClockInitStruct;
 	// Protocole ax12 : Half duplex Asynchronous Serial Communication (8bit,1stop,No Parity)
  	/* Initialisation des caracteristiques USART_InitStruct */
- 	USART_InitStruct.USART_BaudRate = 0xF4240; /* 1000000 Baud */
+ 	USART_InitStruct.USART_BaudRate = baudRate;
 	USART_InitStruct.USART_WordLength = USART_WordLength_8b;
 	USART_InitStruct.USART_StopBits = USART_StopBits_1;
 	USART_InitStruct.USART_Parity = USART_Parity_No ;
