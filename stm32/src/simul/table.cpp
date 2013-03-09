@@ -5,10 +5,10 @@
 #include "cstdlib"
 #include "time.h"
 
-
+#define PI 3.14159265358979323846264338327950
 #include <iostream>
 #include <QPainter>
-#include "CommandGoTo.h"
+#include "commandGoTo.h"
 
 Position getCase(unsigned int i, unsigned int j)
 {
@@ -100,7 +100,20 @@ Table::Table(QWidget* parent) :
 
 	box.SetAsBox(30,1, b2Vec2(0,22),0);
 	tableBody->CreateFixture(&fixture);
-	// fin bordures
+    // fin bordures
+
+    // plateaux blancs bords zones départ
+    box.SetAsBox(4,1, b2Vec2(0,1),0);
+    tableBody->CreateFixture(&fixture);
+
+    box.SetAsBox(4,1, b2Vec2(30,1),0);
+    tableBody->CreateFixture(&fixture);
+
+    box.SetAsBox(4,1, b2Vec2(0,21),0);
+    tableBody->CreateFixture(&fixture);
+
+    box.SetAsBox(4,1, b2Vec2(30,21),0);
+    tableBody->CreateFixture(&fixture);
 
 	// gateau
 	b2CircleShape circle;
@@ -114,6 +127,46 @@ Table::Table(QWidget* parent) :
 	tableGraphics.load("tabledata.xml");
 	tableGraphics.addYOffset(-tableHeight); // because we want the (0,0) point to be at the bottom left.
 
+
+    // création des bougies :
+    QColor colors[20];
+    colors[0] = QColor(0,0,255);
+    colors[1] = QColor(255,0,0);
+    colors[2] = QColor(255,0,0);
+    colors[3] = QColor(0,0,255);
+    colors[4] = QColor(255,255,255);
+    colors[5] = QColor(255,255,255);
+    colors[6] = QColor(255,255,255);
+    colors[7] = QColor(255,255,255);
+    colors[8] = QColor(255,0,0);
+    colors[9] = QColor(0,0,255);
+    colors[10] = QColor(0,0,255);
+    colors[11] = QColor(255,0,0);
+    colors[12] = QColor(0,0,255);
+    colors[13] = QColor(255,0,0);
+    colors[14] = QColor(0,0,255);
+    colors[15] = QColor(255,0,0);
+    colors[16] = QColor(0,0,255);
+    colors[17] = QColor(255,0,0);
+    colors[18] = QColor(0,0,255);
+    colors[19] = QColor(255,0,0);
+
+    for (int i = 0; i < 12; i++)
+    {
+        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2100.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 40.f);
+    }
+    for (int i = 12; i < 20; i++)
+    {
+        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2100.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 40.f);
+    }
+    for (int i = 0; i < 12; i++)
+    {
+        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2100.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 33.f);
+    }
+    for (int i = 12; i < 20; i++)
+    {
+        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2100.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 33.f);
+    }
 }
 
 Table::~Table()
@@ -160,6 +213,12 @@ void Table::paintEvent(QPaintEvent* evt)
 
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->paint(p,dt);
+
+    for(unsigned int i=0; i < 20; i++)
+        p_bougies[i].draw(p);
+
+    for(unsigned int i=0; i < 20; i++)
+        p_balles[i].draw(p);
 
 	dt = 0;
 

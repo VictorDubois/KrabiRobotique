@@ -56,4 +56,4 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 		table->resize(proportion*s.height(),s.height());
 }
 
-#include "main_window.moc"
+/// #include "main_window.moc"

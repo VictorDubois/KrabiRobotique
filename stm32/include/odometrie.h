@@ -25,7 +25,7 @@ class Odometrie
         void setPos(const PositionPlusAngle& p);
         Angle getVitesseAngulaire() const;
         Distance getVitesseLineaire() const;
-        void update() { };
+        void update() { }
         /// @brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme
         static Odometrie* odometrie;
 };

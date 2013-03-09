@@ -41,4 +41,4 @@ void GraphWindows::resizeEvent(QResizeEvent* event)
 		graph->resize(proportion*s.height(),s.height());
 }
 
-#include "GraphWindows.moc"
+/// #include "GraphWindows.moc"

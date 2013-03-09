@@ -5,6 +5,8 @@
 #include <Box2D.h>
 #include "TableGraphics.h"
 #include "XMLReader.h"
+#include "sensors.h"
+#include "bougie.h"
 
 
 class Table : public QWidget
@@ -24,6 +26,8 @@ public:
 	static const int tableWidth = 3000;
 	static const int tableHeight = 2100;
 	static b2AABB getWorldAABB();
+    Bougie p_bougies[20];
+    Bougie p_balles[20];
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
 

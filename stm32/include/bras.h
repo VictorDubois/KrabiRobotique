@@ -5,6 +5,8 @@
 
 #include "servo.h"
 
+#else
+#include <stdlib.h>
 #endif
 
 /// @brief La classe Bras permet de contrôler les différents organes du robot actionnés par des servomoteurs
