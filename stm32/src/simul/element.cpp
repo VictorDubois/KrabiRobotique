@@ -86,13 +86,13 @@ void Element::updatePos()
 void Element::paint(QPainter & pa)
 {
 
-	pa.setBrush(QBrush(QColor("yellow")));
-	pa.setPen(QBrush(QColor("yellow")));
+    pa.setBrush(QColor("yellow"));
+    pa.setPen(QColor("yellow"));
 
 	pa.drawEllipse(QPoint(p.x,-p.y),100,-100);
 
-	pa.setBrush(QBrush(QColor("black")));
-	pa.setPen(QBrush(QColor("black")));
+    pa.setBrush(QColor("black"));
+    pa.setPen(QColor("black"));
 	QFont font;
 	font.setPointSize(30);
 	pa.setFont(font);

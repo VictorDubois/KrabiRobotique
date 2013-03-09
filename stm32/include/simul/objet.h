@@ -2,10 +2,10 @@
 #define OBJET_H
 #ifndef ROBOTWH
 
-#include "Position.h"
-#include "Angle.h"
+#include "position.h"
+#include "angle.h"
 #include <QPainter>
-#include "Box2D.h"
+#include </usr/local/include/Box2D/Box2D.h>
 
 /**@brief Classe permettant de gérer les différents objets pouvant être déplacé sur la table (pièce, lingot) */
 class Objet

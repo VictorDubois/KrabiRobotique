@@ -8,6 +8,8 @@
 #include "quadratureCoderHandler.h"
 #include "bras.h"
 #include "strategie.h"
+#include "ax12api.h"
+#include "interfaceServosNumeriques.h"
 
 #define POSITIONNEMENT
 
@@ -84,6 +86,7 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
+<<<<<<< HEAD
 
     ///// DEBUT TEST
 QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
@@ -121,8 +124,190 @@ int16_t truc = roueDroite->getTickValue() ;
 
         for (int i = 0 ; i < 84745 ; i++);
 
+=======
+    ///// DEBUT TEST
+    QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
+    //roueDroite->getTickValue() pour obtenir les ticks.
 
-   }
+    // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
+#define PSDFSD 8474576
+    bool a = true;
+
+    allumerLED(); // verte
+    servosNumeriques_initServosNumeriquesRCC();
+    servosNumeriques_initGPIO();
+    servosNumeriques_initUART(1000000);
+    servosNumeriques_sendMode();
+
+    eteindreLED(); // verte eteinte
+    allumerLED2(); // orange allumee
+
+    int packet[8];
+    int16_t t0 = 0;
+    int16_t t1 = 0;
+    int16_t t2 = 0;
+    int16_t t3 = 0;
+    int16_t t4 = 0;
+    int16_t t5 = 0;
+    int16_t t6 = 0;
+    int16_t t7 = 0;
+    /*packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x00;
+    packet[3] = AX12_WRITE_DATA;
+    packet[4] = AX12_GOAL_POSITION_L;
+    packet[5] = 0x00;
+    packet[6] = ~(int8_t)(0x04 + AX12_WRITE_DATA + AX12_GOAL_POSITION_L + 0x00);
+    for (int i = 0; i < 7; i++)
+        servosNumeriques_sendData(packet[i]);*/
+
+    // check de tous les baud rates :
+    /*for (int i = 0; i < 256; i++) {
+        // init with a certain baud rate
+        int baudRate = 2000000/(i+1);
+        servosNumeriques_initUART(baudRate);
+        servosNumeriques_sendMode();
+        //servosNumeriques_receiveMode(); // because this is send mode
+        // send a message to change baud rate
+        packet[0] = 0xFF;
+        packet[1] = 0xFF;
+        packet[2] = 0x02;
+        packet[3] = AX12_WRITE_DATA_PARAMS+2;
+        packet[4] = AX12_WRITE_DATA;
+        packet[5] = AX12_BAUD_RATE;
+        packet[6] = 0x09;
+        packet[7] = (int8_t)~(AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_BAUD_RATE + 0x09);
+        for (int i = 0; i < 8; i++)
+            servosNumeriques_sendData(packet[i]);
+    }*/
+    // now 0x09 is the set baud rate for ax12
+    //servosNumeriques_initUART(1000000); // reinitialize our baud rate to the same as ax12
+    //servosNumeriques_sendMode();
+    //servosNumeriques_receiveMode();
+
+    // envoi de la position
+    for (int i = 0; i < 8; i++) {
+        packet[i] = (int8_t)(0);
+    }
+
+    t0 = (int16_t)0xFF;
+    servosNumeriques_sendData(t0);
+    t1  = (int16_t)0xFF;
+    servosNumeriques_sendData(t1);
+    t2  = (int16_t)0x02;
+    servosNumeriques_sendData(t2);
+    t3  = (int16_t)AX12_WRITE_DATA_PARAMS+2; // 4
+    servosNumeriques_sendData(t3);
+    t4 = (int16_t)AX12_WRITE_DATA; // 3
+    servosNumeriques_sendData(t4);
+    t5  = (int16_t)AX12_GOAL_POSITION_H; // 0x1f = 31
+    servosNumeriques_sendData(t5);
+    t6  = (int16_t)0x00;
+    servosNumeriques_sendData(t6);
+    t7  = (int16_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_GOAL_POSITION_H + 0x00);
+    servosNumeriques_sendData(t7);
+
+    packet[0] = (int8_t)0xFF;
+    packet[1] = (int8_t)0xFF;
+    packet[2] = (int8_t)0x02;
+    packet[3] = (int8_t)AX12_WRITE_DATA_PARAMS+2; // 4
+    packet[4] = (int8_t)AX12_WRITE_DATA; // 3
+    packet[5] = (int8_t)AX12_GOAL_POSITION_H; // 0x1f = 31
+    packet[6] = (int8_t)0x00;
+    packet[7] = (int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_GOAL_POSITION_H + 0x00);
+
+
+    for (int i = 0; i < 8; i++)
+        servosNumeriques_sendData(packet[i]);
+
+
+    packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x02;
+    packet[3] = AX12_WRITE_DATA_PARAMS+2;
+    packet[4] = AX12_WRITE_DATA;
+    packet[5] = AX12_MOVING_SPEED_H;
+    packet[6] = 0x00;
+    packet[7] = (int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_MOVING_SPEED_H + 0x00);
+    for (int i = 0; i < 8; i++)
+        servosNumeriques_sendData(packet[i]);
+
+    packet[0] = 0xFF;
+    packet[1] = 0xFF;
+    packet[2] = 0x02;
+    packet[3] = AX12_WRITE_DATA_PARAMS+2;
+    packet[4] = AX12_WRITE_DATA;
+    packet[5] = AX12_MOVING_SPEED_L;
+    packet[6] = 0x00;
+    packet[7] = (int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_MOVING_SPEED_L + 0x00);
+    for (int i = 0; i < 8; i++)
+        servosNumeriques_sendData(packet[i]);
+
+    // wait some time
+    for (int i = 0 ; i < 8474500 ; i++) {};
+
+    eteindreLED2();
+    allumerLED();
+
+    packet[0] = 0xff;
+    packet[1] = 0xff;
+    packet[2] = 0x02;
+    packet[3] = AX12_WRITE_DATA_PARAMS+2;
+    packet[4] = AX12_WRITE_DATA;
+    packet[5] = AX12_GOAL_POSITION_H;
+    packet[6] = 0x1F;
+    packet[7] = (int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_GOAL_POSITION_H + 0x1F);
+    for (int i = 0; i < 8; i++)
+        servosNumeriques_sendData(packet[i]);
+
+    // wait some time
+    for (int i = 0 ; i < 8474500 ; i++) {};
+
+    eteindreLED();
+    eteindreLED2();
+    allumerLED2();
+
+    servosNumeriques_receiveMode();
+    for (int i = 0 ; i < 847450 ; i++);
+
+    int16_t s = USART_ReceiveData(USART3);
+
+    while (s != 0)
+    {
+        s = USART_ReceiveData(USART3);
+        for (int i = 0 ; i < 847450 ; i++);
+        allumerLED();
+        for (int i = 0 ; i < 847450 ; i++);
+        eteindreLED();
+    }
+    eteindreLED();
+    eteindreLED2();
+
+    while(1) // do not start anything else
+    {
+
+    }
+
+    /*while (1)
+    {
+
+
+        if (a)
+        {
+            allumerLED2();
+            eteindreLED();
+        }
+        else
+        {
+            allumerLED();
+            eteindreLED2();
+        }
+        a = !a;
+        for (int i = 0 ; i < 8474500 ; i++);
+
+>>>>>>> origin/robin
+
+    }*/
 
     ///// FIN TEST
 
@@ -158,7 +343,7 @@ int16_t truc = roueDroite->getTickValue() ;
         new Sensors();
     #endif
 
- Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
+    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
 
     new Asservissement(odometrie);  // On définit l'asservissement
 

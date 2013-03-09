@@ -5,7 +5,7 @@
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategie.h"
-#include "Sensors.h"
+#include "sensors.h"
 #include <iostream>
 
 #define ratio_qt_box2d 0.01
@@ -20,22 +20,22 @@ Odometrie::Odometrie(Robot* robot) : robot(robot)
     Odometrie::odometrie = this;
 }
 
-PositionPlusAngle Odometrie::getPos()
+PositionPlusAngle Odometrie::getPos() const
 {
 	return robot->getPos();
 }
 
-Distance Odometrie::getVitesseLineaire()
+Distance Odometrie::getVitesseLineaire() const
 {
 	return robot->getVitesseLineaire();
 }
 
-Angle Odometrie::getVitesseAngulaire()
+Angle Odometrie::getVitesseAngulaire() const
 {
 	return robot->getVitesseAngulaire();
 }
 
-void Odometrie::setPos(PositionPlusAngle p)
+void Odometrie::setPos(const PositionPlusAngle& p)
 {
 	robot->setPos(p);
 }
@@ -116,9 +116,9 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 #ifdef BOX2D_2_0_1
 	b2Vec2* v = box.vertices;
-	box.vertexCount = 4;
+    box.vertexCount = 6;
 #else
-	b2Vec2 v[4];
+    b2Vec2 v[6];
 #endif
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
 	inc = 0;
