@@ -5,11 +5,11 @@
 
 class MainWindow: public QMainWindow
 {
+    Q_OBJECT
 public:
 	virtual ~MainWindow();
 	MainWindow();
 private:
-	Q_OBJECT
 
 	class Table* table;
 	int dt;

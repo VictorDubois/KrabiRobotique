@@ -5,7 +5,7 @@
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategie.h"
-#include "Sensors.h"
+#include "sensors.h"
 #include <iostream>
 
 #define ratio_qt_box2d 0.01
@@ -20,22 +20,22 @@ Odometrie::Odometrie(Robot* robot) : robot(robot)
     Odometrie::odometrie = this;
 }
 
-PositionPlusAngle Odometrie::getPos()
+PositionPlusAngle Odometrie::getPos() const
 {
 	return robot->getPos();
 }
 
-Distance Odometrie::getVitesseLineaire()
+Distance Odometrie::getVitesseLineaire() const
 {
 	return robot->getVitesseLineaire();
 }
 
-Angle Odometrie::getVitesseAngulaire()
+Angle Odometrie::getVitesseAngulaire() const
 {
 	return robot->getVitesseAngulaire();
 }
 
-void Odometrie::setPos(PositionPlusAngle p)
+void Odometrie::setPos(const PositionPlusAngle& p)
 {
 	robot->setPos(p);
 }
@@ -44,7 +44,10 @@ void Odometrie::setPos(PositionPlusAngle p)
 
 Robot::Robot(b2World & world) : world(world), olds(10000)
 {
-
+    leftUpperHammerStatus = 0;
+    leftLowerHammerStatus = 0;
+    rightUpperHammerStatus = 0;
+    rightLowerHammerStatus = 0;
 
 	manual = true;
 	level = 0;
@@ -116,9 +119,9 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 #ifdef BOX2D_2_0_1
 	b2Vec2* v = box.vertices;
-	box.vertexCount = 4;
+    box.vertexCount = 6;
 #else
-	b2Vec2 v[4];
+    b2Vec2 v[6];
 #endif
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
 	inc = 0;
@@ -219,6 +222,36 @@ void Robot::paint(QPainter &p, int dt)
 			deriv.position.y = 0;
 			deriv.angle = asservissement->getAngularSpeed();
 		}
+
+        // hammers update
+
+        if (leftLowerHammerStatus == 100)
+            leftLowerHammerStatus = 0;
+        if (rightLowerHammerStatus == 100)
+            rightLowerHammerStatus = 0;
+        if (leftUpperHammerStatus == 200)
+            leftUpperHammerStatus = 0;
+        if (rightUpperHammerStatus == 200)
+            rightUpperHammerStatus = 0;
+
+        if (leftLowerHammerStatus > 0)
+            leftLowerHammerStatus += (int)(dt/2);
+        if (rightLowerHammerStatus > 0)
+            rightLowerHammerStatus += (int)(dt/2);
+        if (leftUpperHammerStatus > 0)
+            leftUpperHammerStatus += (int)(dt);
+        if (rightUpperHammerStatus > 0)
+            rightUpperHammerStatus += (int)(dt);
+
+        if (leftLowerHammerStatus > 100)
+            leftLowerHammerStatus = 100;
+        if (rightLowerHammerStatus > 100)
+            rightLowerHammerStatus = 100;
+        if (leftUpperHammerStatus > 200)
+            leftUpperHammerStatus = 200;
+        if (rightUpperHammerStatus > 200)
+            rightUpperHammerStatus = 200;
+
 	}
 
 	p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle));
@@ -230,6 +263,10 @@ void Robot::paint(QPainter &p, int dt)
 
     // on peint le robot.
 	p.drawConvexPolygon(robotPolygonPoints, 17);
+    p.drawRect(-20, 160, 20, rightUpperHammerStatus);
+    p.drawRect(0, 160, 20, rightLowerHammerStatus);
+    p.drawRect(-20, -160, 20, -leftUpperHammerStatus);
+    p.drawRect(0, -160, 20, -leftLowerHammerStatus);
 
 //	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
 	//p.drawRect(-268, -179.5, 268, 359);
@@ -280,8 +317,8 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 
 	if(manual)
 	{
-		float dinc = .5;
-		float ainc = 0.005;
+        float dinc = .25;
+        float ainc = 0.0025;
 
 		IF_KEYSWITCH(avant,evt->key() == Qt::Key_Up)
 			deriv.position.x += dinc;
@@ -291,6 +328,15 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 			deriv.angle -= ainc;
 		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
 			deriv.angle += ainc;
+        IF_KEYSWITCH(leftUpperHammerUp,evt->key() == Qt::Key_W)
+            leftUpperHammerStatus = 1;
+        IF_KEYSWITCH(leftUpperHammerDown,evt->key() == Qt::Key_X)
+            leftLowerHammerStatus = 1;
+        IF_KEYSWITCH(rightUpperHammerUp,evt->key() == Qt::Key_C)
+            rightUpperHammerStatus = 1;
+        IF_KEYSWITCH(rightUpperHammerDown,evt->key() == Qt::Key_V)
+            rightLowerHammerStatus = 1;
+
 	}
 }
 
@@ -341,3 +387,19 @@ Distance Robot::getVitesseLineaire()
     return deriv.position.x;
 }
 
+QPoint Robot::getLeftUpperHammerPos() const
+{
+    return QPoint((this->pos.position.x - (160 + leftUpperHammerStatus - 10)*sin(pos.angle)), -(this->pos.position.y + (160 + leftUpperHammerStatus-10)*cos(pos.angle)));
+}
+QPoint Robot::getRightUpperHammerPos() const
+{
+    return QPoint(this->pos.position.x + (160 + rightUpperHammerStatus -10)*sin(pos.angle), -(this->pos.position.y - (160 + rightUpperHammerStatus-10)*cos(pos.angle)));
+}
+QPoint Robot::getLeftLowerHammerPos() const
+{
+    return QPoint(this->pos.position.x - (160 + leftLowerHammerStatus-10)*sin(pos.angle) , -(this->pos.position.y + (160 + leftLowerHammerStatus-10)*cos(pos.angle)));
+}
+QPoint Robot::getRightLowerHammerPos() const
+{
+    return QPoint(this->pos.position.x + (160 + rightLowerHammerStatus-10)*sin(pos.angle), -(this->pos.position.y - (160 + rightLowerHammerStatus-10)*cos(pos.angle)));
+}

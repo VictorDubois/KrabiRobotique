@@ -51,8 +51,8 @@ void Shape::readSelf(XMLTag* tree)
 }
 void Shape::drawSelf(QPainter* painter)
 {
-	painter->setBrush(QBrush(p_color));
-	painter->setPen(QBrush(p_color));
+    painter->setBrush(p_color);
+    painter->setPen(p_color);
 }
 
 Rect::Rect()
