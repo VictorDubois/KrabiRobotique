@@ -29,6 +29,10 @@ private:
 	class Asservissement* asservissement;
 	class Odometrie* odometrie;
 	class Strategie* strategie;
+    int leftLowerHammerStatus;
+    int leftUpperHammerStatus;
+    int rightLowerHammerStatus;
+    int rightUpperHammerStatus;
 
 	b2Body* body;
     QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];
@@ -62,6 +66,11 @@ public:
 	/** @brief Permet d'obtenir la vitesse linaire actuel du robot
         @return Retourne la vitesse linaire actuel du robot*/
 	Distance getVitesseLineaire();
+
+    QPoint getLeftUpperHammerPos() const;
+    QPoint getRightUpperHammerPos() const;
+    QPoint getLeftLowerHammerPos() const;
+    QPoint getRightLowerHammerPos() const;
 };
 
 #endif //ROBOT_H_INCLUDED

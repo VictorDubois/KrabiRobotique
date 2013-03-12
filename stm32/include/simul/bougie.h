@@ -13,6 +13,10 @@ class Bougie
 
         void draw(QPainter& painter);
 
+        void setColor(const QColor& color);
+
+        QPoint getPosition() const;
+
     private:
         QColor p_color;
         QPointF p_position;

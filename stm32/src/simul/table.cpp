@@ -185,6 +185,33 @@ void Table::update(int dt)
 		robots[i]->updateForces(dt);
 //		robots[i]->interact(elements);
 	}
+    if (dt) {
+        QPoint posBougie, posMarteau, tester;
+        for (unsigned int i = 12; i < 20; i++) {
+            posBougie = p_bougies[i].getPosition();
+            posMarteau = robots[0]->getLeftUpperHammerPos();
+            tester = QPoint(posBougie - posMarteau );
+            if (tester.manhattanLength() < 40)
+                p_balles[i].setColor(QColor(0,128,255));
+            posBougie = p_bougies[i].getPosition();
+            posMarteau = robots[0]->getRightUpperHammerPos();
+            tester = QPoint(posBougie - posMarteau );
+            if (tester.manhattanLength() < 40)
+                p_balles[i].setColor(QColor(0,128,255));
+        }
+        for (unsigned int i = 0; i < 12; i++) {
+            posBougie = p_bougies[i].getPosition();
+            posMarteau = robots[0]->getLeftLowerHammerPos();
+            tester = QPoint(posBougie - posMarteau );
+            if (tester.manhattanLength() < 40)
+                p_balles[i].setColor(QColor(0,128,255));
+            posBougie = p_bougies[i].getPosition();
+            posMarteau = robots[0]->getRightLowerHammerPos();
+            tester = QPoint(posBougie - posMarteau );
+            if (tester.manhattanLength() < 40)
+                p_balles[i].setColor(QColor(0,128,255));
+        }
+    }
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);
@@ -211,14 +238,14 @@ void Table::paintEvent(QPaintEvent* evt)
     for (unsigned int i=0; i < objets.size(); i++)
         objets[i]->paint(p);
 
-	for(unsigned int i=0; i < robots.size(); i++)
-		robots[i]->paint(p,dt);
-
     for(unsigned int i=0; i < 20; i++)
         p_bougies[i].draw(p);
 
     for(unsigned int i=0; i < 20; i++)
         p_balles[i].draw(p);
+
+	for(unsigned int i=0; i < robots.size(); i++)
+		robots[i]->paint(p,dt);
 
 	dt = 0;
 
@@ -238,6 +265,8 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
 {
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->keyPressEvent(evt, press);
+
+
     Sensors::getSensors()->keyPressEvent(evt,press);
 }
 

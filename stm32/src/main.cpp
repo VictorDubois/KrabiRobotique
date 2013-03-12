@@ -86,7 +86,7 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
-<<<<<<< HEAD
+
 
     ///// DEBUT TEST
 QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
@@ -94,8 +94,8 @@ QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
   // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
 #define PSDFSD 8474576
 
-   while (1)
-   {
+   //while (1)
+   //{
         /*if (roueDroite->getTickValue() > 0)
             allumerLED2();
         else
@@ -104,7 +104,7 @@ QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
             allumerLED();
         else
             eteindreLED();*/
-
+/*
 int16_t truc = roueDroite->getTickValue() ;
         if (truc < 0)
         {
@@ -128,7 +128,7 @@ int16_t truc = roueDroite->getTickValue() ;
     ///// DEBUT TEST
     QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
     //roueDroite->getTickValue() pour obtenir les ticks.
-
+*/
     // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
 #define PSDFSD 8474576
     bool a = true;
@@ -247,7 +247,7 @@ int16_t truc = roueDroite->getTickValue() ;
     for (int i = 0 ; i < 8474500 ; i++) {};
 
     eteindreLED2();
-    allumerLED();
+    allumerLED(); // vert
 
     packet[0] = 0xff;
     packet[1] = 0xff;
@@ -263,9 +263,9 @@ int16_t truc = roueDroite->getTickValue() ;
     // wait some time
     for (int i = 0 ; i < 8474500 ; i++) {};
 
-    eteindreLED();
-    eteindreLED2();
-    allumerLED2();
+    eteindreLED(); // vert
+    eteindreLED2(); // orange
+    allumerLED2(); // orange
 
     servosNumeriques_receiveMode();
     for (int i = 0 ; i < 847450 ; i++);
@@ -275,8 +275,10 @@ int16_t truc = roueDroite->getTickValue() ;
     while (s != 0)
     {
         s = USART_ReceiveData(USART3);
+        if (s != 255)
+        eteindreLED2();
         for (int i = 0 ; i < 847450 ; i++);
-        allumerLED();
+        allumerLED(); // verte
         for (int i = 0 ; i < 847450 ; i++);
         eteindreLED();
     }
@@ -305,7 +307,7 @@ int16_t truc = roueDroite->getTickValue() ;
         a = !a;
         for (int i = 0 ; i < 8474500 ; i++);
 
->>>>>>> origin/robin
+>>>>>>> robin
 
     }*/
 
