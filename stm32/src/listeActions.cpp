@@ -3,6 +3,7 @@
 
 #include "stm32f10x_gpio.h"
 
+#undef STM32F10X_CL // pour le simulateur, parce que un des fichiers définit cette macro et ne devrait pas. a commenter lors de la compil
 // allume ou éteint une LED
 void xxxallumerLED()
 {
@@ -25,16 +26,19 @@ void xxxeteindreLED()
 }
 
 // 2ème LED du stm h107 (LED jaune)
-#ifdef STM32F10X_CL
+
 void xxxallumerLED2()
 {
+#ifdef STM32F10X_CL
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+#endif
 }
 void xxxeteindreLED2()
 {
+#ifdef STM32F10X_CL
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-}
 #endif
+}
 
 ListeActions::ListeActions(Odometrie* odo, bool is_Blue)
 {
