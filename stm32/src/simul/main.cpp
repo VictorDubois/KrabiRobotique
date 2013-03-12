@@ -4,6 +4,7 @@
 #include "simul/GraphWindows.h"
 #include <ctime>
 
+#undef STM32F10X_CL // pour le simulateur, parce que un des fichiers définit cette macro et ne devrait pas. a commenter lors de la compil
 
 int main(int argc, char** argv)
 {
