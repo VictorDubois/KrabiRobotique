@@ -3,9 +3,10 @@
 
 #include <QPainter>
 #include <QKeyEvent>
+#include </usr/local/include/Box2D/Box2D.h>
 #include <boost/circular_buffer.hpp>
-#include "PositionPlusAngle.h"
-#include <Box2D.h>
+#include "positionPlusAngle.h"
+#include "odometrie.h"
 
 #define ROBOT_POLYGON_COUNT 17
 /** @class Robot
@@ -28,6 +29,10 @@ private:
 	class Asservissement* asservissement;
 	class Odometrie* odometrie;
 	class Strategie* strategie;
+    int leftLowerHammerStatus;
+    int leftUpperHammerStatus;
+    int rightLowerHammerStatus;
+    int rightUpperHammerStatus;
 
 	b2Body* body;
     QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];
@@ -61,6 +66,11 @@ public:
 	/** @brief Permet d'obtenir la vitesse linaire actuel du robot
         @return Retourne la vitesse linaire actuel du robot*/
 	Distance getVitesseLineaire();
+
+    QPoint getLeftUpperHammerPos() const;
+    QPoint getRightUpperHammerPos() const;
+    QPoint getLeftLowerHammerPos() const;
+    QPoint getRightLowerHammerPos() const;
 };
 
 #endif //ROBOT_H_INCLUDED

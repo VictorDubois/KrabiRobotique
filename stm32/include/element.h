@@ -1,7 +1,7 @@
 #ifndef PION_H_INCLUDED
 #define PION_H_INCLUDED
 
-#include "Position.h"
+#include "position.h"
 
 #ifndef ROBOTHW
 #include <QPainter>
