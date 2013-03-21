@@ -116,9 +116,7 @@ void ListeActions::initialiserTableauDeBase(bool is_Blue)
 
     //actions[0][0].position = Position(600,250*cote);//550*cote);
     float tmpo = 250.0f*cote;
-    #ifdef STM32F10X_CL
-        xxxeteindreLED2();
-    #endif
+
     Position p(600.0f,tmpo);
 
     actions[0][0].position = p;
