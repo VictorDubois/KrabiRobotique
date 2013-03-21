@@ -1,0 +1,377 @@
+# depslib dependency file v1.0
+1362674389 source:/home/em6/gitRobotique/stm32/Libraries/CMSIS/Core/CM3/startup/gcc/startup_stm32f10x_md.s
+
+1337027169 source:/home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/src/misc.c
+	"misc.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/inc/misc.h
+	"stm32f10x.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/CMSIS/Core/CM3/stm32f10x.h
+	"core_cm3.h"
+	"system_stm32f10x.h"
+	<stdint.h>
+	"stm32f10x_conf.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/CMSIS/Core/CM3/core_cm3.h
+	<stdint.h>
+	<intrinsics.h>
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/CMSIS/Core/CM3/system_stm32f10x.h
+
+1337027169 source:/home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c
+	"stm32f10x_adc.h"
+	"stm32f10x_rcc.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_adc.h
+	"stm32f10x.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_rcc.h
+	"stm32f10x.h"
+
+1337027169 source:/home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c
+	"stm32f10x_dma.h"
+	"stm32f10x_rcc.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_dma.h
+	"stm32f10x.h"
+
+1337027169 source:/home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c
+	"stm32f10x_gpio.h"
+	"stm32f10x_rcc.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_gpio.h
+	"stm32f10x.h"
+
+1337027169 source:/home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c
+	"stm32f10x_rcc.h"
+
+1337027169 source:/home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c
+	"stm32f10x_tim.h"
+	"stm32f10x_rcc.h"
+
+1337027169 /home/em6/gitRobotique/stm32/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_tim.h
+	"stm32f10x.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/action.cpp
+	"action.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/action.h
+	"positionPlusAngle.h"
+	"odometrie.h"
+	"constantes.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/positionPlusAngle.h
+	"position.h"
+	"angle.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/position.h
+	"angle.h"
+	"distance.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/angle.h
+
+1362673841 /home/em6/gitRobotique/stm32/include/distance.h
+
+1362673927 /home/em6/gitRobotique/stm32/include/odometrie.h
+	"constantes.h"
+	"angle.h"
+	"distance.h"
+	"positionPlusAngle.h"
+	"quadratureCoderHandler.h"
+	<stdint.h>
+	<math.h>
+
+1362673841 /home/em6/gitRobotique/stm32/include/constantes.h
+
+1362673841 /home/em6/gitRobotique/stm32/include/quadratureCoderHandler.h
+	<stdint.h>
+	"stm32f10x_tim.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/actionSuivreChemin.cpp
+	"actionSuivreChemin.h"
+	"sensors.h"
+	"command.h"
+	"strategie.h"
+	"bras.h"
+	<math.h>
+
+1362673841 /home/em6/gitRobotique/stm32/include/actionSuivreChemin.h
+	"action.h"
+	"odometrie.h"
+	"commandGoTo.h"
+	"bras.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/commandGoTo.h
+	"command.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/command.h
+	"constantes.h"
+	"positionPlusAngle.h"
+	<iostream>
+
+1362673927 /home/em6/gitRobotique/stm32/include/bras.h
+	"servo.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/servo.h
+	"pwmHandler.h"
+	"angle.h"
+	"memory.h"
+	"constantes.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/pwmHandler.h
+	"stm32f10x_tim.h"
+	"timerHandler.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/timerHandler.h
+	"stm32f10x_tim.h"
+	"stm32f10x_rcc.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/memory.h
+	<stddef.h>
+
+1362673841 /home/em6/gitRobotique/stm32/include/sensors.h
+	"sharpSensor.h"
+	"ultrasoundSensor.h"
+	"ligthBarrierSensor.h"
+	"limitSwitchSensor.h"
+	"vector.h"
+	<QKeyEvent>
+
+1362673841 /home/em6/gitRobotique/stm32/include/sharpSensor.h
+	"analogSensor.h"
+	"constantes.h"
+	<QKeyEvent>
+
+1362673927 /home/em6/gitRobotique/stm32/include/analogSensor.h
+	"sensor.h"
+	<stdint.h>
+	"stm32f10x_adc.h"
+	"stm32f10x_dma.h"
+	"stm32f10x_gpio.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/sensor.h
+
+1362673841 /home/em6/gitRobotique/stm32/include/ultrasoundSensor.h
+	"analogSensor.h"
+	"constantes.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/ligthBarrierSensor.h
+	"sensor.h"
+	"stm32f10x_gpio.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/limitSwitchSensor.h
+	"sensor.h"
+	"stm32f10x_gpio.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/vector.h
+
+1362673841 /home/em6/gitRobotique/stm32/include/strategie.h
+	"element.h"
+	<stdint.h>
+	"PositionPlusAngle.h"
+	"constantes.h"
+	"action.h"
+	"listeActions.h"
+
+1362673927 /home/em6/gitRobotique/stm32/include/element.h
+	"Position.h"
+	<QPainter>
+	"Box2D.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/listeActions.h
+	"positionPlusAngle.h"
+	"odometrie.h"
+	"action.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/analogSensor.cpp
+	"analogSensor.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/angle.cpp
+	"angle.h"
+	<math.h>
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/asservissement.cpp
+	"asservissement.h"
+	"strategie.h"
+	"bras.h"
+	"misc.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/asservissement.h
+	"stm32f10x.h"
+	"stm32f10x_tim.h"
+	"stm32f10x_rcc.h"
+	"stm32f10x_gpio.h"
+	"roues.h"
+	"sensors.h"
+	"constantes.h"
+	"odometrie.h"
+	"positionPlusAngle.h"
+	"distance.h"
+	"pidFilterDistance.h"
+	"pidFilterAngle.h"
+	"command.h"
+	<stdint.h>
+	<math.h>
+
+1362673841 /home/em6/gitRobotique/stm32/include/roues.h
+	"roue.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/roue.h
+	"constantes.h"
+	"stm32f10x_gpio.h"
+	"moteur.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/moteur.h
+	"pwmHandler.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/pidFilterDistance.h
+	"constantes.h"
+	"distance.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/pidFilterAngle.h
+	"constantes.h"
+	"angle.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/bras.cpp
+	"bras.h"
+
+1337027169 source:/home/em6/gitRobotique/stm32/src/capteurs.cpp
+	"capteurs.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/capteurs.h
+	"constantes.h"
+	"stm32f10x_adc.h"
+	"stm32f10x_dma.h"
+	"stm32f10x_gpio.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/command.cpp
+	"command.h"
+	"asservissement.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/commandGoTo.cpp
+	"commandGoTo.h"
+	"sensors.h"
+	"sharpSensor.h"
+	"odometrie.h"
+	"asservissement.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/distance.cpp
+	"distance.h"
+	<math.h>
+
+1362673927 source:/home/em6/gitRobotique/stm32/src/initialisation.cpp
+	"stm32f10x_rcc.h"
+	"stm32f10x_gpio.h"
+	"stm32f10x_tim.h"
+	"initialisation.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/initialisation.h
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/ligthBarrierSensor.cpp
+	"ligthBarrierSensor.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/limitSwitchSensor.cpp
+	"limitSwitchSensor.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/listeActions.cpp
+	"listeActions.h"
+	"actionSuivreChemin.h"
+	"stm32f10x_gpio.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/memory.cpp
+	"memory.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/moteur.cpp
+	"moteur.h"
+	"constantes.h"
+	"timerHandler.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/odometrie.cpp
+	"odometrie.h"
+	"stm32f10x_gpio.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/pidFilterAngle.cpp
+	"pidFilterAngle.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/pidFilterDistance.cpp
+	"pidFilterDistance.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/position.cpp
+	<math.h>
+	"position.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/positionPlusAngle.cpp
+	<math.h>
+	"positionPlusAngle.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/pwmHandler.cpp
+	"pwmHandler.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/quadratureCoderHandler.cpp
+	"stm32f10x.h"
+	"stm32f10x_rcc.h"
+	"stm32f10x_gpio.h"
+	"quadratureCoderHandler.h"
+
+1337027169 source:/home/em6/gitRobotique/stm32/src/rateau.cpp
+	"rateau.h"
+	"servo.h"
+
+1362673841 /home/em6/gitRobotique/stm32/include/rateau.h
+	"angle.h"
+	"servo.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/roue.cpp
+	"roue.h"
+	"stm32f10x_rcc.h"
+	<math.h>
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/roues.cpp
+	"roues.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/sensor.cpp
+	"sensor.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/sensors.cpp
+	"sensors.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/servo.cpp
+	"servo.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/sharpSensor.cpp
+	"sharpSensor.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/strategie.cpp
+	"strategie.h"
+	"odometrie.h"
+	"asservissement.h"
+	"CommandAvancerToutDroit.h"
+	"CommandTourner.h"
+	"Bras.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/stub.c
+	<errno.h>
+	<unistd.h>
+	<sys/stat.h>
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/timerHandler.cpp
+	"timerHandler.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/ultrasoundSensor.cpp
+	"ultrasoundSensor.h"
+
+1362673841 source:/home/em6/gitRobotique/stm32/src/valeursRoues.cpp
+
+1362677516 source:/home/em6/gitRobotique/stm32/src/main.cpp
+	"stm32f10x_gpio.h"
+	"initialisation.h"
+	"memory.h"
+	"servo.h"
+	"odometrie.h"
+	"asservissement.h"
+	"sensors.h"
+	"quadratureCoderHandler.h"
+	"bras.h"
+	"strategie.h"
+
