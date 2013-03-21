@@ -1,0 +1,88 @@
+############### FOND #################
+<Rect>
+	<Color>#D0D000</Color>
+	<Position> 
+		<x>0</x>
+		<y>0</y>
+	</Position>
+	<Size>
+		<x>3000</x>
+		<y>2000</y>
+	</Size>
+</Rect>
+############# FIN FOND ###############
+
+########### LIGNE  SUIVI #############
+
+Zone Bleue : 
+Contour extérieur
+<RoundedRect><Color>#000000</Color><radius>158</radius><Position><x>0</x><y>590</y></Position><Size><x>610</x><y>1600</y></Size></RoundedRect>
+Contour intérieur
+<RoundedRect><Color>#D0D000</Color><radius>142</radius><Position><x>0</x><y>610</y></Position><Size><x>590</x><y>1600</y></Size></RoundedRect>
+
+Zone Rouge : 
+Contour extérieur
+<RoundedRect><Color>#000000</Color><radius>158</radius><Position><x>2390</x><y>590</y></Position><Size><x>610</x><y>1600</y></Size></RoundedRect>
+Contour intérieur
+<RoundedRect><Color>#D0D000</Color><radius>142</radius><Position><x>2410</x><y>610</y></Position><Size><x>590</x><y>1600</y></Size></RoundedRect>
+
+Milieu : 
+Contour extérieur
+<RoundedRect><Color>#000000</Color><radius>158</radius><Position><x>590</x><y>690</y></Position><Size><x>1820</x><y>1020</y></Size></RoundedRect>
+Contour intérieur
+<RoundedRect><Color>#D0D000</Color><radius>142</radius><Position><x>610</x><y>710</y></Position><Size><x>1780</x><y>980</y></Size></RoundedRect>
+
+Barres vers cadeaux :
+<Rect><Color>#000000</Color><Position><x>1190</x><y>1700</y></Position><Size><x>20</x><y>300</y></Size></RoundedRect>
+<Rect><Color>#000000</Color><Position><x>1790</x><y>1700</y></Position><Size><x>20</x><y>300</y></Size></RoundedRect>
+
+######### FIN LIGNE  SUIVI ###########
+
+########### ZONES DEPART #############
+
+COLONNE BLEUE :
+<Rect><Color>#FFFFFF</Color><Position>	<x>0</x><y>0</y>	</Position><Size><x>400</x><y>2000</y></Size></Rect>
+<Rect><Color>#0000C0</Color><Position>	<x>0</x><y>100</y>	</Position><Size><x>400</x><y>300</y></Size></Rect>
+<Rect><Color>#0000C0</Color><Position>	<x>0</x><y>800</y>	</Position><Size><x>400</x><y>400</y></Size></Rect>
+<Rect><Color>#0000C0</Color><Position>	<x>0</x><y>1600</y>	</Position><Size><x>400</x><y>300</y></Size></Rect>
+
+Cerises:
+<Rect><Color>#000000</Color><Position>	<x>114</x><y>164</y>	</Position><Size><x>172</x><y>172</y></Size></Rect>
+<Rect><Color>#FFD5E1</Color><Position>	<x>115</x><y>165</y>	</Position><Size><x>170</x><y>170</y></Size></Rect>
+<Rect><Color>#000000</Color><Position>	<x>136</x><y>186</y>	</Position><Size><x>128</x><y>128</y></Size></Rect>
+<Rect><Color>#FFD5E1</Color><Position>	<x>137</x><y>187</y>	</Position><Size><x>126</x><y>126</y></Size></Rect>
+
+
+COLONNE ROUGE :
+<Rect><Color>#FFFFFF</Color><Position>	<x>2600</x><y>0</y>		</Position><Size><x>400</x><y>2000</y></Size></Rect>
+<Rect><Color>#C00000</Color><Position>	<x>2600</x><y>100</y>	</Position><Size><x>400</x><y>300</y></Size></Rect>
+<Rect><Color>#C00000</Color><Position>	<x>2600</x><y>800</y>	</Position><Size><x>400</x><y>400</y></Size></Rect>
+<Rect><Color>#C00000</Color><Position>	<x>2600</x><y>1600</y>	</Position><Size><x>400</x><y>300</y></Size></Rect>
+
+######### FIN ZONES DEPART ###########
+
+############## GATEAU ################
+<Ellipse><Color>#000000</Color><Center><x>1500</x><y>0</y></Center><Radius>500</Radius></Ellipse>
+<Ellipse><Color>#FFD5E1</Color><Center><x>1500</x><y>0</y></Center><Radius>499</Radius></Ellipse>
+<Ellipse><Color>#000000</Color><Center><x>1500</x><y>0</y></Center><Radius>400</Radius></Ellipse>
+<Ellipse><Color>#FFD5E1</Color><Center><x>1500</x><y>0</y></Center><Radius>399</Radius></Ellipse>
+<Ellipse><Color>#000000</Color><Center><x>1500</x><y>0</y></Center><Radius>300</Radius></Ellipse>
+<Ellipse><Color>#FFD5E1</Color><Center><x>1500</x><y>0</y></Center><Radius>299</Radius></Ellipse>
+<Ellipse><Color>#000000</Color><Center><x>1500</x><y>0</y></Center><Radius>200</Radius></Ellipse>
+<Ellipse><Color>#FFD5E1</Color><Center><x>1500</x><y>0</y></Center><Radius>195</Radius></Ellipse>
+<Rect><Color>#000000</Color><Position><x>1498</x><y>0</y></Position><Size><x>4</x><y>200</y></Size></Rect>
+
+############ FIN GATEAU ##############
+
+############   CADEAUX  ##############
+<Rect><Color>#000000</ ><Position x="0" y="2000"/><Size x="3000" y="200"/></ >
+<Rect><Color>#0000AA</ ><Position x="440" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="610" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#0000AA</ ><Position x="1040" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="1210" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#0000AA</ ><Position x="1640" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="1810" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#0000AA</ ><Position x="2240" y="1950"/><Size x="150" y="150"/></ >
+<Rect><Color>#AA0000</ ><Position x="2410" y="1950"/><Size x="150" y="150"/></ >
+###########  FIN CADEAUX  #############
+
