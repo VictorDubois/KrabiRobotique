@@ -3,6 +3,7 @@
 
 #include "stm32f10x_gpio.h"
 
+<<<<<<< HEAD
 #undef STM32F10X_CL // pour le simulateur, parce que un des fichiers définit cette macro et ne devrait pas. a commenter lors de la compil
 // allume ou éteint une LED
 void xxxallumerLED()
@@ -39,6 +40,9 @@ void xxxeteindreLED2()
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
 #endif
 }
+=======
+
+>>>>>>> f5ed8f38c3cf916f6ff19ae941db137702cbe8a9
 
 ListeActions::ListeActions(Odometrie* odo, bool is_Blue)
 {
@@ -89,97 +93,96 @@ void ListeActions::initialiserTableauDeBase(bool is_Blue)
     for(int i = 0 ; i < nbActionsMax ; i++)
         nbActionsBase[i] = 0;
 
-if (is_Blue) // Violet
-{
-// HOMOLOGATION
+    if (is_Blue) // Violet
+    {
+    // HOMOLOGATION
 
-actions[0]=new ActionBase[4];
-actions[0][0].position = Position(1100,600*cote);//550*cote);
-//actions[0][0].position = Position(760,0*cote);//550*cote);
-actions[0][1].position = Position(260,800*cote);//1000*cote);
-actions[0][1].balaiGauche = true;
-actions[0][2].position = Position(700,800*cote);//550*cote);
-actions[0][2].reculer = true; // a reculon
-actions[0][2].wait = 5000;
-nbActionsBase[0] = 3;
+    actions[0]=new ActionBase[4];
+    actions[0][0].position = Position(1100,600*cote);//550*cote);
+    //actions[0][0].position = Position(760,0*cote);//550*cote);
+    actions[0][1].position = Position(260,800*cote);//1000*cote);
+    actions[0][1].balaiGauche = true;
+    actions[0][2].position = Position(700,800*cote);//550*cote);
+    actions[0][2].reculer = true; // a reculon
+    actions[0][2].wait = 5000;
+    nbActionsBase[0] = 3;
 
-// *******************
-/*
-actions[0]=new ActionBase[8];
-actions[0][0].position = Position(600,250*cote);//550*cote);
-actions[0][1].position = Position(1350,760*cote);//1000*cote);
-actions[0][2].position = Position(1100,780*cote);//1000*cote);
-actions[0][2].reculer=true;
-actions[0][2].balaiDroit=true;
-actions[0][2].desactiveCapteur=true;
-actions[0][2].rateau=false;
-actions[0][3].position = Position(650,780*cote);//780*cote);//1000*cote);
-actions[0][3].reculer=true;
-actions[0][3].balaiDroit=true;
-actions[0][3].desactiveCapteur=true;
-actions[0][3].rateau=false;
-actions[0][4].position = Position(750,1000*cote);//300#1000#//1000*cote);
-actions[0][5].position = Position(750,1200*cote);
-actions[0][6].position = Position(300,850*cote);//550*cote);
-actions[0][6].rateau=false;
-actions[0][7].position = Position(700,800*cote);//550*cote);
-actions[0][7].reculer = true; // a reculon
-nbActionsBase[0] = 7;
-*/
-}
-else //Rouge
-{
+    // *******************
+    /*
+    actions[0]=new ActionBase[8];
+    actions[0][0].position = Position(600,250*cote);//550*cote);
+    actions[0][1].position = Position(1350,760*cote);//1000*cote);
+    actions[0][2].position = Position(1100,780*cote);//1000*cote);
+    actions[0][2].reculer=true;
+    actions[0][2].balaiDroit=true;
+    actions[0][2].desactiveCapteur=true;
+    actions[0][2].rateau=false;
+    actions[0][3].position = Position(650,780*cote);//780*cote);//1000*cote);
+    actions[0][3].reculer=true;
+    actions[0][3].balaiDroit=true;
+    actions[0][3].desactiveCapteur=true;
+    actions[0][3].rateau=false;
+    actions[0][4].position = Position(750,1000*cote);//300#1000#//1000*cote);
+    actions[0][5].position = Position(750,1200*cote);
+    actions[0][6].position = Position(300,850*cote);//550*cote);
+    actions[0][6].rateau=false;
+    actions[0][7].position = Position(700,800*cote);//550*cote);
+    actions[0][7].reculer = true; // a reculon
+    nbActionsBase[0] = 7;
+    */
+    }
+    else //Rouge
+    {
 
-//HOMOLOGATION
-/*
-actions[0]=new ActionBase[3];
-actions[0][0].position = Position(1100,600*cote);//550*cote);
-actions[0][1].position = Position(240,800*cote);//1000*cote);
-actions[0][1].balaiDroit = true;
-actions[0][2].position = Position(700,670*cote);//550*cote);
-actions[0][2].reculer = true; // a reculon
-actions[0][2].wait = 1500;
-actions[0][3].position = Position(1350,670*cote);//550*cote);
-nbActionsBase[0] = 2;
-*/
-// *******************
-
-
-
-
-actions[0]=new ActionBase[8];
-
-//actions[0][0].position = Position(600,250*cote);//550*cote);
-float tmpo = 250.0f*cote;
-
-xxxeteindreLED2();
-Position p(600.0f,tmpo);
-
-actions[0][0].position = p;
-
-actions[0][1].position = Position(1350,740*cote);//1000*cote);
-actions[0][2].position = Position(1100,750*cote);//1000*cote);
-actions[0][2].reculer=true;
-actions[0][2].balaiGauche=true;
-actions[0][2].desactiveCapteur=true;
-actions[0][2].rateau=false;
-
-actions[0][3].position = Position(600,800*cote);//780*cote);//1000*cote);
-actions[0][3].reculer=true;
-actions[0][3].balaiGauche=true;
-actions[0][3].desactiveCapteur=true;
-actions[0][3].rateau=false;
-actions[0][4].position = Position(720,1000*cote);//300#1000#//1000*cote);
-actions[0][5].position = Position(720,1200*cote);
-actions[0][6].position = Position(300,850*cote);//550*cote);
-actions[0][6].rateau=false;
-actions[0][7].position = Position(800,600*cote);//550*cote);
-actions[0][7].reculer = true; // a reculon
-nbActionsBase[0] = 8;
+    //HOMOLOGATION
+    /*
+    actions[0]=new ActionBase[3];
+    actions[0][0].position = Position(1100,600*cote);//550*cote);
+    actions[0][1].position = Position(240,800*cote);//1000*cote);
+    actions[0][1].balaiDroit = true;
+    actions[0][2].position = Position(700,670*cote);//550*cote);
+    actions[0][2].reculer = true; // a reculon
+    actions[0][2].wait = 1500;
+    actions[0][3].position = Position(1350,670*cote);//550*cote);
+    nbActionsBase[0] = 2;
+    */
+    // *******************
 
 
 
-}
+
+    actions[0]=new ActionBase[8];
+
+    //actions[0][0].position = Position(600,250*cote);//550*cote);
+    float tmpo = 250.0f*cote;
+
+    Position p(600.0f,tmpo);
+
+    actions[0][0].position = p;
+
+    actions[0][1].position = Position(1350,740*cote);//1000*cote);
+    actions[0][2].position = Position(1100,750*cote);//1000*cote);
+    actions[0][2].reculer=true;
+    actions[0][2].balaiGauche=true;
+    actions[0][2].desactiveCapteur=true;
+    actions[0][2].rateau=false;
+
+    actions[0][3].position = Position(600,800*cote);//780*cote);//1000*cote);
+    actions[0][3].reculer=true;
+    actions[0][3].balaiGauche=true;
+    actions[0][3].desactiveCapteur=true;
+    actions[0][3].rateau=false;
+    actions[0][4].position = Position(720,1000*cote);//300#1000#//1000*cote);
+    actions[0][5].position = Position(720,1200*cote);
+    actions[0][6].position = Position(300,850*cote);//550*cote);
+    actions[0][6].rateau=false;
+    actions[0][7].position = Position(800,600*cote);//550*cote);
+    actions[0][7].reculer = true; // a reculon
+    nbActionsBase[0] = 8;
+
+
+
+    }
 
    /* actions[1]=new ActionBase[8];
     actions[1][0].position = Position(740,1400*cote);//3c

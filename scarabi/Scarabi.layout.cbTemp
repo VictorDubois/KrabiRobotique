@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="Constante.h" open="1" top="0" tabpos="2">
+		<Cursor position="228" topLine="0" />
+	</File>
+	<File name="Diode.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="157" topLine="0" />
+	</File>
+	<File name="Diode.h" open="1" top="0" tabpos="8">
+		<Cursor position="174" topLine="0" />
+	</File>
+	<File name="Move.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="942" topLine="33" />
+	</File>
+	<File name="Move.h" open="1" top="0" tabpos="3">
+		<Cursor position="609" topLine="28" />
+	</File>
+	<File name="Scarabi.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="423" topLine="0" />
+	</File>
+	<File name="Scarabi.h" open="1" top="0" tabpos="11">
+		<Cursor position="174" topLine="0" />
+	</File>
+	<File name="Sensor.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="Sensor.h" open="1" top="0" tabpos="7">
+		<Cursor position="47" topLine="0" />
+	</File>
+	<File name="Sharp.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="296" topLine="0" />
+	</File>
+	<File name="Sharp.h" open="1" top="0" tabpos="5">
+		<Cursor position="181" topLine="0" />
+	</File>
+	<File name="scarabi.ino" open="1" top="1" tabpos="1">
+		<Cursor position="3578" topLine="63" />
+	</File>
+</CodeBlocks_layout_file>
