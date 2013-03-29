@@ -1,3 +1,5 @@
+#define SIMULATEUR
+
 #include <QApplication>
 #include "simul/main.h"
 #include "simul/main_window.h"
