@@ -15,10 +15,12 @@ class Strategie: public Singleton<Strategie> {
     friend class Singleton<Strategie>;
 private:
     Sensors* sensors;
-	int goalPosition[2];
+	Position goalPosition;
+	Angle goalAngle;
 	bool mustMove;
     bool isBlue;
     Odometrie* odometrie;
+    int updateCallsCount; /// Contains the number of update function calls
 	/**
 	 * Intermediate positions to reach the goal, if any. This is use to avoid colliding other robots or being blocked
 	 */

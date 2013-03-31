@@ -6,7 +6,7 @@
 class RamasserVerre : public MediumLevelAction {
 
 public:
-    RamasserVerre(int posX = -1, int posY = -1);
+    RamasserVerre(Position position = Position(-1,-1));
     virtual ~RamasserVerre();
 
 	virtual int update();

@@ -7,12 +7,14 @@ class ActionnerMarteau : public LowLevelAction {
 
 private:
 	int AX12ID;
+	int goalAngle;
+	int speed;
 
 public:
-    ActionnerMarteau(int AX12ID = 0);
+    ActionnerMarteau(int AX12ID = 0, int goalAngle = 0x00, int speed = 0x00);
     virtual ~ActionnerMarteau();
     /**
-     * Update 
+     * Update
      */
 	virtual bool update();
 };

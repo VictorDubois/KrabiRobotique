@@ -13,7 +13,7 @@ public:
 
 private:
 	/**
-	 * used for internal status managing
+	 * used for internal status managing. Can be used to count the number of calls to update.
 	 */
 	int status;
 };
