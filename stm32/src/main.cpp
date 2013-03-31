@@ -89,46 +89,15 @@ int main()
 
 
     ///// DEBUT TEST
-QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
+//QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
 // test
   // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
 #define PSDFSD 8474576
 
-   //while (1)
-   //{
-        /*if (roueDroite->getTickValue() > 0)
-            allumerLED2();
-        else
-            eteindreLED2();*/
-  /*      if (roueGauche->getTickValue() != 0)
-            allumerLED();
-        else
-            eteindreLED();*/
-/*
-int16_t truc = roueDroite->getTickValue() ;
-        if (truc < 0)
-        {
-            allumerLED2();
-            eteindreLED();
-        }
-        else if (truc > 0)
-        {
-             allumerLED();
-            eteindreLED2();
-        }
-        else
-        {
-            eteindreLED2();
-            eteindreLED();
-        }
-
-        for (int i = 0 ; i < 84745 ; i++);
-
-=======
     ///// DEBUT TEST
     QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
     //roueDroite->getTickValue() pour obtenir les ticks.
-*/
+
     // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
 #define PSDFSD 8474576
     bool a = true;
