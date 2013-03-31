@@ -1,6 +1,7 @@
 #ifndef ACTIONNERMARTEAU_H_INCLUDED
 #define ACTIONNERMARTEAU_H_INCLUDED
 
+
 #include "lowLevelAction.h"
 
 class ActionnerMarteau : public LowLevelAction {

@@ -23,8 +23,8 @@ Position getCaseCenter(unsigned int i, unsigned int j)
 b2AABB Table::getWorldAABB()
 {
 	b2AABB a;
-	a.lowerBound.Set(-100,-100);
-	a.upperBound.Set(tableWidth+100, tableHeight+100);
+    a.lowerBound.Set(0,0);
+    a.upperBound.Set(tableWidth, tableHeight);
 	return a;
 }
 
@@ -45,24 +45,24 @@ Table::Table(QWidget* parent) :
 	setPalette(p);
 
     //création des robots
-	robots.push_back(new Robot(world));
+    robots.push_back(new Robot(world));
 
 	//création des verres
 	// côté bleu
-	objets.push_back(new Objet(world, Position(900.,650.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1200.,650.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1050.,900.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1350.,900.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(900.,1150.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1200.,1150.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(900.,550.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1200.,550.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1050.,800.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1350.,800.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(900.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1200.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
 
 	// côté rouge
-	objets.push_back(new Objet(world, Position(2100.,650.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1800.,650.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1950.,900.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1650.,900.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(2100.,1150.), Objet::glass, 0, QColor(170, 170, 170)));
-	objets.push_back(new Objet(world, Position(1800.,1150.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(2100.,550.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1800.,550.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1950.,800.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1650.,800.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(2100.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1800.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
 
 
 
@@ -89,30 +89,30 @@ Table::Table(QWidget* parent) :
 #define CreateFixture CreateShape
 #endif
 	// bordures
-	box.SetAsBox(30,1, b2Vec2(0,0),0);
+    box.SetAsBox(30,0, b2Vec2(0,0),0);
 	tableBody->CreateFixture(&fixture);
 
-	box.SetAsBox(1,20, b2Vec2(-1,0),0);
+    box.SetAsBox(0,20, b2Vec2(0,0),0);
 	tableBody->CreateFixture(&fixture);
 
-	box.SetAsBox(1,20, b2Vec2(31,0),0);
+    box.SetAsBox(0,20, b2Vec2(30,0),0);
 	tableBody->CreateFixture(&fixture);
 
-	box.SetAsBox(30,1, b2Vec2(0,22),0);
+    box.SetAsBox(30,0, b2Vec2(0,20),0);
 	tableBody->CreateFixture(&fixture);
     // fin bordures
 
     // plateaux blancs bords zones départ
-    box.SetAsBox(4,1, b2Vec2(0,1),0);
+    box.SetAsBox(4,1, b2Vec2(0,0),0);
     tableBody->CreateFixture(&fixture);
 
-    box.SetAsBox(4,1, b2Vec2(30,1),0);
+    box.SetAsBox(4,1, b2Vec2(30,0),0);
     tableBody->CreateFixture(&fixture);
 
-    box.SetAsBox(4,1, b2Vec2(0,21),0);
+    box.SetAsBox(4,1, b2Vec2(0,20),0);
     tableBody->CreateFixture(&fixture);
 
-    box.SetAsBox(4,1, b2Vec2(30,21),0);
+    box.SetAsBox(4,1, b2Vec2(30,20),0);
     tableBody->CreateFixture(&fixture);
 
 	// gateau
@@ -120,7 +120,7 @@ Table::Table(QWidget* parent) :
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circle;
 	circle.m_radius = 5.f;
-	circle.m_p.Set(15.,21.);
+    circle.m_p.Set(15.,20.);
 	tableBody->CreateFixture(&fixtureDef);
 
 	// load the graphics of the game.
@@ -259,6 +259,7 @@ void Table::paintEvent(QPaintEvent* evt)
 	CommandGoTo::deletePath(path);
 	}
 */
+    evt->ignore();
 }
 
 void Table::keyPressEvent(QKeyEvent* evt, bool press)
