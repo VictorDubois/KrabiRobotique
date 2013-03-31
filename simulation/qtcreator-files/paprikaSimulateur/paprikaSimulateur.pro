@@ -3,7 +3,7 @@ TEMPLATE = app
 CONFIG += qt debug
 QT += core gui
 
-INCLUDEPATH += ../../include/simul ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D
+INCLUDEPATH += ../../include/simul ../../include/strategie ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D
 
 LIBS += -L/usr/local/lib/ -lBox2D
 
@@ -24,8 +24,7 @@ HEADERS += \
     ../../include/position.h \
     ../../include/sensors.h \
     ../../include/positionPlusAngle.h \
-    ../../include/asservissement.h \
-    ../../include/strategie.h \
+	../../include/asservissement.h \
     ../../include/command.h \
     ../../include/ultrasoundSensor.h \
     ../../include/sharpSensor.h \
@@ -41,7 +40,19 @@ HEADERS += \
     ../../include/action.h \
     ../../include/actionSuivreChemin.h \
     ../../include/bras.h \
-    ../../include/simul/bougie.h
+    ../../include/simul/bougie.h \
+    ../../../stm32/include/strategie/strategie.h \
+    ../../../stm32/include/strategie/singleton.h \
+    ../../../stm32/include/strategie/regarderCouleur.h \
+    ../../../stm32/include/strategie/ramasserVerre.h \
+    ../../../stm32/include/strategie/mediumLevelAction.h \
+    ../../../stm32/include/strategie/lowLevelAction.h \
+    ../../../stm32/include/strategie/lancerAscenseur.h \
+    ../../../stm32/include/strategie/eteindreBougie.h \
+    ../../../stm32/include/strategie/actionnerPortes.h \
+    ../../../stm32/include/strategie/actionnerMarteau.h \
+    ../../../stm32/include/strategie/actionnerAscenseur.h \
+    ../../include/servo.h
 
 SOURCES += \
     ../../src/simul/main.cpp \
@@ -58,8 +69,7 @@ SOURCES += \
     ../../src/position.cpp \
     ../../src/sensors.cpp \
     ../../src/positionPlusAngle.cpp \
-    ../../src/asservissement.cpp \
-    ../../src/strategie.cpp \
+	../../src/asservissement.cpp \
     ../../src/command.cpp \
     ../../src/ultrasoundSensor.cpp \
     ../../src/sharpSensor.cpp \
@@ -75,4 +85,15 @@ SOURCES += \
     ../../src/action.cpp \
     ../../src/actionSuivreChemin.cpp \
     ../../src/bras.cpp \
-    ../../src/simul/bougie.cpp
+    ../../src/simul/bougie.cpp \
+    ../../../stm32/src/strategie/strategie.cpp \
+    ../../../stm32/src/strategie/regarderCouleur.cpp \
+    ../../../stm32/src/strategie/ramasserVerre.cpp \
+    ../../../stm32/src/strategie/mediumLevelAction.cpp \
+    ../../../stm32/src/strategie/lowLevelAction.cpp \
+    ../../../stm32/src/strategie/lancerAscenseur.cpp \
+    ../../../stm32/src/strategie/eteindreBougie.cpp \
+    ../../../stm32/src/strategie/actionnerPortes.cpp \
+    ../../../stm32/src/strategie/actionnerMarteau.cpp \
+    ../../../stm32/src/strategie/actionnerAscenseur.cpp \
+    ../../src/servo.cpp

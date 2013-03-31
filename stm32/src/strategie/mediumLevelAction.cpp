@@ -1,9 +1,9 @@
 #include "mediumLevelAction.h"
 
-MediumLevelAction::MediumLevelAction(Position robotPosition, vector<LowLevelAction*> actions)
+MediumLevelAction::MediumLevelAction(Position position, int numberOfActions)
 {
-    this->robotPosition = robotPosition;
-    this->actionsToDo = actions;
+    this->robotPosition = position;
+    this->numberOfActions = numberOfActions;
     this->status = 0;
 }
 MediumLevelAction::~MediumLevelAction()
@@ -14,12 +14,12 @@ int MediumLevelAction::update() {
 
 }
 
-const Position& MediumLevelAction::getRobotPosition()
+Position MediumLevelAction::getRobotPosition()
 {
     return this->robotPosition;
 }
 
-void MediumLevelAction::setRobotPosition(const Position& position)
+void MediumLevelAction::setRobotPosition(Position position)
 {
     this->robotPosition = position;
 }

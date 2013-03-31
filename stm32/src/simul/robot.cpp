@@ -58,13 +58,15 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 	asservissement = new Asservissement(odometrie);
 
-	strategie = new Strategie(true, odometrie);
+    strategie = Strategie::getInstance();
+    Strategie::getInstance()->setOdometrie(odometrie);
+    strategie->setup();
 
 
 
 	//asservissement->strategie = strategie;
 
-
+    odometrie->setPos(PositionPlusAngle(Position(200,450), 0));
 	pos = odometrie->getPos();
 	deriv.position.x = 0;
 	deriv.position.y = 0;
@@ -254,7 +256,7 @@ void Robot::paint(QPainter &p, int dt)
 
 	}
 
-	p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle));
+    p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle));
 
 
 	p.setPen(QColor(Qt::black));
