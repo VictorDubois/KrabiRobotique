@@ -86,6 +86,13 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
+
+    ///// DEBUT TEST
+//QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
+// test
+  // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
+
+
     ///// DEBUT TEST
     QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
     //roueDroite->getTickValue() pour obtenir les ticks.
