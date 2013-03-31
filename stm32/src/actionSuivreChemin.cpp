@@ -157,7 +157,7 @@ void ActionSuivreChemin::affectePosRobotAdverse(int capteursOuverts, int cote)
 bool ActionSuivreChemin::executer()
 {
     strategieNormal=false;
-    int cote=Strategie::strategie->Strategie::is_blue ? 1:-1;
+    int cote=Strategie::getInstance()->getIsBlue() ? 1:-1;
     int timerCollision=0;
     Position positionActuelle = odometrie->getPos().getPosition();
     Angle angle = odometrie->getPos().getAngle();
