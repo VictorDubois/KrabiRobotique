@@ -2,7 +2,7 @@
 #define ACTION_H
 
 #include "positionPlusAngle.h"
-#include "odometrie.h"
+//#include "odometrie.h"
 //#include "commandGoTo.h"
 #include "constantes.h"
 
