@@ -9,7 +9,7 @@ class CommandGoTo : public Command
     public:
         /** @brief Constructeur de classe utiliser pour ordonner au robot d'aller à une position donnée (l'angle d'arrivé n'a pas d'importance, la vitesse linéaire et angulaire est nulle à la fin, le robot avance sans reculer)
         *   @param DestinationFinale Position final que doit avoir le robot */
-        CommandGoTo(Position DestinationFinale);
+        CommandGoTo(Position DestinationFinale = Position(0,0));
 
         /** @brief Constructeur de classe utiliser pour ordonner au robot d'aller à une position donnée (l'angle d'arrivé n'a pas d'importance, la vitesse linéaire et angulaire est nulle à la fin)
         *   @param DestinationFinale Position final que doit avoir le robot
