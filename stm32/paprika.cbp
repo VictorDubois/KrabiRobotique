@@ -5,6 +5,7 @@
 		<Option title="Happy Birthday" />
 		<Option pch_mode="2" />
 		<Option compiler="gnu_gcc_compiler__stm32" />
+		<Option virtualFolders="src/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="main.out" prefix_auto="0" extension_auto="0" />
@@ -31,6 +32,7 @@
 			<Add directory="include" />
 			<Add directory="Libraries/CMSIS/Core/CM3" />
 			<Add directory="Libraries/STM32F10x_StdPeriph_Driver/inc" />
+			<Add directory="include/strategie" />
 		</Compiler>
 		<Linker>
 			<Add option="-Tstm32LinkerScript.cmd" />
@@ -68,7 +70,9 @@
 		<Unit filename="include/angle.h" />
 		<Unit filename="include/asservissement.h" />
 		<Unit filename="include/ax12api.h" />
-		<Unit filename="include/bras.h" />
+		<Unit filename="include/bras.h">
+			<Option virtualFolder="src/" />
+		</Unit>
 		<Unit filename="include/capteurs.h" />
 		<Unit filename="include/command.h" />
 		<Unit filename="include/commandGoTo.h" />
@@ -96,7 +100,17 @@
 		<Unit filename="include/sensors.h" />
 		<Unit filename="include/servo.h" />
 		<Unit filename="include/sharpSensor.h" />
-		<Unit filename="include/strategie.h" />
+		<Unit filename="include/strategie/actionnerAscenseur.h" />
+		<Unit filename="include/strategie/actionnerMarteau.h" />
+		<Unit filename="include/strategie/actionnerPortes.h" />
+		<Unit filename="include/strategie/eteindreBougie.h" />
+		<Unit filename="include/strategie/lancerAscenseur.h" />
+		<Unit filename="include/strategie/lowLevelAction.h" />
+		<Unit filename="include/strategie/mediumLevelAction.h" />
+		<Unit filename="include/strategie/ramasserVerre.h" />
+		<Unit filename="include/strategie/regarderCouleur.h" />
+		<Unit filename="include/strategie/singleton.h" />
+		<Unit filename="include/strategie/strategie.h" />
 		<Unit filename="include/timerHandler.h" />
 		<Unit filename="include/ultrasoundSensor.h" />
 		<Unit filename="include/vector.h" />
@@ -132,7 +146,16 @@
 		<Unit filename="src/sensors.cpp" />
 		<Unit filename="src/servo.cpp" />
 		<Unit filename="src/sharpSensor.cpp" />
-		<Unit filename="src/strategie.cpp" />
+		<Unit filename="src/strategie/actionnerAscenseur.cpp" />
+		<Unit filename="src/strategie/actionnerMarteau.cpp" />
+		<Unit filename="src/strategie/actionnerPortes.cpp" />
+		<Unit filename="src/strategie/eteindreBougie.cpp" />
+		<Unit filename="src/strategie/lancerAscenseur.cpp" />
+		<Unit filename="src/strategie/lowLevelAction.cpp" />
+		<Unit filename="src/strategie/mediumLevelAction.cpp" />
+		<Unit filename="src/strategie/ramasserVerre.cpp" />
+		<Unit filename="src/strategie/regarderCouleur.cpp" />
+		<Unit filename="src/strategie/strategie.cpp" />
 		<Unit filename="src/stub.c">
 			<Option compilerVar="CC" />
 		</Unit>
