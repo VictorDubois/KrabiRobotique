@@ -1,13 +1,13 @@
 #include "regarderCouleur.h"
 
-RegarderCouleur::LowLevelAction(Sensors* sensors = NULL)
+RegarderCouleur::RegarderCouleur(Sensors* sensors)
 {
     this->sensors = sensors;
 }
-RegarderCouleur::~LowLevelAction()
+RegarderCouleur::~RegarderCouleur()
 {
 }
 
-virtual bool RegarderCouleur::update() {
-    throw "not implemented yet";
+bool RegarderCouleur::update() {
+
 }

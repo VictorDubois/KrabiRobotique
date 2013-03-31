@@ -2,11 +2,12 @@
 #define LANCERASCENSEUR_H_INCLUDED
 
 #include "lowLevelAction.h"
+#include "moteur.h"
 
 class LancerAscenseur : public LowLevelAction {
 
 public:
-    LancerAscenseur(int speed = 0, Moteur* motor = NULL);
+    LancerAscenseur(int speed = 0, Moteur* motor = 0);
     virtual ~LancerAscenseur();
 
 	/**

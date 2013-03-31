@@ -2,6 +2,7 @@
 #define ACTIONNERASCENSEUR_H_INCLUDED
 
 #include "lowLevelAction.h"
+#include "servo.h"
 
 class ActionnerAscenseur : public LowLevelAction {
 
@@ -10,7 +11,8 @@ private:
 	bool fermer;
 
 public:
-    ActionnerAscenseur(Servo* servos[2] = {NULL,NULL});
+    ActionnerAscenseur();
+    ActionnerAscenseur(Servo* servos[2]);
     virtual ~ActionnerAscenseur();
 
     /**

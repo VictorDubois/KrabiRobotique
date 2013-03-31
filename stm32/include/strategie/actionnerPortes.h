@@ -2,7 +2,7 @@
 #define ACTIONNERPORTES_H_INCLUDED
 
 #include "lowLevelAction.h"
-
+#include "servo.h"
 
 class ActionnerPortes : public LowLevelAction {
 
@@ -11,7 +11,8 @@ private:
 	bool close;
 
 public:
-    ActionnerPortes(Servo* servos[2] = {NULL,NULL}, bool close = false);
+    ActionnerPortes(bool close = false);
+    ActionnerPortes(Servo* servos[2], bool close = false);
     virtual ~ActionnerPortes();
     /**
      * Update continues to trigger the gates (if necessary). It answers true only if the doors have finished moving.

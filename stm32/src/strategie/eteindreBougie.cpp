@@ -6,9 +6,9 @@ EteindreBougie::EteindreBougie(int rotation, bool our, bool triggered)
     this->our = our;
     this->triggered = triggered;
 }
-virtual EteindreBougie::~EteindreBougie()
+EteindreBougie::~EteindreBougie()
 {
 }
-virtual int EteindreBougie::update() {
-	throw "Not yet implemented";
+int EteindreBougie::update() {
+
 }

@@ -1,26 +1,28 @@
 #include "mediumLevelAction.h"
 
-MediumLevelAction::MediumLevelAction(int posX, int posY, std::vector<LowLevelAction*> actions)
+MediumLevelAction::MediumLevelAction(int posX, int posY, vector<LowLevelAction*> actions)
 {
-    this->robotPosition[0] = posX;  
+    this->robotPosition[0] = posX;
     this->robotPosition[1] = posY;
     this->actionsToDo = actions;
     this->status = 0;
 }
-virtual MediumLevelAction::~MediumLevelAction()
+MediumLevelAction::~MediumLevelAction()
 {
 }
 
-virtual int MediumLevelAction::update() {
-	throw "Not yet implemented";
+int MediumLevelAction::update() {
+
 }
 
-int MediumLevelAction::getRobotPosition() {
-	return this->robotPosition;
+void MediumLevelAction::getRobotPosition(int* ptr) {
+	*ptr = this->robotPosition[0];
+    *(ptr+1) = this->robotPosition[1];
 }
 
-void MediumLevelAction::setRobotPosition(int robotPosition) {
-	this->robotPosition = robotPosition;
+void MediumLevelAction::setRobotPosition(int* robotPosition) {
+	this->robotPosition[0] = *robotPosition;
+	this->robotPosition[1] = *(robotPosition+1);
 }
 
 int MediumLevelAction::getStatus() {

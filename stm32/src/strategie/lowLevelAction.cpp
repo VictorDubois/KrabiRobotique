@@ -1,12 +1,12 @@
 #include "lowLevelAction.h"
 
-LowLevelAction::LowLevelAction(int status) 
+LowLevelAction::LowLevelAction(int status)
 {
     this->status = status;
 }
-virtual LowLevelAction::~LowLevelAction()
+LowLevelAction::~LowLevelAction()
 {
 }
 bool LowLevelAction::update() {
-	throw "Not yet implemented";
+
 }
