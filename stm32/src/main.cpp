@@ -94,10 +94,11 @@ int main()
 
 
     ///// DEBUT TEST
-    QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
+    //QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
     //roueDroite->getTickValue() pour obtenir les ticks.
 
     // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
+/*
 #define PSDFSD 8474576
     bool a = true;
 
@@ -108,7 +109,7 @@ int main()
 
 
     int packet[11];
-
+*/
     //while(1) {
     /*
         allumerLED2();
@@ -171,7 +172,7 @@ int main()
     for (int i = 0 ; i < 847450 ; i++) {};
 */
 //            ServosNumeriques_sendData(packet[i]);
-
+/*
     ServosNumeriques::setLedState(0, 0x02);
     for (int i = 0 ; i < 847450 ; i++) {};
     ServosNumeriques::setLedState(1, 0x02);
@@ -198,7 +199,7 @@ int main()
 
     while(1) {}
 
-
+*/
     /*while (1)
     {
 
@@ -252,18 +253,23 @@ int main()
         new Sensors();
     #endif
 
-    Odometrie* odometrie = new Odometrie(new QuadratureCoderHandler(TIM1), new QuadratureCoderHandler(TIM2));
+    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
+    QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
+    Odometrie* odometrie = new Odometrie(rcg, rcd);
 
-    new Asservissement(odometrie);  // On définit l'asservissement
 
-    Servo::initTimer();     // A faire avant toute utilisation de servo
+    new Strategie(isBlue(), odometrie);
+    Asservissement* asserv = new Asservissement(odometrie);  // On définit l'asservissement
+
+
+ //   Servo::initTimer();     // A faire avant toute utilisation de servo
 
   /*   new Bras();
    Bras::bras->monterRateau();
     Bras::bras->fermerBalaiDroit();
     Bras::bras->fermerBalaiGauche();*/
 
-    new Strategie(isBlue(),odometrie);
+ //   new Strategie(isBlue(),odometrie);
 
 
     while(1);
