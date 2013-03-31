@@ -23,7 +23,7 @@
 #define CLOCK_TIMER_MOTEUR Timer::Div1
 
 // TRAPEZOIDALCOMMAND
-#define DISTANCE_ARRET 100 // 15
+#define DISTANCE_ARRET 10 // 15
 #define ANGLE_ARRET 0.08 //0.08
 
 // Asservissement

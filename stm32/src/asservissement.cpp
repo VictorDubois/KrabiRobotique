@@ -130,7 +130,8 @@ else
         sensors->update();
 #endif
 
-            Strategie::getInstance()->update();
+
+        Strategie::getInstance()->update();
 
         if (command != NULL) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
         {
