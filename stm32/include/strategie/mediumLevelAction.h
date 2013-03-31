@@ -3,16 +3,17 @@
 
 #include "vector.h"
 #include "lowLevelAction.h"
+#include "position.h"
 
 class MediumLevelAction {
 
 private:
 	vector<LowLevelAction*> actionsToDo;
 	int status;
-	int robotPosition[2];
+	Position robotPosition;
 
 public:
-    MediumLevelAction(int posX = -1, int posY = -1, vector<LowLevelAction*> actions = vector<LowLevelAction*>(0));
+    MediumLevelAction(Position robotPosition = Position(-1,-1), vector<LowLevelAction*> actions = vector<LowLevelAction*>(0));
     virtual ~MediumLevelAction();
 	/**
 	 * Renvoie la variable statut.
@@ -25,9 +26,9 @@ public:
 	 */
 	virtual int update();
 
-	void getRobotPosition(int* ptr);
+	const Position& getRobotPosition();
 
-	void setRobotPosition(int robotPosition[2]);
+	void setRobotPosition(const Position& position);
 
 	int getStatus();
 

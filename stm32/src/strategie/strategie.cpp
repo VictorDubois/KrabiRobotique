@@ -4,6 +4,8 @@ Strategie::Strategie(bool isBlue, Odometrie* odometrie)
 {
     this->isBlue = isBlue;
     this->odometrie = odometrie;
+    this->updateCallsCount = 0;
+    this->mustMove = false;
 }
 Strategie::~Strategie()
 {
@@ -11,7 +13,7 @@ Strategie::~Strategie()
 }
 
 void Strategie::setup() {
-
+    actions[] =
 }
 
 bool Strategie::update() {
@@ -24,11 +26,13 @@ void Strategie::goToTarget() {
     Angle angle = pos_plus_angle.getAngle();
 
 
+
 	Sensors::SharpNameVector* sharpsDatDetect = sensors->detectedSharp();
     if (sharpsDatDetect->getSize() > 0) // have to find a new path
     {
 
     }
+
 
 }
 

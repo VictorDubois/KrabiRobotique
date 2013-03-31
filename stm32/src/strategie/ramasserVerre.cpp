@@ -1,6 +1,6 @@
 #include "ramasserVerre.h"
 
-RamasserVerre::RamasserVerre(int posX, int posY) : MediumLevelAction(posX, posY)
+RamasserVerre::RamasserVerre(Position position) : MediumLevelAction(position)
 {
 
 }
