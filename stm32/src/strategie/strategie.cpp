@@ -1,26 +1,35 @@
 #include "strategie.h"
 
-bool Strategie::setup() {
-	
+Strategie::Strategie(bool isBlue, Odometrie* odometrie)
+{
+    this->isBlue = isBlue;
+    this->odometrie = odometrie;
+}
+Strategie::~Strategie()
+{
+
+}
+
+void Strategie::setup() {
+
 }
 
 bool Strategie::update() {
-	throw "Not yet implemented";
+    return true;
 }
 
 void Strategie::goToTarget() {
-	PositionPlusAngle pos_plus_angle = Odometrie::getPos();
+	PositionPlusAngle pos_plus_angle = odometrie->getPos();
     Position pos = pos_plus_angle.getPosition();
     Angle angle = pos_plus_angle.getAngle();
 
-    
-	SharpNameVector* sharpsDatDetect = sensors->detectedSharp();
-    if (sharpsDatDetect->size() > 0) // have to find a new path
+
+	Sensors::SharpNameVector* sharpsDatDetect = sensors->detectedSharp();
+    if (sharpsDatDetect->getSize() > 0) // have to find a new path
     {
-        
+
     }
-    
-    return true;
+
 }
 
 int Strategie::getLastRobotDetection() {
@@ -31,6 +40,13 @@ bool Strategie::getMustMove() {
 	return this->mustMove;
 }
 
+bool Strategie::getIsBlue() {
+	return this->isBlue;
+}
+
 void Strategie::setMustMove(bool mustMove) {
 	this->mustMove = mustMove;
+}
+void Strategie::setIsBlue(bool isBlue) {
+	this->isBlue = isBlue;
 }

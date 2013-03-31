@@ -2,6 +2,14 @@
 #define STRATEGIE_H_INCLUDED
 
 #include "singleton.h"
+#include "vector.h"
+#include "mediumLevelAction.h"
+#include "sensors.h"
+#include "odometrie.h"
+#include "positionPlusAngle.h"
+#include "position.h"
+#include "angle.h"
+#include "sharpSensor.h"
 
 class Strategie: public Singleton<Strategie> {
     friend class Singleton<Strategie>;
@@ -9,18 +17,20 @@ private:
     Sensors* sensors;
 	int goalPosition[2];
 	bool mustMove;
+    bool isBlue;
+    Odometrie* odometrie;
 	/**
 	 * Intermediate positions to reach the goal, if any. This is use to avoid colliding other robots or being blocked
 	 */
-	std::vector<int> intermediatePositions;
+	vector<int> intermediatePositions;
 	/**
 	 * Vector that stores all the actions that can be performed during a match
 	 */
-	MediumLevelAction* actions[32];
+	MediumLevelAction actions[32];
 	/**
 	 * Ordered list of pointers on all the actions that must be done
 	 */
-	std::vector<MediumLevelAction*> actionsToDo;
+	vector<MediumLevelAction*> actionsToDo;
 	/**
 	 * set to 0 each time a robot has been seen
 	 * increased by dt each time update is called
@@ -36,7 +46,7 @@ private:
 	int otherRobotsPosition[3][2];
 
 public:
-    Strategie();
+    Strategie(bool isBlue = true, Odometrie* odometrie = NULL);
     virtual ~Strategie();
     /**
      * Setups the strategy, intiates all the actions and the base actionsToDoVector
@@ -49,8 +59,10 @@ public:
 	int getLastRobotDetection();
 
 	bool getMustMove();
+	bool getIsBlue();
 
 	void setMustMove(bool mustMove);
+	void setIsBlue(bool isBlue);
 };
 
 #endif

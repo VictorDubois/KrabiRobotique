@@ -1,15 +1,18 @@
 #ifndef MEDIUMLEVELACTION_H_INCLUDED
 #define MEDIUMLEVELACTION_H_INCLUDED
 
+#include "vector.h"
+#include "lowLevelAction.h"
+
 class MediumLevelAction {
 
 private:
-	std::vector<LowLevelAction*> actionsToDo;
+	vector<LowLevelAction*> actionsToDo;
 	int status;
 	int robotPosition[2];
 
 public:
-    MediumLevelAction(int posX = -1, int posY = -1, std::vector<LowLevelAction*> actions = std::vector<LowLevelAction*>(0));
+    MediumLevelAction(int posX = -1, int posY = -1, vector<LowLevelAction*> actions = vector<LowLevelAction*>(0));
     virtual ~MediumLevelAction();
 	/**
 	 * Renvoie la variable statut.

@@ -1,12 +1,15 @@
 #ifndef REGARDERCOULEUR_H_INCLUDED
 #define REGARDERCOULEUR_H_INCLUDED
 
-class RegarderCouleur : LowLevelAction {
+#include "lowLevelAction.h"
+#include "sensors.h"
+
+class RegarderCouleur : public LowLevelAction {
 
 
 public:
-    LowLevelAction(Sensors* sensors = NULL);
-    virtual ~LowLevelAction();
+    RegarderCouleur(Sensors* sensors = NULL);
+    virtual ~RegarderCouleur();
 
     /**
      * Update answers true if the color has been checked. It has to store the color somewhere (isBlue) to answer after (getBlue()).

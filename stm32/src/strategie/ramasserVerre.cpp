@@ -2,12 +2,12 @@
 
 RamasserVerre::RamasserVerre(int posX, int posY) : MediumLevelAction(posX, posY)
 {
-    
+
 }
-virtual RamasserVerre::~RamasserVerre()
+RamasserVerre::~RamasserVerre()
 {
 }
 
-virtual int RamasserVerre::update() {
-	throw "Not yet implemented";
+int RamasserVerre::update() {
+
 }

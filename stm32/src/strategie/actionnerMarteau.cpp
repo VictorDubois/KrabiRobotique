@@ -1,12 +1,12 @@
 #include "actionnerMarteau.h"
 
-ActionnerMarteau::ActionnerMarteau(int AX12ID = 0)
+ActionnerMarteau::ActionnerMarteau(int AX12ID)
 {
     this->AX12ID = AX12ID;
 }
-virtual ActionnerMarteau::~ActionnerMarteau()
+ActionnerMarteau::~ActionnerMarteau()
 {
 }
 bool ActionnerMarteau::update() {
-	throw "Not yet implemented";
+
 }
