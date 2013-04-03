@@ -12,14 +12,11 @@ public:
     virtual ~RegarderCouleur();
 
     /**
-     * Update answers true if the color has been checked. It has to store the color (isBlue) to answer after (getBlue()).
+     * Update answers true if the color has been checked. update returns .
      */
-	virtual bool update();
-
-	bool getIsBlue();
+    virtual int update();
 
 private:
-    bool isBlue;
 	Sensors* sensors;
 };
 #endif

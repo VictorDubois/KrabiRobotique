@@ -17,6 +17,6 @@ public:
     /**
      * Update
      */
-	virtual bool update();
+    virtual int update();
 };
 #endif

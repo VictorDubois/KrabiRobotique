@@ -7,6 +7,6 @@ LowLevelAction::LowLevelAction(int status)
 LowLevelAction::~LowLevelAction()
 {
 }
-bool LowLevelAction::update() {
+int LowLevelAction::update() {
 
 }

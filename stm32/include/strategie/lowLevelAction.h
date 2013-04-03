@@ -9,9 +9,9 @@ public:
 	/**
 	 * launches the action, answers false if it's not finished, true elseway
 	 */
-	virtual bool update() = 0;
+    virtual int update() = 0;
 
-private:
+protected:
 	/**
 	 * used for internal status managing. Can be used to count the number of calls to update.
 	 */

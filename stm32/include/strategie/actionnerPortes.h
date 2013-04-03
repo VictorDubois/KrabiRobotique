@@ -22,6 +22,6 @@ public:
     /**
      * Update continues to trigger the gates (if necessary). It answers true only if the doors have finished moving.
      */
-	virtual bool update();
+    virtual int update();
 };
 #endif

@@ -13,7 +13,7 @@ public:
 	/**
 	 * says the elevator to go at a certain speed, then answers true. Higher layers will manage the elevator position depending on where it is.
 	 */
-	virtual bool update();
+    virtual int update();
 
 private:
 	int speed;
