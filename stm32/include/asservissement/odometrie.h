@@ -5,7 +5,6 @@
 #include "angle.h"
 #include "distance.h"
 #include "positionPlusAngle.h"
-#include "quadratureCoderHandler.h"
 #include <stdint.h>
 #include <math.h>
 
@@ -32,6 +31,8 @@ class Odometrie
 
 #else
 // pour le vrai robot
+
+#include "quadratureCoderHandler.h"
 
 /// @brief Classe permettant de connaitre la position du robot
 class Odometrie
