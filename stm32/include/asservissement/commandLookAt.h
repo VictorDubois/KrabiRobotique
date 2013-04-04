@@ -44,7 +44,7 @@ class CommandAllerA : public Command
     public:
 
         // le robot se tourne vers le point donné et y avance
-        CommandAllerA(Position objectif, bool reculer = false);
+        CommandAllerA(Position objectif = Position(0,0), bool reculer = false);
 
         virtual void update();
         virtual Vitesse getLinearSpeed();

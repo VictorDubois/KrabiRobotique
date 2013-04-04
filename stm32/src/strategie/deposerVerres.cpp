@@ -22,7 +22,7 @@ int DeposerVerres::update()
     {
         float distance = (this->getRobotPosition() - Strategie::getInstance()->getOdometrie()->getPos().getPosition()).getNorme();
         if (distance < 20)
-            status = 2;
+            status = 5;
     }
     if (status == 2)  // we are at the goal pos
     {

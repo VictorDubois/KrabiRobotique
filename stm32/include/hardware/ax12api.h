@@ -69,6 +69,7 @@
 #define AX12_SYNC_WRITE_PARAMS 		4
 
 #include "memory.h"
+#include <stdint.h>
 
 /** Calcul de la checksum d'un paquet
  * Un paquet envoyé au ax12 est 0xFF 0xFF ID length param1 ... paramN checksum
@@ -80,14 +81,7 @@
  * \param parameters paramètres envoyés au ax12
  *
 */
-int ax12Checksum(int8_t length, int* parameters)
-{
-	int checksum = 0;
-    for(int i = 0; i < length+1; i++) {
-		checksum += parameters[i];
-	}
-	return (int)(int8_t)(~checksum); // ~ est l'opérateur NOT bit a bit
-}
+int ax12Checksum(int8_t length, int* parameters);
 
 struct AX12ReturnPacket
 {
@@ -104,90 +98,18 @@ class AX12
 {
     public:
 
-    static int getMoveInstruction(int* retour, uint16_t position = 0x00, uint16_t vitesse = 0x02, uint8_t servo = 0xfe)
-    {
-        createWriteHeader(retour, servo, 3); // first, we create a write header with 3 more params (for low/height pos and low/height speed)
-        retour[5] = AX12_GOAL_POSITION_L;
-        retour[6] = (uint8_t)(position);
-        retour[7] = (uint8_t)(position>>8);
-        retour[8] = (uint8_t)(vitesse);
-        retour[9] = (uint8_t)(vitesse>>8);
-        retour[10] = ax12Checksum(retour[3], &retour[2]);
-        return 11;
-    }
-    static int getMoveToInstruction(int* retour, uint16_t position = 0x00, uint8_t servo = 0xfe)
-    {
-        createWriteHeader(retour, servo, 1); // first, we create a write header with 1 more params (for high position bits)
-        retour[5] = AX12_GOAL_POSITION_L;
-        retour[6] = (uint8_t)(position);
-        retour[7] = (uint8_t)(position>>8);
-        retour[8] = ax12Checksum(retour[3], &retour[2]);
-        return 9;
-    }
-    static int getMoveSpeedInstruction(int* retour, uint16_t vitesse = 0x02, uint8_t servo = 0xfe)
-    {
-        createWriteHeader(retour, servo, 1); // first, we create a write header with 1 more params (for high speed)
-        retour[5] = AX12_MOVING_SPEED_L;
-        retour[6] = (uint8_t)(vitesse);
-        retour[7] = (uint8_t)(vitesse>>8);
-        retour[8] = ax12Checksum(retour[3], &retour[2]);
-        return 9;
-    }
-    static int getAngleLowerLimitInstruction(int* retour, uint16_t angleLimite = 0, int servo = 0xfe)
-    {
-        createWriteHeader(retour, servo, 1); // first, we create a write header with 1 more params (for low/high angle)
-        retour[5] = AX12_CW_ANGLE_LIMIT_L;
-        retour[6] = (uint8_t)(angleLimite);
-        retour[7] = (uint8_t)(angleLimite>>8); // high bits
-        retour[8] = ax12Checksum(retour[3], &retour[2]);
-        return 9;
-    }
-    static int getAngleUpperLimitInstruction(int* retour, uint16_t angleLimite = 0, int servo = 0xfe)
-    {
-        createWriteHeader(retour, servo, 1); // first, we create a write header with 1 more params (for low/high angle)
-        retour[5] = AX12_CCW_ANGLE_LIMIT_L;
-        retour[6] = (uint8_t)(angleLimite);
-        retour[7] = (uint8_t)(angleLimite>>8); // high bits
-        retour[8] = ax12Checksum(retour[3], &retour[2]);
-        return 9;
-    }
-    static int getTorqueLimitInstruction(int* retour, uint16_t torqueLimite = 0, int servo = 0xfe) // la torque dans la RAM
-    {
-        createWriteHeader(retour, servo, 1); // first, we create a write header with 1 more params (for low/high angle)
-        retour[5] = AX12_TORQUE_LIMIT_L;
-        retour[6] = (uint8_t)(torqueLimite);
-        retour[7] = (uint8_t)(torqueLimite>>8); // high bits
-        retour[8] = ax12Checksum(retour[3], &retour[2]);
-        return 9;
-    }
-    static int getMaxTorqueInstruction(int* retour, uint16_t maxTorque = 0, int servo = 0xfe) // torque dans l'eeprom (pour l'écrire dans la ram au démarrage)
-    {
-        createWriteHeader(retour, servo, 1); // first, we create a write header with 1 more params (for low/high angle)
-        retour[5] = AX12_MAX_TORQUE_L;
-        retour[6] = (uint8_t)(maxTorque);
-        retour[7] = (uint8_t)(maxTorque>>8); // high bits
-        retour[8] = ax12Checksum(retour[3], &retour[2]);
-        return 9;
-    }
-    static int getLedInstruction(int* retour, uint8_t ledOn = 0, int servo = 0xfe)
-    {
-        createWriteHeader(retour, servo, 0); // first, we create a write header with 3 more params (for low/high pos and low/high speed)
-        retour[5] = AX12_LED;
-        retour[6] = ledOn;
-        retour[7] = ax12Checksum(retour[3], &retour[2]);
-        return 8;
-    }
+    static int getMoveInstruction(int* retour, uint16_t position = 0x00, uint16_t vitesse = 0x02, uint8_t servo = 0xfe);
+    static int getMoveToInstruction(int* retour, uint16_t position = 0x00, uint8_t servo = 0xfe);
+    static int getMoveSpeedInstruction(int* retour, uint16_t vitesse = 0x02, uint8_t servo = 0xfe);
+    static int getAngleLowerLimitInstruction(int* retour, uint16_t angleLimite = 0, int servo = 0xfe);
+    static int getAngleUpperLimitInstruction(int* retour, uint16_t angleLimite = 0, int servo = 0xfe);
+    static int getTorqueLimitInstruction(int* retour, uint16_t torqueLimite = 0, int servo = 0xfe); // la torque dans la RAM
+    static int getMaxTorqueInstruction(int* retour, uint16_t maxTorque = 0, int servo = 0xfe); // torque dans l'eeprom (pour l'écrire dans la ram au démarrage)
+    static int getLedInstruction(int* retour, uint8_t ledOn = 0, int servo = 0xfe);
 
     private:
 
-    static void createWriteHeader(int* retour, int servo = 0xfe, int nombreParamsAjoutes = 0)
-    {
-        retour[0] = 0xff;
-        retour[1] = 0xff;
-        retour[2] = servo;
-        retour[3] = AX12_WRITE_DATA_PARAMS+2+nombreParamsAjoutes;
-        retour[4] = AX12_WRITE_DATA;
-    }
+    static void createWriteHeader(int* retour, int servo = 0xfe, int nombreParamsAjoutes = 0);
 
 };
 

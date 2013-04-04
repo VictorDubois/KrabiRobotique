@@ -15,6 +15,9 @@
 #include "angle.h"
 #include "sharpSensor.h"
 #include "commandGoTo.h"
+#include "commandLookAt.h"
+#include "asservissement.h"
+#include "leds.h"
 
 #define DISTANCE_TO_CATCH_GLASS 150
 
@@ -22,7 +25,7 @@ class Strategie: public Singleton<Strategie> {
     friend class Singleton<Strategie>;
 
 public:
-    Strategie(bool isBlue = true, Odometrie* odometrie = NULL);
+    Strategie(bool isBlue = true);
     virtual ~Strategie();
     /**
      * Setups the strategy, intiates all the actions and the base actionsToDoVector
@@ -40,10 +43,10 @@ public:
 
 	void setMustMove(bool mustMove);
 	void setIsBlue(bool isBlue);
-    void setOdometrie(Odometrie* odometrie);
     void updateGoal(Position goalPos, bool goBack = false);
     void storeGlass(); // function to tell the strategy we have an other glass
     void cleanGlassStorage();
+    bool hasBeenSetUp();
 
 private:
     Sensors* sensors;
@@ -51,14 +54,14 @@ private:
 	Angle goalAngle;
 	bool mustMove;
     bool isBlue;
-    Odometrie* odometrie;
     int i;
     int updateCallsCount; /// Contains the number of update function calls
     bool hasToldBack;
     int numberOfGlassStored;
     bool mustComeToBase;
     MediumLevelAction* currentAction;
-    CommandGoTo currentCommand;
+    bool setUp;
+    Command* currentCommand;
 	/**
 	 * Intermediate positions to reach the goal, if any. This is use to avoid colliding other robots or being blocked
 	 */
@@ -70,7 +73,7 @@ private:
 	/**
 	 * Ordered list of pointers on all the actions that must be done
      */
-    MediumLevelAction* actionsToDo[40];
+    MediumLevelAction* actionsToDo[12];
 	/**
 	 * set to 0 each time a robot has been seen
 	 * increased by dt each time update is called

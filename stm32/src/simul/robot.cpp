@@ -66,7 +66,7 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 	//asservissement->strategie = strategie;
 
-    odometrie->setPos(PositionPlusAngle(Position(200,450), 0));
+    odometrie->setPos(PositionPlusAngle(Position(270,560), 0));
 	pos = odometrie->getPos();
 	deriv.position.x = 0;
 	deriv.position.y = 0;
@@ -404,4 +404,20 @@ QPoint Robot::getLeftLowerHammerPos() const
 QPoint Robot::getRightLowerHammerPos() const
 {
     return QPoint(this->pos.position.x + (160 + rightLowerHammerStatus-10)*sin(pos.angle), -(this->pos.position.y - (160 + rightLowerHammerStatus-10)*cos(pos.angle)));
+}
+void Robot::startLeftUpperHammer()
+{
+    leftUpperHammerStatus = 1;
+}
+void Robot::startRightUpperHammer()
+{
+    rightUpperHammerStatus = 1;
+}
+void Robot::startLeftLowerHammer()
+{
+    leftLowerHammerStatus = 1;
+}
+void Robot::startRightLowerHammer()
+{
+    leftUpperHammerStatus = 1;
 }

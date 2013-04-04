@@ -32,6 +32,8 @@ class Objet
         /**@brief Met à jour la position de l'objet sur la table ainsi que la ses vitesses */
         void updatePos();
 
+        Position getPosition();
+
     protected:
     private:
         /**@brief Contient la position du centre de l'objet. */

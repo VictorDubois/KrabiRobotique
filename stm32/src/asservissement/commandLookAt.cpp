@@ -11,15 +11,9 @@ float abs(float x)
 float diffAngle(float a, float b)
 {
     float t = a-b;
-    while (t > M_PI)
-    {
-        t -= 2*M_PI;
-    }
-    while (t < -M_PI)
-    {
-        t += 2*M_PI;
-    }
-    return t;
+    float i = floor((t+M_PI)/2.f/M_PI);
+
+    return t-i*2*M_PI;
 }
 
 // le robot se tourne vers le point donné
@@ -96,6 +90,7 @@ void CommandAllerA::update()
 
     float angle = Odometrie::odometrie->getPos().getAngle();
     Position pos = Odometrie::odometrie->getPos().getPosition();
+
     Position delta = but-pos;
     float angleVise = atan2(delta.getY(),delta.getX());
 

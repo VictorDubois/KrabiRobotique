@@ -13,16 +13,16 @@
 #endif
 
 
-Strategie::Strategie(bool isBlue, Odometrie* odometrie)
+Strategie::Strategie(bool isBlue)
 {
     this->isBlue = isBlue;
-    this->odometrie = odometrie;
     this->updateCallsCount = 0;
     this->mustMove = false;
-    this->currentCommand = CommandGoTo(Position(0,0));
+    this->currentCommand = NULL;
     this->i = 0;
     this->numberOfGlassStored = 0;
     this->mustComeToBase = false;
+    this->setUp = false;
 }
 Strategie::~Strategie()
 {
@@ -32,21 +32,11 @@ Strategie::~Strategie()
 void Strategie::setup(bool isBlue)
 {
     this->isBlue = isBlue;
-    /*
-    // verres :
-    actions[0] = new RamasserVerre(Position(900,550));
-    actions[1] = new RamasserVerre(Position(900,1050));
-    actions[2] = new RamasserVerre(Position(1050,800));
-    actions[3] = new RamasserVerre(Position(1200,550));
-    actions[4] = new RamasserVerre(Position(1200,1050));
-    actions[5] = new RamasserVerre(Position(1350,800));
-    actions[6] = new RamasserVerre(Position(2100,550));
-    actions[7] = new RamasserVerre(Position(2100,1050));
-    actions[8] = new RamasserVerre(Position(1950,800));
-    actions[9] = new RamasserVerre(Position(1800,550));
-    actions[10] = new RamasserVerre(Position(1800,1050));
-    actions[11] = new RamasserVerre(Position(1650,800));
 
+    // verres :
+
+
+/*
     // bougies bas
     actions[12] = new EteindreBougie(Position(826,1910), 0, 1);
     actions[13] = new EteindreBougie(Position(872,1740), 0);
@@ -72,9 +62,9 @@ void Strategie::setup(bool isBlue)
     actions[31] = new EteindreBougie(Position(2167,1910), 0);
 
     actions[32] = new RamasserVerre(Position(826,1910));
+*/
 
-    actionsToDo[0] = actions[32];
-    actionsToDo[0] = actions[0];
+    /*actionsToDo[0] = actions[0];
     actionsToDo[1] = actions[2];
     actionsToDo[2] = actions[1];
     actionsToDo[3] = actions[4];
@@ -85,8 +75,9 @@ void Strategie::setup(bool isBlue)
     actionsToDo[8] = actions[10];
     actionsToDo[9] = actions[7];
     actionsToDo[10] = actions[8];
-    actionsToDo[11] = actions[6];
-    actionsToDo[12] = actions[12];
+    actionsToDo[11] = actions[6];*/
+
+    /*actionsToDo[12] = actions[12];
     actionsToDo[13] = actions[13];
     actionsToDo[14] = actions[14];
     actionsToDo[15] = actions[15];
@@ -97,74 +88,96 @@ void Strategie::setup(bool isBlue)
     actionsToDo[20] = actions[20];
     actionsToDo[21] = actions[21];
     actionsToDo[22] = actions[22];
-    actionsToDo[23] = actions[23];
+    actionsToDo[23] = actions[23];*/
 
+
+    actions[0] = new RamasserVerre(Position(900,550));
+    actions[1] = new RamasserVerre(Position(900,1050));
+    actions[2] = new RamasserVerre(Position(1050,800));
+    actions[3] = new RamasserVerre(Position(1200,550));
+    /*actions[4] = new RamasserVerre(Position(1200,1050));
+    actions[5] = new RamasserVerre(Position(1350,800));
+    actions[6] = new RamasserVerre(Position(2100,550));
+    actions[7] = new RamasserVerre(Position(2100,1050));
+    actions[8] = new RamasserVerre(Position(1950,800));
+    actions[9] = new RamasserVerre(Position(1800,550));
+    actions[10] = new RamasserVerre(Position(1800,1050));
+    actions[11] = new RamasserVerre(Position(1650,800));*/
 
     i=0;
-    currentAction = actionsToDo[i];
-    currentCommand = CommandGoTo(currentAction->getRobotPosition());
-    Asservissement::asservissement->setCommand(&currentCommand);
-    hasToldBack = false;
-    numberOfGlassStored = 0;
-    mustComeToBase = false;*/
+    currentAction = actions[0];
+
+    currentCommand = new CommandAllerA(currentAction->getRobotPosition());//currentAction->getRobotPosition());
+    Asservissement::asservissement->setCommand(currentCommand);
+    //hasToldBack = false;
+    //numberOfGlassStored = 0;
+    //mustComeToBase = false;
+    setUp = true;
 }
 
 bool Strategie::update() {
 
-    if (i > 100)
-    {
-        currentCommand = CommandGoTo(Position(500,1000));
-        Asservissement::asservissement->setCommand(&currentCommand);
-        i=0;
-    }
-    i++;
-/*
-    PositionPlusAngle pos_plus_angle = odometrie->getPos();
+    if (! setUp)
+    return false;
+
+    PositionPlusAngle pos_plus_angle = Odometrie::odometrie->getPos();
     Position pos = pos_plus_angle.getPosition();
 
-    Position goalPos = currentAction->getRobotPosition();
+    //Position goalPos = currentAction->getRobotPosition();
 
     // si on arrive trop prêt du mur, on y va a reculons
-    if ( pos.getY() > 1820 && hasToldBack == false && goalPos.getY() > pos.getY())
+    /*if ( pos.getY() > 1820 && hasToldBack == false && goalPos.getY() > pos.getY())
     {
-        currentCommand = CommandGoTo(goalPos, true);
-        Asservissement::asservissement->setCommand(&currentCommand);
+        currentCommand = new CommandGoTo(goalPos, true);
+        Asservissement::asservissement->setCommand(currentCommand);
         hasToldBack = true;
-    }
+    }*/
 
 
 
-    int result = currentAction->update();
-
+    //int result = currentAction->update();
+/*
     if (result == -1)
     {
+
         MEDIUM_LEVEL_ACTION_TYPE actionType = currentAction->getType();
-        if(actionType == RAMASSER_VERRE && numberOfGlassStored >2) // first bring glasses back
+        if(actionType == RAMASSER_VERRE && numberOfGlassStored >0) // first bring glasses back
         {
             currentAction = new DeposerVerres(Position(isBlue?200:2800, pos.getY())); // bring back the glasses
-            currentCommand = CommandGoTo(currentAction->getRobotPosition());
+            currentCommand = new CommandAllerA(currentAction->getRobotPosition());
         }
         else
         {
             i++; // update i only if we have done a regular action
-            currentAction = actionsToDo[i];
-            currentCommand = CommandGoTo(currentAction->getRobotPosition());
+            currentAction = actions[i];
+            currentCommand = new CommandAllerA(currentAction->getRobotPosition());
         }
-        Asservissement::asservissement->setCommand(&currentCommand);
+            i++; // update i only if we have done a regular action
+            currentAction = actions[i];
+            currentCommand = new CommandAllerA(currentAction->getRobotPosition());
+        Asservissement::asservissement->setCommand(currentCommand);
         hasToldBack = false;
-    }*/
-
+        if(i%2==0) {
+        allumerLED();
+        eteindreLED2();
+        }
+        else {
+        eteindreLED();
+        allumerLED2();
+        }
+    }
+*/
     return true;
 }
 
 void Strategie::updateGoal(Position goalPos, bool goBack)
 {
-    currentCommand = CommandGoTo(goalPos, goBack);
-    Asservissement::asservissement->setCommand(&currentCommand);
+    currentCommand = new CommandAllerA(goalPos, goBack);
+    Asservissement::asservissement->setCommand(currentCommand);
 }
 
 void Strategie::goToTarget() {
-	PositionPlusAngle pos_plus_angle = odometrie->getPos();
+	PositionPlusAngle pos_plus_angle = Odometrie::odometrie->getPos();
     Position pos = pos_plus_angle.getPosition();
     Angle angle = pos_plus_angle.getAngle();
 
@@ -192,7 +205,7 @@ bool Strategie::getIsBlue() {
 }
 Odometrie* Strategie::getOdometrie()
 {
-    return odometrie;
+    return Odometrie::odometrie;
 }
 
 void Strategie::setMustMove(bool mustMove) {
@@ -201,30 +214,15 @@ void Strategie::setMustMove(bool mustMove) {
 void Strategie::setIsBlue(bool isBlue) {
 	this->isBlue = isBlue;
 }
-void Strategie::setOdometrie(Odometrie* odometrie)
-{
-    this->odometrie = odometrie;
-}
 void Strategie::storeGlass()
 {
-    #ifndef ROBOTHW
-    if (Table::getInstance()->getDistanceToObject(odometrie->getPos().getPosition()) <= DISTANCE_TO_CATCH_GLASS)
-    {
-    #endif
-        this->numberOfGlassStored++;
-        #ifndef ROBOTHW
-        if (numberOfGlassStored < 3)
-            Table::getInstance()->removeObject(odometrie->getPos().getPosition());
-        #endif
-        if (numberOfGlassStored > 0)
-        {
-            this->mustComeToBase = true;
-        }
-    #ifndef ROBOTHW
-    }
-    #endif
+    this->numberOfGlassStored++;
 }
 void Strategie::cleanGlassStorage()
 {
     this->numberOfGlassStored = 0;
+}
+bool Strategie::hasBeenSetUp()
+{
+    return setUp;
 }
