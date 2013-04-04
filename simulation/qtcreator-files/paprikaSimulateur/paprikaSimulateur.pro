@@ -3,12 +3,44 @@ TEMPLATE = app
 CONFIG += qt debug
 QT += core gui
 
-INCLUDEPATH += ../../include/simul ../../include/strategie ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D
+INCLUDEPATH += ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D
+INCLUDEPATH += ../../include/simul ../../include/strategie ../../include/asservissement ../../include/actionneurs ../../include/hardware
 
 LIBS += -L/usr/local/lib/ -lBox2D
 
 
 HEADERS += \
+    ../../include/positionPlusAngle.h \
+    ../../include/position.h \
+    ../../include/distance.h \
+    ../../include/constantes.h \
+    ../../include/angle.h \
+    ../../include/actionneurs/servo.h \
+    ../../include/actionneurs/sensors.h \
+    ../../include/actionneurs/sensor.h \
+    ../../include/actionneurs/roues.h \
+    ../../include/actionneurs/moteur.h \
+    ../../include/actionneurs/bras.h \
+    ../../include/asservissement/pidFilterDistance.h \
+    ../../include/asservissement/pidFilterAngle.h \
+    ../../include/asservissement/odometrie.h \
+    ../../include/asservissement/commandTest.h \
+    ../../include/asservissement/commandLookAt.h \
+    ../../include/asservissement/commandGoTo.h \
+    ../../include/asservissement/command.h \
+    ../../include/asservissement/asservissement.h \
+    ../../include/strategie/strategie.h \
+    ../../include/strategie/singleton.h \
+    ../../include/strategie/regarderCouleur.h \
+    ../../include/strategie/ramasserVerre.h \
+    ../../include/strategie/mediumLevelAction.h \
+    ../../include/strategie/lowLevelAction.h \
+    ../../include/strategie/lancerAscenseur.h \
+    ../../include/strategie/eteindreBougie.h \
+    ../../include/strategie/deposerVerres.h \
+    ../../include/strategie/actionnerPortes.h \
+    ../../include/strategie/actionnerMarteau.h \
+    ../../include/strategie/actionnerAscenseur.h \
     ../../include/simul/XMLReader.h \
     ../../include/simul/TableGraphics.h \
     ../../include/simul/table.h \
@@ -19,81 +51,60 @@ HEADERS += \
     ../../include/simul/GraphWindows.h \
     ../../include/simul/Graph.h \
     ../../include/simul/element.h \
-    ../../include/commandGoTo.h \
-    ../../include/odometrie.h \
-    ../../include/position.h \
-    ../../include/sensors.h \
-    ../../include/positionPlusAngle.h \
-	../../include/asservissement.h \
-    ../../include/command.h \
-    ../../include/ultrasoundSensor.h \
-    ../../include/sharpSensor.h \
-    ../../include/sensor.h \
-    ../../include/limitSwitchSensor.h \
-    ../../include/ligthBarrierSensor.h \
-    ../../include/analogSensor.h \
-    ../../include/pidFilterDistance.h \
-    ../../include/pidFilterAngle.h \
-    ../../include/listeActions.h \
-    ../../include/angle.h \
-    ../../include/distance.h \
-    ../../include/action.h \
-    ../../include/actionSuivreChemin.h \
-    ../../include/bras.h \
     ../../include/simul/bougie.h \
-    ../../../stm32/include/strategie/strategie.h \
-    ../../../stm32/include/strategie/singleton.h \
-    ../../../stm32/include/strategie/regarderCouleur.h \
-    ../../../stm32/include/strategie/ramasserVerre.h \
-    ../../../stm32/include/strategie/mediumLevelAction.h \
-    ../../../stm32/include/strategie/lowLevelAction.h \
-    ../../../stm32/include/strategie/lancerAscenseur.h \
-    ../../../stm32/include/strategie/eteindreBougie.h \
-    ../../../stm32/include/strategie/actionnerPortes.h \
-    ../../../stm32/include/strategie/actionnerMarteau.h \
-    ../../../stm32/include/strategie/actionnerAscenseur.h \
-    ../../include/servo.h
+    ../../include/hardware/ultrasoundSensor.h \
+    ../../include/hardware/sharpSensor.h \
+    ../../include/hardware/roue.h \
+    ../../include/hardware/quadratureCoderHandler.h \
+    ../../include/hardware/pwmHandler.h \
+    ../../include/hardware/limitSwitchSensor.h \
+    ../../include/hardware/ligthBarrierSensor.h \
+    ../../include/hardware/ax12api.h \
+    ../../include/hardware/analogSensor.h
+
 
 SOURCES += \
-    ../../src/simul/main.cpp \
-    ../../src/simul/main_window.cpp \
+    ../../src/strategie/strategie.cpp \
+    ../../src/strategie/regarderCouleur.cpp \
+    ../../src/strategie/ramasserVerre.cpp \
+    ../../src/strategie/mediumLevelAction.cpp \
+    ../../src/strategie/lowLevelAction.cpp \
+    ../../src/strategie/lancerAscenseur.cpp \
+    ../../src/strategie/eteindreBougie.cpp \
+    ../../src/strategie/deposerVerres.cpp \
+    ../../src/strategie/actionnerPortes.cpp \
+    ../../src/strategie/actionnerMarteau.cpp \
+    ../../src/strategie/actionnerAscenseur.cpp \
+    ../../src/asservissement/pidFilterDistance.cpp \
+    ../../src/asservissement/pidFilterAngle.cpp \
+    ../../src/asservissement/commandTest.cpp \
+    ../../src/asservissement/commandLookAt.cpp \
+    ../../src/asservissement/commandGoTo.cpp \
+    ../../src/asservissement/command.cpp \
+	../../src/asservissement/asservissement.cpp \
+    ../../src/actionneurs/servo.cpp \
+    ../../src/actionneurs/sensors.cpp \
+    ../../src/actionneurs/sensor.cpp \
+    ../../src/actionneurs/bras.cpp \
+    ../../src/positionPlusAngle.cpp \
+    ../../src/position.cpp \
+    ../../src/distance.cpp \
+    ../../src/angle.cpp \
     ../../src/simul/XMLReader.cpp \
     ../../src/simul/TableGraphics.cpp \
     ../../src/simul/table.cpp \
     ../../src/simul/robot.cpp \
     ../../src/simul/objet.cpp \
+    ../../src/simul/main_window.cpp \
+    ../../src/simul/main.cpp \
     ../../src/simul/GraphWindows.cpp \
     ../../src/simul/Graph.cpp \
     ../../src/simul/element.cpp \
-    ../../src/commandGoTo.cpp \
-    ../../src/position.cpp \
-    ../../src/sensors.cpp \
-    ../../src/positionPlusAngle.cpp \
-	../../src/asservissement.cpp \
-    ../../src/command.cpp \
-    ../../src/ultrasoundSensor.cpp \
-    ../../src/sharpSensor.cpp \
-    ../../src/sensor.cpp \
-    ../../src/limitSwitchSensor.cpp \
-    ../../src/ligthBarrierSensor.cpp \
-    ../../src/analogSensor.cpp \
-    ../../src/pidFilterDistance.cpp \
-    ../../src/pidFilterAngle.cpp \
-    ../../src/listeActions.cpp \
-    ../../src/angle.cpp \
-    ../../src/distance.cpp \
-    ../../src/action.cpp \
-    ../../src/actionSuivreChemin.cpp \
-    ../../src/bras.cpp \
     ../../src/simul/bougie.cpp \
-    ../../../stm32/src/strategie/strategie.cpp \
-    ../../../stm32/src/strategie/regarderCouleur.cpp \
-    ../../../stm32/src/strategie/ramasserVerre.cpp \
-    ../../../stm32/src/strategie/mediumLevelAction.cpp \
-    ../../../stm32/src/strategie/lowLevelAction.cpp \
-    ../../../stm32/src/strategie/lancerAscenseur.cpp \
-    ../../../stm32/src/strategie/eteindreBougie.cpp \
-    ../../../stm32/src/strategie/actionnerPortes.cpp \
-    ../../../stm32/src/strategie/actionnerMarteau.cpp \
-    ../../../stm32/src/strategie/actionnerAscenseur.cpp \
-    ../../src/servo.cpp
+    ../../src/hardware/ultrasoundSensor.cpp \
+    ../../src/hardware/sharpSensor.cpp \
+    ../../src/hardware/limitSwitchSensor.cpp \
+    ../../src/hardware/ligthBarrierSensor.cpp \
+    ../../src/hardware/ax12api.cpp \
+    ../../src/hardware/analogSensor.cpp
+

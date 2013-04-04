@@ -19,16 +19,16 @@ int MediumLevelAction::update() {
 
 Position MediumLevelAction::getRobotPosition()
 {
-    return this->robotPosition;
+    return robotPosition;
 }
 
 void MediumLevelAction::setRobotPosition(Position position)
 {
-    this->robotPosition = position;
+    robotPosition = position;
 }
 
 int MediumLevelAction::getStatus() {
-	return this->status;
+	return status;
 }
 
 void MediumLevelAction::setStatus(int status) {
@@ -40,5 +40,5 @@ void MediumLevelAction::addLowLevelAction(LowLevelAction* action)
 }
 MEDIUM_LEVEL_ACTION_TYPE MediumLevelAction::getType()
 {
-    return this->type;
+    return type;
 }

@@ -115,3 +115,7 @@ void Objet::updatePos()
 	body->SetAngularVelocity(angular);
 
 }
+Position Objet::getPosition()
+{
+    return p;
+}

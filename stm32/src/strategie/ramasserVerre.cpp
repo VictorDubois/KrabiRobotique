@@ -19,12 +19,14 @@ int RamasserVerre::update() {
         status = 1;
     if (status == 1) // go 150mm (center of the robot) far to the right location
     {
-        float distance = (this->getRobotPosition() - Strategie::getInstance()->getOdometrie()->getPos().getPosition()).getNorme();
+        float distance = (this->getRobotPosition() - Odometrie::odometrie->getPos().getPosition()).getNorme();
         if (distance < 20)
         {
             //actionsToDo[0] = new ActionnerPortes(false); // open the doors
             status = -1;
-            Strategie::getInstance()->updateGoal(Strategie::getInstance()->getOdometrie()->getPos().getPosition()); // stop moving
+            //Strategie::getInstance()->updateGoal(Strategie::getInstance()->getOdometrie()->getPos().getPosition()); // stop moving
+            Strategie::getInstance()->storeGlass();
+
             return -1;
         }
     }

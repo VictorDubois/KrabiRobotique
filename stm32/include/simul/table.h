@@ -7,10 +7,13 @@
 #include "XMLReader.h"
 #include "sensors.h"
 #include "bougie.h"
+#include "singleton.h"
+#include "position.h"
+#include "robot.h"
 
-
-class Table : public QWidget
+class Table : public QWidget, public Singleton<Table>
 {
+    friend class Singleton<Table>;
 private:
 	int dt;
     std::vector<class Objet*> objets;
@@ -31,12 +34,16 @@ public:
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
 
-	Table(QWidget* widget);
+    Table(QWidget* widget = NULL);
 	virtual ~Table();
 
 	void update(int dt);
 	void paintEvent(QPaintEvent* evt);
 	void keyPressEvent(QKeyEvent* evt, bool press);
+
+    float getDistanceToObject(Position pos);
+    void removeClosestObject(Position pos);
+    Robot* getMainRobot();
 };
 
 #endif

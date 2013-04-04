@@ -5,6 +5,8 @@
 #define NULL 0
 #endif
 
+#include "memory.h"
+
 template <typename T>
 class Singleton
 {

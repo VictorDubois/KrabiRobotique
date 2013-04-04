@@ -153,19 +153,19 @@ Table::Table(QWidget* parent) :
 
     for (int i = 0; i < 12; i++)
     {
-        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2100.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 40.f);
+        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2000.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 40.f);
     }
     for (int i = 12; i < 20; i++)
     {
-        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2100.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 40.f);
+        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 40.f);
     }
     for (int i = 0; i < 12; i++)
     {
-        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2100.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 33.f);
+        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2000.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 33.f);
     }
     for (int i = 12; i < 20; i++)
     {
-        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2100.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 33.f);
+        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 33.f);
     }
 }
 
@@ -274,4 +274,37 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
 Position getSideElemCenter(bool right, unsigned int elem)
 {
 	return Position(right ? 200 : 2800, 1810 - elem*280);
+}
+float Table::getDistanceToObject(Position pos)
+{
+    float min = 1000000;
+    for (unsigned int i = 0 ; i < objets.size(); i++)
+    {
+        if ((objets[i]->getPosition() - pos).getNorme() < min)
+            min = (objets[i]->getPosition() - pos).getNorme();
+    }
+    return min;
+}
+
+void Table::removeClosestObject(Position pos)
+{
+    int minID = -1;
+    float min = 1000000;
+    for (unsigned int i = 0 ; i < objets.size(); i++)
+    {
+        if ((objets[i]->getPosition() - pos).getNorme() < min)
+        {
+            minID = i;
+            min = (objets[i]->getPosition() - pos).getNorme();
+        }
+    }
+    if (minID > 0)
+    {
+        objets.erase(objets.begin()+minID);
+    }
+}
+
+Robot* Table::getMainRobot()
+{
+    return robots[0];
 }

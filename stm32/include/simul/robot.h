@@ -71,6 +71,10 @@ public:
     QPoint getRightUpperHammerPos() const;
     QPoint getLeftLowerHammerPos() const;
     QPoint getRightLowerHammerPos() const;
+    void startLeftUpperHammer();
+    void startRightUpperHammer();
+    void startLeftLowerHammer();
+    void startRightLowerHammer();
 };
 
 #endif //ROBOT_H_INCLUDED
