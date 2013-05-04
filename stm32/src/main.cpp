@@ -7,16 +7,22 @@
 #include "sensors.h"
 #include "quadratureCoderHandler.h"
 #include "bras.h"
-#include "strategie.h"
+#include "roues.h"
+#include "roue.h"
+#include "strategieV2.h"
+#include "sharpSensor.h"
 #include "ax12api.h"
 #include "interfaceServosNumeriques.h"
+#include "capteurCouleur.h"
+#include "tirette.h"
 #include "leds.h"
+#include "marteaux.h"
 
 #define POSITIONNEMENT
 
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
 
-// Dit si on est du cotÈ bleu
+// Dit si on est du cot√© bleu
 bool isBlue()
 {
 #ifdef STM32F10X_MD // Pin pour le stm32 h103
@@ -27,7 +33,7 @@ bool isBlue()
 #endif
 }
 
-// Dit si la tirette est enlevÈe
+// Dit si la tirette est enlev√©e
 bool isTiretteEnlevee()
 {
 #ifdef STM32F10X_MD // Pin pour le stm32 h103
@@ -38,211 +44,224 @@ bool isTiretteEnlevee()
 #endif
 }
 
-
+void initPinPourServoAnalog(GPIO_TypeDef* GPIOx, uint16_t pinX)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin = pinX;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOx, &GPIO_InitStructure);
+}
 
 int main()
 {
-
-
-	*NVIC_CCR = *NVIC_CCR | 0x200; // Set STKALIGN in NVIC
+    *NVIC_CCR = *NVIC_CCR | 0x200; // Set STKALIGN in NVIC
 
     // On initialise les horloges
     Clk_Init();
 
-    // DÈfinit quelques horloges supplÈmentaires
+    // D√©finit quelques horloges suppl√©mentaires
     initAutresHorloges();
 
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
-
-
-    ///// DEBUT TEST
-//QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
-// test
-  // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
-
-
-    ///// DEBUT TEST
-    //QuadratureCoderHandler* roueDroite = new QuadratureCoderHandler(TIM2);
-    //roueDroite->getTickValue() pour obtenir les ticks.
-
-    // QuadratureCoderHandler* roueGauche = new QuadratureCoderHandler(TIM2);
-/*
-#define PSDFSD 8474576
-    bool a = true;
-
-    allumerLED(); // verte
+    
     ServosNumeriques::initClocksAndPortsGPIO();
+    /*while(1) {
+    allumerLED();
     ServosNumeriques::initUART(1000000);
     ServosNumeriques::sendMode();
-
-
-    int packet[11];
-*/
-    //while(1) {
-    /*
-        allumerLED2();
-        allumerLED();
-            packet[0] = (int)0xFF;
-            packet[1] = (int)0xFF;
-            packet[2] = (int)0x02;
-            packet[3] = (int)AX12_WRITE_DATA_PARAMS+2; // 4
-            packet[4] = (int)AX12_WRITE_DATA; // 3
-            packet[5] = (int)AX12_LED; // 0x1f = 31
-            packet[6] = (int)0x01;
-            packet[7] = (int)(int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_LED + 0x01);
-            for (int i = 0; i < 8; i++){
-                ServosNumeriques_sendData(packet[i]);
-    // Wait until the send buffer is cleared finishes
-    //while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
-    //USART_SendData(USART3, (u16) packet[i]);
-}
- //               ServosNumeriques_sendData(packet[i]);
-        for (int i = 0 ; i < 847450 ; i++) {};
-            eteindreLED();
-            eteindreLED2();
-        for (int i = 0 ; i < 847450 ; i++) {};
-    //}*/
-    /*    packet[0] = (int)0xFF;
-        packet[1] = (int)0xFF;
-        packet[2] = (int)0xfe;
-        packet[3] = (int)AX12_WRITE_DATA_PARAMS+2; // 4
-        packet[4] = (int)AX12_WRITE_DATA; // 3
-        packet[5] = (int)AX12_LED; // 0x1f = 31
-        packet[6] = (int)0x01;
-        packet[7] = (int)(int8_t)~(0xfe + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_LED + 0x01);
-        for (int i = 0; i < 8; i++) {
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
-    USART_SendData(USART3, (u16) packet[i]);
-    }
-    for (int i = 0 ; i < 847450 ; i++) {}; */
-/*        packet[0] = (int)0xFF;
-        packet[1] = (int)0xFF;
-        packet[2] = (int)0x02;
-        packet[3] = (int)AX12_WRITE_DATA_PARAMS+2; // 4
-        packet[4] = (int)AX12_WRITE_DATA; // 3
-        packet[5] = (int)AX12_LED; // 0x1f = 31
-        packet[6] = (int)0x01;
-        packet[7] = (int)(int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_LED + 0x01);
-        for (int i = 0; i < 8; i++) {
-            ServosNumeriques::sendData(packet[i]);
-    //while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
-    //USART_SendData(USART3, (u16) packet[i]);
-    }
-    for (int i = 0 ; i < 847450 ; i++) {};
-        packet[6] = (int)0x00;
-        packet[7] = (int)(int8_t)~(0x02 + AX12_WRITE_DATA_PARAMS+2 + AX12_WRITE_DATA + AX12_LED + 0x00);
-        for (int i = 0; i < 8; i++) {
-            ServosNumeriques::sendData(packet[i]);
-    //while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
-    //USART_SendData(USART3, (u16) packet[i]);
-    }
-    ServosNumeriques::setLedState(1, 0x02);
-    for (int i = 0 ; i < 847450 ; i++) {};
-*/
-//            ServosNumeriques_sendData(packet[i]);
-/*
-    ServosNumeriques::setLedState(0, 0x02);
-    for (int i = 0 ; i < 847450 ; i++) {};
-    ServosNumeriques::setLedState(1, 0x02);
-    for (int i = 0 ; i < 847450 ; i++) {};
-    ServosNumeriques::setLedState(0, 0x02);
-
-    for (int i = 0 ; i < 847450 ; i++) {};
-    ServosNumeriques::setMinimumAngle(0x0000, 0x02);
-    for (int i = 0 ; i < 847450 ; i++) {};
-    ServosNumeriques::setMaximumAngle(0x03ff, 0x02);
-    for (int i = 0 ; i < 847450 ; i++) {};
-
-
-    ServosNumeriques::moveTo(0x0000, 0x02);
-    for (int i = 0 ; i < 847450 ; i++) {};
-    ServosNumeriques::moveAtSpeed(0x0200, 0x02);
-    eteindreLED();
-    for (int i = 0 ; i < 8474500 ; i++) {};
-    ServosNumeriques::moveToAtSpeed(0x0200, 0x0200, 0x02);
-    for (int i = 0 ; i < 8474500 ; i++) {};
-    ServosNumeriques::moveToAtSpeed(0x0000, 0x0200, 0x02);
-    for (int i = 0 ; i < 8474500 ; i++) {};
-    ServosNumeriques::moveToAtSpeed(0x0200, 0x0200, 0x02);
-
-    while(1) {}
-
-*/
-    /*while (1)
-    {
-
-
-        if (a)
-        {
-            allumerLED2();
-            eteindreLED();
-        }
-        else
-        {
-            allumerLED();
-            eteindreLED2();
-        }
-        a = !a;
-        for (int i = 0 ; i < 8474500 ; i++);
-
-    }*/
-
-    ///// FIN TEST
-
-    unsigned int buffer = 0xffffffff;
-/*
-#ifdef POSITIONNEMENT
-
-    // on attend que la tirette soit remise
-    while(buffer)
-    {
-        buffer <<= 1;
-        buffer |= isTiretteEnlevee();
-    }
-
-#endif
-
-    // On allume une LED sur le STM avant que la tirette soit testÈ. Ainsi, tant que la tirette est dÈtectÈe, on garde la led allumÈe
+    for (int i = 0; i < 3000000; i++){}
+    ServosNumeriques::setBaudRate(0x67, 13);
+        eteindreLED();
+    for (int i = 0; i < 3000000; i++){}
+    ServosNumeriques::setLedState(1, 13);
+    for (int i = 0; i < 3000000; i++){ }
     allumerLED();
+    ServosNumeriques::initUART(200000);
+    ServosNumeriques::sendMode();
+    for (int i = 0; i < 3000000; i++){}
+    ServosNumeriques::setBaudRate(0x67, 13);
+        eteindreLED();
+    for (int i = 0; i < 3000000; i++){}
+    ServosNumeriques::setLedState(1, 13);
+    for (int i = 0; i < 3000000; i++){ }
+    allumerLED();
+    ServosNumeriques::initUART(19230);
+    ServosNumeriques::sendMode();
+    for (int i = 0; i < 3000000; i++){}
+    ServosNumeriques::setBaudRate(0x67, 13);
+        eteindreLED();
+    for (int i = 0; i < 3000000; i++){}
+    ServosNumeriques::setLedState(1, 13);
+    for (int i = 0; i < 3000000; i++){ }
+    }*/
+    
+    allumerLED();
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        
+        eteindreLED();
+        for (int i = 0; i < 3000000; i++)
+        {
+        }
+        //ServosNumeriques::setBaudRate(0x67, 12);
+        //ServosNumeriques::setLedState(1, 12);
+        allumerLED();
+        for (int i = 0; i < 30000; i++)
+        {
+        }
+        eteindreLED();
+        for (int i = 0; i < 30000; i++)
+        {
+        }
+        //ServosNumeriques::setBaudRate(0x67, 13);
+        //ServosNumeriques::setLedState(1, 13);
+        for (int i = 0; i < 30000; i++)
+        {
+        }
+        //ServosNumeriques::initUART(1000000);
 
-    // On boucle tant que la tirette est pas enlever avec 32 verification au cas ou il y ai du bruit
-    buffer = 0xffffffff;
-    while(buffer)
+        //ServosNumeriques::sendMode();
+        allumerLED();
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        
+        eteindreLED();
+        for (int i = 0; i < 3000000; i++)
+        {
+        }
+    //ServosNumeriques::setBaudRate(0x67, 12);
+    //ServosNumeriques::setLedState(1, 12);
+        allumerLED();
+        for (int i = 0; i < 30000; i++)
+        {
+        }
+        eteindreLED();
+        for (int i = 0; i < 30000; i++)
+        {
+        }
+    //ServosNumeriques::setBaudRate(0x67, 13);
+    //ServosNumeriques::setLedState(1, 13);
+        for (int i = 0; i < 30000; i++)
+        {
+        }
+        
+    //ServosNumeriques::setLedState(1, 12);
+    //ServosNumeriques::setMinimumAngle(0x0000, 11);
+    for (int i = 0; i < 10000; i++)
     {
-        buffer <<= 1;
-        buffer |= !isTiretteEnlevee();
     }
-*/
-    // On Èteint la LED sur le STM pour indiquÈ que le code continue ‡ s'executer aprËs que la tirette est ÈtÈ dÈbranchÈe.
-    eteindreLED();
+    //ServosNumeriques::setMaximumAngle(0x03ff, 11);
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+    //ServosNumeriques::setLedState(1, 11);
+/*
+        //ServosNumeriques::moveToAtSpeed(0x0000, 0x0500, 12); // speed -0x0200 
+        //ServosNumeriques::moveToAtSpeed(0x03ff, 0x0500, 12); // 0x07ff, 13);
+        //ServosNumeriques::moveToAtSpeed(0x030, 0x0200, 12); // 0x07ff, 13);
+        ServosNumeriques::moveToAtSpeed(0, 0x0600, 12); //AtSpeed(0x0200, 12);
+        for (int j = 0; j < 1; j++)
+        for (int i = 0; i < 3000000; i++)
+        {
+        }
+        //ServosNumeriques::moveAtSpeed(0x0000, 12);
+        ServosNumeriques::moveToAtSpeed(0x0100, 0x0200, 12); // 0x07ff, 13);*/
+    for (int i = 0; i < 10000; i++)
+    {
+    }
+    ServosNumeriques::initUART(19231);
 
-    // Une fois que la tirette est enlevÈe pour la 1Ëre fois, on lance le positionnement automatique
-    #ifdef CAPTEURS
-        //new Sensors();
-    #endif
+    for (int i = 0; i < 10000; i++)
+    {
+    }
+    ServosNumeriques::sendMode();
+    for(int i = 0; i < 10000; i++)
+    {
+    }
+    ServosNumeriques::setLedState(1, 12);
+    ServosNumeriques::setLedState(1, 13);
+    ServosNumeriques::setMaxTorque(0x03ff, MARTEAU_BAS_DROIT_ID);
+    while(1)
+    {/*
+        ServosNumeriques::moveTo(0x100, 11);
+        ServosNumeriques::moveTo(0x100, 12);
+        ServosNumeriques::moveTo(0x100, 13);
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        ServosNumeriques::moveTo(0x200, 11);
+        ServosNumeriques::moveTo(0x200, 12);
+        ServosNumeriques::moveTo(0x200, 13);*/
+        for (int i = 0; i < 10000000; i++)
+        {
+        }
+        ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_DROIT_ENFONCE, 0x07ff, MARTEAU_BAS_DROIT_ID); // speed -0x0200 
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        //ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_DROIT_ENFONCE, 0x0600, MARTEAU_HAUT_DROIT_ID); // speed -0x0200 
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        /*ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_GAUCHE_ENFONCE, 0x0200, MARTEAU_BAS_GAUCHE_ID); // speed -0x0200
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_GAUCHE_ENFONCE, 0x0200, MARTEAU_HAUT_GAUCHE_ID); // speed -0x0200 
+        for (int i = 0; i < 10000000; i++)
+        {
+        }*/
+        allumerLED();
+        for (int i = 0; i < 10000000; i++)
+        {
+        }
+        
+        ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_DROIT_RELEVE_ANGLE, 0x0200, MARTEAU_BAS_DROIT_ID); // speed -0x0200 
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        //ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_DROIT_RELEVE_ANGLE, 0x0200, MARTEAU_HAUT_DROIT_ID); // speed -0x0200 
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        /*
+        ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_GAUCHE_RELEVE_ANGLE, 0x0600, MARTEAU_BAS_GAUCHE_ID); // speed -0x0200
+        for (int i = 0; i < 1000000; i++)
+        {
+        }
+        ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_GAUCHE_RELEVE_ANGLE, 0x0600, MARTEAU_HAUT_GAUCHE_ID); // speed -0x0200 
+        for (int i = 0; i < 10000000; i++)
+        {
+        }*/
+        eteindreLED();
+    }
+    Tirette tirette(GPIOE, GPIO_Pin_5);
+    tirette.attendreEnlevee();
+// pour la v2 :
 
-    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
+    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOD, GPIO_Pin_12, GPIOD, GPIO_Pin_13);
+    GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
     QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
+
+// Pour la v1 :
+//    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
+ //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
-
-    odometrie->setPos(PositionPlusAngle(Position(270,560),0.f));
-
-    Asservissement* asserv = new Asservissement(odometrie);  // On dÈfinit l'asservissement
-    asserv->setCommand(NULL);
-
-    Strategie* strat = Strategie::getInstance();
-    strat->setup(true);
+    Position pos(270,560);
+    PositionPlusAngle posPlusAngle(pos,0.0f);
+    odometrie->setPos(posPlusAngle);
 
 
- //   Servo::initTimer();     // A faire avant toute utilisation de servo
-
-  /*   new Bras();
-   Bras::bras->monterRateau();
-    Bras::bras->fermerBalaiDroit();
-    Bras::bras->fermerBalaiGauche();*/
-
- //   new Strategie(isBlue(),odometrie);
+    Asservissement* asserv = new Asservissement(odometrie);  // On d√©finit l'asservissement
+    
+    StrategieV2* strat = new StrategieV2();
 
 
     while(1);

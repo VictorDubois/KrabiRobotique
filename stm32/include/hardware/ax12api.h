@@ -98,14 +98,15 @@ class AX12
 {
     public:
 
-    static int getMoveInstruction(int* retour, uint16_t position = 0x00, uint16_t vitesse = 0x02, uint8_t servo = 0xfe);
-    static int getMoveToInstruction(int* retour, uint16_t position = 0x00, uint8_t servo = 0xfe);
-    static int getMoveSpeedInstruction(int* retour, uint16_t vitesse = 0x02, uint8_t servo = 0xfe);
-    static int getAngleLowerLimitInstruction(int* retour, uint16_t angleLimite = 0, int servo = 0xfe);
-    static int getAngleUpperLimitInstruction(int* retour, uint16_t angleLimite = 0, int servo = 0xfe);
-    static int getTorqueLimitInstruction(int* retour, uint16_t torqueLimite = 0, int servo = 0xfe); // la torque dans la RAM
-    static int getMaxTorqueInstruction(int* retour, uint16_t maxTorque = 0, int servo = 0xfe); // torque dans l'eeprom (pour l'écrire dans la ram au démarrage)
-    static int getLedInstruction(int* retour, uint8_t ledOn = 0, int servo = 0xfe);
+    static int getMoveInstruction(int* retour, uint16_t position, uint16_t vitesse, uint8_t servo);
+    static int getMoveToInstruction(int* retour, uint16_t position, uint8_t servo);
+    static int getMoveSpeedInstruction(int* retour, uint16_t vitesse, uint8_t servo);
+    static int getAngleLowerLimitInstruction(int* retour, uint16_t angleLimite, int servo);
+    static int getAngleUpperLimitInstruction(int* retour, uint16_t angleLimite, int servo);
+    static int getTorqueLimitInstruction(int* retour, uint16_t torqueLimite, int servo); // la torque dans la RAM
+    static int getMaxTorqueInstruction(int* retour, uint16_t maxTorque, int servo); // torque dans l'eeprom (pour l'écrire dans la ram au démarrage)
+    static int getLedInstruction(int* retour, uint8_t ledOn, int servo);
+    static int getBaudRateInstruction(int* retour, uint8_t baudRate, int servo);
 
     private:
 

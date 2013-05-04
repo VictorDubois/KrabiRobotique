@@ -8,7 +8,7 @@ class Roues
 {
     public:
 
-        /**@brief Constructeur pour définir les duex roues */
+        /**@brief Constructeur pour définir les deux roues */
         Roues();
 
         /**@brief On sauvegarde ces deux roues pour pouvoir les utiliser indépendament */

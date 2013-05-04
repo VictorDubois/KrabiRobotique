@@ -45,7 +45,8 @@ Table::Table(QWidget* parent) :
 	setPalette(p);
 
     //création des robots
-    robots.push_back(new Robot(world));
+    //robots.push_back(new Robot(world,PositionPlusAngle(Position(3000-270,560), M_PI), true));
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(270,560), 0), false)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
 
 	//création des verres
 	// côté bleu

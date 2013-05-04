@@ -8,6 +8,9 @@
 #include <iostream>
 #endif
 
+float abs(float x);
+float diffAngle(float a, float b);
+
 /**@brief Classe abstraite généralisant l'utilisation des commandes */
 class Command
 {

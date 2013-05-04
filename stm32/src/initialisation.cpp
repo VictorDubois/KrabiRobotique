@@ -11,131 +11,67 @@ void Clk_Init()
 #ifdef STM32F10X_MD //Pour le stm32 h103
 
     // Démarre l'horloge interne (8 MHz)
-
     RCC_HSICmd(ENABLE);
-
     // On attend qu'elle soit allumée
-
     while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
-
     // Une fois démarrée, on utilise celle ci
-
     RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
-
     // Démarre l'horloge externe
-
     RCC_HSEConfig(RCC_HSE_ON);
-
     // On attend qu'elle soit allumée
-
     while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
-
     // Initialisation du PLL sur l'horloge HSE et multiplication de la fréquence par 9
-
-    RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_9); // 72MHz
-
-
+    RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_4); // 72MHz
     // On démarre le PLL une fois la config entre
-
     RCC_PLLCmd(ENABLE);
-
     // On attend qu'il soit vraiment allumé
-
     while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-
     // On démarre les composants internes au microcontroleur
-
-
     RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_1Div5);
-
     RCC_ADCCLKConfig(RCC_PCLK2_Div8);
-
     RCC_PCLK2Config(RCC_HCLK_Div8);
-
     RCC_PCLK1Config(RCC_HCLK_Div2);
-
     RCC_HCLKConfig(RCC_SYSCLK_Div1);
-
     // Flash 1 wait state
-
     *(vu32 *)0x40022000 = 0x12;
-
     // On utilise le PLL comme horloge de référence
-
     RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 #endif
-
 #ifdef STM32F10X_CL //Pour le stm32 h107
-
     // Démarre l'horloge interne (8 MHz)
-
     RCC_HSICmd(ENABLE);
-
     // On attend qu'elle soit allumée
-
     while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == RESET);
-
     // Une fois demarée, on utilise celle ci
-
     RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
-
     // Démarre l'horloge externe
-
     RCC_HSEConfig(RCC_HSE_ON);
-
     // On attend qu'elle soit allumée
-
     while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
-
     // Initialisation du PLL sur l'horloge HSE et multiplication de la fréquence par 9
-
-    RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9); // 72MHz
-
-
+    RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_4); // 72MHz
     // On démarre le PLL une fois la config entre
-
     RCC_PLLCmd(ENABLE);
-
     // On attend qu'il soit vraiment allumé
-
     while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-
-
     // Initialisation du PLL sur l'horloge HSE et multiplication de la fréquence par 9
-
     RCC_PLL2Config(RCC_PLL2Mul_9); // 72MHz
-
     // On démarre le PLL une fois la config entre
-
     RCC_PLL2Cmd(ENABLE);
-
     // On attend qu'il soit vraiment allumé
-
     while(RCC_GetFlagStatus(RCC_FLAG_PLL2RDY) == RESET);
-
     // Initialisation du PLL sur l'horloge HSE et multiplication de la fréquence par 9
-
     RCC_PLL3Config(RCC_PLL3Mul_9); // 72MHz
-
     // On démarre le PLL une fois la config entre
-
     RCC_PLL3Cmd(ENABLE);
-
     // On attend qu'il soit vraiment allumé
-
     while(RCC_GetFlagStatus(RCC_FLAG_PLL3RDY) == RESET);
 
-
     // On démarre les composants internes au microcontroleur
-
     RCC_OTGFSCLKConfig(RCC_OTGFSCLKSource_PLLVCO_Div3);
-
     RCC_ADCCLKConfig(RCC_PCLK2_Div8);
-
     RCC_PCLK2Config(RCC_HCLK_Div8);
-
     RCC_PCLK1Config(RCC_HCLK_Div2);
-
     RCC_HCLKConfig(RCC_SYSCLK_Div1);
 
     // Flash 1 wait state
@@ -278,15 +214,15 @@ void initialisationDesPIN()
     // moteurs
 
     GPIO_InitTypeDef GPIO_InitStructureSortie;
-    GPIO_InitStructureSortie.GPIO_Pin =  GPIO_Pin_9;
+    GPIO_InitStructureSortie.GPIO_Pin =  GPIO_Pin_0; //GPIO_InitStructureSortie.GPIO_Pin =  GPIO_Pin_9;
     GPIO_InitStructureSortie.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitStructureSortie.GPIO_Speed = GPIO_Speed_50MHz;        //La vitesse de rafraichissement du port
-    GPIO_Init(GPIOB, &GPIO_InitStructureSortie);
+    GPIO_Init(GPIOA, &GPIO_InitStructureSortie); //GPIO_Init(GPIOB, &GPIO_InitStructureSortie);
 
-    GPIO_InitStructureSortie.GPIO_Pin =  GPIO_Pin_7;
+    GPIO_InitStructureSortie.GPIO_Pin =  GPIO_Pin_3;//GPIO_InitStructureSortie.GPIO_Pin =  GPIO_Pin_7;
     GPIO_InitStructureSortie.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitStructureSortie.GPIO_Speed = GPIO_Speed_50MHz;        //La vitesse de rafraichissement du port
-    GPIO_Init(GPIOB, &GPIO_InitStructureSortie);
+    GPIO_Init(GPIOA, &GPIO_InitStructureSortie);
 
     // LED Verte
 

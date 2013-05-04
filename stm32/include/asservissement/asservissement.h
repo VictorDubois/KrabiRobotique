@@ -62,16 +62,24 @@ class Asservissement
         /**@brief Pour connaitre la position exacte du robot */
         Odometrie* odometrie;
 
-        /**@brief Pour connaitre le nombre d'appels à l'asservissement */
+        /**@brief Pour connaitre le nombre d'appelle à l'asservissement */
         int asserCount;
+
+        Vitesse vitesseLineaire;
+        Angle vitesseAngulaire;
 
     public:
 
-        /**@brief Les commandes appliquées au robot */
-        Command* command;
-
         /**@brief Constructeur de l'asservissement (avec forcement l'odometrie) */
         Asservissement(Odometrie* _odometrie);
+
+        /**@brief Modifie la vitesse linéaire à atteindre */
+        void setLinearSpeed(Vitesse vitesse);
+
+        /**@brief Modifie la vitesse angulaire à atteindre */
+        void setAngularSpeed(VitesseAngulaire vitesse);
+
+        void setCommandSpeeds(Command* command);
 
         /**@brief Pour connaitre la vitesse lineaire attendu du robot */
         Vitesse getLinearSpeed();
@@ -85,14 +93,8 @@ class Asservissement
         /**@brief temps entre deux mise à jours */
         static const uint16_t nb_ms_between_updates;
 
-        /**@brief fonction appellées à chaque mise à jours */
+        /**@brief fonction appelée à chaque mise à jour */
         void update(void);
-
-        /** @brief Permet de changer la command courante utilisée par la stratégie */
-        static void setCommand(Command* command);
-
-        /** @brief Permet récupérer la command courante utilisée par la stratégie */
-        static Command* getCommand();
 
         static void finMatch();
 

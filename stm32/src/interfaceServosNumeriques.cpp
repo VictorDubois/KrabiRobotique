@@ -22,13 +22,13 @@ void initClocksAndPortsGPIO()
  	// port D pin 8 TX : un servo numérique en Ecriture
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; // La vitesse de rafraichissement du port
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
     GPIO_Init(GPIOD, &GPIO_InitStructure);
 
  	// port D pin 9 RX : un servo numérique en Lecture
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; // La vitesse de rafraichissement du port
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
     GPIO_Init(GPIOD, &GPIO_InitStructure);
 
  	// port D pin 10 : la direction (TX/RX)
@@ -161,6 +161,15 @@ void setMaximumAngle(uint16_t angle, uint8_t servo)
         sendData(packet[i]);
     }
 }
+void setBaudRate(uint8_t baudRate, uint8_t servo)
+{
+    int packet[16];
+    int packetLength = AX12::getBaudRateInstruction(packet, baudRate, servo);
+    for (int i = 0; i < packetLength; i++) {
+        sendData(packet[i]);
+    }
+}
+
 
 void setTorqueLimite(uint16_t torque, uint8_t servo) // dans la RAM
 {
