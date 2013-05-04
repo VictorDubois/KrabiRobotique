@@ -1,10 +1,17 @@
 #include "asservissement.h"
-#include "strategie.h"
+#include "strategieV2.h"
 #include "bras.h"
+//#include "ascenseur.h"
 
 #include "misc.h"
+//#include "capteurCouleur.h"
 
-#define DBG_SIZE 600
+#define DBG_SIZE 400
+
+
+
+//int roueGauche[DBG_SIZE];
+//int roueDroite[DBG_SIZE];
 
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
@@ -14,6 +21,9 @@ float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
 float angularDuty[DBG_SIZE];
 
+//float posx[DBG_SIZE];
+//float posy[DBG_SIZE];
+//float angle[DBG_SIZE];
 uint32_t dbgInc = 0;
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
@@ -24,8 +34,10 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     seuil_collision(SEUIL_COLISION),
     buffer_collision(0xffffffff)
 {
+    vitesseLineaire = 0;
+    vitesseAngulaire = 0;
 	odometrie = _odometrie;
-	command = NULL;
+
     linearDutySent = 0;
     angularDutySent = 0;
     Asservissement::asservissement = this;
@@ -48,22 +60,41 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
 #endif
 }
 
+void Asservissement::setLinearSpeed(Vitesse vitesse)
+{
+    vitesseLineaire = vitesse;
+}
+
+void Asservissement::setAngularSpeed(VitesseAngulaire vitesse)
+{
+    vitesseAngulaire = vitesse;
+}
+
+void Asservissement::setCommandSpeeds(Command* command)
+{
+    if (command == NULL)
+    {
+        setLinearSpeed(0);
+        setAngularSpeed(0);
+        return;
+    }
+    setLinearSpeed(command->getLinearSpeed());
+    setAngularSpeed(command->getAngularSpeed());
+}
+
 Distance Asservissement::getLinearSpeed()
 {
-    return (command != NULL) ? command->getLinearSpeed() : 0;
+    return vitesseLineaire;
 }
 
 Angle Asservissement::getAngularSpeed()
 {
-    return (command != NULL) ? command->getAngularSpeed() : 0;
+    return vitesseAngulaire;
 }
 
 void Asservissement::update(void)
 {
-
 /*
-
-
 #ifdef CAPTEURS
         AnalogSensor::startConversion(); // On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
 #endif
@@ -77,53 +108,27 @@ void Asservissement::update(void)
         roues.gauche.tourne(0);
         roues.droite.tourne(0);
     }
-#endif
-*/
+#endif*/
+
+    static int zer = 0;
+    static bool tr = true;
+    if ((zer % 100) == 0)
+        tr = !tr;
+
+    if (tr)
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
+    else
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
 
 
- //   if (asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini)
-    if (true)
+    if (1/*asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini*/)
     {
-
-        odometrie->update();        //Enregistre la position actuelle du robot
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
 
-    /*    static int truc = 0;
-truc++;
-if ((truc/100)%2 == 0)
-{
-
-        #ifdef STM32F10X_CL
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); //ON
-        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET); //OFF
-        #endif
-
-}
-else
-{
-        #ifdef STM32F10X_CL
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); //OFF
-         GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET); //ON
-        #endif
-}
-        */
-
-
-#ifdef CAPTEURS
-        if (sensors != NULL)
-            sensors->update();
-#endif
-
-        if (Strategie::getInstance()->hasBeenSetUp())
-            Strategie::getInstance()->update();
-
-        if (command != NULL) //si une commande est rentrée, on calcul les vitesse linéraire et de rotation à atteindre
-        {
-            command->update();
-        }
+        StrategieV2::update();
 
 #ifdef ROUES
 /*
@@ -132,9 +137,16 @@ else
 #else
 
     bool testcap = false;
-#endif
-*/
+#endif*/
 
+/*if (testcap)
+{
+    Command::freinageDUrgence(true);
+  //  linearDutySent = 0;
+  //  angularDutySent = 0;
+}
+else
+    Command::freinageDUrgence(false);*/
 #endif //ROUES
 
         //Puis on les récupéres
@@ -142,8 +154,8 @@ else
         float vitesse_angulaire_a_atteindre = getAngularSpeed();
 
         // le buffer de collision se vide si l'accélération demandé est trop forte. Normalement la commande vérifie ça.
-        //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...
-    /*    buffer_collision <<= 1;
+ /*       //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...
+        buffer_collision <<= 1;
         buffer_collision |= fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision && fabs((vitesse_angulaire_atteinte - vitesse_angulaire_a_atteindre)) < SEUIL_COLISION_ANG;
 */
 #ifdef ROUES
@@ -165,29 +177,28 @@ else
 // Pour afficher les courbes :
             if(dbgInc<DBG_SIZE)
             {
-                vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
-                vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-                linearDuty[dbgInc] = linearDutySent;
 
-                vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
-                vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                angularDuty[dbgInc] = angularDutySent;
+                  vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
+                   vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
+                  linearDuty[dbgInc] = linearDutySent;
 
-                dbgInc++;
+                   vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
+                   vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
+                   angularDuty[dbgInc] = angularDutySent;
+
+                  dbgInc++;
+
             }
             else
             {
-/*
-                roues.gauche.tourne(0.0);
-                roues.droite.tourne(0.0);
-                dbgInc++;
-      */
+
+          //     roues.gauche.tourne(0.0);
+        //   roues.droite.tourne(0.0);
+      //      dbgInc++;
             }
 
 
-
-        if (0)
-        // if (buffer_collision == 0x0 )//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
+        if (0/*buffer_collision == 0x0 */)//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
         {   //Si on détecte quelque chose, on s'arréte
 
             roues.gauche.tourne(0.);
@@ -210,27 +221,136 @@ else
 #endif
 }
 
+// allume ou éteint une LED
+void xallumerLED()
+{
+#ifdef STM32F10X_MD // stm32 h103
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
+#endif
+#ifdef STM32F10X_CL // stm32 h107
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
+#endif
+}
 
+void xeteindreLED()
+{
+#ifdef STM32F10X_MD // stm32 h103
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+#endif
+#ifdef STM32F10X_CL // stm32 h107
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
+#endif
+}
+
+// 2ème LED du stm h107 (LED jaune)
+#ifdef STM32F10X_CL
+void xallumerLED2()
+{
+    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+}
+void xeteindreLED2()
+{
+    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+}
+#endif
 
 #ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
 {
+/*
+   static Roue* ascensseur = NULL;
+   if (ascensseur==NULL)
+        ascensseur = new Roue(TIM5, 4, GPIOA, GPIO_Pin_3, GPIOD, GPIO_Pin_4);
+        ascensseur->tourne(0.6f);
+*/
+    Odometrie::odometrie->update();
+
+#ifdef CAPTEURS
+    Sensors* sensors = Sensors::getSensors();
+    if (sensors != NULL)
+        sensors->update();
+#endif
+
     Asservissement::asservissement->update();
+
+//    Ascenseur* ascenseur = Ascenseur::get();
+//    if (ascenseur != NULL)
+//        ascenseur->update();
+
+/*
+if (Odometrie::odometrie->ang < 0.2*3.1415/180.0 && Odometrie::odometrie->ang > -0.2*3.1415/180.0)
+    {
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+    }
+    else
+    {
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
+    }
+*/
+/*
+   Odometrie::odometrie->update();
+   if (Odometrie::odometrie->posX > -5000.0)
+    {
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+    }
+    else if (Odometrie::odometrie->posX < -5000.0)
+    {
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
+    }
+    else
+    {
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
+    }
+*/
+
+/*
+    static CapteurCouleur* c = NULL;
+    static int seuilMax = 200;
+    static int seuilMin = 120;
+
+    if (c == NULL)
+        c = new CapteurCouleur(TIM2, GPIOA, GPIO_Pin_6);
+
+    static uint16_t ticks[DBG_SIZE];
+    static int nbBoucles = 0;
+
+    if (nbBoucles % 200 == 100)
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+    if (nbBoucles % 200 == 199)
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);*/
+/*
+    uint16_t nbTicks = c->getTickValue();
+
+    if (nbTicks > seuilMax)
+        xallumerLED2();
+    else
+        xeteindreLED2();
+
+    if (nbTicks < seuilMin)
+        xallumerLED();
+    else
+        xeteindreLED();*/
+/*
+    if (nbBoucles < DBG_SIZE)
+    {
+
+        ticks[nbBoucles] = c->getTickValue();
+        nbBoucles++;
+    }
+    else
+    {
+        nbBoucles++;
+    }
+*/
 }
 
 #endif
-
-void Asservissement::setCommand(Command* command)
-{
-    Asservissement::asservissement->command = command;
-}
-
-Command* Asservissement::getCommand()
-{
-    return (Asservissement::asservissement->command);
-}
-
 
 void Asservissement::finMatch()
 {

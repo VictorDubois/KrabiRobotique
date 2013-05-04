@@ -23,33 +23,6 @@ class CommandLookAt : public Command
         virtual Angle getAngularSpeed();
 };
 
-// le robot se tourne vers la position et y avance (ou recule) en ligne droite
-class CommandAllerA : public Command
-{
-    // point visé
-    Position but;
-
-    // le robot peut il avancer ?
-    bool bonAngle;
-
-    // vitesse angulaire
-    float angSpeed;
-
-    // vitesse linéaire
-    float linSpeed;
-
-    // le robot doit il reculer ?
-    bool m_reculer;
-
-    public:
-
-        // le robot se tourne vers le point donné et y avance
-        CommandAllerA(Position objectif = Position(0,0), bool reculer = false);
-
-        virtual void update();
-        virtual Vitesse getLinearSpeed();
-        virtual Angle getAngularSpeed();
-};
 
 #endif
 

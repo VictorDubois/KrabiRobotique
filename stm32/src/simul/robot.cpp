@@ -4,7 +4,7 @@
 
 #include "odometrie.h"
 #include "asservissement.h"
-#include "strategie.h"
+#include "strategieV2.h"
 #include "sensors.h"
 #include <iostream>
 
@@ -42,14 +42,14 @@ void Odometrie::setPos(const PositionPlusAngle& p)
 
 /////////
 
-Robot::Robot(b2World & world) : world(world), olds(10000)
+Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(world), olds(10000)
 {
     leftUpperHammerStatus = 0;
     leftLowerHammerStatus = 0;
     rightUpperHammerStatus = 0;
     rightLowerHammerStatus = 0;
 
-	manual = true;
+    this->manual = manual;
 	level = 0;
 
 	odometrie = new Odometrie(this);
@@ -58,16 +58,14 @@ Robot::Robot(b2World & world) : world(world), olds(10000)
 
 	asservissement = new Asservissement(odometrie);
 
-    strategie = Strategie::getInstance();
-    Strategie::getInstance()->setOdometrie(odometrie);
-    strategie->setup();
+    odometrie->setPos(depart);
+    pos = odometrie->getPos();
 
+    strategie = new StrategieV2();
 
 
 	//asservissement->strategie = strategie;
 
-    odometrie->setPos(PositionPlusAngle(Position(270,560), 0));
-	pos = odometrie->getPos();
 	deriv.position.x = 0;
 	deriv.position.y = 0;
 	deriv.angle = 0;
@@ -339,7 +337,12 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
         IF_KEYSWITCH(rightUpperHammerDown,evt->key() == Qt::Key_V)
             rightLowerHammerStatus = 1;
 
-	}
+    }
+    else // automated robot
+    {
+        IF_KEYSWITCH(leftUpperHammerUp,evt->key() == Qt::Key_O)
+            StrategieV2::willCollide();
+    }
 }
 
 void Robot::setLevel()

@@ -46,6 +46,7 @@ Position Position::operator-(const Position &position) const
     return resultat;
 }
 
+
 void Position::operator=(Position position)
 {
 
@@ -66,6 +67,13 @@ Position Position::operator-=(const Position &position)
 {
     this->x-=position.x;
     this->y-=position.y;
+
+    return *this;
+}
+Position Position::operator/=(int val)
+{
+    this->x = this->x/val;
+    this->y = this->y/val;
 
     return *this;
 }
