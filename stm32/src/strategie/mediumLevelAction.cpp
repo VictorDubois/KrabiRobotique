@@ -1,44 +1,26 @@
 #include "mediumLevelAction.h"
 
-
-MediumLevelAction::MediumLevelAction(Position position, int numberOfActions, MEDIUM_LEVEL_ACTION_TYPE type)
+MediumLevelAction::MediumLevelAction(Position goalPos) : goalPosition(goalPos)
 {
-    this->robotPosition = position;
-    this->numberOfActions = numberOfActions;
-    this->status = 0;
-    this->type = type;
+    status = 0;
 }
+
 MediumLevelAction::~MediumLevelAction()
 {
+    //dtor
 }
 
-int MediumLevelAction::update() {
-
-    return 0;
-}
-
-Position MediumLevelAction::getRobotPosition()
+Position MediumLevelAction::getGoalPosition()
 {
-    return robotPosition;
+    return goalPosition;
 }
 
-void MediumLevelAction::setRobotPosition(Position position)
+bool MediumLevelAction::getGoBack()
 {
-    robotPosition = position;
+    return goBack;
 }
 
-int MediumLevelAction::getStatus() {
-	return status;
-}
-
-void MediumLevelAction::setStatus(int status) {
-	this->status = status;
-}
-void MediumLevelAction::addLowLevelAction(LowLevelAction* action)
+void MediumLevelAction::collisionAvoided()
 {
-    this->actionsToDo[++numberOfActions] = action;
-}
-MEDIUM_LEVEL_ACTION_TYPE MediumLevelAction::getType()
-{
-    return type;
+    status = 0; // reinitialize the status if function not overloaded
 }

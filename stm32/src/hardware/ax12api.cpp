@@ -81,6 +81,15 @@ int AX12::getLedInstruction(int* retour, uint8_t ledOn, int servo)
     retour[7] = ax12Checksum(retour[3], &retour[2]);
     return 8;
 }
+int AX12::getBaudRateInstruction(int* retour, uint8_t baudRate, int servo)
+{
+    createWriteHeader(retour, servo, 0); // first, we create a write header with 3 more params (for low/high pos and low/high speed)
+    retour[5] = AX12_BAUD_RATE;
+    retour[6] = baudRate;
+    retour[7] = ax12Checksum(retour[3], &retour[2]);
+    return 8;
+}
+
 
 
 void AX12::createWriteHeader(int* retour, int servo, int nombreParamsAjoutes)
