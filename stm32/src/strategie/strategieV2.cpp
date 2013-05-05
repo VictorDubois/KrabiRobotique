@@ -44,7 +44,7 @@ StrategieV2::StrategieV2()
 
     //actionsToDo[0] = new Evitement();
     actionsToDo[0] = new ActionGoTo(Position(1000,230), false);
-    actionsToDo[0] = new RamasserVerreV2(Position(900,550));
+    //actionsToDo[0] = new RamasserVerreV2(Position(900,550));
     actionsToDo[1] = new ActionGoTo(Position(2300,230), false);
     actionsToDo[2] = new ActionGoTo(Position(2600,400), false);
     actionsToDo[3] = new ActionGoTo(Position(2600,550), false);
@@ -56,7 +56,7 @@ StrategieV2::StrategieV2()
     actionsToDo[9] = new ActionGoTo(Position(2600,1070), false);
     actionsToDo[10] = new ActionGoTo(Position(300,1070), false);
 
-
+    //currentAction = new RecalibrerOdometrie(new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_14, GPIOD), new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGHT, GPIO_Pin_1, GPIOD));
     currentAction = actionsToDo[actionsCount];
     //currentCommand = new CommandAllerA(currentAction->getGoalPosition());
     //Asservissement::setCommand(currentCommand);
