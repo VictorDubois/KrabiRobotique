@@ -2,10 +2,12 @@
 #include "odometrie.h"
 #include "strategieV2.h"
 
-RecalibrerOdometrie::RecalibrerOdometrie() : MediumLevelAction()
+RecalibrerOdometrie::RecalibrerOdometrie(LimitSwitchSensor* _fdc1, LimitSwitchSensor* _fdc2) : MediumLevelAction()
 {
     goalPosition1 = Position(700, 1950);
     goalPosition2 = Position(50, 1000);
+    fdc1 = _fdc1;
+    fdc2 = _fdc1;
 }
 
 RecalibrerOdometrie::~RecalibrerOdometrie()
@@ -35,8 +37,9 @@ int RecalibrerOdometrie::update()
     }
     if (status == 2) // attend d'avoir synchro sur Y
     {
-        Position vect = goalPosition1 - Odometrie::odometrie->getPos().getPosition();
-        if (Odometrie::odometrie->getVitesseLineaire() < 0.001  && Odometrie::odometrie->getVitesseAngulaire() < 0.001 && vect.getNorme() < 60) // distance parcourue la derniere seconde
+        fdc1->updateValue();
+        fdc2->updateValue();
+        if (fdc1->getValue().b && fdc2->getValue().b) // distance parcourue la derniere seconde
         {
             Odometrie::setY(2000-95);
             StrategieV2::setCurrentGoal(Position(700, 1000), false);
@@ -54,8 +57,9 @@ int RecalibrerOdometrie::update()
     }
     else if (status == 4) // attend d'avoir synchro sur Y
     {
-        Position vect = goalPosition2 - Odometrie::odometrie->getPos().getPosition();
-        if (Odometrie::odometrie->getVitesseLineaire() < 0.001  && Odometrie::odometrie->getVitesseAngulaire() < 0.001 && vect.getNorme() < 60) // distance parcourue la derniere seconde
+        fdc1->updateValue();
+        fdc2->updateValue();
+        if (fdc1->getValue().b && fdc2->getValue().b) // distance parcourue la derniere seconde
         {
             Odometrie::setX(95); // robot = 319mm de large
             status = -1;

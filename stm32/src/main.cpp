@@ -66,182 +66,155 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
     
-    ServosNumeriques::initClocksAndPortsGPIO();
-    /*while(1) {
-    allumerLED();
-    ServosNumeriques::initUART(1000000);
-    ServosNumeriques::sendMode();
-    for (int i = 0; i < 3000000; i++){}
-    ServosNumeriques::setBaudRate(0x67, 13);
+    /*ServosNumeriques::initClocksAndPortsGPIO();
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::initUART(19231);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::sendMode();*/
+    /*
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(1, MBD_ID);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(1, MBG_ID);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(1, MHD_ID);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(1, MHG_ID);
+        allumerLED();
+        for (int i = 0; i < 10000000; i++)
+        {
+        }
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(0, MBD_ID);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(0, MBG_ID);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(0, MHD_ID);
+    for (int i = 0; i < 10000; i++);
+    ServosNumeriques::setLedState(0, MHG_ID);
         eteindreLED();
-    for (int i = 0; i < 3000000; i++){}
-    ServosNumeriques::setLedState(1, 13);
-    for (int i = 0; i < 3000000; i++){ }
-    allumerLED();
-    ServosNumeriques::initUART(200000);
-    ServosNumeriques::sendMode();
-    for (int i = 0; i < 3000000; i++){}
-    ServosNumeriques::setBaudRate(0x67, 13);
+        for (int i = 0; i < 10000000; i++)
+        {}
+        */
+    /*
+    while(1)
+    {
+        
+    
+        //Marteaux::enfoncerBasDroit(); 
+        Marteaux::enfoncerBasGauche(); 
+        //Marteaux::enfoncerHautDroit(); 
+        //Marteaux::enfoncerHautGauche(); 
+        allumerLED();
+        for (int i = 0; i < 6000000; i++)
+        {
+        }
+        
         eteindreLED();
-    for (int i = 0; i < 3000000; i++){}
-    ServosNumeriques::setLedState(1, 13);
-    for (int i = 0; i < 3000000; i++){ }
-    allumerLED();
-    ServosNumeriques::initUART(19230);
-    ServosNumeriques::sendMode();
-    for (int i = 0; i < 3000000; i++){}
-    ServosNumeriques::setBaudRate(0x67, 13);
+        //Marteaux::releverBasDroit();
+        Marteaux::releverBasGauche(); 
+        //Marteaux::releverHautDroit(); 
+        //Marteaux::releverHautGauche(); 
+        for (int i = 0; i < 6000000; i++)
+        {
+        }
+    
+        //arteaux::enfoncerBasDroit(); 
+        Marteaux::enfoncerBasGauche(); 
+        //Marteaux::enfoncerHautDroit(); 
+        //Marteaux::enfoncerHautGauche(); 
+        allumerLED();
+        for (int i = 0; i < 6000000; i++)
+        {
+        }
+        
         eteindreLED();
-    for (int i = 0; i < 3000000; i++){}
-    ServosNumeriques::setLedState(1, 13);
-    for (int i = 0; i < 3000000; i++){ }
+        //Marteaux::releverBasDroit();
+        Marteaux::releverBasGauche(); 
+        //Marteaux::releverHautDroit(); 
+        //arteaux::releverHautGauche(); 
+        for (int i = 0; i < 13000000; i++)
+        {
+        }
+        
+        eteindreLED();
+        Marteaux::rangerBasDroit();
+        Marteaux::rangerBasGauche(); 
+        Marteaux::rangerHautDroit(); 
+        Marteaux::rangerHautGauche(); 
+        for (int i = 0; i < 10000000; i++)
+        {
+        }
+       
+    }
+    */
+    // test fdc :
+    /*
+    LimitSwitchSensor* fdc1 = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_14, GPIOD);
+    LimitSwitchSensor* fdc2 = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGHT, GPIO_Pin_1, GPIOD);
+    while(1)
+    {
+        fdc1->updateValue();
+        fdc2->updateValue();
+        if (fdc1->getValue().b)
+            allumerLED();
+        else    
+            eteindreLED();
+        if (fdc2->getValue().b)
+            allumerLED2();
+        else    
+            eteindreLED2();
+        for (int i = 0; i < 10000; i++)
+        {
+        }
+    }*/
+    /*
+    uint8_t channels[10] = {9,8,10,11,12,13,14,15,5,4};
+    uint16_t* data = AnalogSensor::initialiserADC(10, channels);
+    int nbSharp = 10;
+    SharpSensor** sharps = new SharpSensor*[nbSharp];
+    sharps[0] = new SharpSensor(SharpSensor::FRONT, 9, data);
+    sharps[1] = new SharpSensor(SharpSensor::FRONT_LEFT, 8, data);
+    sharps[2] = new SharpSensor(SharpSensor::FRONT_RIGTH, 10, data);
+    sharps[3] = new SharpSensor(SharpSensor::LEFT, 11, data);
+    sharps[4] = new SharpSensor(SharpSensor::RIGTH, 12, data);
+    sharps[5] = new SharpSensor(SharpSensor::BACK, 13, data);
+    sharps[6] = new SharpSensor(SharpSensor::BACK, 14, data);
+    sharps[7] = new SharpSensor(SharpSensor::BACK, 15, data);
+    sharps[8] = new SharpSensor(SharpSensor::BACK, 5, data);
+    sharps[9] = new SharpSensor(SharpSensor::BACK, 4, data);
+    
+    while(1)
+    {
+        AnalogSensor::startConversion();
+        //allumerLED2();
+        for (int i = 0; i < 10; i++) 
+        {
+            sharps[i]->updateValue();
+        }
+        bool allume = false;
+        for (int i = 0; i < 10; i++)
+        {
+            if (sharps[i]->getValue().b)
+            {
+                allume = true;
+            }
+        }
+        if (allume) {
+            allumerLED();
+        }
+        else {
+            eteindreLED();
+        }
+        for (int i = 0; i < 1000; i++)
+        {
+        }
+        eteindreLED2();
+        for (int i = 0; i < 1000; i++)
+        {
+        }
     }*/
     
-    allumerLED();
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        
-        eteindreLED();
-        for (int i = 0; i < 3000000; i++)
-        {
-        }
-        //ServosNumeriques::setBaudRate(0x67, 12);
-        //ServosNumeriques::setLedState(1, 12);
-        allumerLED();
-        for (int i = 0; i < 30000; i++)
-        {
-        }
-        eteindreLED();
-        for (int i = 0; i < 30000; i++)
-        {
-        }
-        //ServosNumeriques::setBaudRate(0x67, 13);
-        //ServosNumeriques::setLedState(1, 13);
-        for (int i = 0; i < 30000; i++)
-        {
-        }
-        //ServosNumeriques::initUART(1000000);
-
-        //ServosNumeriques::sendMode();
-        allumerLED();
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        
-        eteindreLED();
-        for (int i = 0; i < 3000000; i++)
-        {
-        }
-    //ServosNumeriques::setBaudRate(0x67, 12);
-    //ServosNumeriques::setLedState(1, 12);
-        allumerLED();
-        for (int i = 0; i < 30000; i++)
-        {
-        }
-        eteindreLED();
-        for (int i = 0; i < 30000; i++)
-        {
-        }
-    //ServosNumeriques::setBaudRate(0x67, 13);
-    //ServosNumeriques::setLedState(1, 13);
-        for (int i = 0; i < 30000; i++)
-        {
-        }
-        
-    //ServosNumeriques::setLedState(1, 12);
-    //ServosNumeriques::setMinimumAngle(0x0000, 11);
-    for (int i = 0; i < 10000; i++)
-    {
-    }
-    //ServosNumeriques::setMaximumAngle(0x03ff, 11);
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-    //ServosNumeriques::setLedState(1, 11);
-/*
-        //ServosNumeriques::moveToAtSpeed(0x0000, 0x0500, 12); // speed -0x0200 
-        //ServosNumeriques::moveToAtSpeed(0x03ff, 0x0500, 12); // 0x07ff, 13);
-        //ServosNumeriques::moveToAtSpeed(0x030, 0x0200, 12); // 0x07ff, 13);
-        ServosNumeriques::moveToAtSpeed(0, 0x0600, 12); //AtSpeed(0x0200, 12);
-        for (int j = 0; j < 1; j++)
-        for (int i = 0; i < 3000000; i++)
-        {
-        }
-        //ServosNumeriques::moveAtSpeed(0x0000, 12);
-        ServosNumeriques::moveToAtSpeed(0x0100, 0x0200, 12); // 0x07ff, 13);*/
-    for (int i = 0; i < 10000; i++)
-    {
-    }
-    ServosNumeriques::initUART(19231);
-
-    for (int i = 0; i < 10000; i++)
-    {
-    }
-    ServosNumeriques::sendMode();
-    for(int i = 0; i < 10000; i++)
-    {
-    }
-    ServosNumeriques::setLedState(1, 12);
-    ServosNumeriques::setLedState(1, 13);
-    ServosNumeriques::setMaxTorque(0x03ff, MARTEAU_BAS_DROIT_ID);
-    while(1)
-    {/*
-        ServosNumeriques::moveTo(0x100, 11);
-        ServosNumeriques::moveTo(0x100, 12);
-        ServosNumeriques::moveTo(0x100, 13);
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        ServosNumeriques::moveTo(0x200, 11);
-        ServosNumeriques::moveTo(0x200, 12);
-        ServosNumeriques::moveTo(0x200, 13);*/
-        for (int i = 0; i < 10000000; i++)
-        {
-        }
-        ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_DROIT_ENFONCE, 0x07ff, MARTEAU_BAS_DROIT_ID); // speed -0x0200 
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        //ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_DROIT_ENFONCE, 0x0600, MARTEAU_HAUT_DROIT_ID); // speed -0x0200 
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        /*ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_GAUCHE_ENFONCE, 0x0200, MARTEAU_BAS_GAUCHE_ID); // speed -0x0200
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_GAUCHE_ENFONCE, 0x0200, MARTEAU_HAUT_GAUCHE_ID); // speed -0x0200 
-        for (int i = 0; i < 10000000; i++)
-        {
-        }*/
-        allumerLED();
-        for (int i = 0; i < 10000000; i++)
-        {
-        }
-        
-        ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_DROIT_RELEVE_ANGLE, 0x0200, MARTEAU_BAS_DROIT_ID); // speed -0x0200 
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        //ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_DROIT_RELEVE_ANGLE, 0x0200, MARTEAU_HAUT_DROIT_ID); // speed -0x0200 
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        /*
-        ServosNumeriques::moveToAtSpeed(MARTEAU_BAS_GAUCHE_RELEVE_ANGLE, 0x0600, MARTEAU_BAS_GAUCHE_ID); // speed -0x0200
-        for (int i = 0; i < 1000000; i++)
-        {
-        }
-        ServosNumeriques::moveToAtSpeed(MARTEAU_HAUT_GAUCHE_RELEVE_ANGLE, 0x0600, MARTEAU_HAUT_GAUCHE_ID); // speed -0x0200 
-        for (int i = 0; i < 10000000; i++)
-        {
-        }*/
-        eteindreLED();
-    }
     Tirette tirette(GPIOE, GPIO_Pin_5);
     tirette.attendreEnlevee();
 // pour la v2 :
