@@ -15,7 +15,7 @@ class Roue : public Moteur
 
     public:
 
-        Roue(TIM_TypeDef* TIMx, unsigned char OCx, GPIO_TypeDef * GPIOx_Sens, uint16_t GPIO_Pin_Sens);
+        Roue(TIM_TypeDef* TIMx, unsigned char OCx, GPIO_TypeDef* GPIOx_pwm, uint16_t GPIO_Pin_pwm, GPIO_TypeDef* GPIOx_Sens, uint16_t GPIO_Pin_Sens);
 
         void tourne(float rapport);
 };

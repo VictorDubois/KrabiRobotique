@@ -65,12 +65,13 @@ int main()
 
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
-    
-    /*ServosNumeriques::initClocksAndPortsGPIO();
+    /*
+    ServosNumeriques::initClocksAndPortsGPIO();
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::initUART(19231);
     for (int i = 0; i < 10000; i++);
-    ServosNumeriques::sendMode();*/
+    ServosNumeriques::sendMode();
+    */
     /*
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::setLedState(1, MBD_ID);
@@ -95,44 +96,44 @@ int main()
         eteindreLED();
         for (int i = 0; i < 10000000; i++)
         {}
-        */
-    /*
+    
+    
     while(1)
     {
         
     
-        //Marteaux::enfoncerBasDroit(); 
+        Marteaux::enfoncerBasDroit(); 
         Marteaux::enfoncerBasGauche(); 
-        //Marteaux::enfoncerHautDroit(); 
-        //Marteaux::enfoncerHautGauche(); 
+        Marteaux::enfoncerHautDroit(); 
+        Marteaux::enfoncerHautGauche(); 
         allumerLED();
         for (int i = 0; i < 6000000; i++)
         {
         }
         
         eteindreLED();
-        //Marteaux::releverBasDroit();
+        Marteaux::releverBasDroit();
         Marteaux::releverBasGauche(); 
-        //Marteaux::releverHautDroit(); 
-        //Marteaux::releverHautGauche(); 
+        Marteaux::releverHautDroit(); 
+        Marteaux::releverHautGauche(); 
         for (int i = 0; i < 6000000; i++)
         {
         }
     
-        //arteaux::enfoncerBasDroit(); 
+        Marteaux::enfoncerBasDroit(); 
         Marteaux::enfoncerBasGauche(); 
-        //Marteaux::enfoncerHautDroit(); 
-        //Marteaux::enfoncerHautGauche(); 
+        Marteaux::enfoncerHautDroit(); 
+        Marteaux::enfoncerHautGauche(); 
         allumerLED();
         for (int i = 0; i < 6000000; i++)
         {
         }
         
         eteindreLED();
-        //Marteaux::releverBasDroit();
+        Marteaux::releverBasDroit();
         Marteaux::releverBasGauche(); 
-        //Marteaux::releverHautDroit(); 
-        //arteaux::releverHautGauche(); 
+        Marteaux::releverHautDroit(); 
+        Marteaux::releverHautGauche(); 
         for (int i = 0; i < 13000000; i++)
         {
         }
@@ -168,34 +169,34 @@ int main()
         {
         }
     }*/
-    /*
+    
     uint8_t channels[10] = {9,8,10,11,12,13,14,15,5,4};
     uint16_t* data = AnalogSensor::initialiserADC(10, channels);
     int nbSharp = 10;
     SharpSensor** sharps = new SharpSensor*[nbSharp];
-    sharps[0] = new SharpSensor(SharpSensor::FRONT, 9, data);
-    sharps[1] = new SharpSensor(SharpSensor::FRONT_LEFT, 8, data);
-    sharps[2] = new SharpSensor(SharpSensor::FRONT_RIGTH, 10, data);
-    sharps[3] = new SharpSensor(SharpSensor::LEFT, 11, data);
-    sharps[4] = new SharpSensor(SharpSensor::RIGTH, 12, data);
-    sharps[5] = new SharpSensor(SharpSensor::BACK, 13, data);
-    sharps[6] = new SharpSensor(SharpSensor::BACK, 14, data);
-    sharps[7] = new SharpSensor(SharpSensor::BACK, 15, data);
-    sharps[8] = new SharpSensor(SharpSensor::BACK, 5, data);
-    sharps[9] = new SharpSensor(SharpSensor::BACK, 4, data);
+    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // rien 9
+    sharps[1] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
+    sharps[2] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
+    sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
+    sharps[4] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
+    sharps[5] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
+    sharps[6] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+    sharps[7] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    sharps[8] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
+    sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
     
     while(1)
     {
         AnalogSensor::startConversion();
-        //allumerLED2();
-        for (int i = 0; i < 10; i++) 
+        allumerLED2();
+        //for (int i = 0; i < 10; i++) 
         {
-            sharps[i]->updateValue();
+            sharps[6]->updateValue();
         }
         bool allume = false;
-        for (int i = 0; i < 10; i++)
+        //for (int i = 0; i < 10; i++)
         {
-            if (sharps[i]->getValue().b)
+            if (sharps[6]->getValue().b)
             {
                 allume = true;
             }
@@ -213,7 +214,7 @@ int main()
         for (int i = 0; i < 1000; i++)
         {
         }
-    }*/
+    }
     
     Tirette tirette(GPIOE, GPIO_Pin_5);
     tirette.attendreEnlevee();

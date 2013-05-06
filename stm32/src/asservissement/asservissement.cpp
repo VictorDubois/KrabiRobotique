@@ -114,12 +114,12 @@ void Asservissement::update(void)
     static bool tr = true;
     if ((zer % 100) == 0)
         tr = !tr;
-
+#ifdef ROBOTHW
     if (tr)
         GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
     else
         GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
-
+#endif
 
     if (1/*asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini*/)
     {
@@ -220,39 +220,6 @@ else
 }
 #endif
 }
-
-// allume ou éteint une LED
-void xallumerLED()
-{
-#ifdef STM32F10X_MD // stm32 h103
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
-#endif
-#ifdef STM32F10X_CL // stm32 h107
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
-#endif
-}
-
-void xeteindreLED()
-{
-#ifdef STM32F10X_MD // stm32 h103
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
-#endif
-#ifdef STM32F10X_CL // stm32 h107
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
-#endif
-}
-
-// 2ème LED du stm h107 (LED jaune)
-#ifdef STM32F10X_CL
-void xallumerLED2()
-{
-    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
-}
-void xeteindreLED2()
-{
-    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-}
-#endif
 
 #ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
