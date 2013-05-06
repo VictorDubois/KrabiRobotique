@@ -1,93 +1,56 @@
-#ifndef STRATEGIE_H_INCLUDED
-#define STRATEGIE_H_INCLUDED
+#ifndef STRATEGIE_H
+#define STRATEGIE_H
 
-#include "singleton.h"
-#ifdef ROBOTHW
-#include "vector.h"
-#else
-#include <vector>
+#ifndef ROBOTHW
+#include "element.h"
 #endif
-#include "mediumLevelAction.h"
-#include "sensors.h"
-#include "odometrie.h"
-#include "positionPlusAngle.h"
-#include "position.h"
-#include "angle.h"
-#include "sharpSensor.h"
-#include "commandGoTo.h"
-#include "commandLookAt.h"
-#include "asservissement.h"
-#include "leds.h"
+/*
+#include <stdint.h>
+#include "PositionPlusAngle.h"
+*/
+#include "constantes.h"
+#include "command.h"
 
-#define DISTANCE_TO_CATCH_GLASS 150
+class Odometrie;    //Pour éviter les dépendance cycliques
 
-class Strategie: public Singleton<Strategie> {
-    friend class Singleton<Strategie>;
+/**@brief Classe définissant les actions que va réaliser le robot */
+class Strategie
+{
+    private:
 
-public:
-    Strategie(bool isBlue = true);
-    virtual ~Strategie();
-    /**
-     * Setups the strategy, intiates all the actions and the base actionsToDoVector
-     */
-    void setup(bool isBlue = true);
-	bool update();
+        /**@brief Numéro de l'instruction courante */
+        int instruction_nb;
 
-	void goToTarget();
+        /**@brief True si une collision a été détecté, false sinon */
+        bool collision_detected;
 
-	int getLastRobotDetection();
+        /**@brief Nombre de collision qu'il y a eu depuis le début. Numéro de l'instruction de collision à réaliser */
+        int instruction_collision_nb;
 
-	bool getMustMove();
-	bool getIsBlue();
-    Odometrie* getOdometrie();
+        /**@brief On a besoin de la position du robot pour choisir une stratégie de déplacement */
+        Odometrie* odometrie;
 
-	void setMustMove(bool mustMove);
-	void setIsBlue(bool isBlue);
-    void updateGoal(Position goalPos, bool goBack = false);
-    void storeGlass(); // function to tell the strategy we have an other glass
-    void cleanGlassStorage();
-    bool hasBeenSetUp();
+        Command* commande;
 
-private:
-    Sensors* sensors;
-	Position goalPosition;
-	Angle goalAngle;
-	bool mustMove;
-    bool isBlue;
-    int i;
-    int updateCallsCount; /// Contains the number of update function calls
-    bool hasToldBack;
-    int numberOfGlassStored;
-    bool mustComeToBase;
-    MediumLevelAction* currentAction;
-    bool setUp;
-    Command* currentCommand;
-	/**
-	 * Intermediate positions to reach the goal, if any. This is use to avoid colliding other robots or being blocked
-	 */
-	vector<int> intermediatePositions;
-	/**
-	 * Vector that stores all the actions that can be performed during a match
-	 */
-    MediumLevelAction* actions[32];
-	/**
-	 * Ordered list of pointers on all the actions that must be done
-     */
-    MediumLevelAction* actionsToDo[12];
-	/**
-	 * set to 0 each time a robot has been seen
-	 * increased by dt each time update is called
-	 */
-	int lastRobotDetection;
-	/**
-	 * If we're doing an action that can be continued while doing another, the action to be finished is stored here
-	 */
-	MediumLevelAction* actionToFinish;
-	/**
-	 * Contains the positions of detected robots on the table, if any. (-1,-1) means we don't know where other robots are.
-	 */
-	int otherRobotsPosition[3][2];
+    public:
+
+        /**@brief On sauvegarde la stratégie en static puisqu'une seul peut avoir lieu en même temps. */
+        static Strategie* strategie;
+
+        /**@brief Constructeur prenant en entrée la position du robot et le coté du plateau sur lequel on se trouve */
+        Strategie(bool is_blue, Odometrie* odometrie);
+
+        /**@brief Permet de valider une action demandé à la stratégie */
+        void update();
+
+        /**@brief True si on est du coté bleu, false sinon */
+        bool is_blue;
+
+#ifndef ROBOTHW
+	/**@brief */
+	void updateElement(unsigned int id, Element elem);
+#endif
 
 };
 
-#endif
+#endif // STRATEGIE_H

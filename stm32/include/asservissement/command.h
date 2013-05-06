@@ -8,9 +8,6 @@
 #include <iostream>
 #endif
 
-float abs(float x);
-float diffAngle(float a, float b);
-
 /**@brief Classe abstraite généralisant l'utilisation des commandes */
 class Command
 {
@@ -51,6 +48,9 @@ class Command
         /** @brief Permet d'obtenir la valeur de stop et ainsi de s'avoir si on doit arrêter le robot ou pas.
         *   @return Retourne la valeur de stop */
         static bool getStop(void);
+
+        // est ce que la commande a fini ?
+        virtual bool fini() const;
 
     private:
 

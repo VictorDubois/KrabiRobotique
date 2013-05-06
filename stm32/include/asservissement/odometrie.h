@@ -5,6 +5,7 @@
 #include "angle.h"
 #include "distance.h"
 #include "positionPlusAngle.h"
+#include "quadratureCoderHandler.h"
 #include <stdint.h>
 #include <math.h>
 
@@ -24,15 +25,13 @@ class Odometrie
         void setPos(const PositionPlusAngle& p);
         Angle getVitesseAngulaire() const;
         Distance getVitesseLineaire() const;
-        void update() { }
+        void update() { };
         /// @brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme
         static Odometrie* odometrie;
 };
 
 #else
 // pour le vrai robot
-
-#include "quadratureCoderHandler.h"
 
 /// @brief Classe permettant de connaitre la position du robot
 class Odometrie
@@ -65,9 +64,6 @@ class Odometrie
         /**@brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme*/
         static Odometrie* odometrie;
 
-        // angle en degrés du robot pour débugger
-        double angle;
-
         /**@brief Permet de connaitre le nombre de tick envoyés par la roue codeuse droite donc connaitre le nombre de tour de celle ci */
         QuadratureCoderHandler* roueCodeuseDroite;
 
@@ -84,10 +80,11 @@ class Odometrie
         VitesseAngulaire vitesseAngulaire;
 
         /**@brief Stock le nombre de tick de la roue gauche du robot à l'étape précédente pour éviter les incohérences entre deux mesures succéssives */
-        int32_t prevDeltaTicksRoueGauche;
+        static const int tailleTabPrevTicks = 2;
+        int32_t prevDeltaTicksRoueGauche[tailleTabPrevTicks];
 
         /**@brief Stock le nombre de tick de la roue droite du robot à l'étape précédente pour éviter les incohérences entre deux mesures succéssives */
-        int32_t prevDeltaTicksRoueDroite;
+        int32_t prevDeltaTicksRoueDroite[tailleTabPrevTicks];
 
         /**@brief taille de l'entraxe du robot */
         double entraxe;
@@ -104,17 +101,20 @@ class Odometrie
         /**@brief coefficient pour relier le nombre de ticks de chaque roue à l'angle réalisé */
         double coeffAngle;
 
+        // position et angle plus précis
+        double posX, posY, ang;
+
         /** @brief Permet de définir une nouvelle valeur pour la position x du robot
         *   @param x Nouvelle position x du robot */
-        static void setX(Distance x);
+        void setX(Distance x);
 
         /** @brief Permet de définir une nouvelle valeur pour la position y du robot
         *   @param Nouvelle position y du robot*/
-        static void setY(Distance y);
+        void setY(Distance y);
 
         /** @brief Permet de définir une nouvelle valeur pour l'angle du robot
         *   @param a Nouvel angle du robot en radian */
-        static void setAngle(Angle a);
+        void setAngle(Angle a);
 
 };
 

@@ -46,7 +46,6 @@ Position Position::operator-(const Position &position) const
     return resultat;
 }
 
-
 void Position::operator=(Position position)
 {
 
@@ -70,13 +69,6 @@ Position Position::operator-=(const Position &position)
 
     return *this;
 }
-Position Position::operator/=(int val)
-{
-    this->x = this->x/val;
-    this->y = this->y/val;
-
-    return *this;
-}
 
 bool Position::presqueEgales(const Position &p) const
 {
@@ -88,42 +80,11 @@ bool Position::operator==(const Position &p) const
     return (x == p.x && y == p.y);
 }
 
-/*float sqrtx(float x)
-{
-    float r0 = 10.;
-    float r1 = (r0+x/r0)/2.;
-    while (fabs(r1-r0)>0.00001)
-    {
-        r0 = r1;
-        r1 = (r0+x/r0)/2.;
-    }
-    return r1;
-}*/
-
 Distance Position::getNorme() const
 {
     return Distance(sqrt(x*x+y*y));
 }
 
-/*Angle atanx(float x)
-{
-    float y = x*x;
-    return x*(1-y*(0.3333333333+y*(0.2-y*0.142857143)));
-}
-
-Angle atan2x(float y,float x)
-{
-    Angle f = atanx (fabs(y/x));
-    if (y>0)
-    {
-        return (x>0 ? f : (x=0 ? M_PI_2 : (M_PI-f) ));
-    }
-    else
-    {
-        return (x>0 ? -f : (x=0 ? -M_PI_2 : -(M_PI-f) ));
-    }
-}
-*/
 Angle Position::getAngle() const
 {
 	return atan2(y,x);

@@ -35,11 +35,6 @@ class PWMHandler
          */
         void setPulseWidth(uint16_t pulseWidth);
 
-        /// @brief initialise une pin pour les pwm
-        /// Ne pas oublier d'ajouter un eventuel remap pour que la
-        /// pin corresponde au channel d'un timer
-        static void initialiserPinPourPWM(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x);
-
 };
 
 #endif //PWMHANDLER_H

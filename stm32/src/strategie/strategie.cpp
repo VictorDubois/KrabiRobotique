@@ -1,228 +1,316 @@
 #include "strategie.h"
+#include "odometrie.h"
 #include "asservissement.h"
-#include "ramasserVerre.h"
-#include "eteindreBougie.h"
-#include "actionnerAscenseur.h"
-#include "actionnerMarteau.h"
-#include "actionnerPortes.h"
-#include "lancerAscenseur.h"
-#include "regarderCouleur.h"
-#include "deposerVerres.h"
-#ifndef ROBOTHW
-#include "table.h"
-#endif
-
-
-Strategie::Strategie(bool isBlue)
-{
-    this->isBlue = isBlue;
-    this->updateCallsCount = 0;
-    this->mustMove = false;
-    this->currentCommand = NULL;
-    this->i = 0;
-    this->numberOfGlassStored = 0;
-    this->mustComeToBase = false;
-    this->setUp = false;
-}
-Strategie::~Strategie()
-{
-
-}
-
-void Strategie::setup(bool isBlue)
-{
-    this->isBlue = isBlue;
-
-    // verres :
-
-
-/*
-    // bougies bas
-    actions[12] = new EteindreBougie(Position(826,1910), 0, 1);
-    actions[13] = new EteindreBougie(Position(872,1740), 0);
-    actions[14] = new EteindreBougie(Position(961,1586), 0);
-    actions[15] = new EteindreBougie(Position(1086,1461), 0, 1);
-    actions[16] = new EteindreBougie(Position(1240,1372), 0, 1);
-    actions[17] = new EteindreBougie(Position(1411,1326), 0, 1);
-    actions[18] = new EteindreBougie(Position(1589,1326), 0, 1);
-    actions[19] = new EteindreBougie(Position(1760,1372), 0, 1);
-    actions[20] = new EteindreBougie(Position(1914,1461), 0);
-    actions[21] = new EteindreBougie(Position(2039,1586), 0, 1);
-    actions[22] = new EteindreBougie(Position(2128,1740), 0, 1);
-    actions[23] = new EteindreBougie(Position(2174,1910), 0);
-
-    // bougies haut
-    actions[24] = new EteindreBougie(Position(833,1910), 0, 1);
-    actions[25] = new EteindreBougie(Position(935,1722), 0);
-    actions[26] = new EteindreBougie(Position(1122,1535), 0, 1);
-    actions[27] = new EteindreBougie(Position(1367,1433), 0);
-    actions[28] = new EteindreBougie(Position(1632,1433), 0, 1);
-    actions[29] = new EteindreBougie(Position(1878,1535), 0);
-    actions[30] = new EteindreBougie(Position(2065,1722), 0, 1);
-    actions[31] = new EteindreBougie(Position(2167,1910), 0);
-
-    actions[32] = new RamasserVerre(Position(826,1910));
+#include "commandAllerA.h"
+#include "marteaux.h"
+/*#include "CommandAvancerToutDroit.h"
+#include "CommandTourner.h"
+#include "Bras.h"
 */
 
-    /*actionsToDo[0] = actions[0];
-    actionsToDo[1] = actions[2];
-    actionsToDo[2] = actions[1];
-    actionsToDo[3] = actions[4];
-    actionsToDo[4] = actions[5];
-    actionsToDo[5] = actions[3];
-    actionsToDo[6] = actions[9];
-    actionsToDo[7] = actions[11];
-    actionsToDo[8] = actions[10];
-    actionsToDo[9] = actions[7];
-    actionsToDo[10] = actions[8];
-    actionsToDo[11] = actions[6];*/
 
-    /*actionsToDo[12] = actions[12];
-    actionsToDo[13] = actions[13];
-    actionsToDo[14] = actions[14];
-    actionsToDo[15] = actions[15];
-    actionsToDo[16] = actions[16];
-    actionsToDo[17] = actions[17];
-    actionsToDo[18] = actions[18];
-    actionsToDo[19] = actions[19];
-    actionsToDo[20] = actions[20];
-    actionsToDo[21] = actions[21];
-    actionsToDo[22] = actions[22];
-    actionsToDo[23] = actions[23];*/
+Strategie* Strategie::strategie = NULL;
 
+Strategie::Strategie(bool is_blue, Odometrie* odometrie)
+    : collision_detected(false)//, listeActions(NULL)
+{
+    this->is_blue = is_blue;
+    this->odometrie = odometrie;
+    Strategie::strategie = this;
+    instruction_nb = 0;
 
-    actions[0] = new RamasserVerre(Position(900,550));
-    actions[1] = new RamasserVerre(Position(900,1050));
-    actions[2] = new RamasserVerre(Position(1050,800));
-    actions[3] = new RamasserVerre(Position(1200,550));
-    /*actions[4] = new RamasserVerre(Position(1200,1050));
-    actions[5] = new RamasserVerre(Position(1350,800));
-    actions[6] = new RamasserVerre(Position(2100,550));
-    actions[7] = new RamasserVerre(Position(2100,1050));
-    actions[8] = new RamasserVerre(Position(1950,800));
-    actions[9] = new RamasserVerre(Position(1800,550));
-    actions[10] = new RamasserVerre(Position(1800,1050));
-    actions[11] = new RamasserVerre(Position(1650,800));*/
+   /* Position positionDeDepart(POS_DEPART_X,POS_DEPART_Y);
+    Angle angleDeDepart(ANGLE_DEPART);
 
-    i=0;
-    currentAction = actions[0];
+     positionDeDepart.setY(is_blue ? positionDeDepart.getY() : -positionDeDepart.getY());
 
-    currentCommand = new CommandAllerA(currentAction->getRobotPosition());//currentAction->getRobotPosition());
-    Asservissement::asservissement->setCommand(currentCommand);
-    //hasToldBack = false;
-    //numberOfGlassStored = 0;
-    //mustComeToBase = false;
-    setUp = true;
+    angleDeDepart = (is_blue ? angleDeDepart : -angleDeDepart);
+*/
+    //command = new Asservissement(PositionPlusAngle(Position(335, 400), Angle(M_PI_2)), roueCodeuseGauche, roueCodeuseDroite);
+
+//Position posDepart(00.0f, -500.0f);
+    Position posDepart(270.0f, 400.0f);
+    Angle angleDepart = 0;
+    PositionPlusAngle depart(posDepart, angleDepart);
+    odometrie->setPos(depart);
+
+    //command = new Asservissement(PositionPlusAngle(positionDeDepart, angleDeDepart), roueCodeuseGauche, roueCodeuseDroite);
+    //command = new Asservissement(PositionPlusAngle(Position(0, 0), Angle(0)), roueCodeuseGauche, roueCodeuseDroite);
+    //command->strategie = this;
+ //   instruction_nb=1;
+  //  doNthInstruction(instruction_nb);
+  /* listeActions= new ListeActions(odometrie,is_blue);
+
+    listeActions->creerPremiereAction();*/
+
+    Position posTest(1600.0f, 400.0f);
+    Position centre(0.0f, 0.0f);
+    commande = new CommandAllerA(posTest, false);
+   // commande = new CommandAllerEnArcA(posTest, centre, 1.0f, false);
+    instruction_nb = 0;
 }
 
-bool Strategie::update() {
+struct PosBougie
+{
+    Position pos;
+    Position lookAt;
+    bool haut;
+};
 
-    if (! setUp)
-    return false;
+void Strategie::update()
+{
 
-    PositionPlusAngle pos_plus_angle = Odometrie::odometrie->getPos();
-    Position pos = pos_plus_angle.getPosition();
-
-    //Position goalPos = currentAction->getRobotPosition();
-
-    // si on arrive trop prêt du mur, on y va a reculons
-    /*if ( pos.getY() > 1820 && hasToldBack == false && goalPos.getY() > pos.getY())
+    static const int nbBougies = 18;
+    static PosBougie tabPosBougie[nbBougies] =
     {
-        currentCommand = new CommandGoTo(goalPos, true);
-        Asservissement::asservissement->setCommand(currentCommand);
-        hasToldBack = true;
-    }*/
+        {Position(2160.0, 1810.0), Position(1860.0, 0.0), true},
+        {Position(2154.0, 1779.0), Position(1740.0, 0.0), false},
+        {Position(2095.0, 1630.0), Position(1300.0, 0.0), false},
+        {Position(2069.0, 1576.0), Position(1120.0, 0.0), true},
+        {Position(1989.0, 1467.0), Position(680.0, 0.0), false},
+        {Position(1903.0, 1383.0), Position(270.0, 0.0), true},
+        {Position(1837.0, 1338.0), Position(0.0, 280.0), false},
+        {Position(1704.0, 1272.0), Position(0.0, 520.0), false},
+        {Position(1629.0, 1250.0), Position(0.0, 1080.0), true},
+        {Position(1525.0, 1227.0), Position(0.0, 1220.0), false},
+        {Position(1381.0, 1252.0), Position(0.0, 1650.0), true},
+        {Position(1335.0, 1312.0), Position(0.0, 1640.0), false},
+        {Position(1162.0, 1384.0), Position(190.0, 2000.0), false},
+        {Position(1113.0, 1420.0), Position(440.0, 2000.0), true},
+        {Position(1026.0, 1500.0), Position(560.0, 2000.0), false},
+        {Position(951.0, 1585.0), Position(640.0, 2000.0), true},
+        {Position(913.0, 1640.0), Position(700.0, 2000.0), false},
+        {Position(850.0, 1756.0), Position(740.0, 2000.0), false}
+    };
 
 
+    static int etatBougie = 0;
+    switch (instruction_nb)
+    {
+        case 0:
+        {
+            if (commande->fini())//diff.getNorme() < 20)
+            {
+                instruction_nb++;
+                Position posBut(tabPosBougie[0].pos.x, 1000.0f);
+                delete commande;
+                commande = new CommandAllerA(posBut, false);
+            }
+        }
+        break;
 
-    //int result = currentAction->update();
+        case 1:
+        {
+            if (commande->fini())
+            {
+                instruction_nb++;
+                etatBougie = 1;
+                delete commande;
+                commande = new CommandAllerA(tabPosBougie[0].pos, true);
+                Marteaux::releverHautDroit();
+                Marteaux::releverBasDroit();
+            }
+        }
+        break;
+
+        default:
+
+            if (instruction_nb <= 12)
+            {
+                switch (etatBougie)
+                {
+                    case 0:
+                        if (commande->fini())
+                        {
+                            etatBougie++;
+                            delete commande;
+                            commande = new CommandAllerA(tabPosBougie[instruction_nb-2].pos, false);
+                        }
+                        break;
+                    case 1:
+                        if (commande->fini())
+                        {
+                            etatBougie++;
+                            delete commande;
+                            commande = new CommandTournerVers(tabPosBougie[instruction_nb-2].lookAt);
+                        }
+                        break;
+                    case 2:
+                        if (commande->fini())
+                        {
+                            etatBougie++;
+                            delete commande;
+                            commande = new CommandAttendre(200);
+                        }
+                        break;
+                    case 3:
+                        if (commande->fini())
+                        {
+                            etatBougie++;
+                            delete commande;
+                            commande = new CommandAttendre(100);
+                            if (tabPosBougie[instruction_nb-2].haut)
+                                Marteaux::enfoncerHautDroit();
+                            else
+                                Marteaux::enfoncerBasDroit();
+                        }
+                        break;
+                    case 4:
+                        if (commande->fini())
+                        {
+                            etatBougie = 0;
+                            delete commande;
+                            commande = new CommandAttendre(200);
+                            if (tabPosBougie[instruction_nb-2].haut)
+                                Marteaux::releverHautDroit();
+                            else
+                                Marteaux::releverBasDroit();
+                            instruction_nb++;
+                        }
+                        break;
+                }
+                break;
+            }
+
+            Asservissement::asservissement->setAngularSpeed(0.0f);
+            Asservissement::asservissement->setLinearSpeed(0.0f);
+            instruction_nb++;
+            return;
+    }
+
 /*
-    if (result == -1)
+    Position centre(0.0f, 0.0f);
+    switch (instruction_nb)
     {
+        case 0:
+        {
+            Position pos(0.0f, -500.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 40)
+            {
+                instruction_nb++;
+                Position posBut(500.0f, 0.0f);
+                delete commande;
+                commande = new CommandAllerEnArcA(posBut, centre, 2.0f, false);
+            }
+        }
+        break;
 
-        MEDIUM_LEVEL_ACTION_TYPE actionType = currentAction->getType();
-        if(actionType == RAMASSER_VERRE && numberOfGlassStored >0) // first bring glasses back
+        case 1:
         {
-            currentAction = new DeposerVerres(Position(isBlue?200:2800, pos.getY())); // bring back the glasses
-            currentCommand = new CommandAllerA(currentAction->getRobotPosition());
+            Position pos(500.0f, 0.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 40)
+            {
+                instruction_nb++;
+                Position posBut(0.0f, 500.0f);
+                delete commande;
+                commande = new CommandAllerEnArcA(posBut, centre, 2.0f, false);
+            }
         }
-        else
+        break;
+
+        case 2:
         {
-            i++; // update i only if we have done a regular action
-            currentAction = actions[i];
-            currentCommand = new CommandAllerA(currentAction->getRobotPosition());
+            Position pos(0.0f, 500.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 40)
+            {
+                instruction_nb++;
+                Position posBut(-500.0f, 0.0f);
+                delete commande;
+                commande = new CommandAllerEnArcA(posBut, centre, 2.0f, false);
+            }
         }
-            i++; // update i only if we have done a regular action
-            currentAction = actions[i];
-            currentCommand = new CommandAllerA(currentAction->getRobotPosition());
-        Asservissement::asservissement->setCommand(currentCommand);
-        hasToldBack = false;
-        if(i%2==0) {
-        allumerLED();
-        eteindreLED2();
+        break;
+
+        case 3:
+        {
+            Position pos(-500.0f, 0.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 40)
+            {
+                instruction_nb= 0;
+                Position posBut(0.0f, -500.0f);
+                delete commande;
+                commande = new CommandAllerEnArcA(posBut, centre, 2.0f, false);
+            }
         }
-        else {
-        eteindreLED();
-        allumerLED2();
-        }
+        break;
+
+        default:
+            Asservissement::asservissement->setAngularSpeed(0.0f);
+            Asservissement::asservissement->setLinearSpeed(0.0f);
+            return;
     }
 */
-    return true;
-}
 
-void Strategie::updateGoal(Position goalPos, bool goBack)
-{
-    currentCommand = new CommandAllerA(goalPos, goBack);
-    Asservissement::asservissement->setCommand(currentCommand);
-}
-
-void Strategie::goToTarget() {
-	PositionPlusAngle pos_plus_angle = Odometrie::odometrie->getPos();
-    Position pos = pos_plus_angle.getPosition();
-    Angle angle = pos_plus_angle.getAngle();
-
-
-
-	Sensors::SharpNameVector* sharpsDatDetect = sensors->detectedSharp();
-    if (sharpsDatDetect->getSize() > 0) // have to find a new path
+ /*   switch (instruction_nb)
     {
+        case 0:
+        {
+            instruction_nb++;
+            Position posBut(2400.0f, 300.0f);
+            delete commande;
+            commande = new CommandAllerA(posBut, false);
+        }
+        break;
 
+        case 1:
+        {
+            Position pos(2400.0f, 300.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 10)
+            {
+                instruction_nb++;
+                Position posBut(2400.0f, 550.0f);
+                delete commande;
+                commande = new CommandAllerA(posBut, true);
+            }
+        }
+        break;
+
+        case 2:
+        {
+            Position pos(2400.0f, 550.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 10)
+            {
+                instruction_nb++;
+                Position posBut(500.0f, 550.0f);
+                delete commande;
+                commande = new CommandAllerA(posBut, false);
+            }
+        }
+        break;
+
+        case 3:
+        {
+            Position pos(500.0f, 550.0f);
+            Position diff = Odometrie::odometrie->getPos().getPosition() - pos;
+            if (diff.getNorme() < 10)
+            {
+                instruction_nb++;
+            }
+        }
+        break;
+
+        default:
+            Asservissement::asservissement->setAngularSpeed(0.0f);
+            Asservissement::asservissement->setLinearSpeed(0.0f);
+            return;
     }
+*/
+/*
+if (commande != NULL)
+    delete commande;
+commande = new CommandTestTournerGauche();
+commande = new CommandTestAvancer();
+*/
+if (commande != NULL)
+ commande->update();
+   Asservissement::asservissement->setCommandSpeeds(commande);
+
+}
 
 
-}
-
-int Strategie::getLastRobotDetection() {
-	return this->lastRobotDetection;
-}
-
-bool Strategie::getMustMove() {
-	return this->mustMove;
-}
-
-bool Strategie::getIsBlue() {
-	return this->isBlue;
-}
-Odometrie* Strategie::getOdometrie()
-{
-    return Odometrie::odometrie;
-}
-
-void Strategie::setMustMove(bool mustMove) {
-	this->mustMove = mustMove;
-}
-void Strategie::setIsBlue(bool isBlue) {
-	this->isBlue = isBlue;
-}
-void Strategie::storeGlass()
-{
-    this->numberOfGlassStored++;
-}
-void Strategie::cleanGlassStorage()
-{
-    this->numberOfGlassStored = 0;
-}
-bool Strategie::hasBeenSetUp()
-{
-    return setUp;
-}
