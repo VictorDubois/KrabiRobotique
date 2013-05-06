@@ -23,7 +23,7 @@ class Sensor
         };
 
         /// @brief Structure permettant de stocker les valeurs les données retournées par le capteur
-        struct OutputSensor
+        typedef struct OutputSensor
         {
             /// @brief Permet de savoir de quel type de capteur les données sont issu.
             SensorType type;
@@ -33,7 +33,7 @@ class Sensor
 
             /// @brief Permet de stocker la valeur booléen de retour d'un capteur de type SHARP, LIMIT_SWITCH ou LIGTH_BARRIER
             bool b;
-        };
+        } OutputSensor;
 
         /// @brief Constructeur d'un capteur de base
         Sensor();

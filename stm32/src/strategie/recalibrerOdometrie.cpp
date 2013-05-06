@@ -41,7 +41,7 @@ int RecalibrerOdometrie::update()
         fdc2->updateValue();
         if (fdc1->getValue().b && fdc2->getValue().b) // distance parcourue la derniere seconde
         {
-            Odometrie::setY(2000-95);
+            Odometrie::odometrie->setY(2000-95);
             StrategieV2::setCurrentGoal(Position(700, 1000), false);
             status = 3;
         }
@@ -61,7 +61,7 @@ int RecalibrerOdometrie::update()
         fdc2->updateValue();
         if (fdc1->getValue().b && fdc2->getValue().b) // distance parcourue la derniere seconde
         {
-            Odometrie::setX(95); // robot = 319mm de large
+            Odometrie::odometrie->setX(95); // robot = 319mm de large
             status = -1;
         }
     }

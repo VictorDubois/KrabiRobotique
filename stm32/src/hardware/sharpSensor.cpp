@@ -1,5 +1,5 @@
 #include "sharpSensor.h"
-
+#include "leds.h"
 uint16_t SharpSensor::threshold = SEUIL_DETECTION;
 bool SharpSensor::estDesactive = false;
 
@@ -34,6 +34,8 @@ void SharpSensor::updateValue()
      ***********************************************/
     counter <<= 1;
     counter |= (*data > threshold);
+    if (*data > threshold)
+        allumerLED2();
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
     #else
     if (evt){

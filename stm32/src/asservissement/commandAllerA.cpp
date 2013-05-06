@@ -2,10 +2,31 @@
 #include "odometrie.h"
 #include <math.h>
 
+float diffAngle(float a, float b)
+{
+    float t = a-b;
+    while (t > M_PI)
+    {
+        t -= 2*M_PI;
+    }
+    while (t < -M_PI)
+    {
+        t += 2*M_PI;
+    }
+    return t;
+}
+
+enum Signe
+{
+    SGN_NEG = -1,
+    SGN_UNDEF = 0,
+    SGN_POS = 1
+};
 
 
-
-
+    ////////////////////////////////
+    //    CommandAllerEnArcA      //
+    ////////////////////////////////
 
 CommandAllerEnArcA::CommandAllerEnArcA(Position p, Position c, float v, bool reculer)
     : Command()
@@ -17,6 +38,18 @@ CommandAllerEnArcA::CommandAllerEnArcA(Position p, Position c, float v, bool rec
     linSpeed = Odometrie::odometrie->getVitesseLineaire();
     angSpeed = Odometrie::odometrie->getVitesseAngulaire();
     bonAngle = false;
+
+    m_fini = false;
+
+    Position pos = Odometrie::odometrie->getPos().getPosition();
+    float pmcx = pos.x-centre.x;
+    float pmcy = pos.y-centre.y;
+    float bmcx = but.x-centre.x;
+    float bmcy = but.y-centre.y;
+    if (pmcx*bmcy-pmcy*bmcx > 0.0f)
+        cote = SGN_POS;
+    else
+        cote = SGN_NEG;
 }
 
 void CommandAllerEnArcA::update()
@@ -63,6 +96,10 @@ void CommandAllerEnArcA::update()
         linSpeedVise *= vitAngMax/angSpeedVise;
         angSpeedVise = vitAngMax;
     }
+
+    // test si la commande a fini
+    if ((cote == SGN_POS && sintheta < 0.0f) || (cote == SGN_NEG && sintheta > 0.0f) || (abs(sintheta) < M_PI/180.0f))
+        m_fini = true;
 
     float distance = theta*rVise; // (Odometrie::odometrie->getPos().getPosition() - but).getNorme();
     float distanceVitesseMax = 0.5f*vitLinMax*vitLinMax/decLinMax;
@@ -121,16 +158,15 @@ Angle CommandAllerEnArcA::getAngularSpeed()
     return angSpeed;
 }
 
+// est ce que la commande a fini ?
+bool CommandAllerEnArcA::fini() const
+{
+    return m_fini;
+}
 
-
-
-
-
-
-
-
-
-
+    ////////////////////////////////
+    //       CommandAllerA        //
+    ////////////////////////////////
 
 CommandAllerA::CommandAllerA(Position p, bool reculer)
     : Command()
@@ -140,6 +176,8 @@ CommandAllerA::CommandAllerA(Position p, bool reculer)
     linSpeed = Odometrie::odometrie->getVitesseLineaire();
     angSpeed = Odometrie::odometrie->getVitesseAngulaire();
     bonAngle = false;
+
+    m_fini = false;
 }
 
 void CommandAllerA::update()
@@ -183,12 +221,13 @@ void CommandAllerA::update()
     }
 
     // reste sur place tant que le robot n'a pas le bon angle
-    float angleMaxPourAvancer = M_PI/25.0f;
+    float angleMaxPourAvancer = M_PI/50.0f;//25.0f;
     if (!bonAngle)
     {
         if (abs(diffAng) < angleMaxPourAvancer)
         {
             bonAngle = true;
+            derniereDistance = 1000000.0f;
         }
         else
         {
@@ -199,6 +238,11 @@ void CommandAllerA::update()
 
     // vitesse linéaire
     float distanceBut = delta.getNorme();
+
+    if (distanceBut > derniereDistance || distanceBut < 10)
+    {
+        m_fini = true;
+    }
 
     if (abs(diffAng) > angleMaxPourAvancer)
     {
@@ -239,7 +283,16 @@ Angle CommandAllerA::getAngularSpeed()
     return angSpeed;
 }
 
+bool CommandAllerA::fini() const
+{
+    return m_fini;
+}
 
+
+
+    ////////////////////////////////
+    //    CommandTournerVers      //
+    ////////////////////////////////
 
 CommandTournerVers::CommandTournerVers(Position p)
     : Command()
@@ -247,6 +300,9 @@ CommandTournerVers::CommandTournerVers(Position p)
     but = p;
     linSpeed = 0;
     angSpeed = 0;
+
+    m_fini = false;
+    signeAngle = SGN_UNDEF;
 }
 
 void CommandTournerVers::update()
@@ -261,6 +317,20 @@ void CommandTournerVers::update()
     float angleVise = atan2(delta.getY(),delta.getX());
     float diff = diffAngle(angleVise,angle);
 
+    // gestion de si la commande a fini
+    if (abs(diff) < M_PI/90.0f)// || (signeAngle == SGN_NEG && diff > 0.0f) || (signeAngle == SGN_POS && diff < 0.0f))
+    {
+        m_fini = true;
+    }
+    else if (signeAngle == SGN_UNDEF && abs(diff) < 1.0f)
+    {
+        if (diff > 0.0f)
+            signeAngle = SGN_POS;
+        else
+            signeAngle = SGN_NEG;
+    }
+
+    // calcul de la vitesse angulaire
     if (abs(diff) > angleVitesseMax)
     {
          if (diff > 0)
@@ -275,7 +345,6 @@ void CommandTournerVers::update()
     }
     else
     {
-        //angSpeed = diff*vitMax/angleVitesseMax;
         if (diff >= 0)
             angSpeed = sqrt(2.0f*diff*accAngMax);
         else
@@ -294,8 +363,44 @@ Angle CommandTournerVers::getAngularSpeed()
     return angSpeed;
 }
 
+bool CommandTournerVers::fini() const
+{
+    return m_fini;
+}
+
+    ////////////////////////////////
+    //      CommandAttendre       //
+    ////////////////////////////////
+
+CommandAttendre::CommandAttendre(int nbUpdates)
+    : Command(), compte(nbUpdates)
+{
+}
+
+void CommandAttendre::update()
+{
+    compte--;
+}
+
+Vitesse CommandAttendre::getLinearSpeed()
+{
+    return 0.0f;
+}
+
+Angle CommandAttendre::getAngularSpeed()
+{
+    return 0.0f;
+}
+
+bool CommandAttendre::fini() const
+{
+    return (compte <= 0);
+}
 
 
+    ////////////////////////////////
+    //      CommandTestAvancer    //
+    ////////////////////////////////
 
 CommandTestAvancer::CommandTestAvancer()
     : Command()
@@ -316,7 +421,9 @@ Angle CommandTestAvancer::getAngularSpeed()
     return 0.0f;
 }
 
-
+    ////////////////////////////////
+    //  CommandTestTournerGauche  //
+    ////////////////////////////////
 
 
 CommandTestTournerGauche::CommandTestTournerGauche()

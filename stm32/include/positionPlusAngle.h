@@ -46,6 +46,12 @@ class PositionPlusAngle
         /// @brief Récupération de l'angle
         Angle getAngle() const;
 
+        /// @brief Pour modifier X
+        void setX(Distance X);
+
+        /// @brief Pour modifier Y
+        void setY(Distance Y);
+
         /// @brief Envoi de l'angle
         void setAngle(Angle a);
 

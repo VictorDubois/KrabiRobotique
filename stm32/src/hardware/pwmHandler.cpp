@@ -1,5 +1,4 @@
 #include "pwmHandler.h"
-#include "stm32f10x_gpio.h"
 
 // Initialise un nouveau générateur de PWM sur la sortie OCx du timer TIMx.
 PWMHandler::PWMHandler(Timer* tim, unsigned char OCx)
@@ -7,7 +6,7 @@ PWMHandler::PWMHandler(Timer* tim, unsigned char OCx)
     timer = tim;
     this->OCx = OCx;
     TIM_OCInitTypeDef timOCInit;
-    timOCInit.TIM_OCMode =TIM_OCMode_PWM1;
+    timOCInit.TIM_OCMode = TIM_OCMode_PWM1; //TIM_OCMode_PWM2;
     timOCInit.TIM_OutputState = TIM_OutputState_Enable;
     timOCInit.TIM_Pulse = 0; // rapport cyclique
     timOCInit.TIM_OCPolarity = TIM_OCPolarity_High;
@@ -62,11 +61,10 @@ void PWMHandler::setPulseWidth(uint16_t pulseWidth)
     else if(OCx == 4)
         TIMx->CCR4 = pulseWidth;
 }
-
 /// @brief initialise une pin pour les pwm
 /// Ne pas oublier d'ajouter un eventuel remap pour que la
 /// pin corresponde au channel d'un timer
-void PWMHandler::initialiserPinPourPWM(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x)
+/*void PWMHandler::initialiserPinPourPWM(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x)
 {
     GPIO_InitTypeDef GPIO_InitStructureSortie;
     GPIO_InitStructureSortie.GPIO_Pin = GPIO_Pin_x;
@@ -74,4 +72,4 @@ void PWMHandler::initialiserPinPourPWM(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x)
     GPIO_InitStructureSortie.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOx, &GPIO_InitStructureSortie);
 }
-
+*/

@@ -29,7 +29,7 @@
 /**@brief classe permettant de vérifier que le robot fait bien ce qu'on lui dit et de corriger les erreurs */
 class Asservissement
 {
-    private:
+    public://private:
 
         /**@brief vitesse réelle à appliquer à la roue pour obtenir la bonne vitesse linéaire*/
         float linearDutySent;
