@@ -1,9 +1,10 @@
 #include "asservissement.h"
-#include "strategie.h"
+#include "strategieV2.h"
 #include "ascenseur.h"
 
 #include "misc.h"
 #include "capteurCouleur.h"
+#include "leds.h"
 
 #define DBG_SIZE 300
 
@@ -240,13 +241,24 @@ extern "C" void SysTick_Handler()
     Odometrie::odometrie->update();
 
 #ifdef CAPTEURS
-    Sensors* sensors = Sensors::getSensors();
+    /*Sensors* sensors = Sensors::getSensors();
     if (sensors != NULL)
+    {
+        AnalogSensor::startConversion();
         sensors->update();
+    }*/
 #endif
 
-    if (Strategie::strategie != NULL)
-        Strategie::strategie->update();
+    StrategieV2::update();
+    
+    /*if (StrategieV2::strategie != NULL)
+    {
+        allumerLED();
+    }
+    else
+    {
+        allumerLED2();
+    }*/
 
   Asservissement::asservissement->update();
 

@@ -40,7 +40,7 @@ class StrategieV2
         static int glassGathered;
         static int timeSinceLastRecalibration;
         static bool hasJustAvoided;
-        static SharpSensor* sharpSensors[6];
+        static SharpSensor** sharps;
         static UltrasoundSensor* ultrasoundSensor;
 };
 

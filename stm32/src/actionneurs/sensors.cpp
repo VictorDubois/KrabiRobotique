@@ -6,20 +6,21 @@ Sensors::Sensors()
 {
     Sensors::sensors = this;
 
-    uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 10}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
+    //uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 10};
+    uint8_t channels[NB_CAPTEUR_A_ADC] = {9,13,8,11,5,10,4,12,14,15}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
 
     uint16_t* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
     // On initialise le nombre de capteur de chaque type
-    nbSharp = 6;
+    nbSharp = 10;
 #ifdef ROBOTHW
     nbUltrasound = 0;
-    nbLimitSwitch = 3;
+    nbLimitSwitch = 0;
     nbLigthBarrier = 0;
 #endif
 
-    sharpNameVector = new SharpNameVector(nbSharp);
+    //sharpNameVector = new SharpNameVector(nbSharp);
 #ifdef ROBOTHW
     outputSensorVector = new OutputSensorVector(nbUltrasound);
     limitSwitchNameVector = new LimitSwitchNameVector(nbLimitSwitch);
@@ -28,6 +29,17 @@ Sensors::Sensors()
 
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
+    
+    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
+    sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
+    sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
+    sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
+    sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
+    sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
+    sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
+    sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
+    sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+    sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
 #ifdef ROBOTHW
     ultrasounds = new UltrasoundSensor*[nbUltrasound];
     limitSwitchs = new  LimitSwitchSensor*[nbLimitSwitch];
@@ -39,7 +51,7 @@ Sensors::Sensors()
 
 
 #ifdef ROBOTHW
-
+/*
 #ifdef STM32F10X_CL
     //On initialise les autres capteurs
     //ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_6, GPIOE);
@@ -56,7 +68,7 @@ Sensors::Sensors()
     limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGHT, GPIO_Pin_10, GPIOC);
     limitSwitchs[2] = new LimitSwitchSensor(LimitSwitchSensor::FRONT, GPIO_Pin_11, GPIOC);
 #endif
-
+*/
  //   AnalogSensor::initialiserADC_Fin(data, NB_CAPTEUR_A_ADC);
  #endif //ROBOTHW
 }
@@ -104,6 +116,18 @@ Sensors::SharpNameVector*  Sensors::detectedSharp()
     }
    // sharpNameVector->resize();
     return sharpNameVector;
+}
+#include "leds.h"
+bool Sensors::sharpDetect()
+{
+    for (int i = 0; i< nbSharp; i++)
+    {
+        if (sharps[i]->getValue().b == true)
+        {
+            return true;
+        }
+    }
+    return false; // Si aucun capteur n'a ce nom (exemple NONE)
 }
 
 bool Sensors::detectedSharp(SharpSensor::SharpName name)

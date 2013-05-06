@@ -17,6 +17,7 @@
 #include "tirette.h"
 #include "leds.h"
 #include "marteaux.h"
+#include "commandAllerA.h"
 
 #define POSITIONNEMENT
 
@@ -170,33 +171,19 @@ int main()
         }
     }*/
     
-    uint8_t channels[10] = {9,8,10,11,12,13,14,15,5,4};
-    uint16_t* data = AnalogSensor::initialiserADC(10, channels);
-    int nbSharp = 10;
-    SharpSensor** sharps = new SharpSensor*[nbSharp];
-    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // rien 9
-    sharps[1] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
-    sharps[2] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
-    sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
-    sharps[4] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
-    sharps[5] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
-    sharps[6] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
-    sharps[7] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
-    sharps[8] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
-    sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
     
-    while(1)
+    /*while(1)
     {
         AnalogSensor::startConversion();
         allumerLED2();
         //for (int i = 0; i < 10; i++) 
         {
-            sharps[6]->updateValue();
+            sharps[4]->updateValue();
         }
         bool allume = false;
         //for (int i = 0; i < 10; i++)
         {
-            if (sharps[6]->getValue().b)
+            if (sharps[4]->getValue().b)
             {
                 allume = true;
             }
@@ -214,7 +201,14 @@ int main()
         for (int i = 0; i < 1000; i++)
         {
         }
-    }
+    }*/
+    /*StrategieV2* strat = new StrategieV2();
+    
+    while(1)
+    {
+        strat->update();
+        for (int i = 0; i < 1000; i++);
+    }*/
     
     Tirette tirette(GPIOE, GPIO_Pin_5);
     tirette.attendreEnlevee();
@@ -232,11 +226,14 @@ int main()
     PositionPlusAngle posPlusAngle(pos,0.0f);
     odometrie->setPos(posPlusAngle);
 
-
+    StrategieV2* strat = new StrategieV2();
+    
     Asservissement* asserv = new Asservissement(odometrie);  // On définit l'asservissement
     
-    StrategieV2* strat = new StrategieV2();
 
+    /*CommandAllerA* command = new CommandAllerA(Position(1000,230), false);
+    command->update();
+    asserv->setCommandSpeeds(command);*/
 
     while(1);
 
