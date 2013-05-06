@@ -37,12 +37,6 @@ Sensors::Sensors()
     //On initialise les capteurs ayant besoin d'un ADC
     //ultrasounds[0] = new UltrasoundSensor(UltrasoundSensor::FRONT, 12, data);
 
-    sharps[0] = new SharpSensor(SharpSensor::FRONT, 12, data);
-    sharps[1] = new SharpSensor(SharpSensor::FRONT_LEFT, 13, data);
-    sharps[2] = new SharpSensor(SharpSensor::FRONT_RIGTH, 14, data);
-    sharps[3] = new SharpSensor(SharpSensor::LEFT, 2, data);
-    sharps[4] = new SharpSensor(SharpSensor::RIGTH, 15, data);
-    sharps[5] = new SharpSensor(SharpSensor::BACK, 10, data);
 
 #ifdef ROBOTHW
 
@@ -51,7 +45,7 @@ Sensors::Sensors()
     //ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_6, GPIOE);
 
     limitSwitchs[0] = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_0, GPIOE);
-    limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGTH, GPIO_Pin_1, GPIOE);
+    limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGHT, GPIO_Pin_1, GPIOE);
     limitSwitchs[2] = new LimitSwitchSensor(LimitSwitchSensor::FRONT, GPIO_Pin_2, GPIOE);
 #endif
 #ifdef STM32F10X_MD
@@ -59,7 +53,7 @@ Sensors::Sensors()
     //ligthBarriers[0] = new LigthBarrierSensor(LigthBarrierSensor::FRONT, GPIO_Pin_2, GPIOA);
 
     limitSwitchs[0] = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_9, GPIOC);
-    limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGTH, GPIO_Pin_10, GPIOC);
+    limitSwitchs[1] = new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGHT, GPIO_Pin_10, GPIOC);
     limitSwitchs[2] = new LimitSwitchSensor(LimitSwitchSensor::FRONT, GPIO_Pin_11, GPIOC);
 #endif
 

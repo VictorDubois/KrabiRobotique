@@ -4,6 +4,8 @@
 #include "command.h"
 #include "ramasserVerreV2.h"
 #include "mediumLevelAction.h"
+#include "sharpSensor.h"
+#include "ultrasoundSensor.h"
 
 class StrategieV2
 {
@@ -38,6 +40,8 @@ class StrategieV2
         static int glassGathered;
         static int timeSinceLastRecalibration;
         static bool hasJustAvoided;
+        static SharpSensor* sharpSensors[6];
+        static UltrasoundSensor* ultrasoundSensor;
 };
 
 #endif // STRATEGIEV2_H_INCLUDED

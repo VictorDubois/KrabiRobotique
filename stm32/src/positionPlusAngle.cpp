@@ -68,3 +68,13 @@ void PositionPlusAngle::setAngle(Angle a)
 {
     angle = a;
 }
+
+void PositionPlusAngle::setX(Distance X)
+{
+    position.setX(X);
+}
+
+void PositionPlusAngle::setY(Distance Y)
+{
+    position.setY(Y);
+}

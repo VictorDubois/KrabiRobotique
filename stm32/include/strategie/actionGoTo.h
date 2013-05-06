@@ -2,6 +2,7 @@
 #define ACTIONGOTO_H_INCLUDED
 
 #include "mediumLevelAction.h"
+#include "position.h"
 
 class ActionGoTo : public MediumLevelAction
 {
@@ -16,6 +17,7 @@ class ActionGoTo : public MediumLevelAction
         float goalAngle;
         bool goingCurve;
         int curveFactor;
+        Position intermediateGoalPosition;
 };
 
 #endif // ACTIONGOTO_H_INCLUDED

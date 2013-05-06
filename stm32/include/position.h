@@ -30,6 +30,9 @@ class Position
         /// @brief Surchage d'opérateur pour soustraire et copier des coordonnées
         Position operator-=(const Position &position);
 
+        /// @brief Surchage d'opérateur pour multiplier les coordonées
+        bool operator*=(float val);
+
         /// @brief Surchage d'opérateur pour comparer des coordonnées
         bool operator==(const Position &p) const;
 

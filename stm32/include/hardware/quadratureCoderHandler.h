@@ -10,7 +10,7 @@ class QuadratureCoderHandler
 {
     private:
 
-        /// @brief Le timer des roues codeuses
+        /// @brief On utilise un timer pour cela
         TIM_TypeDef* coder_tim_port;
 
     public:

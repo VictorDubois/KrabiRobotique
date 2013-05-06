@@ -1,6 +1,7 @@
 #include "actionGoTo.h"
 #include "odometrie.h"
 #include "strategieV2.h"
+#include "sharpSensor.h"
 
 ActionGoTo::ActionGoTo(Position goalPos, bool goBack1) : MediumLevelAction(goalPos)
 {
@@ -21,13 +22,15 @@ int ActionGoTo::update()
     {
         Position pos = Odometrie::odometrie->getPos().getPosition();
         Position vect = goalPosition - pos;
-        vect /= vect.getNorme();
+        vect *= (1.f/vect.getNorme());
 
         goingCurve = StrategieV2::getJustAvoided();
 
         if (goingCurve)
         {
-            StrategieV2::setCurrentGoal(Odometrie::odometrie->getPos().getPosition(), false); // a changer selon le servo qui détecte
+            float currentAngle = wrapAngle(Odometrie::odometrie->getPos().getAngle());
+            intermediateGoalPosition = Odometrie::odometrie->getPos().getPosition()+Position(-200*cos(currentAngle), 200*abs(currentAngle));
+            StrategieV2::setCurrentGoal(intermediateGoalPosition, true); // a changer selon le servo qui détecte
             status = 1;
         }
         else
@@ -39,9 +42,11 @@ int ActionGoTo::update()
     }
     else if (status ==1) // on recule
     {
-        Position vect = goalPosition - Odometrie::odometrie->getPos().getPosition();
-        if (true)//(vect.getNorme() < 100.0) // now we have
+        Position vect = intermediateGoalPosition - Odometrie::odometrie->getPos().getPosition();
+        //std::cout << "status = 1 " << vect.getNorme() << std::endl;
+        if (vect.getNorme() < 20.0) // now we have
         {
+            /*
             Position pos = Odometrie::odometrie->getPos().getPosition();
             Position vect = goalPosition - pos;
             float distance = vect.getNorme();
@@ -49,7 +54,17 @@ int ActionGoTo::update()
             curveFactor = distance/50;
             goalAngle = wrapAngle(M_PI*10.f/(float)(curveFactor)+vect.getAngle());
             StrategieV2::lookAt(pos+Position(100*cos(goalAngle),100*sin(goalAngle)));
-            status = 2;
+            status = 2;*/
+            /*vect = goalPosition-intermediateGoalPosition;
+            Position vect2 = vect;
+            vect2 /= vect2.getNorme();
+            int sign = 0;
+            if (vect.getX() > 0 && intermediateGoalPosition.getY() < 800)
+                sign = 1;
+            else if (vect.getX() > 0 && intermediateGoalPosition.getY() >= 800)
+                sign = -1;
+            else if (vect.getX() < 0)
+            vect = vect + Position(500*vect.getY(), 500*vect.getX());*/
         }
     }
     else if (status == 2)
@@ -62,9 +77,9 @@ int ActionGoTo::update()
             {
                 Position currentPos = Odometrie::odometrie->getPos().getPosition();
                 Position moitie = (goalPosition-currentPos);
-                moitie /= 2;
+                moitie *= 0.5;
                 Position vect = moitie;
-                vect /= vect.getNorme();
+                vect *= (1.f/vect.getNorme());
                 //std::cout << vect.getX() << " " << vect.getY() << std::endl;
 
                 moitie += Position(curveFactor*20*vect.getY(),curveFactor*(-20)*vect.getX()); // on déplace le point pour qu'il soit décalé du milieu

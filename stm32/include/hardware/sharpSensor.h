@@ -15,20 +15,16 @@ class SharpSensor : public AnalogSensor
         /** @brief Permet de nommer les différents capteurs */
         enum SharpName
         {
-            /** @brief Aucun capteur */
             NONE,
-            /** @brief Capteur arrière */
-            BACK,
-            /** @brief Capteur avant gauche */
+            BACK_RIGHT,
+            BACK_LEFT,
+            BACK_MIDDLE,
+            FRONT_SIDE_LEFT,
+            FRONT_SIDE_RIGHT,
             FRONT_LEFT,
-            /** @brief Capteur avant droit */
-            FRONT_RIGTH,
-            /** @brief Capteur gauche */
-            LEFT,
-            /** @brief Capteur droit */
-            RIGTH,
-            /** @brief Capteur avant centrale */
-            FRONT
+            FRONT_RIGHT,
+            ELEVATOR_DOWN,
+            ELEVATOR_TOP
         };
 
         /** @brief Constructeur d'un capteur sharp *

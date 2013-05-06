@@ -19,7 +19,7 @@ class LimitSwitchSensor : public Sensor
             /** @brief Fin de course arrière gauche */
             BACK_LEFT,
             /** @brief Fin de course arrière droit */
-            BACK_RIGTH,
+            BACK_RIGHT,
             /** @brief Fin de course avant */
             FRONT
         };
@@ -57,7 +57,7 @@ class LimitSwitchSensor : public Sensor
         GPIO_TypeDef* group;
 
         /** @brief Compteur pour filtrer le signal numérique reçu. Ce compteur agit comme un filtre passe bas. */
-        uint16_t counter;
+        uint8_t counter;
 
         /** @brief Nom du fin de course */
         LimitSwitchName name;

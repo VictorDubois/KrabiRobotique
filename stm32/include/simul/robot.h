@@ -28,7 +28,7 @@ private:
 	boost::circular_buffer<PositionPlusAngle> olds;
 	class Asservissement* asservissement;
 	class Odometrie* odometrie;
-	class Strategie* strategie;
+    class StrategieV2* strategie;
     int leftLowerHammerStatus;
     int leftUpperHammerStatus;
     int rightLowerHammerStatus;
@@ -42,7 +42,7 @@ public:
 
     /** @brief Constructeur de la classe
         @param world Référence vers le b2World dans lequel évolura le robot*/
-	Robot(b2World &world);
+    Robot(b2World &world, PositionPlusAngle depart, bool manual);
 	/** @brief Destructeur de la classe*/
 	~Robot();
     /** @brief Permet d'afficher le robot à l'écran

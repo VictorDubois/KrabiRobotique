@@ -7,7 +7,7 @@
 #include "XMLReader.h"
 #include "sensors.h"
 #include "bougie.h"
-#include "singleton.h"
+#include "v1-archive/singleton.h"
 #include "position.h"
 #include "robot.h"
 
