@@ -40,6 +40,7 @@ class Sensors
         *   @return Retourne un SharpNameVector, vecteur contenant les SharpName des capteurs sharp renvoyant un true (donc ayant un obstacle devant eux). Si aucun capteur returne un vector vide  */
         SharpNameVector* detectedSharp();
 
+        bool sharpDetect();
         /** @brief Permet de vérifier si un capteur sharp particulier a détecter un obstacle *
         *   @param name SharpName du capteur sharp dont on souhaite obtenir la valeur.  *
         *   @return True si un obstacle se trouve devant le capteur. */

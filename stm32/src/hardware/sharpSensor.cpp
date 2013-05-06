@@ -34,8 +34,8 @@ void SharpSensor::updateValue()
      ***********************************************/
     counter <<= 1;
     counter |= (*data > threshold);
-    if (*data > threshold)
-        allumerLED2();
+    //if (*data > threshold)
+    //    allumerLED();
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
     #else
     if (evt){
@@ -53,7 +53,7 @@ Sensor::OutputSensor SharpSensor::getValue()
     OutputSensor outputR;
     outputR.type = SHARP;
     outputR.f = 0;
-    outputR.b = (output && actif && !SharpSensor::estDesactive);
+    outputR.b = (output);// && actif && !SharpSensor::estDesactive);
     return outputR;
 }
 

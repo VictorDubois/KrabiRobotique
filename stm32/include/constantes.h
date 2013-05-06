@@ -46,7 +46,7 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
     /// @brief COEFFICIENT_LIN_ULTRASON Coefficient multiplicateur utilisé pour transformé la valeur analogique rendu par le capteur ultrason en une distance en metres.
 #define COEFFICIENT_LIN_ULTRASON 2.54/2.*1.674003419
     /// @brief NB_CAPTEUR_A_ADC Nombre de capteur nécéssitant d'utiliser un ADC
-#define NB_CAPTEUR_A_ADC 6
+#define NB_CAPTEUR_A_ADC 10
 
 // Servomoteurs
 

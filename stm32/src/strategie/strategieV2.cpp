@@ -20,6 +20,7 @@ Command* StrategieV2::currentCommand = NULL;
 MediumLevelAction* StrategieV2::currentAction = NULL;
 int StrategieV2::actionsCount = 0;
 MediumLevelAction* StrategieV2::actionsToDo[32];
+SharpSensor** StrategieV2::sharps = NULL;
 bool StrategieV2::hasToGoBase = false;
 bool StrategieV2::hasJustAvoided = false;
 bool StrategieV2::mustDeleteAction = false;
@@ -62,9 +63,25 @@ StrategieV2::StrategieV2()
     //Asservissement::setCommand(currentCommand);
     //currentAction = new RecalibrerOdometrie();
     //hasJustAvoided = true;
-    currentAction->update();
+    //currentAction->update();
 
     StrategieV2::strategie = this;
+    
+    uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
+    uint16_t* data = AnalogSensor::initialiserADC(10, channels);
+    int nbSharp = 10;
+    sharps = new SharpSensor*[nbSharp];
+    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
+    sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
+    sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
+    sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
+    sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
+    sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
+    sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
+    sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
+    sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+    sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    
 }
 
 StrategieV2::~StrategieV2()
@@ -81,9 +98,36 @@ void StrategieV2::update()
         return;
     
     // check sensors:
-    if (somethingDetected)
+        AnalogSensor::startConversion();
+        allumerLED2();
+        for (int i = 2; i < 5; i++) 
+        {
+            sharps[i]->updateValue();
+        }
+        bool allume = false;
+        for (int i = 2; i < 5; i++)
+        {
+            if (sharps[i]->getValue().b)
+            {
+                allume = true;
+            }
+        }
+        if (allume) {
+            allumerLED();
+        }
+        else {
+            eteindreLED();
+        }
+    //return;
+    //somethingDetected = Sensors::getSensors()->sharpDetect();
+        
+    //allumerLED2();
+    if (allume)
     {
-        hasJustAvoided = true;
+        //hasJustAvoided = true;
+        Asservissement::asservissement->setCommandSpeeds(NULL);
+        //allumerLED();
+        /*
         if (true) // if (canStillDoAction)
         {
             if (currentAction)
@@ -94,8 +138,15 @@ void StrategieV2::update()
         }
         hasJustAvoided = false;
         somethingDetected = false;
+        */
+        return;
     }
-
+    else
+    {
+        //eteindreLED();
+    }
+    //allumerLED2();
+    //currentCommand->update();
     //std::cout << "updating action" << std::endl;
     if (currentAction->update() == -1)
     {
@@ -147,6 +198,8 @@ void StrategieV2::update()
         currentCommand->update();
     Asservissement::asservissement->setCommandSpeeds(currentCommand);
     updateCount ++;
+    //eteindreLED2();
+    //eteindreLED();
 }
 
 void StrategieV2::setCurrentGoal(Position goal, bool goBack)
