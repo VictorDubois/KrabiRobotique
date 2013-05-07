@@ -66,13 +66,13 @@ int main()
 
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
-    /*
+    
     ServosNumeriques::initClocksAndPortsGPIO();
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::initUART(19231);
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::sendMode();
-    */
+    
     /*
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::setLedState(1, MBD_ID);
@@ -96,9 +96,9 @@ int main()
     ServosNumeriques::setLedState(0, MHG_ID);
         eteindreLED();
         for (int i = 0; i < 10000000; i++)
-        {}
+        {}*/
     
-    
+    /*
     while(1)
     {
         
@@ -148,8 +148,8 @@ int main()
         {
         }
        
-    }
-    */
+    }*/
+    
     // test fdc :
     /*
     LimitSwitchSensor* fdc1 = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_14, GPIOD);

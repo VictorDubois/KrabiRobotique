@@ -5,7 +5,7 @@
 #define MBG_ID 0x0d
 #define MBG_RELEVE 0x02c0
 #define MBG_ENFONCE 0x0330
-#define MBG_RANGE 0x0200
+#define MBG_RANGE 0x0210
 #define MBG_VITESSE_DESCENTE 0x03ff
 #define MBG_VITESSE_MONTEE 0x0600
 #define MBG_VITESSE_RANGEMENT 0x0500 // vitesse assez lente quand on veut le ranger, on est pas pressés
@@ -30,7 +30,7 @@
 
 // marteau bas droit
 #define MBD_ID 0x0a
-#define MBD_RANGE 0x01f8
+#define MBD_RANGE 0x01ff
 #define MBD_ENFONCE 0x00c0
 #define MBD_RELEVE 0x0140
 #define MBD_VITESSE_DESCENTE 0x07ff
