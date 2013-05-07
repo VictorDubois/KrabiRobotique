@@ -173,10 +173,11 @@ bool CommandAllerEnArcA::fini() const
     //       CommandAllerA        //
     ////////////////////////////////
 
-CommandAllerA::CommandAllerA(Position p, bool reculer)
+CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseFin)
     : Command()
 {
     but = p;
+    vFin2 = vitesseFin*vitesseFin;
     m_reculer = reculer;
     linSpeed = Odometrie::odometrie->getVitesseLineaire();
     angSpeed = Odometrie::odometrie->getVitesseAngulaire();
@@ -196,7 +197,7 @@ void CommandAllerA::update()
     //float angleVitesseMax = M_PI/10.0f;
     float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
     //float distanceVitesseMax = 350.0f;
-    float distanceVitesseMax = 0.5f*vitLinMax*vitLinMax/decLinMax;
+    float distanceVitesseMax = 0.5f*(vitLinMax*vitLinMax-vFin2)/decLinMax;
     float angle = Odometrie::odometrie->getPos().getAngle();
     Position pos = Odometrie::odometrie->getPos().getPosition();
     Position delta = but-pos;
@@ -226,7 +227,7 @@ void CommandAllerA::update()
     }
 
     // reste sur place tant que le robot n'a pas le bon angle
-    float angleMaxPourAvancer = M_PI/50.0f;//25.0f;
+    float angleMaxPourAvancer = M_PI/25.0f;//25.0f;
     if (!bonAngle)
     {
         if (abs(diffAng) < angleMaxPourAvancer)
@@ -244,7 +245,7 @@ void CommandAllerA::update()
     // vitesse linéaire
     float distanceBut = delta.getNorme();
 
-    if (distanceBut > derniereDistance || distanceBut < 10)
+    if (distanceBut > derniereDistance || distanceBut < 10.0f)
     {
         m_fini = true;
     }
@@ -268,13 +269,9 @@ void CommandAllerA::update()
     else
     {
         if (m_reculer)
-            linSpeed = -sqrt(2*distanceBut*decLinMax);
+            linSpeed = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
         else
-            linSpeed = sqrt(2*distanceBut*decLinMax);
-        /*if (m_reculer)
-            linSpeed = -distanceBut*vitLinMax/distanceVitesseMax;
-        else
-            linSpeed = distanceBut*vitLinMax/distanceVitesseMax;*/
+            linSpeed = sqrt(vFin2+2.0f*distanceBut*decLinMax);
     }
 }
 
@@ -303,7 +300,6 @@ CommandTournerVers::CommandTournerVers(Position p)
     : Command()
 {
     but = p;
-    linSpeed = 0;
     angSpeed = 0;
 
     m_fini = false;
@@ -372,6 +368,81 @@ bool CommandTournerVers::fini() const
 {
     return m_fini;
 }
+
+
+    ////////////////////////////////
+    //       CommandVirage        //
+    ////////////////////////////////
+
+
+// rayon > 0
+// angle > 0 : vers la gauche, angle < 0 : vers la droite
+CommandVirage::CommandVirage(float rayon, float angle, float vitesseFin)
+{
+    if (angle > 0.0f)
+        rayonCourbure = rayon;
+    else
+        rayonCourbure = -rayon;
+    linSpeed = Odometrie::odometrie->getVitesseLineaire();
+    angSpeed = Odometrie::odometrie->getVitesseAngulaire();
+    angleVise = angle + Odometrie::odometrie->getPos().getAngle();
+    vFin2 = vitesseFin*vitesseFin;
+
+    m_fini = false;
+}
+
+void CommandVirage::update()
+{
+    float accLinMax = ACCELERATION_LINEAIRE_MAX;
+    float decLinMax = DECELERATION_LINEAIRE_MAX;
+    float vitLinMax = VITESSE_LINEAIRE_MAX;
+
+    float distanceVitesseMax = 0.5f*(vitLinMax*vitLinMax-vFin2)/decLinMax;
+
+    float angleRestant = diffAngle(angleVise, Odometrie::odometrie->getPos().getAngle());
+    float distanceRestante = abs(rayonCourbure*angleRestant);
+
+    // gestion de si la commande a fini
+    // si l'angle restant est bon ou si on a dépassé l'angle visé
+    if (abs(angleRestant) < M_PI/90.0f || ((angleRestant > 0.0f) != (rayonCourbure > 0.0f)))
+    {
+        m_fini = true;
+    }
+
+    // phase de vitesse max
+    if (distanceRestante > distanceVitesseMax)
+    {
+            linSpeed += accLinMax;
+        if (linSpeed > vitLinMax)
+            linSpeed = vitLinMax;
+    }
+
+    // phase de décéleration
+    else
+    {
+        linSpeed = sqrt(vFin2+2.0f*distanceRestante*decLinMax);
+    }
+
+    // calcul de la vitesse angulaire
+    angSpeed = linSpeed/rayonCourbure;
+}
+
+Vitesse CommandVirage::getLinearSpeed()
+{
+    return linSpeed;
+}
+
+Angle CommandVirage::getAngularSpeed()
+{
+    return angSpeed;
+}
+
+// est ce que la commande a fini ?
+bool CommandVirage::fini() const
+{
+    return m_fini;
+}
+
 
     ////////////////////////////////
     //      CommandAttendre       //
