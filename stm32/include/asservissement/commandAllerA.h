@@ -34,6 +34,7 @@ class CommandAllerEnArcA : public Command
 class CommandAllerA : public Command
 {
     Position but;
+    float vitesseLinMax;
     float vFin2; // vitesse finale * vitesse finale
     bool bonAngle;
     float linSpeed;
@@ -43,7 +44,7 @@ class CommandAllerA : public Command
     float derniereDistance;
     bool m_fini;
     public:
-        CommandAllerA(Position p, bool reculer, float vitesseFin = 0.0f);
+        CommandAllerA(Position p, bool reculer, float vitesseLineaireMax = VITESSE_LINEAIRE_MAX, float vitesseFin = 0.0f);
 
         virtual void update();
         virtual Vitesse getLinearSpeed();
@@ -89,13 +90,14 @@ class CommandVirage : public Command
     float angSpeed;
     float angleVise;
 
+    float vitesseLinMax;
     float vFin2; // vitesse finale * vitesse finale
     bool m_fini;
 
     public:
         // rayon > 0
         // angle > 0 : vers la gauche, angle < 0 : vers la droite
-        CommandVirage(float rayon, float angle, float vitesseFin = 0.0f);
+        CommandVirage(float rayon, float angle, float vitesseLineaireMax = VITESSE_LINEAIRE_MAX, float vitesseFin = 0.0f);
 
         virtual void update();
         virtual Vitesse getLinearSpeed();

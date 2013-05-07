@@ -173,10 +173,11 @@ bool CommandAllerEnArcA::fini() const
     //       CommandAllerA        //
     ////////////////////////////////
 
-CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseFin)
+CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin)
     : Command()
 {
     but = p;
+    vitesseLinMax = vitesseLineaireMax;
     vFin2 = vitesseFin*vitesseFin;
     m_reculer = reculer;
     linSpeed = Odometrie::odometrie->getVitesseLineaire();
@@ -192,7 +193,7 @@ void CommandAllerA::update()
     float vitAngMax = VITESSE_ANGULAIRE_MAX;
     float accLinMax = ACCELERATION_LINEAIRE_MAX;
     float decLinMax = DECELERATION_LINEAIRE_MAX;
-    float vitLinMax = VITESSE_LINEAIRE_MAX;
+    float vitLinMax = vitesseLinMax;//VITESSE_LINEAIRE_MAX;
 
     //float angleVitesseMax = M_PI/10.0f;
     float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
@@ -377,7 +378,7 @@ bool CommandTournerVers::fini() const
 
 // rayon > 0
 // angle > 0 : vers la gauche, angle < 0 : vers la droite
-CommandVirage::CommandVirage(float rayon, float angle, float vitesseFin)
+CommandVirage::CommandVirage(float rayon, float angle, float vitesseLineaireMax, float vitesseFin)
 {
     if (angle > 0.0f)
         rayonCourbure = rayon;
@@ -387,6 +388,7 @@ CommandVirage::CommandVirage(float rayon, float angle, float vitesseFin)
     angSpeed = Odometrie::odometrie->getVitesseAngulaire();
     angleVise = angle + Odometrie::odometrie->getPos().getAngle();
     vFin2 = vitesseFin*vitesseFin;
+    vitesseLinMax = vitesseLineaireMax;
 
     m_fini = false;
 }
@@ -395,7 +397,7 @@ void CommandVirage::update()
 {
     float accLinMax = ACCELERATION_LINEAIRE_MAX;
     float decLinMax = DECELERATION_LINEAIRE_MAX;
-    float vitLinMax = VITESSE_LINEAIRE_MAX;
+    float vitLinMax = vitesseLinMax;//VITESSE_LINEAIRE_MAX;
 
     float distanceVitesseMax = 0.5f*(vitLinMax*vitLinMax-vFin2)/decLinMax;
 
