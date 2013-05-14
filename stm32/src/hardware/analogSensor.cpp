@@ -88,6 +88,9 @@ bool AnalogSensor::conversionFinished()
 
 #else // pour le simulateur
 
+#ifndef NULL
+#define NULL 0
+#endif
 uint16_t* AnalogSensor::initialiserADC(uint8_t nbChannel, uint8_t* channels)
 {
     return NULL;

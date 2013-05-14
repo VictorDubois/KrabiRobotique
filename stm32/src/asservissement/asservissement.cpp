@@ -12,14 +12,14 @@
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
-
+/*
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
 float linearDuty[DBG_SIZE];
 
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
-float angularDuty[DBG_SIZE];
+float angularDuty[DBG_SIZE];*/
 
 //float posx[DBG_SIZE];
 //float posy[DBG_SIZE];

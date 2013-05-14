@@ -2,13 +2,53 @@
 #include "odometrie.h"
 #include "strategieV2.h"
 #include "sharpSensor.h"
+#ifndef ROBOTHW
+    #define abs fabs
+#endif
+#include "leds.h"
 
-ActionGoTo::ActionGoTo(Position goalPos, bool goBack1) : MediumLevelAction(goalPos)
+/** valeurs :
+    1 : aller ver le haut (0,Y)
+    2 : aller vers le bas (0, -Y)
+    3 : aller vers la droite (X, 0)
+    4 : aller vers la gauche (-X, 0)
+    5 : aller bas+droite(X,-Y)
+    6 : aller bas+gauche(-X, -Y)
+    7 : aller haut+droit(X, Y)
+    8 : aller haut+gauche(-X,Y)
+**/
+/*
+uint8_t tableauEvitement[20][30] = 
+    { //0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 
+        3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, // 019
+        2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 4, 4, 4, 4, 2, // 18
+        2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 4, 4, 4, 2, 2, // 17
+        2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 6, 6, 6, 6, 5, 5, 5, 5, 3, 3, 3, 3, 4, 4, 4, 4, 2, 2, 2, // 16
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, // 15
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, // 14
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, // 13
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, // 12
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, // 11
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, // 10
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, // 9
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, // 8
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, // 7
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, // 6
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, // 5
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, // 4
+        1, 1, 1, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 1, 1, 1, // 3
+        1, 1, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 1, 1, // 2
+        1, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 1, // 1
+        3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, // 0
+    };//0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 
+    */
+ActionGoTo::ActionGoTo(Position goalPos, bool goBack1, float _precision) : MediumLevelAction(goalPos)
 {
     goBack = goBack1;
     goalAngle = 0;
     goingCurve = false;
     curveFactor = 1;
+    precision = _precision;
 }
 
 ActionGoTo::~ActionGoTo()
@@ -20,20 +60,21 @@ int ActionGoTo::update()
 {
     if (status == 0)
     {
+        //allumerLED2();
         Position pos = Odometrie::odometrie->getPos().getPosition();
-        Position vect = goalPosition - pos;
-        vect *= (1.f/vect.getNorme());
+        //Position vect = goalPosition - pos;
+        //vect *= (1.f/vect.getNorme());
 
-        goingCurve = StrategieV2::getJustAvoided();
+        goingCurve = false;//StrategieV2::getJustAvoided();
 
-        if (goingCurve)
+        /*if (goingCurve)
         {
             float currentAngle = wrapAngle(Odometrie::odometrie->getPos().getAngle());
             intermediateGoalPosition = Odometrie::odometrie->getPos().getPosition()+Position(-200*cos(currentAngle), 200*abs(currentAngle));
             StrategieV2::setCurrentGoal(intermediateGoalPosition, true); // a changer selon le servo qui détecte
             status = 1;
         }
-        else
+        else*/
         {
             StrategieV2::setCurrentGoal(goalPosition, goBack);
             status = 3;
@@ -44,7 +85,7 @@ int ActionGoTo::update()
     {
         Position vect = intermediateGoalPosition - Odometrie::odometrie->getPos().getPosition();
         //std::cout << "status = 1 " << vect.getNorme() << std::endl;
-        if (vect.getNorme() < 20.0) // now we have
+        if (vect.getNorme() < precision) // now we have
         {
             /*
             Position pos = Odometrie::odometrie->getPos().getPosition();
@@ -70,7 +111,7 @@ int ActionGoTo::update()
     else if (status == 2)
     {
         //std::cout << "status = 2" << std::endl;
-        float currentAngle = wrapAngle(Odometrie::odometrie->getPos().getAngle());
+        /*float currentAngle = wrapAngle(Odometrie::odometrie->getPos().getAngle());
         if (fabs(currentAngle - goalAngle) < 0.02)
         {
             if (goingCurve)
@@ -93,15 +134,16 @@ int ActionGoTo::update()
                 StrategieV2::setCurrentGoal(goalPosition, goBack);
                 status = 3;
             }
-        }
+        }*/
     }
     else if (status == 3)
     {
+//        allumerLED();
         //std::cout << "status = 3" << std::endl;
         Position vect = goalPosition - Odometrie::odometrie->getPos().getPosition();
         //std::cout << vect.getNorme() << std::endl;
         //std::cout << Odometrie::odometrie->getPos().getPosition().getX() << " "<< Odometrie::odometrie->getPos().getPosition().getY()   << std::endl;
-        if (vect.getNorme() < 10.0)
+        if (vect.getNorme() < precision)
             status = -1;
     }
     return status;

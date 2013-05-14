@@ -42,7 +42,7 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
 // Capteurs
 
     /// @brief SEUIL_DETECTION Seuil de detection des capteurs sharp. Au dessus de cette valeur, un objet sera considéré comme présent devant le capteur.
-#define SEUIL_DETECTION 1500. //1000. // 2000.
+#define SEUIL_DETECTION 2000. //1000. // 2000.
     /// @brief COEFFICIENT_LIN_ULTRASON Coefficient multiplicateur utilisé pour transformé la valeur analogique rendu par le capteur ultrason en une distance en metres.
 #define COEFFICIENT_LIN_ULTRASON 2.54/2.*1.674003419
     /// @brief NB_CAPTEUR_A_ADC Nombre de capteur nécéssitant d'utiliser un ADC
@@ -65,9 +65,9 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
 
 // Command
 
-#define VITESSE_LINEAIRE_MAX 3.0//2.0//2.0//3.0
+#define VITESSE_LINEAIRE_MAX 2.5//2.0//2.0//3.0
 #define VITESSE_ANGULAIRE_MAX 0.01//0.015//0.015//0.015//0.008//0.005
-#define ACCELERATION_LINEAIRE_MAX 0.02//0.08//0.15//0.15//0.1//0.05
+#define ACCELERATION_LINEAIRE_MAX 0.01//0.08//0.15//0.15//0.1//0.05
 #define DECELERATION_LINEAIRE_MAX 0.01//0.08//0.15//0.15//0.1//0.05
 #define ACCELERATION_ANGULAIRE_MAX (2*M_PI/30000.0)//(2*M_PI/20000.0)//(2*M_PI/10000.0)//(2*M_PI/5000.0)//(2*M_PI/20000.0) //(2*M_PI/5000.0)
 

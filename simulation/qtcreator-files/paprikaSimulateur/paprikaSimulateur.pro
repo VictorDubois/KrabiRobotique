@@ -20,27 +20,14 @@ HEADERS += \
     ../../include/actionneurs/sensor.h \
     ../../include/actionneurs/roues.h \
     ../../include/actionneurs/moteur.h \
+	../../include/actionneurs/marteaux.h \
     ../../include/actionneurs/bras.h \
     ../../include/asservissement/pidFilterDistance.h \
     ../../include/asservissement/pidFilterAngle.h \
-    ../../include/asservissement/odometrie.h \
-    ../../include/asservissement/commandTest.h \
-    ../../include/asservissement/commandLookAt.h \
-    ../../include/asservissement/commandGoTo.h \
+	../../include/asservissement/odometrie.h \
+	../../include/asservissement/commandAllerA.h \
     ../../include/asservissement/command.h \
-    ../../include/asservissement/asservissement.h \
-    ../../include/strategie/strategie.h \
-    ../../include/strategie/singleton.h \
-    ../../include/strategie/regarderCouleur.h \
-    ../../include/strategie/ramasserVerre.h \
-    ../../include/strategie/mediumLevelAction.h \
-    ../../include/strategie/lowLevelAction.h \
-    ../../include/strategie/lancerAscenseur.h \
-    ../../include/strategie/eteindreBougie.h \
-    ../../include/strategie/deposerVerres.h \
-    ../../include/strategie/actionnerPortes.h \
-    ../../include/strategie/actionnerMarteau.h \
-    ../../include/strategie/actionnerAscenseur.h \
+	../../include/asservissement/asservissement.h \
     ../../include/simul/XMLReader.h \
     ../../include/simul/TableGraphics.h \
     ../../include/simul/table.h \
@@ -60,36 +47,33 @@ HEADERS += \
     ../../include/hardware/limitSwitchSensor.h \
     ../../include/hardware/ligthBarrierSensor.h \
     ../../include/hardware/ax12api.h \
-    ../../include/hardware/analogSensor.h
+	../../include/hardware/leds.h \
+    ../../include/hardware/analogSensor.h \
+    ../../include/strategie/strategieV2.h \
+    ../../include/strategie/recalibrerOdometrie.h \
+    ../../include/strategie/ramenerVerres.h \
+    ../../include/strategie/ramasserVerreV2.h \
+    ../../include/strategie/eteindreBougieV2.h \
+	../../include/strategie/mediumLevelAction.h \
+	../../include/strategie/actionGoTo.h \
+	../../include/strategie/ramasserVerres.h
 
 
 SOURCES += \
-    ../../src/strategie/strategie.cpp \
-    ../../src/strategie/regarderCouleur.cpp \
-    ../../src/strategie/ramasserVerre.cpp \
-    ../../src/strategie/mediumLevelAction.cpp \
-    ../../src/strategie/lowLevelAction.cpp \
-    ../../src/strategie/lancerAscenseur.cpp \
-    ../../src/strategie/eteindreBougie.cpp \
-    ../../src/strategie/deposerVerres.cpp \
-    ../../src/strategie/actionnerPortes.cpp \
-    ../../src/strategie/actionnerMarteau.cpp \
-    ../../src/strategie/actionnerAscenseur.cpp \
     ../../src/asservissement/pidFilterDistance.cpp \
-    ../../src/asservissement/pidFilterAngle.cpp \
-    ../../src/asservissement/commandTest.cpp \
-    ../../src/asservissement/commandLookAt.cpp \
-    ../../src/asservissement/commandGoTo.cpp \
+	../../src/asservissement/pidFilterAngle.cpp \
+	../../src/asservissement/commandAllerA.cpp \
     ../../src/asservissement/command.cpp \
 	../../src/asservissement/asservissement.cpp \
     ../../src/actionneurs/servo.cpp \
     ../../src/actionneurs/sensors.cpp \
     ../../src/actionneurs/sensor.cpp \
-    ../../src/actionneurs/bras.cpp \
-    ../../src/positionPlusAngle.cpp \
+	../../src/actionneurs/bras.cpp \
+	../../src/actionneurs/marteaux.cpp \
     ../../src/position.cpp \
     ../../src/distance.cpp \
     ../../src/angle.cpp \
+	../../src/positionPlusAngle.cpp \
     ../../src/simul/XMLReader.cpp \
     ../../src/simul/TableGraphics.cpp \
     ../../src/simul/table.cpp \
@@ -106,5 +90,14 @@ SOURCES += \
     ../../src/hardware/limitSwitchSensor.cpp \
     ../../src/hardware/ligthBarrierSensor.cpp \
     ../../src/hardware/ax12api.cpp \
-    ../../src/hardware/analogSensor.cpp
+	../../src/hardware/leds.cpp \
+    ../../src/hardware/analogSensor.cpp \
+    ../../src/strategie/strategieV2.cpp \
+    ../../src/strategie/recalibrerOdometrie.cpp \
+    ../../src/strategie/ramasserVerreV2.cpp \
+    ../../src/strategie/mediumLevelAction.cpp \
+    ../../src/strategie/eteindreBougieV2.cpp \
+	../../src/strategie/actionGoTo.cpp \
+	../../src/strategie/eteindreBougies.cpp \
+	../../src/strategie/ramasserVerres.cpp
 

@@ -7,7 +7,7 @@
 class RecalibrerOdometrie : public MediumLevelAction
 {
     public:
-        RecalibrerOdometrie(LimitSwitchSensor* _fdc1, LimitSwitchSensor* _fdc2);
+        RecalibrerOdometrie(bool isBlue = true);
         virtual ~RecalibrerOdometrie();
 
         virtual int update();
@@ -15,8 +15,7 @@ class RecalibrerOdometrie : public MediumLevelAction
     private:
         Position goalPosition1;
         Position goalPosition2;
-        LimitSwitchSensor* fdc1;
-        LimitSwitchSensor* fdc2;
+        bool isBlue;
 };
 
 #endif // RECALIBRERODOMETRIE_H_INCLUDED

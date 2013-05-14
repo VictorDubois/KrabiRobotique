@@ -34,6 +34,8 @@ class Command
         /**@brief Fonction appellée à chaque mise à jours ( 20ms) pour donner les différents vitesse à appliquer. Cette fonction est à déclarer dans les classes héritants de commande*/
         //virtual void update(PositionPlusAngle positionPlusAngleActuelle, Angle vitesse_angulaire_atteinte, float vitesse_lineaire_atteinte) = 0;
         virtual void update() = 0;
+        
+        virtual void resetSpeeds();
 
         /**@brief Retourne la vitesse linéaire que l'on veut atteindre. Cette fonction est à déclarer dans les classes héritants de commande*/
         virtual Vitesse getLinearSpeed() = 0;

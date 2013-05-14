@@ -4,7 +4,7 @@
 // MBG : marteau bas gauche
 #define MBG_ID 0x0d
 #define MBG_RELEVE 0x02c0
-#define MBG_ENFONCE 0x0330
+#define MBG_ENFONCE 0x0360
 #define MBG_RANGE 0x0210
 #define MBG_VITESSE_DESCENTE 0x03ff
 #define MBG_VITESSE_MONTEE 0x0600
@@ -31,7 +31,7 @@
 // marteau bas droit
 #define MBD_ID 0x0a
 #define MBD_RANGE 0x01ff
-#define MBD_ENFONCE 0x00c0
+#define MBD_ENFONCE 0x0090
 #define MBD_RELEVE 0x0140
 #define MBD_VITESSE_DESCENTE 0x07ff
 #define MBD_VITESSE_MONTEE 0x0200
@@ -54,6 +54,10 @@ namespace Marteaux
     void enfoncerBasDroit();
     void releverBasDroit();
     void rangerBasDroit();
+    
+    void enfoncerMarteau(bool bas, bool gauche);
+    void releverMarteau(bool bas, bool gauche);
+    void rangerMarteau(bool bas, bool gauche);
 }
 
 

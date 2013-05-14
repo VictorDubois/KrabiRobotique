@@ -22,6 +22,11 @@ bool Command::getStop(void)
     return Command::stop;
 }
 
+void Command::resetSpeeds()
+{
+    
+}
+
 void Command::freinageDUrgence(bool doitFreiner)
 {
     Command::stop = doitFreiner;
