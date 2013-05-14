@@ -9,7 +9,7 @@
 #include "stm32f10x_dma.h"
 #include "stm32f10x_gpio.h"
 #else
-#include <stdlib.h>
+//#include <stdlib.h>
 #endif
 
 /// @brief Classe abstraite de gestion des capteurs analogiques

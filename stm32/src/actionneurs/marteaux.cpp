@@ -3,6 +3,7 @@
 
 namespace Marteaux 
 {
+#ifdef ROBOTHW
     void enfoncerHautGauche()
     {
         ServosNumeriques::moveToAtSpeed(MHG_ENFONCE, MHG_VITESSE_DESCENTE, MHG_ID);
@@ -54,4 +55,74 @@ namespace Marteaux
     {
         ServosNumeriques::moveToAtSpeed(MBD_RANGE, MBD_VITESSE_RANGEMENT, MBD_ID);
     }
+#else
+    void enfoncerHautGauche() {}
+    void releverHautGauche() {}
+    void rangerHautGauche() {}
+
+    void enfoncerBasGauche() {}
+    void releverBasGauche() {}
+    void rangerBasGauche() {}
+
+    void enfoncerHautDroit() {}
+    void releverHautDroit() {}
+    void rangerHautDroit() {}
+
+    void enfoncerBasDroit() {}
+    void releverBasDroit() {}
+    void rangerBasDroit() {}
+#endif
+    void enfoncerMarteau(bool bas, bool gauche)
+    {
+        if (bas)
+        {
+            if (gauche)
+                enfoncerBasGauche();
+            else
+                enfoncerBasDroit();
+        }
+        else
+        {
+            if (gauche)
+                enfoncerHautGauche();
+            else
+                enfoncerHautDroit();
+        }
+    }
+    void releverMarteau(bool bas, bool gauche)
+    {
+        if (bas)
+        {
+            if (gauche)
+                releverBasGauche();
+            else
+                releverBasDroit();
+        }
+        else
+        {
+            if (gauche)
+                releverHautGauche();
+            else
+                releverHautDroit();
+        }
+    }
+    void rangerMarteau(bool bas, bool gauche)
+    {
+        if (bas)
+        {
+            if (gauche)
+                rangerBasGauche();
+            else
+                rangerBasDroit();
+        }
+        else
+        {
+            if (gauche)
+                rangerHautGauche();
+            else
+                rangerHautDroit();
+        }
+    }
+
+    
 }

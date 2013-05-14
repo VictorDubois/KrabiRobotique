@@ -49,6 +49,7 @@ class CommandAllerA : public Command
         virtual void update();
         virtual Vitesse getLinearSpeed();
         virtual Angle getAngularSpeed();
+        virtual void resetSpeeds();
 
         // est ce que la commande a fini ?
         virtual bool fini() const;

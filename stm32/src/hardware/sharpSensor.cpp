@@ -3,12 +3,13 @@
 uint16_t SharpSensor::threshold = SEUIL_DETECTION;
 bool SharpSensor::estDesactive = false;
 
-SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData) : AnalogSensor(channel, pData)
+SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData, uint16_t seuil) : AnalogSensor(channel, pData)
 {
     this->name = name;
     counter = 0;
     output = false;
     actif = true;
+    seuilDetection = seuil;
     #ifndef ROBOTHW
     evt = false;
     #endif
@@ -33,7 +34,7 @@ void SharpSensor::updateValue()
      **                                           **
      ***********************************************/
     counter <<= 1;
-    counter |= (*data > threshold);
+    counter |= (*data > seuilDetection);
     //if (*data > threshold)
     //    allumerLED();
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.

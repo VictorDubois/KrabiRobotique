@@ -5,7 +5,7 @@
 #include "constantes.h"
 
 #ifndef ROBOTHW
-    #include <QKeyEvent>
+    //#include <QKeyEvent>
 #endif
 
 /** @brief Classe des gestions des capteurs sharps */
@@ -15,23 +15,24 @@ class SharpSensor : public AnalogSensor
         /** @brief Permet de nommer les différents capteurs */
         enum SharpName
         {
-            NONE,
-            BACK_RIGHT,
-            BACK_LEFT,
-            BACK_MIDDLE,
-            FRONT_SIDE_LEFT,
-            FRONT_SIDE_RIGHT,
-            FRONT_LEFT,
-            FRONT_RIGHT,
-            ELEVATOR_DOWN,
-            ELEVATOR_TOP
+            NONE = 6,
+            BACK_RIGHT = 4,
+            BACK_LEFT = 9,
+            BACK_MIDDLE = 5,
+            FRONT_SIDE_LEFT = 2,
+            FRONT_SIDE_RIGHT = 3,
+            FRONT_LEFT = 0,
+            FRONT_RIGHT = 1,
+            ELEVATOR_DOWN = 8,
+            ELEVATOR_TOP = 7,
+            END_SHARP_NAME = 10
         };
 
         /** @brief Constructeur d'un capteur sharp *
         *   @param name Identifient du capteur sharp pour la stratégie *
         *   @param channel Canal de l'ADC utilisé pour ce capteur. *
         *   @param pData Pointeur vers les données brutes du capteur directement sortie du ADC*/
-        SharpSensor(SharpName name,uint8_t channel, uint16_t* pData);
+        SharpSensor(SharpName name,uint8_t channel, uint16_t* pData, uint16_t seuil = SEUIL_DETECTION);
 
         /** @brief Destructeur de cette classe */
         virtual ~SharpSensor();
@@ -65,7 +66,7 @@ class SharpSensor : public AnalogSensor
     private:
 
         /** @brief Compteur pour filtrer le signal numérique reçu. Ce compteur agit comme un filtre passe bas. */
-        uint32_t counter;
+        uint8_t counter;
 
         /** @brief Nom du capteur */
         SharpName name;
@@ -79,7 +80,8 @@ class SharpSensor : public AnalogSensor
         #ifndef ROBOTHW
         bool evt;
         #endif
-
+        
+        uint16_t seuilDetection;
 };
 
 

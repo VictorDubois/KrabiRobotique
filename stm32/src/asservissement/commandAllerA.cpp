@@ -1,6 +1,11 @@
 #include "commandAllerA.h"
 #include "odometrie.h"
 #include <math.h>
+#include "strategieV2.h"
+
+#ifndef abs
+#define abs(x) fabs(x)
+#endif
 
 float diffAngle(float a, float b)
 {
@@ -75,6 +80,7 @@ void CommandAllerEnArcA::update()
         vdnorme = -vdnorme;
     Position pInter(centre.x + vdnorme*vdx, centre.y + vdnorme*vdy);
 */
+    /*
     float pmcx = pos.x-centre.x;
     float pmcy = pos.y-centre.y;
     float bmcx = but.x-centre.x;
@@ -137,13 +143,14 @@ void CommandAllerEnArcA::update()
         else
             angSpeed += accAngMax;
     }
-
+*/
     // pour garder la trajectoire de cercle
 //    std::cout << linSpeed << std::endl;
+    /*
     if (abs(angSpeed) > abs(linSpeed/rVise))
         angSpeed = linSpeed/rVise;
     else if (abs(linSpeed) > abs(rVise*angSpeed))
-        linSpeed = rVise*angSpeed;
+        linSpeed = rVise*angSpeed;*/
 
 
 }
@@ -226,6 +233,7 @@ void CommandAllerA::update()
     float angleMaxPourAvancer = M_PI/25.0f;//25.0f;
     if (!bonAngle)
     {
+        StrategieV2::setTourneSurSoiMeme(true);
         if (abs(diffAng) < angleMaxPourAvancer)
         {
             bonAngle = true;
@@ -237,6 +245,7 @@ void CommandAllerA::update()
             return;
         }
     }
+    StrategieV2::setTourneSurSoiMeme(false);
 
     // vitesse linéaire
     float distanceBut = delta.getNorme();
@@ -264,11 +273,26 @@ void CommandAllerA::update()
     }
     else
     {
+        float linSpeedVisee;
         if (m_reculer)
-            linSpeed = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
+            linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
         else
-            linSpeed = sqrt(vFin2+2.0f*distanceBut*decLinMax);
+            linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
+            
+         if (m_reculer)
+            linSpeed -= accLinMax;
+         else
+            linSpeed += accLinMax;
+
+        if (abs(linSpeed) > abs(linSpeedVisee))
+            linSpeed = linSpeedVisee;
     }
+}
+
+void CommandAllerA::resetSpeeds()
+{
+    linSpeed = Odometrie::odometrie->getVitesseLineaire();
+    angSpeed = Odometrie::odometrie->getVitesseAngulaire();
 }
 
 Vitesse CommandAllerA::getLinearSpeed()

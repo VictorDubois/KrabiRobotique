@@ -13,6 +13,8 @@ typedef float Acceleration;
 /// @brief On vérifie qu'il y a égalité ou presque entre deux distances
 bool distancePresqueEgales(Distance d1, Distance d2);
 
+#ifdef ROBOTHW
 #define abs(x) x>0?x:-x
+#endif
 
 #endif // DISTANCE_H
