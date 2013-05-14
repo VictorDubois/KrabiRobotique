@@ -44,7 +44,7 @@
 			<Add after="arm-none-eabi-objdump -S main.out &gt; main.list" />
 			<Mode after="always" />
 		</ExtraCommands>
-		<Unit filename="Libraries/CMSIS/Core/CM3/startup/gcc/startup_stm32f10x_md.s" />
+		<Unit filename="Libraries/CMSIS/Core/CM3/startup/gcc/startup_stm32f10x_cl.s" />
 		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/misc.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -84,6 +84,7 @@
 		<Unit filename="include/distance.h" />
 		<Unit filename="include/hardware/analogSensor.h" />
 		<Unit filename="include/hardware/ax12api.h" />
+		<Unit filename="include/hardware/capteurCouleur.h" />
 		<Unit filename="include/hardware/capteurs.h" />
 		<Unit filename="include/hardware/leds.h" />
 		<Unit filename="include/hardware/ligthBarrierSensor.h" />
@@ -105,13 +106,13 @@
 		<Unit filename="include/strategie/evitement.h" />
 		<Unit filename="include/strategie/mediumLevelAction.h" />
 		<Unit filename="include/strategie/ramasserVerreV2.h" />
+		<Unit filename="include/strategie/ramasserVerres.h" />
 		<Unit filename="include/strategie/ramenerVerres.h" />
 		<Unit filename="include/strategie/recalibrerOdometrie.h" />
 		<Unit filename="include/strategie/strategie.h" />
 		<Unit filename="include/strategie/strategieV2.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/actionneurs/ascenseur.cpp" />
-		<Unit filename="src/actionneurs/bras.cpp" />
 		<Unit filename="src/actionneurs/marteaux.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />
@@ -122,7 +123,6 @@
 		<Unit filename="src/asservissement/asservissement.cpp" />
 		<Unit filename="src/asservissement/command.cpp" />
 		<Unit filename="src/asservissement/commandAllerA.cpp" />
-		<Unit filename="src/asservissement/commandTest.cpp" />
 		<Unit filename="src/asservissement/odometrie.cpp" />
 		<Unit filename="src/asservissement/pidFilterAngle.cpp" />
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
@@ -149,12 +149,11 @@
 		<Unit filename="src/positionPlusAngle.cpp" />
 		<Unit filename="src/strategie/actionGoTo.cpp" />
 		<Unit filename="src/strategie/eteindreBougieV2.cpp" />
-		<Unit filename="src/strategie/evitement.cpp" />
+		<Unit filename="src/strategie/eteindreBougies.cpp" />
 		<Unit filename="src/strategie/mediumLevelAction.cpp" />
 		<Unit filename="src/strategie/ramasserVerreV2.cpp" />
-		<Unit filename="src/strategie/ramenerVerres.cpp" />
+		<Unit filename="src/strategie/ramasserVerres.cpp" />
 		<Unit filename="src/strategie/recalibrerOdometrie.cpp" />
-		<Unit filename="src/strategie/strategie.cpp" />
 		<Unit filename="src/strategie/strategieV2.cpp" />
 		<Unit filename="src/stub.c">
 			<Option compilerVar="CC" />

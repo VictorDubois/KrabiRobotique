@@ -9,9 +9,13 @@ Position::Position()
 {
 }
 
-Position::Position(Distance X, Distance Y)
+Position::Position(Distance X, Distance Y, bool isBlue)
     : x(X), y(Y)
 {
+    if (!isBlue)
+    {
+        x = 3000-x;
+    }
 }
 
 Distance Position::getX() const
