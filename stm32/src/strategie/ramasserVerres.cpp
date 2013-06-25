@@ -9,31 +9,31 @@ RamasserVerres::RamasserVerres() : MediumLevelAction()
     //positionsToGo[0][1] = new ActionGoTo(Position(2100, 1300, isBlue), false);
     positionsToGo[0][1] = ActionGoTo(Position(700, 1360, isBlue), false);
     //positionsToGo[0][2] = new ActionGoTo(Position(2100, 1050, isBlue), false);
-    positionsToGo[0][2] = ActionGoTo(Position(2100, 1250, isBlue), false);
+    positionsToGo[0][2] = ActionGoTo(Position(2100, 1250, isBlue), true);
     positionsToGo[0][3] = ActionGoTo(Position(2100, 1050, isBlue), false);
     positionsToGo[0][4] = ActionGoTo(Position(900, 1050, isBlue), false);
-    positionsToGo[0][5] = ActionGoTo(Position(350, 1350, isBlue), false);
+    positionsToGo[0][5] = ActionGoTo(Position(350, 1250, isBlue), false);
     positionsToGo[0][6] = ActionGoTo(Position(900, 1050, isBlue), true);
 
     positionsToGo[1][0] = ActionGoTo(Position(600, 1050, isBlue), false);
     //positionsToGo[1][1] = new ActionGoTo(Position(2100, 1050, isBlue), false);
     positionsToGo[1][1] = ActionGoTo(Position(1350, 1050, isBlue), false);
     //positionsToGo[1][2] = new ActionGoTo(Position(1950, 800, isBlue), false);
-    positionsToGo[1][2] = ActionGoTo(Position(2100, 1050, isBlue), false);
+    positionsToGo[1][2] = ActionGoTo(Position(2100, 1050, isBlue), true);
     positionsToGo[1][3] = ActionGoTo(Position(2100, 760, isBlue), false);
     positionsToGo[1][4] = ActionGoTo(Position(900, 760, isBlue), false);
-    positionsToGo[1][5] = ActionGoTo(Position(350, 1350, isBlue), false);
-    positionsToGo[1][6] = ActionGoTo(Position(900, 800, isBlue), true);
+    positionsToGo[1][5] = ActionGoTo(Position(370, 760, isBlue), false);
+    positionsToGo[1][6] = ActionGoTo(Position(500, 760, isBlue), true);
 
     positionsToGo[2][0] = ActionGoTo(Position(600, 800, isBlue), false);
     //positionsToGo[2][1] = new ActionGoTo(Position(2100, 800, isBlue), false);
     positionsToGo[2][1] = ActionGoTo(Position(700, 1360, isBlue), false);
     //positionsToGo[2][2] = new ActionGoTo(Position(2100, 550, isBlue), false);
-    positionsToGo[2][2] = ActionGoTo(Position(2100, 800, isBlue), false);
+    positionsToGo[2][2] = ActionGoTo(Position(2100, 760, isBlue), true);
     positionsToGo[2][3] = ActionGoTo(Position(2100, 550, isBlue), false);
     positionsToGo[2][4] = ActionGoTo(Position(900, 550, isBlue), false);
-    positionsToGo[2][5] = ActionGoTo(Position(350, 350, isBlue), false);
-    positionsToGo[2][6] = ActionGoTo(Position(350, 350, isBlue), true);
+    positionsToGo[2][5] = ActionGoTo(Position(350, 450, isBlue), false);
+    positionsToGo[2][6] = ActionGoTo(Position(350, 450, isBlue), true);
     
     
     positionsToGo[3][0] = ActionGoTo(Position(600, 800, isBlue), false);

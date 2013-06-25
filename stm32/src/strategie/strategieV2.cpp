@@ -4,7 +4,6 @@
 #include "asservissement.h"
 #include "memory.h"
 #include "actionGoTo.h"
-#include "ramenerVerres.h"
 #include "recalibrerOdometrie.h"
 #include "commandAllerA.h"
 #include "ramasserVerres.h"
@@ -133,20 +132,20 @@ void StrategieV2::update()
     if ((updateCount / 100) % 2)
     {
         allumerLED2();
-        if (updateCount > 17000)
+        if (updateCount > 18000)
             eteindreLED();
     }
     else 
     {
         eteindreLED2();
-        if (updateCount > 17000)
+        if (updateCount > 18000)
             allumerLED();
     }
-    if (updateCount <= 17000)
+    if (updateCount <= 18000)
     {
         
     }
-    if (updateCount >= 17000)
+    if (updateCount >= 18000)
     {
         Asservissement::asservissement->setCommandSpeeds(NULL);
         return;
@@ -185,7 +184,7 @@ void StrategieV2::update()
             {
                 if (sharps[i]->getValue().b)
                 {
-                    allume = true;
+                    //allume = true;
                 }
             }
         }
@@ -366,7 +365,10 @@ void StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed)
 {
     if (currentCommand != NULL)
         delete currentCommand;
-    currentCommand = new CommandAllerA(goal, goBack, maxSpeed);
+    if (actionsCount == 0)
+        currentCommand = new CommandAllerA(goal, goBack, maxSpeed/2);
+    else 
+        currentCommand = new CommandAllerA(goal, goBack, maxSpeed);
     Asservissement::asservissement->setCommandSpeeds(currentCommand);
     StrategieV2::emptySharpsToCheck();
     if (goBack)

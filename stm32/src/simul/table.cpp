@@ -8,7 +8,7 @@
 #define PI 3.14159265358979323846264338327950
 #include <iostream>
 #include <QPainter>
-#include "commandGoTo.h"
+//#include "commandGoTo.h"
 
 Position getCase(unsigned int i, unsigned int j)
 {
@@ -46,7 +46,7 @@ Table::Table(QWidget* parent) :
 
     //création des robots
     //robots.push_back(new Robot(world,PositionPlusAngle(Position(3000-270,560), M_PI), true));
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(270,560), 0), false)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(95,1360, true), 0), false)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
 
 	//création des verres
 	// côté bleu
@@ -155,10 +155,12 @@ Table::Table(QWidget* parent) :
     for (int i = 0; i < 12; i++)
     {
         p_bougies[i] = Bougie(colors[i], QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2000.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 40.f);
+        //std::cout << "Position(" << 1500.f-700.f*cos((10+7.5+15.f*(float)(i))*PI/180.f) << ", " << 2000.f-700.f*sin((10+7.5+15.f*(float)(i))*PI/180.f) << "), " << wrapAngle((7.5+15.f*(float)(i))*PI/180.f-M_PI/2) << std::endl;
     }
     for (int i = 12; i < 20; i++)
     {
         p_bougies[i] = Bougie(colors[i], QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 40.f);
+        std::cout << "Position(" << 1500.f-700.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f) << ", " << 2000.f-700.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f) << "), " << wrapAngle((7.5+15.f*(float)(i))*PI/180.f-M_PI/2) << std::endl;
     }
     for (int i = 0; i < 12; i++)
     {
@@ -180,11 +182,14 @@ Table::~Table()
 
 void Table::update(int dt)
 {
+    //exit(0);
 	this->dt = dt;
 	for(unsigned int i=0; i < robots.size(); i++)
 	{
 		robots[i]->updateForces(dt);
 //		robots[i]->interact(elements);
+
+        std::cout << Odometrie::odometrie->getPos().getPosition().getX() << " " <<  Odometrie::odometrie->getPos().getPosition().getY() << std::endl;
 	}
     if (dt) {
         QPoint posBougie, posMarteau, tester;
@@ -229,7 +234,7 @@ void Table::paintEvent(QPaintEvent* evt)
 {
 	QPainter p(this);
 	p.setRenderHints(QPainter::Antialiasing,true);
-	p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));
+    p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));
 	p.setWorldMatrixEnabled(true);
 
 	// dessine la table

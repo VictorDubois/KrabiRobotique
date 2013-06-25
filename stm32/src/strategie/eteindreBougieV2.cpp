@@ -35,6 +35,8 @@ int EteindreBougieV2::update()
             StrategieV2::enableSharp(SharpSensor::FRONT_SIDE_RIGHT);
         else
             StrategieV2::enableSharp(SharpSensor::FRONT_SIDE_LEFT);
+        if (this->checked && !this->mustPress)
+            status = -1;
     }
     else if (status == 1)
     {
@@ -58,20 +60,27 @@ int EteindreBougieV2::update()
             StrategieV2::setCommand(NULL);
         }
     }
-    else if (status == 200) // on attend environ 2 secondes
+    else if (status == 100) //
     {
-        Marteaux::releverMarteau(bougieBasse, bleuVersRouge); // baisser le marteau
+        Marteaux::releverMarteau(bougieBasse, bleuVersRouge); // 
         status++;
     }
-    else if (status == 250) // on attend 2 secondes de plus
+    else if (status == 150) //
     {
         allumerLED();
-        Marteaux::enfoncerMarteau(bougieBasse, bleuVersRouge); // baisser le marteau
+        Marteaux::enfoncerMarteau(bougieBasse, bleuVersRouge); // 
         status++;
     }
-    else if (status == 400) // on attend environ 2 secondes
+    else if (status == 200) //
     {
-        Marteaux::rangerMarteau(bougieBasse, bleuVersRouge); // baisser le marteau
+        if (bougieBasse)
+            Marteaux::rangerMarteau(bougieBasse, bleuVersRouge); // 
+        else
+            Marteaux::releverMarteau(bougieBasse, bleuVersRouge); // 
+        status++;
+    }
+    else if (status == 250)
+    {
         status = -1;
     }
     else if (status > 2)
