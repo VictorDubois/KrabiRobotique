@@ -103,6 +103,7 @@
 		<Unit filename="include/positionPlusAngle.h" />
 		<Unit filename="include/strategie/actionGoTo.h" />
 		<Unit filename="include/strategie/eteindreBougieV2.h" />
+		<Unit filename="include/strategie/eteindreBougies.h" />
 		<Unit filename="include/strategie/evitement.h" />
 		<Unit filename="include/strategie/mediumLevelAction.h" />
 		<Unit filename="include/strategie/ramasserVerreV2.h" />

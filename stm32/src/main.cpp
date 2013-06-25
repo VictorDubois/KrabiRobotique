@@ -317,6 +317,7 @@ int main()
     Tirette tirette(GPIOE, GPIO_Pin_5);
     tirette.attendreRemise();
     tirette.attendreEnlevee();
+    
 // pour la v2 :
 
     QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOD, GPIO_Pin_12, GPIOD, GPIO_Pin_13);

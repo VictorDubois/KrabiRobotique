@@ -13,8 +13,8 @@ class EteindreBougies : public MediumLevelAction
         virtual int update();
     protected:
     private:
-        EteindreBougieV2* bougiesBas[12];
-        EteindreBougieV2* bougiesHaut[8];
+        EteindreBougieV2* bougiesBas[20];
+        //EteindreBougieV2* bougiesHaut[8];
         int etapeBas;
         bool bleuVersRouge; // si le robot va du bleu vers le rouge quand il fait le gateau
 };

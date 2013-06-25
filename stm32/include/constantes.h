@@ -34,15 +34,11 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
 #define SEUIL_COLISION_ANG 0.002
 #define MS_BETWEEN_UPDATE 5
 #define CPT_BEFORE_RAZ 8500
-#define LINEARE_DUTY_MAX 1.00
-#define LINEARE_DUTY_MIN -1.00
-#define ANGULARE_DUTY_MAX 0.90
-#define ANGULARE_DUTY_MIN -0.90
 
 // Capteurs
 
     /// @brief SEUIL_DETECTION Seuil de detection des capteurs sharp. Au dessus de cette valeur, un objet sera considéré comme présent devant le capteur.
-#define SEUIL_DETECTION 2000. //1000. // 2000.
+#define SEUIL_DETECTION 1000. // 2000.
     /// @brief COEFFICIENT_LIN_ULTRASON Coefficient multiplicateur utilisé pour transformé la valeur analogique rendu par le capteur ultrason en une distance en metres.
 #define COEFFICIENT_LIN_ULTRASON 2.54/2.*1.674003419
     /// @brief NB_CAPTEUR_A_ADC Nombre de capteur nécéssitant d'utiliser un ADC
@@ -65,11 +61,11 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
 
 // Command
 
-#define VITESSE_LINEAIRE_MAX 2.5//2.0//2.0//3.0
-#define VITESSE_ANGULAIRE_MAX 0.01//0.015//0.015//0.015//0.008//0.005
-#define ACCELERATION_LINEAIRE_MAX 0.01//0.08//0.15//0.15//0.1//0.05
-#define DECELERATION_LINEAIRE_MAX 0.01//0.08//0.15//0.15//0.1//0.05
-#define ACCELERATION_ANGULAIRE_MAX (2*M_PI/30000.0)//(2*M_PI/20000.0)//(2*M_PI/10000.0)//(2*M_PI/5000.0)//(2*M_PI/20000.0) //(2*M_PI/5000.0)
+#define VITESSE_LINEAIRE_MAX 3.0 //4.0
+#define VITESSE_ANGULAIRE_MAX 0.040 //0.025//0.05//0.025
+#define ACCELERATION_LINEAIRE_MAX 0.025 //0.045//0.045//0.08//0.15//0.15//0.1//0.05
+#define DECELERATION_LINEAIRE_MAX 0.020 //0.02//0.08//0.15//0.15//0.1//0.05
+#define ACCELERATION_ANGULAIRE_MAX 0.00025 // 0.00035//(2*M_PI/20000.0) //(2*M_PI/5000.0)
 
 // Odometrie
 
@@ -78,16 +74,16 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
 #define NBR_TICK_PAR_TOUR 4096
 
 // PIDFILTERANGLE
-#define FILTER_ANGLE_KP 0.4
-#define FILTER_ANGLE_KI 0.001
-#define FILTER_ANGLE_KD 60.0//15.0
-#define FILTER_ANGLE_COEF 0.89
+#define FILTER_ANGLE_KP 220.0//0.4
+#define FILTER_ANGLE_KI 5.0//0.001
+#define FILTER_ANGLE_KD 140.0//60.0
+#define FILTER_ANGLE_COEF 1.0//0.89
 
 // PIDFILTERLINEAIRE
-#define FILTER_LINEAIRE_KP 0.007
-#define FILTER_LINEAIRE_KI 0.00008
-#define FILTER_LINEAIRE_KD 0.2
-#define FILTER_LINEAIRE_COEF 0.89
+#define FILTER_LINEAIRE_KP 0.59//0.007
+#define FILTER_LINEAIRE_KI 0.045//0.00008
+#define FILTER_LINEAIRE_KD 0.300//0.2
+#define FILTER_LINEAIRE_COEF 1.0//0.89
 
 // ROUE
 #define RAPPORT_OK 0.05//0.05

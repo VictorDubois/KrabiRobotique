@@ -1,9 +1,9 @@
-_estack = 0x20004fff;
+_estack = 0x20010000;
 
 MEMORY
 {
-  ram (rwx) : ORIGIN = 0x20000000, LENGTH = 20K
-  rom (rx) : ORIGIN = 0x00000000, LENGTH = 128K
+  ram (rwx) : ORIGIN = 0x20000000, LENGTH = 64K
+  rom (rx) : ORIGIN = 0x00000000, LENGTH = 256K
 }
 SECTIONS
   {

@@ -18,7 +18,7 @@ int RamasserVerreV2::update()
 {
     if (status == 0) // trying to go
     {
-        StrategieV2::addTemporaryAction(new ActionGoTo(goalPosition, false));
+        StrategieV2::addTemporaryAction(new ActionGoTo(goalPosition, false, 10));
     }
     else if (status == 1)
     {

@@ -54,14 +54,15 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 
 	odometrie = new Odometrie(this);
 
+    odometrie->setPos(depart);
+    pos = odometrie->getPos();
 	new Sensors();
+
+    strategie = new StrategieV2(true);
 
 	asservissement = new Asservissement(odometrie);
 
-    odometrie->setPos(depart);
-    pos = odometrie->getPos();
 
-    strategie = new StrategieV2();
 
 
 	//asservissement->strategie = strategie;
@@ -217,7 +218,9 @@ void Robot::paint(QPainter &p, int dt)
 		}
 		else
 		{
-			Asservissement::asservissement->update();
+            Odometrie::odometrie->update();
+            StrategieV2::update();
+            Asservissement::asservissement->update();
 			deriv.position.x = asservissement->getLinearSpeed();
 			deriv.position.y = 0;
 			deriv.angle = asservissement->getAngularSpeed();

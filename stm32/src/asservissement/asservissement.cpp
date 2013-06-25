@@ -4,22 +4,21 @@
 
 #include "misc.h"
 #include "capteurCouleur.h"
-#include "leds.h"
 
-#define DBG_SIZE 300
+#define DBG_SIZE 250
 
 
 
 //int roueGauche[DBG_SIZE];
 //int roueDroite[DBG_SIZE];
-/*
+
 float vitesseLin[DBG_SIZE];
 float vitesseLinE[DBG_SIZE];
 float linearDuty[DBG_SIZE];
 
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
-float angularDuty[DBG_SIZE];*/
+float angularDuty[DBG_SIZE];
 
 //float posx[DBG_SIZE];
 //float posy[DBG_SIZE];
@@ -142,8 +141,14 @@ else
 #endif //ROUES
 
         //Puis on les récupéres
+
         float vitesse_lineaire_a_atteindre = getLinearSpeed();
+     //   vitesse_lineaire_a_atteindre += ACCELERATION_LINEAIRE_MAX;
+     //   vitesse_lineaire_a_atteindre = (vitesse_lineaire_a_atteindre >= 4.0) ? 4.0f : vitesse_lineaire_a_atteindre;
         float vitesse_angulaire_a_atteindre = getAngularSpeed();
+      //     vitesse_angulaire_a_atteindre += ACCELERATION_ANGULAIRE_MAX;
+     //   vitesse_angulaire_a_atteindre = (vitesse_angulaire_a_atteindre >= VITESSE_ANGULAIRE_MAX) ? VITESSE_ANGULAIRE_MAX : vitesse_angulaire_a_atteindre;
+//vitesse_angulaire_a_atteindre = (vitesse_angulaire_a_atteindre <= -VITESSE_ANGULAIRE_MAX) ? -VITESSE_ANGULAIRE_MAX : vitesse_angulaire_a_atteindre;
 
         // le buffer de collision se vide si l'accélération demandé est trop forte. Normalement la commande vérifie ça.
  /*       //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...
@@ -154,12 +159,12 @@ else
 
 
         //on filtre l'erreur de vitesse lineaire et angulaire
-        linearDutySent += pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
-        angularDutySent += pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
+        linearDutySent = pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
+        angularDutySent = pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
-        linearDutySent =  MIN(MAX(linearDutySent, LINEARE_DUTY_MIN),LINEARE_DUTY_MAX);
-        angularDutySent = MIN(MAX(angularDutySent, ANGULARE_DUTY_MIN),ANGULARE_DUTY_MAX);
+        linearDutySent =  MIN(MAX(linearDutySent, -1.0f),1.0f);
+        angularDutySent = MIN(MAX(angularDutySent, -1.0f),1.0f);
 
         //On évite que le robot fasse du bruit quand il est à l'arrêt
  //       linearDutySent = fabs(linearDutySent) > 0.05 || vitesse_lineaire_a_atteindre > 0.01 ? linearDutySent : 0;
@@ -183,13 +188,13 @@ else
         else
         {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
             // à tourner et avancer correctement
-            roues.gauche.tourne(MIN(MAX(+linearDutySent-angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
-            roues.droite.tourne(MIN(MAX(+linearDutySent+angularDutySent, LINEARE_DUTY_MIN+ANGULARE_DUTY_MIN),LINEARE_DUTY_MAX+ANGULARE_DUTY_MAX));
+            roues.gauche.tourne(MIN(MAX(+linearDutySent-angularDutySent, -1.0f),1.0f));
+            roues.droite.tourne(MIN(MAX(+linearDutySent+angularDutySent, -1.0f),1.0f));
         }
-
+/*
 
         // Pour afficher les courbes :
-  /*          if(dbgInc<DBG_SIZE)
+            if(dbgInc<DBG_SIZE)
             {
 
                   vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
@@ -206,12 +211,12 @@ else
             else
             {
 
-               roues.gauche.tourne(0.0);
-           roues.droite.tourne(0.0);
-            dbgInc++;
+                roues.gauche.tourne(0.0);
+                roues.droite.tourne(0.0);
+                dbgInc++;
             }
-*/
 
+*/
     }
     else
     {
@@ -222,6 +227,45 @@ else
 }
 #endif
 }
+
+// allume ou éteint une LED
+void xallumerLED()
+{
+#ifdef STM32F10X_MD // stm32 h103
+#ifdef ROBOTHW
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
+#endif
+#ifdef STM32F10X_CL // stm32 h107
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
+#endif
+#endif
+}
+
+void xeteindreLED()
+{
+#ifdef ROBOTHW
+#ifdef STM32F10X_MD // stm32 h103
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+#endif
+#ifdef STM32F10X_CL // stm32 h107
+    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
+#endif
+#endif
+}
+
+// 2ème LED du stm h107 (LED jaune)
+#ifdef ROBOTHW
+#ifdef STM32F10X_CL
+void xallumerLED2()
+{
+    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+}
+void xeteindreLED2()
+{
+    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+}
+#endif
+#endif
 
 #ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
@@ -239,41 +283,32 @@ extern "C" void SysTick_Handler()
 */
 
     Odometrie::odometrie->update();
+/*
 
 #ifdef CAPTEURS
-    /*Sensors* sensors = Sensors::getSensors();
+    Sensors* sensors = Sensors::getSensors();
     if (sensors != NULL)
-    {
-        AnalogSensor::startConversion();
         sensors->update();
-    }*/
 #endif
-
-    StrategieV2::update();
-    
-    /*if (StrategieV2::strategie != NULL)
-    {
-        allumerLED();
-    }
-    else
-    {
-        allumerLED2();
-    }*/
+*/
+  StrategieV2::update();
 
   Asservissement::asservissement->update();
 
-  /*  static int i = 0;
 
-    if (i % 600 == 0)
+/*
+    static int i = 0;
+
+    if (i % 200 == 0)
     {
     //    ascensseur->tourne(0.9f);
-   //     Asservissement::asservissement->roues.gauche.tourne(0.7f);
-   //     Asservissement::asservissement->roues.droite.tourne(-0.5f);
+    //    Asservissement::asservissement->roues.gauche.tourne(0.7f);
+    //    Asservissement::asservissement->roues.droite.tourne(-0.5f);
         xeteindreLED();
         xallumerLED2();
 
     }
-    else if (i % 300 == 0)
+    else if (i % 100 == 0)
     {
   //      ascensseur->tourne(-0.7f);
    //     Asservissement::asservissement->roues.gauche.tourne(-0.5f);
@@ -284,10 +319,10 @@ extern "C" void SysTick_Handler()
     }
     i++;
 */
-/*
+
     Ascenseur* ascenseur = Ascenseur::get();
     if (ascenseur != NULL)
-        ascenseur->update();*/
+        ascenseur->update();
 
 /*
 if (Odometrie::odometrie->ang < 0.2*3.1415/180.0 && Odometrie::odometrie->ang > -0.2*3.1415/180.0)
@@ -335,6 +370,7 @@ if (Odometrie::odometrie->ang < 0.2*3.1415/180.0 && Odometrie::odometrie->ang > 
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
     if (nbBoucles % 200 == 199)
         GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);*/
+
 /*
     uint16_t nbTicks = c->getTickValue();
 
