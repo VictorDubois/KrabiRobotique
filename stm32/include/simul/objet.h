@@ -16,7 +16,9 @@ class Objet
         enum Type
         {
 			glass = 0, /*!< Représente un gobelet*/
-			gift = 1 /*!< Représente un cadeau*/
+            gift = 1, /*!< Représente un cadeau*/
+            fireUp = 2, /*!< Représente un feu en position verticale*/
+            torch = 3 /*!< Représente une torche*/
         };
         /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p avec pour angle initial theta. */
         /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/
