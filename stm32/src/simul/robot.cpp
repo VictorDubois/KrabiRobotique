@@ -138,29 +138,62 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 	body->CreateFixture(&fixture);
 
     // on déclare les points de la deuxieme partie : Attention, doit être convexe et orientée dans le sens indirect
-	inc = 0;
-	v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
-	v[inc++].Set(-25.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
-	v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
+    inc = 0;
+    v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+    v[inc++].Set(-25.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
+    v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
 	v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
-	v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
-	v[inc++].Set(-95.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+    v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+    v[inc++].Set(-95.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
 #ifndef BOX2D_2_0_1
 	box.Set(v, 6);
 #endif
-	body->CreateFixture(&fixture);
+    body->CreateFixture(&fixture);
 
 #ifdef BOX2D_2_0_1
-	body->SetMassFromShapes();
+    body->SetMassFromShapes();
 #endif
 
-	//Little hack so that linear and angular speed of the object
-	//are those of the local coord (0,0) of the robot.
-	//We don't really care of the mass center accuracy.
-	b2MassData md;
-	body->GetMassData(&md);
-	md.center = b2Vec2(0,0);
-	body->SetMassData(&md);
+
+    //Little hack so that linear and angular speed of the object
+    //are those of the local coord (0,0) of the robot.
+    //We don't really care of the mass center accuracy.
+    b2MassData md;
+    body->GetMassData(&md);
+    md.center = b2Vec2(0,0);
+    body->SetMassData(&md);
+
+    // SENSORS :
+
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp avant droit
+    inc = 0;
+    v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
+    v[inc++].Set(183.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
+    v[inc++].Set(188.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+    v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+
+    fixture.isSensor=true;
+    body->CreateFixture(&fixture);// */
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp avant gauche
+    inc = 0;
+    v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+    v[inc++].Set(188.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+    v[inc++].Set(183.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+    v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+    fixture.isSensor=true;
+    body->CreateFixture(&fixture);// */
+
 }
 
 Robot::~Robot()
@@ -270,6 +303,27 @@ void Robot::paint(QPainter &p, int dt)
     p.drawRect(0, 160, 20, rightLowerHammerStatus);
     p.drawRect(-20, -160, 20, -leftUpperHammerStatus);
     p.drawRect(0, -160, 20, -leftLowerHammerStatus);
+
+    if(true)//On dessine les champs des capteurs
+    {
+        p.setPen(QColor(Qt::red));
+        p.setBrush(QBrush(QColor(255,0,0)));
+        p.setOpacity(.2);
+
+        QPolygon polygon;
+        polygon << QPoint(133.f,-87.f) << QPoint(183.f,-87.f)
+                << QPoint(188.f,-42.f) << QPoint(108.f,-42.f);
+         p.drawPolygon(polygon);
+
+         QPolygon polygon2;
+         polygon2 << QPoint(133.f,87.f) << QPoint(183.f,87.f)
+                 << QPoint(188.f,42.f) << QPoint(108.f,42.f);
+          p.drawPolygon(polygon2);
+
+         p.setPen(QColor(Qt::black));
+         p.setBrush(QBrush(QColor(90,90,90)));
+         p.setOpacity(.3);
+    }
 
 //	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
 	//p.drawRect(-268, -179.5, 268, 359);
