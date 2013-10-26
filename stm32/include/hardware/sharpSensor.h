@@ -61,6 +61,7 @@ class SharpSensor : public AnalogSensor
 
         #ifndef ROBOTHW
         void setEvent();
+        void unsetEvent();
         #endif
 
     private:

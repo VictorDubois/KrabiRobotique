@@ -106,6 +106,8 @@ class Sensors
         void keyPressEvent(QKeyEvent* evt, bool press);
         #endif
 
+        SharpSensor** getSharpSensorsList();
+
     private:
 
         /** @brief Tableau des capteurs sharps */

@@ -6,7 +6,7 @@
 #include "TableGraphics.h"
 #include "XMLReader.h"
 #include "sensors.h"
-#include "bougie.h"
+//#include "bougie.h"
 #include "v1-archive/singleton.h"
 #include "position.h"
 #include "robot.h"
@@ -29,8 +29,8 @@ public:
 	static const int tableWidth = 3000;
     static const int tableHeight = 2000;
 	static b2AABB getWorldAABB();
-    Bougie p_bougies[20];
-    Bougie p_balles[20];
+    //Bougie p_bougies[20];
+    //Bougie p_balles[20];
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
 

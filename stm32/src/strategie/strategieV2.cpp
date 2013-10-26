@@ -20,7 +20,7 @@ Command* StrategieV2::currentCommand = NULL;
 MediumLevelAction* StrategieV2::currentAction = NULL;
 int StrategieV2::actionsCount = 0;
 MediumLevelAction* StrategieV2::actionsToDo[32];
-SharpSensor* StrategieV2::sharps[10];
+SharpSensor** StrategieV2::sharps;
 bool StrategieV2::hasToGoBase = false;
 bool StrategieV2::hasJustAvoided = false;
 bool StrategieV2::mustDeleteAction = false;
@@ -86,7 +86,9 @@ StrategieV2::StrategieV2(bool blue)
     //currentAction->update();
 
     StrategieV2::strategie = this;
-    
+    Sensors* sensors = new Sensors();
+    sharps = sensors->getSharpSensorsList();
+   /*
     uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
     uint16_t* data = AnalogSensor::initialiserADC(10, channels);
     int nbSharp = 10;
@@ -100,7 +102,7 @@ StrategieV2::StrategieV2(bool blue)
     sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
     sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
     sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 15, data, 2000.0); // 
-    
+    */
     emptySharpsToCheck();
     enableSharp(SharpSensor::FRONT_LEFT);
     enableSharp(SharpSensor::FRONT_RIGHT);
@@ -184,7 +186,7 @@ void StrategieV2::update()
             {
                 if (sharps[i]->getValue().b)
                 {
-                    //allume = true;
+                    allume = true;
                 }
             }
         }

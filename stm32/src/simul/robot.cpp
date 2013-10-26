@@ -56,7 +56,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 
     odometrie->setPos(depart);
     pos = odometrie->getPos();
-	new Sensors();
+   //new Sensors();
 
     strategie = new StrategieV2(true);
 

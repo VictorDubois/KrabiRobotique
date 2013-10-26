@@ -6,7 +6,7 @@
 #include "time.h"
 
 #define PI 3.14159265358979323846264338327950
-#include <iostream>
+//#include <iostream>
 #include <QPainter>
 //#include "commandGoTo.h"
 
@@ -224,7 +224,7 @@ Table::Table(QWidget* parent) :
 
 
     // création des bougies :
-    QColor colors[20];
+ /*   QColor colors[20];
     colors[0] = QColor(0,0,255);
     colors[1] = QColor(255,0,0);
     colors[2] = QColor(255,0,0);
@@ -263,7 +263,7 @@ Table::Table(QWidget* parent) :
     for (int i = 12; i < 20; i++)
     {
         p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 33.f);
-    }
+    }*/
 }
 
 Table::~Table()
@@ -283,9 +283,9 @@ void Table::update(int dt)
 		robots[i]->updateForces(dt);
        // robots[i]->interact(elements);
 
-        std::cout << Odometrie::odometrie->getPos().getPosition().getX() << " " <<  Odometrie::odometrie->getPos().getPosition().getY() << std::endl;
+       // std::cout << Odometrie::odometrie->getPos().getPosition().getX() << " " <<  Odometrie::odometrie->getPos().getPosition().getY() << std::endl;
 	}
-    if (dt) {
+    /*if (dt) {
         QPoint posBougie, posMarteau, tester;
         for (unsigned int i = 12; i < 20; i++) {
             posBougie = p_bougies[i].getPosition();
@@ -311,7 +311,7 @@ void Table::update(int dt)
             if (tester.manhattanLength() < 40)
                 p_balles[i].setColor(QColor(0,128,255));
         }
-    }
+    }*/
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);
@@ -338,11 +338,11 @@ void Table::paintEvent(QPaintEvent* evt)
     for (unsigned int i=0; i < objets.size(); i++)
         objets[i]->paint(p);
 
-    for(unsigned int i=0; i < 20; i++)
+    /*for(unsigned int i=0; i < 20; i++)
         p_bougies[i].draw(p);
 
     for(unsigned int i=0; i < 20; i++)
-        p_balles[i].draw(p);
+        p_balles[i].draw(p);*/
 
 	for(unsigned int i=0; i < robots.size(); i++)
 		robots[i]->paint(p,dt);
