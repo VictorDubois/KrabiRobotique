@@ -40,6 +40,7 @@ Sensors::Sensors()
     sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
     sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
     sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    //activeAllSharp();
 #ifdef ROBOTHW
     ultrasounds = new UltrasoundSensor*[nbUltrasound];
     limitSwitchs = new  LimitSwitchSensor*[nbLimitSwitch];
@@ -174,6 +175,11 @@ Sensors* Sensors::getSensors()
     return Sensors::sensors;
 }
 
+SharpSensor** Sensors::getSharpSensorsList()
+{
+    return Sensors::sharps;
+}
+
 Sensors::OutputSensorVector* Sensors::getValueUltrasound(uint16_t distance)
 {
     outputSensorVector->reset();
@@ -299,8 +305,87 @@ void Sensors::activeAllSharp()
 #ifndef ROBOTHW
 void Sensors::keyPressEvent(QKeyEvent* evt, bool press)
 {
-    if(evt && press && evt->text() == "&" && !evt->isAutoRepeat())
-        sharps[0]->setEvent();
+    if(evt && evt->text() == "0" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[0]->setEvent();
+        else
+            sharps[0]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "1" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[1]->setEvent();
+        else
+            sharps[1]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "2" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[2]->setEvent();
+        else
+            sharps[2]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "3" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[3]->setEvent();
+        else
+            sharps[3]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "4" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[4]->setEvent();
+        else
+            sharps[4]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "5" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[5]->setEvent();
+        else
+            sharps[5]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "6" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[6]->setEvent();
+        else
+            sharps[6]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "7" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[7]->setEvent();
+        else
+            sharps[7]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "8" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[8]->setEvent();
+        else
+            sharps[8]->unsetEvent();
+
+    }
+    if(evt && evt->text() == "9" && !evt->isAutoRepeat())
+    {
+        if(press)
+            sharps[9]->setEvent();
+        else
+            sharps[9]->unsetEvent();
+
+    }
+
 }
 #endif
 

@@ -1,5 +1,6 @@
 #include "sharpSensor.h"
 #include "leds.h"
+
 uint16_t SharpSensor::threshold = SEUIL_DETECTION;
 bool SharpSensor::estDesactive = false;
 
@@ -11,7 +12,7 @@ SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData, uint1
     actif = true;
     seuilDetection = seuil;
     #ifndef ROBOTHW
-    evt = false;
+    this->evt = false;
     #endif
 
 }
@@ -39,9 +40,12 @@ void SharpSensor::updateValue()
     //    allumerLED();
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
     #else
+    //std::cout << "Capteur Sharp : '" << this->name << "'', actif==" << this->actif << ", evt==" << this->evt << "\n";
+
     if (evt){
         output = true;
-        evt = false;
+        //evt = false;
+        //stop = false;
     }
     else
         output = false;
@@ -78,7 +82,12 @@ void SharpSensor::unsetActif()
 #ifndef ROBOTHW
 void SharpSensor::setEvent()
 {
-    evt=true;
+    this->evt=true;
+}
+
+void SharpSensor::unsetEvent()
+{
+    this->evt=false;
 }
 #endif
 

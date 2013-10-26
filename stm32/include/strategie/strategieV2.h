@@ -50,7 +50,7 @@ class StrategieV2
         static int glassGathered;
         static int timeSinceLastRecalibration;
         static bool hasJustAvoided;
-        static SharpSensor* sharps[10];
+        static SharpSensor** sharps;
         static UltrasoundSensor* ultrasoundSensor;
         static Position positionsDeSecours[4];
         static int robotBloque;
