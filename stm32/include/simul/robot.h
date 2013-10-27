@@ -7,6 +7,7 @@
 #include <boost/circular_buffer.hpp>
 #include "positionPlusAngle.h"
 #include "odometrie.h"
+#include "userdata.h"
 
 #define ROBOT_POLYGON_COUNT 17
 /** @class Robot
@@ -33,6 +34,14 @@ private:
     int leftUpperHammerStatus;
     int rightLowerHammerStatus;
     int rightUpperHammerStatus;
+
+    struct UserData capteurSharpAvantDroit;
+    struct UserData capteurSharpAvantGauche;
+    struct UserData capteurSharpcoteDroit;
+    struct UserData capteurSharpcoteGauche;
+    struct UserData capteurSharpArriereMilieu;
+    struct UserData capteurSharpArriereDroit;
+    struct UserData capteurSharpArriereGauche;
 
 	b2Body* body;
     QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];

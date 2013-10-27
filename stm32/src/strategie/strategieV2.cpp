@@ -86,8 +86,11 @@ StrategieV2::StrategieV2(bool blue)
     //currentAction->update();
 
     StrategieV2::strategie = this;
+
+    #ifndef ROBOTHW //liste utilisée pour simuler les capteurs
     Sensors* sensors = new Sensors();
     sharps = sensors->getSharpSensorsList();
+    #endif
    /*
     uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
     uint16_t* data = AnalogSensor::initialiserADC(10, channels);
@@ -473,3 +476,10 @@ void StrategieV2::setTourneSurSoiMeme(bool tourne)
 {
     tourneSurSoiMeme = tourne;
 }
+
+#ifndef ROBOTHW
+SharpSensor** StrategieV2::getSensors()
+{
+    return sharps;
+}
+#endif
