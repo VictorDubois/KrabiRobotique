@@ -175,10 +175,7 @@ Sensors* Sensors::getSensors()
     return Sensors::sensors;
 }
 
-SharpSensor** Sensors::getSharpSensorsList()
-{
-    return Sensors::sharps;
-}
+
 
 Sensors::OutputSensorVector* Sensors::getValueUltrasound(uint16_t distance)
 {
@@ -303,6 +300,11 @@ void Sensors::activeAllSharp()
 }
 
 #ifndef ROBOTHW
+SharpSensor** Sensors::getSharpSensorsList()
+{
+    return Sensors::sharps;
+}
+
 void Sensors::keyPressEvent(QKeyEvent* evt, bool press)
 {
     if(evt && evt->text() == "0" && !evt->isAutoRepeat())

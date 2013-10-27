@@ -56,7 +56,9 @@ HEADERS += \
     ../../include/strategie/eteindreBougieV2.h \
 	../../include/strategie/mediumLevelAction.h \
 	../../include/strategie/actionGoTo.h \
-	../../include/strategie/ramasserVerres.h
+	../../include/strategie/ramasserVerres.h \
+    ../../include/simul/userdata.h \
+    ../../include/simul/contactlistener.h
 
 
 SOURCES += \
@@ -99,5 +101,7 @@ SOURCES += \
     ../../src/strategie/eteindreBougieV2.cpp \
 	../../src/strategie/actionGoTo.cpp \
 	../../src/strategie/eteindreBougies.cpp \
-	../../src/strategie/ramasserVerres.cpp
+	../../src/strategie/ramasserVerres.cpp \
+    ../../src/simul/userdata.cpp \
+    ../../src/simul/contactlistener.cpp
 

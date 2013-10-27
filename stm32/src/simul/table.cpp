@@ -42,6 +42,8 @@ Table::Table(QWidget* parent) :
     //world(b2Vec2(127.0,102.0))
 #endif
 {
+    contactListenerTable = ContactListener();
+    world.SetContactListener(&contactListenerTable);
 	dt=0;
 	setAutoFillBackground(true);
 
@@ -51,7 +53,7 @@ Table::Table(QWidget* parent) :
 
     //création des robots
     robots.push_back(new Robot(world,PositionPlusAngle(Position(3000-270,560), M_PI), true));
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(95,1360, true), 0), false)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(195,1360, true), 0), false)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
 
     //création des feux
     // côté rouge

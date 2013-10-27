@@ -104,9 +104,10 @@ class Sensors
 
         #ifndef ROBOTHW
         void keyPressEvent(QKeyEvent* evt, bool press);
+        SharpSensor** getSharpSensorsList();
         #endif
 
-        SharpSensor** getSharpSensorsList();
+
 
     private:
 

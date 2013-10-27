@@ -8,6 +8,7 @@
 #include "sensors.h"
 #include <iostream>
 
+
 #define ratio_qt_box2d 0.01
 
 Odometrie* Odometrie::odometrie = NULL;
@@ -135,6 +136,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 #ifndef BOX2D_2_0_1
 	box.Set(v, 6);
 #endif
+    fixture.filter.categoryBits=0x9;
 	body->CreateFixture(&fixture);
 
     // on déclare les points de la deuxieme partie : Attention, doit être convexe et orientée dans le sens indirect
@@ -148,6 +150,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 #ifndef BOX2D_2_0_1
 	box.Set(v, 6);
 #endif
+    fixture.filter.categoryBits=0x9;
     body->CreateFixture(&fixture);
 
 #ifdef BOX2D_2_0_1
@@ -165,6 +168,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 
     // SENSORS :
 
+    SharpSensor** sharpsList = strategie->getSensors();
 
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp avant droit
@@ -178,7 +182,14 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
 #endif
 
     fixture.isSensor=true;
-    body->CreateFixture(&fixture);// */
+
+    capteurSharpAvantDroit.type = 1;
+    capteurSharpAvantDroit.object = sharpsList[1];
+    fixture.userData=(void*)&capteurSharpAvantDroit;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
+
 
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp avant gauche
@@ -192,7 +203,122 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     box.Set(v, 4);
 #endif
     fixture.isSensor=true;
-    body->CreateFixture(&fixture);// */
+
+    capteurSharpAvantGauche.type = 1;
+    capteurSharpAvantGauche.object = sharpsList[0];
+    fixture.userData=(void*)&capteurSharpAvantGauche;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp cote droit
+    inc = 0;
+    v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
+    v[inc++].Set(103.f*ratio_qt_box2d,-205.f*ratio_qt_box2d);
+    v[inc++].Set(143.f*ratio_qt_box2d,-168.5f*ratio_qt_box2d);
+    v[inc++].Set(93.f*ratio_qt_box2d,-123.5f*ratio_qt_box2d);
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+
+    fixture.isSensor=true;
+
+    capteurSharpcoteDroit.type = 1;
+    capteurSharpcoteDroit.object = sharpsList[3];
+    fixture.userData=(void*)&capteurSharpcoteDroit;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp cote gauche
+    inc = 0;
+    v[inc++].Set(93.f*ratio_qt_box2d,123.5f*ratio_qt_box2d);
+    v[inc++].Set(143.f*ratio_qt_box2d,168.5f*ratio_qt_box2d);
+    v[inc++].Set(103.f*ratio_qt_box2d,205.f*ratio_qt_box2d);
+    v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+
+
+
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+
+    fixture.isSensor=true;
+
+    capteurSharpcoteGauche.type = 1;
+    capteurSharpcoteGauche.object = sharpsList[2];
+    fixture.userData=(void*)&capteurSharpcoteGauche;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp arriere milieu
+    inc = 0;
+    v[inc++].Set(-95.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
+    v[inc++].Set(-145.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
+    v[inc++].Set(-145.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
+    v[inc++].Set(-95.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
+
+
+
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+
+    fixture.isSensor=true;
+
+    capteurSharpArriereMilieu.type = 1;
+    capteurSharpArriereMilieu.object = sharpsList[5];
+    fixture.userData=(void*)&capteurSharpArriereMilieu;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp arriere droit
+    inc = 0;
+    v[inc++].Set(-95.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
+    v[inc++].Set(-145.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
+    v[inc++].Set(-145.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+    v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+
+
+
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+
+    fixture.isSensor=true;
+
+    capteurSharpArriereDroit.type = 1;
+    capteurSharpArriereDroit.object = sharpsList[6];
+    fixture.userData=(void*)&capteurSharpArriereDroit;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
+
+    // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    //Capteur sharp arriere gauche
+    inc = 0;
+    v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+    v[inc++].Set(-145.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+    v[inc++].Set(-145.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+    v[inc++].Set(-95.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+#ifndef BOX2D_2_0_1
+    box.Set(v, 4);
+#endif
+
+    fixture.isSensor=true;
+
+    capteurSharpArriereGauche.type = 1;
+    capteurSharpArriereGauche.object = sharpsList[4];
+    fixture.userData=(void*)&capteurSharpArriereGauche;
+    fixture.filter.maskBits=0x8;
+    fixture.filter.categoryBits=0x1;
+    body->CreateFixture(&fixture);
 
 }
 
@@ -310,15 +436,53 @@ void Robot::paint(QPainter &p, int dt)
         p.setBrush(QBrush(QColor(255,0,0)));
         p.setOpacity(.2);
 
-        QPolygon polygon;
-        polygon << QPoint(133.f,-87.f) << QPoint(183.f,-87.f)
-                << QPoint(188.f,-42.f) << QPoint(108.f,-42.f);
-         p.drawPolygon(polygon);
+/*
+        polygonCapteurSharpAvantDroit;
+        polygonCapteurSharpAvantGauche;
+        polygonCapteurSharpcoteDroit;
+        polygonCapteurSharpcoteGauche;
+        polygonCapteurSharpArriereMilieu;
+        polygonCapteurSharpArriereDroit;
+        polygonCapteurSharpArriereGauche;*/
 
-         QPolygon polygon2;
-         polygon2 << QPoint(133.f,87.f) << QPoint(183.f,87.f)
+
+        QPolygon polygonCapteurSharpAvantGauche;
+        polygonCapteurSharpAvantGauche << QPoint(133.f,-87.f) << QPoint(183.f,-87.f)
+                << QPoint(188.f,-42.f) << QPoint(108.f,-42.f);
+        p.drawPolygon(polygonCapteurSharpAvantGauche);
+
+        QPolygon polygonCapteurSharpAvantDroit;
+        polygonCapteurSharpAvantDroit << QPoint(133.f,87.f) << QPoint(183.f,87.f)
                  << QPoint(188.f,42.f) << QPoint(108.f,42.f);
-          p.drawPolygon(polygon2);
+        p.drawPolygon(polygonCapteurSharpAvantDroit);
+
+        QPolygon polygonCapteurSharpcoteGauche;
+        polygonCapteurSharpcoteGauche << QPoint(53.f,-160.f) << QPoint(103.f,-205.f)
+                << QPoint(143.f,-168.5f) << QPoint(93.f,-123.5f);
+        p.drawPolygon(polygonCapteurSharpcoteGauche);
+
+        QPolygon polygonCapteurSharpcoteDroit;
+        polygonCapteurSharpcoteDroit << QPoint(53.f,160.f) << QPoint(103.f,205.f)
+                << QPoint(143.f,168.5f) << QPoint(93.f,123.5f);
+        p.drawPolygon(polygonCapteurSharpcoteDroit);
+
+        QPolygon polygonCapteurSharpArriereDroit;
+        polygonCapteurSharpArriereDroit << QPoint(-95.f,140.f) << QPoint(-145.f,140.f)
+                << QPoint(-145.f,90.f) << QPoint(-95.f,90.f);
+        p.drawPolygon(polygonCapteurSharpArriereDroit);
+
+        QPolygon polygonCapteurSharpArriereMilieu;
+        polygonCapteurSharpArriereMilieu << QPoint(-95.f,-25) << QPoint(-145.f,-25.f)
+                << QPoint(-145.f,25.f) << QPoint(-95.f,25.f);
+        p.drawPolygon(polygonCapteurSharpArriereMilieu);
+
+        QPolygon polygonCapteurSharpArriereGauche;
+        polygonCapteurSharpArriereGauche << QPoint(-95.f,-140.f) << QPoint(-145.f,-140.f)
+                << QPoint(-145.f,-90.f) << QPoint(-95.f,-90.f);
+        p.drawPolygon(polygonCapteurSharpArriereGauche);
+
+
+
 
          p.setPen(QColor(Qt::black));
          p.setBrush(QBrush(QColor(90,90,90)));

@@ -10,6 +10,7 @@
 #include "v1-archive/singleton.h"
 #include "position.h"
 #include "robot.h"
+#include "contactlistener.h"
 
 class Table : public QWidget, public Singleton<Table>
 {
@@ -22,6 +23,7 @@ private:
 	b2World world;
 	b2Body* tableBody;
 	TableGraphics tableGraphics;
+    ContactListener contactListenerTable;
 
 	void addCard(unsigned int n, int column);
 public:

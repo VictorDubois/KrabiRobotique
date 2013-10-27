@@ -6,6 +6,9 @@
 #include "mediumLevelAction.h"
 #include "sharpSensor.h"
 #include "ultrasoundSensor.h"
+#ifndef ROBOTHW
+#include "sensors.h"
+#endif
 
 class StrategieV2
 {
@@ -30,7 +33,10 @@ class StrategieV2
         static void setCommand(Command* command);
         static bool sharpDetects(SharpSensor::SharpName name);
         static void setTourneSurSoiMeme(bool tourne);
-        
+
+#ifndef ROBOTHW
+        static SharpSensor** getSensors();
+#endif
         static bool somethingDetected;
         
 
