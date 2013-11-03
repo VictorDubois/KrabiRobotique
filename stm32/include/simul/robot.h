@@ -8,6 +8,7 @@
 #include "positionPlusAngle.h"
 #include "odometrie.h"
 #include "userdata.h"
+#include "leds.h"
 
 #define ROBOT_POLYGON_COUNT 17
 /** @class Robot
@@ -45,6 +46,7 @@ private:
 
 	b2Body* body;
     QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];
+
 public:
 
 	unsigned int level;
