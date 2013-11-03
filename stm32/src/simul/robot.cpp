@@ -489,6 +489,35 @@ void Robot::paint(QPainter &p, int dt)
          p.setOpacity(.3);
     }
 
+
+    //On affiche les LEDs de débug
+    //int nbLed = sizeof(ledIsOn)/sizeof(int);
+
+    for(int numeroLed = 0 ; numeroLed<NB_LED ; numeroLed++)
+    {
+        if (isLedOn(numeroLed))
+        {
+            p.setOpacity(1);
+            if(numeroLed==0)
+            {
+                p.setPen(QColor("orange"));
+                p.setBrush(QBrush("orange"));
+            }
+            else if(numeroLed==1)
+            {
+                p.setPen(QColor("green"));
+                p.setBrush(QBrush("green"));
+            }
+            else
+            {
+                p.setPen(QColor(255,0,0));
+                p.setBrush(QBrush(QColor(255,0,0)));
+            }
+
+            p.drawEllipse(QPoint(0,(int)(numeroLed*100-50*(NB_LED-1))),10,-10);
+        }
+    }
+
 //	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
 	//p.drawRect(-268, -179.5, 268, 359);
 	//drawTriangle(p, 0, 0,  65, 0,  60, 0);
