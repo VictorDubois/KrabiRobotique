@@ -19,10 +19,19 @@
 
 // MOTEUR
 // #define NUM_TIMER_MOTEUR 4
-static const int FREQUENCE_MOTEURS = 25000;//25000;
+
+#ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+    static const int FREQUENCE_MOTEURS = 8000;//quartz de 8MHz;
+#endif
+#ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+    static const int FREQUENCE_MOTEURS = 25000;//quartz de 25MHz;
+#endif
+
+#ifdef ROBOTHW
 static const int PRESCALER_TIMER_MOTEUR = 71;
 static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_TIMER_MOTEUR+1)));
 #define CLOCK_TIMER_MOTEUR Timer::Div1
+#endif
 
 // TRAPEZOIDALCOMMAND
 #define DISTANCE_ARRET 100 // 15
@@ -91,7 +100,13 @@ static const int PERIOD_TIMER_MOTEUR = (72000000/(FREQUENCE_MOTEURS*(PRESCALER_T
 
 // SERVO
 /// @brief NUMERO_TIMER_SERVO Numéro du Timer (TIM) sur lequel sont les servos
-#define NUMERO_TIMER_SERVO 1
+#ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+    #define NUMERO_TIMER_SERVO 3
+#endif
+#ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+    #define NUMERO_TIMER_SERVO 1
+#endif
+
 //#define NUMERO_TIMER_SERVO 3
 /// @brief PERIOD_TIMER_SERVO Période du timer.
 //#define PERIOD_TIMER_SERVO 20000

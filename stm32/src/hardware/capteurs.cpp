@@ -2,8 +2,14 @@
 
 Capteurs::Capteurs(): threshold(SEUIL_DETECTION), isConverted(false)
 {
-     uint8_t Channels[] = {10,11,12,13,15};
-      NbrOfChannel = 5;
+    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+       uint8_t Channels[] = {6,7,8,9,10,11,13,15};
+       NbrOfChannel = 8;
+    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        uint8_t Channels[] = {10,11,12,13,15};
+        NbrOfChannel = 5;
+    #endif
 
     // rawData contient les résultats bruts des conversions
     data = new uint16_t[NbrOfChannel];

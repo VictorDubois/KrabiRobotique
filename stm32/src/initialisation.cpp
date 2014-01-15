@@ -141,6 +141,56 @@ void initialisationDesPIN()
 
 #endif //STM32F10X_CL
 
+#ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+
+    // Patte coté de la partie bleu ou jaune
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    // Tirette
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+    // Pattes des servos
+    GPIO_PinRemapConfig(GPIO_Remap_TIM3, ENABLE);
+
+    // servo 1
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    // servo 2
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    // servo 3
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    // servo 4
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    // LED Verte
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; // La vitesse de rafraichissement du port
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
+
+#endif //STM32F10X_MD
+
 
 }
 
