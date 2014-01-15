@@ -29,17 +29,43 @@ Sensors::Sensors()
 
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
-    
-    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
-    sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
-    sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
-    sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
-    sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
-    sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
-    sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
-    sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
-    sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
-    sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    #ifdef STM32F10X_MD // Pin pour le stm32 h103
+        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 15, data); // front left 9
+        sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 6, data); // front side right 13
+        sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 10, data); // front side left 8
+        sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 8, data); // avant side droite 11
+        sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 11, data); // ARRIERE gauche 5
+        sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 7, data); // back middle 10 //CAPTEUR G2
+        sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 13, data); // arriere droit 4
+        //sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
+        //sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+        //sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    #endif
+    #ifdef STM32F10X_CL // Pin pour le stm32 h107
+        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
+        sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
+        sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
+        sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
+        sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
+        sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
+        sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
+        sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
+        sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+        sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    #endif
+
+    #ifndef ROBOTHW //Si on est dans le simu, idem que pour le H107
+        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
+        sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
+        sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
+        sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
+        sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
+        sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
+        sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
+        sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
+        sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+        sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    #endif
     //activeAllSharp();
 #ifdef ROBOTHW
     ultrasounds = new UltrasoundSensor*[nbUltrasound];

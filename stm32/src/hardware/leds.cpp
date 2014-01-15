@@ -3,7 +3,13 @@
 void allumerLED()
 {
 #ifdef ROBOTHW
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
+    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET); // LED verte
+    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
+    #endif
+
 #endif
 #ifndef ROBOTHW
 
@@ -14,7 +20,12 @@ void allumerLED()
 void eteindreLED()
 {
 #ifdef ROBOTHW
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
+    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET); // LED verte
+    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
+    #endif
 #endif
 #ifndef ROBOTHW
     turnLed(0, 0);
@@ -24,7 +35,13 @@ void eteindreLED()
 void allumerLED2()
 {
 #ifdef ROBOTHW
-    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
+    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+       // Pas de LED jaune sur le H103 :'(
+    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET); // LED jaune
+    #endif
+
 #endif
 #ifndef ROBOTHW
     turnLed(1, 1);
@@ -33,7 +50,9 @@ void allumerLED2()
 void eteindreLED2()
 {
 #ifdef ROBOTHW
-    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
+        #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET); // LED jaune
+    #endif
 #endif
 #ifndef ROBOTHW
     turnLed(1, 0);

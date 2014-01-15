@@ -27,7 +27,7 @@
 bool isBlue()
 {
 #ifdef STM32F10X_MD // Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) == Bit_SET;
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9) == Bit_SET;
 #endif
 #ifdef STM32F10X_CL // Pin pour le stm32 h107
     return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == Bit_RESET;
@@ -38,7 +38,7 @@ bool isBlue()
 bool isTiretteEnlevee()
 {
 #ifdef STM32F10X_MD // Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) == Bit_SET;
+    return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_10) == Bit_SET;
 #endif
 #ifdef STM32F10X_CL // Pin pour le stm32 h107
     return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) == Bit_SET;
@@ -66,13 +66,13 @@ int main()
 
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
-    
+
     ServosNumeriques::initClocksAndPortsGPIO();
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::initUART(19231);
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::sendMode();
-    
+
     /*
     for (int i = 0; i < 10000; i++);
     ServosNumeriques::setLedState(1, MBD_ID);
@@ -97,59 +97,59 @@ int main()
         eteindreLED();
         for (int i = 0; i < 10000000; i++)
         {}*/
-    
+
     /*
     while(1)
     {
-        
-    
-       // Marteaux::enfoncerBasDroit(); 
-        Marteaux::enfoncerBasGauche(); 
-        //Marteaux::enfoncerHautDroit(); 
-        //Marteaux::enfoncerHautGauche(); 
+
+
+       // Marteaux::enfoncerBasDroit();
+        Marteaux::enfoncerBasGauche();
+        //Marteaux::enfoncerHautDroit();
+        //Marteaux::enfoncerHautGauche();
         allumerLED();
         for (int i = 0; i < 6000000; i++)
         {
         }
-        
+
         eteindreLED();
         //Marteaux::releverBasDroit();
-        Marteaux::releverBasGauche(); 
-        //Marteaux::releverHautDroit(); 
-       // Marteaux::releverHautGauche(); 
+        Marteaux::releverBasGauche();
+        //Marteaux::releverHautDroit();
+       // Marteaux::releverHautGauche();
         for (int i = 0; i < 6000000; i++)
         {
         }
-    
-        //Marteaux::enfoncerBasDroit(); 
-        Marteaux::enfoncerBasGauche(); 
-        //Marteaux::enfoncerHautDroit(); 
-        //Marteaux::enfoncerHautGauche(); 
+
+        //Marteaux::enfoncerBasDroit();
+        Marteaux::enfoncerBasGauche();
+        //Marteaux::enfoncerHautDroit();
+        //Marteaux::enfoncerHautGauche();
         allumerLED();
         for (int i = 0; i < 6000000; i++)
         {
         }
-        
+
         eteindreLED();
         //Marteaux::releverBasDroit();
-        Marteaux::releverBasGauche(); 
-        //Marteaux::releverHautDroit(); 
-        //Marteaux::releverHautGauche(); 
+        Marteaux::releverBasGauche();
+        //Marteaux::releverHautDroit();
+        //Marteaux::releverHautGauche();
         for (int i = 0; i < 13000000; i++)
         {
         }
-        
+
         eteindreLED();
         //Marteaux::rangerBasDroit();
-        Marteaux::rangerBasGauche(); 
-        //Marteaux::rangerHautDroit(); 
-        //Marteaux::rangerHautGauche(); 
+        Marteaux::rangerBasGauche();
+        //Marteaux::rangerHautDroit();
+        //Marteaux::rangerHautGauche();
         for (int i = 0; i < 10000000; i++)
         {
         }
-       
+
     }*/
-    
+
     // test fdc :
     /*
     LimitSwitchSensor* fdc1 = new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_14, GPIOD);
@@ -160,11 +160,11 @@ int main()
         fdc2->updateValue();
         if (fdc1->getValue().b)
             allumerLED();
-        else    
+        else
             eteindreLED();
         if (fdc2->getValue().b)
             allumerLED2();
-        else    
+        else
             eteindreLED2();
         for (int i = 0; i < 10000; i++)
         {
@@ -228,7 +228,7 @@ int main()
 
         }
     }*/
-    
+
     /*
     uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
     uint16_t* data = AnalogSensor::initialiserADC(10, channels);
@@ -244,13 +244,13 @@ int main()
     sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
     sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
     sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 15, data); // rien
-    
-    
+
+
     while(1)
     {
         AnalogSensor::startConversion();
         allumerLED2();
-        for (int i = 0; i < 10; i++) 
+        for (int i = 0; i < 10; i++)
         {
             sharps[i]->updateValue();
         }
@@ -278,7 +278,7 @@ int main()
     }
     */
     /*StrategieV2* strat = new StrategieV2();
-    
+
     while(1)
     {
         strat->update();
@@ -301,7 +301,7 @@ int main()
 
 
     //Portes* portesAscenseur = new Portes(porteGaucheAsc, porteDroiteAsc, 20.0f, 50.0f, 160.0f, 130.0f);
-    
+
     while(1)
     {
         for (int i = 0; i < 60000000; i++)
@@ -310,19 +310,31 @@ int main()
             porteGaucheAsc->goToAngle(0.0f);
         for (int i = 0; i < 60000000; i++)
         {
-        }
+        }je vais peut être commencer à adapter le code du robot à ma carte STM32 H103 Krabi Jr 2014
             porteGaucheAsc->goToAngle(90.f);
     }*/
-    
-    Tirette tirette(GPIOE, GPIO_Pin_5);
+
+    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+        Tirette tirette(GPIOA, GPIO_Pin_10);
+    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        Tirette tirette(GPIOE, GPIO_Pin_5);
+    #endif
+
     tirette.attendreRemise();
     tirette.attendreEnlevee();
-    
-// pour la v2 :
 
-    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOD, GPIO_Pin_12, GPIOD, GPIO_Pin_13);
-    GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
-    QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
+
+    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+        QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOB, GPIO_Pin_6, GPIOB, GPIO_Pin_7);
+        QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM1, GPIOA, GPIO_Pin_8, GPIOA, GPIO_Pin_9);
+    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOD, GPIO_Pin_12, GPIOD, GPIO_Pin_13);
+        GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
+        QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
+    #endif
+
 
 // Pour la v1 :
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
@@ -336,7 +348,7 @@ int main()
 
     StrategieV2* strat = new StrategieV2(isBlue());//isBlue());
     Asservissement* asserv = new Asservissement(odometrie);  // On définit l'asservissement
-    
+
 
     /*CommandAllerA* command = new CommandAllerA(Position(1000,230), false);
     command->update();
