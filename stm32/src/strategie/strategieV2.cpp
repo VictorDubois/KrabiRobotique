@@ -9,6 +9,7 @@
 #include "ramasserVerres.h"
 #include "eteindreBougies.h"
 #include "marteaux.h"
+//#include <iostream>
 
 #ifndef NULL
 #define NULL 0
@@ -32,7 +33,7 @@ bool StrategieV2::sharpsToCheck[SharpSensor::END_SHARP_NAME];
 int StrategieV2::robotBloque = 0;
 bool StrategieV2::enTrainDeRecalibrerOdometrie = false;
 int StrategieV2::timer = 0;
-MediumLevelAction* StrategieV2::evitement = NULL; 
+MediumLevelAction* StrategieV2::evitement = NULL;
 bool StrategieV2::tourneSurSoiMeme = false;
 
 StrategieV2::StrategieV2(bool blue)
@@ -58,14 +59,15 @@ StrategieV2::StrategieV2(bool blue)
     //actionsToDo[0] = new Evitement();
     //actionsToDo[0] = new ActionGoTo(Position(1000,230), false);
     int decalage = 0;
-    actionsToDo[0] = new EteindreBougies(isBlue); // action d'éteindre les bougies
+    actionsToDo[0] = new StrategieV3(true);
+    //actionsToDo[0] = new EteindreBougies(isBlue); // action d'éteindre les bougies
     //actionsToDo[1] = new ActionGoTo(Position(400,1000), true);
     //actionsToDo[1] = new RecalibrerOdometrie(); //EteindreBougies(isBlue); // action d'éteindre les bougies
     actionsToDo[1] = new RamasserVerres(); //new ActionGoTo(Position(300,1300,StrategieV2::getIsBlue()), true); // //action de ramasser les verres
-    
+
     //actionsToDo[0] = new ActionGoTo(Position(1200,550), false);//RamasserVerreV2(Position(900,550));
     //actionsToDo[1] = new ActionGoTo(Position(1200,700), false); // (400,230
-                                                                    
+
     /*actionsToDo[2] = new ActionGoTo(Position(350,550), false); // (400,230
     //actionsToDo[2] = new ActionGoTo(Position(2600,400), false);
     actionsToDo[3] = new ActionGoTo(Position(2600,550), false);
@@ -101,21 +103,21 @@ StrategieV2::StrategieV2(bool blue)
     sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
     sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
     sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data, 2500.); // back middle 10
-    sharps[6] = new SharpSensor(SharpSensor::NONE, 4, data); // 
+    sharps[6] = new SharpSensor(SharpSensor::NONE, 4, data); //
     sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
     sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
-    sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 15, data, 2000.0); // 
+    sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 15, data, 2000.0); //
     */
     emptySharpsToCheck();
     enableSharp(SharpSensor::FRONT_LEFT);
     enableSharp(SharpSensor::FRONT_RIGHT);
     enableSharp(SharpSensor::FRONT_SIDE_LEFT);
     enableSharp(SharpSensor::FRONT_SIDE_RIGHT);
-    
+
     enableSharp(SharpSensor::BACK_LEFT);
     enableSharp(SharpSensor::BACK_MIDDLE);
     enableSharp(SharpSensor::BACK_RIGHT);
-    
+
     updateCount = 0;
 }
 
@@ -140,7 +142,7 @@ void StrategieV2::update()
         if (updateCount > 18000)
             eteindreLED();
     }
-    else 
+    else
     {
         eteindreLED2();
         if (updateCount > 18000)
@@ -148,7 +150,7 @@ void StrategieV2::update()
     }
     if (updateCount <= 18000)
     {
-        
+
     }
     if (updateCount >= 18000)
     {
@@ -185,7 +187,7 @@ void StrategieV2::update()
         bool allume = false;
         for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
         {
-            if (sharpsToCheck[i] && !tourneSurSoiMeme && i != SharpSensor::BACK_RIGHT)
+            if (sharpsToCheck[i] && !tourneSurSoiMeme)
             {
                 if (sharps[i]->getValue().b)
                 {
@@ -205,40 +207,42 @@ void StrategieV2::update()
         }
     //return;
     //somethingDetected = Sensors::getSensors()->sharpDetect();
-        
+
     //allumerLED2();
     if (allume)
     {
         hasJustAvoided = true;
         Asservissement::asservissement->setCommandSpeeds(NULL);
         //allumerLED();
-        /*
+
         if (true) // if (canStillDoAction)
         {
             if (currentAction)
             {
                 currentAction->collisionAvoided();
+                actionsToDo[actionsCount]->collisionAvoided();
+                //currentCommand->collisionAvoided();
                 currentAction->update();
             }
         }
         hasJustAvoided = false;
         somethingDetected = false;
-        */
+        //
         // tentative d'évitement :
-        
+
         float currentAngle = wrapAngle(Odometrie::odometrie->getPos().getAngle());
         Position pos = Odometrie::odometrie->getPos().getPosition();
         Position newPos = pos + Position(-200*cos(currentAngle), -200*sin(currentAngle));
         Position newPos2 = pos + Position(200*cos(currentAngle), 200*sin(currentAngle));
         bool hasAvoided = false;
-        /*if (newPos.getX() > 300 && newPos.getX() < 2700 && newPos.getY() > 300 && newPos.getY() < 1800)
+        if (newPos.getX() > 300 && newPos.getX() < 2700 && newPos.getY() > 300 && newPos.getY() < 1800)
         {
             Position vect2 = newPos - Position(1500,2000);
             if (vect2.getNorme() > 600)
             {
                 bool avance = false;
                 bool bouge = false;
-                if (sharpDetects(SharpSensor::FRONT_LEFT) || sharpDetects(SharpSensor::FRONT_RIGHT) || sharpDetects(SharpSensor::FRONT_SIDE_LEFT) || sharpDetects(SharpSensor::FRONT_SIDE_LEFT))
+                if (sharpDetects(SharpSensor::FRONT_LEFT) || sharpDetects(SharpSensor::FRONT_RIGHT) || sharpDetects(SharpSensor::FRONT_SIDE_LEFT) || sharpDetects(SharpSensor::FRONT_SIDE_RIGHT))
                 {
                     bouge = true;
                     avance = false;
@@ -262,7 +266,7 @@ void StrategieV2::update()
             {
                 bool avance = false;
                 bool bouge = false;
-                if (sharpDetects(SharpSensor::FRONT_LEFT) || sharpDetects(SharpSensor::FRONT_RIGHT) || sharpDetects(SharpSensor::FRONT_SIDE_LEFT) || sharpDetects(SharpSensor::FRONT_SIDE_LEFT))
+                if (sharpDetects(SharpSensor::FRONT_LEFT) || sharpDetects(SharpSensor::FRONT_RIGHT) || sharpDetects(SharpSensor::FRONT_SIDE_LEFT) || sharpDetects(SharpSensor::FRONT_SIDE_RIGHT))
                 {
                     bouge = true;
                     avance = false;
@@ -278,9 +282,12 @@ void StrategieV2::update()
                     Marteaux::enfoncerBasDroit();
                 }
             }
-        }*/
-        //if (!hasAvoided)
+        } // */
+        if (!hasAvoided)
+        {
+            allumerLED();
             return;
+        }
     }
     else
     {
@@ -294,11 +301,15 @@ void StrategieV2::update()
     //allumerLED2();
     //currentCommand->update();
     //std::cout << "updating action" << std::endl;
-    if (abs(Odometrie::odometrie->getVitesseLineaire()) < 0.0001 && abs(Odometrie::odometrie->getVitesseLineaire()) < 0.00001 && abs(Asservissement::asservissement->getLinearSpeed()) > 0.1)//0.01*abs(Asservissement::asservissement->getLinearSpeed())) //*abs())
-        robotBloque = 0;// ++;
-    else 
+    /*if (abs(Odometrie::odometrie->getVitesseLineaire()) < 0.0001 && abs(Odometrie::odometrie->getVitesseLineaire()) < 0.0001 && abs(Asservissement::asservissement->getLinearSpeed()) > 0.1)//0.01*abs(Asservissement::asservissement->getLinearSpeed())) //*abs())
+    {
+        //robotBloque++;// ++;
+        //std::cout << robotBloque << "\n";
+    }*/
+
+    else
         robotBloque = 0;
-    if (currentAction->update() == -1 || (robotBloque > 1000))// && !enTrainDeRecalibrerOdometrie))
+    if (currentAction->update() == -1 || (robotBloque > 50))// && !enTrainDeRecalibrerOdometrie))
     {
         if (robotBloque > 1000) // si le robot est bloqué 2 secondes
         {
@@ -336,9 +347,9 @@ void StrategieV2::update()
         //{
         if (mustDeleteAction) // temporary action
             mustDeleteAction = false;
-        else       
+        else
             actionsCount++;
-            
+
         if (actionsCount == 2)
         {
             currentCommand = NULL;
@@ -372,7 +383,7 @@ void StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed)
         delete currentCommand;
     if (actionsCount == 0)
         currentCommand = new CommandAllerA(goal, goBack, maxSpeed/2);
-    else 
+    else
         currentCommand = new CommandAllerA(goal, goBack, maxSpeed);
     Asservissement::asservissement->setCommandSpeeds(currentCommand);
     StrategieV2::emptySharpsToCheck();
@@ -382,7 +393,7 @@ void StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed)
         StrategieV2::sharpsToCheck[SharpSensor::BACK_MIDDLE] = true;
         StrategieV2::sharpsToCheck[SharpSensor::BACK_RIGHT] = true;
     }
-    else 
+    else
     {
         StrategieV2::sharpsToCheck[SharpSensor::FRONT_LEFT] = true;
         StrategieV2::sharpsToCheck[SharpSensor::FRONT_RIGHT] = true;
