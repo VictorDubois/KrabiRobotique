@@ -3,7 +3,7 @@
 
 #include "mediumLevelAction.h"
 #include "position.h"
-#include <stdint.h>
+//#include <stdint.h>
 
 
 class ActionGoTo : public MediumLevelAction
@@ -14,6 +14,7 @@ class ActionGoTo : public MediumLevelAction
 
         virtual int update();
         virtual void collisionAvoided();
+        void reset();
     protected:
     private:
         float goalAngle;

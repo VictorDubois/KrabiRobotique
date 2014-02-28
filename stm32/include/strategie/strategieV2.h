@@ -6,6 +6,7 @@
 #include "mediumLevelAction.h"
 #include "sharpSensor.h"
 #include "ultrasoundSensor.h"
+#include "strategiev3.h"
 #ifndef ROBOTHW
 #include "sensors.h"
 #endif
