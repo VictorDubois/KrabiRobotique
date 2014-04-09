@@ -103,7 +103,7 @@ void Odometrie::update()
             ang += 2.0*M_PI;
     }
 
-    positionPlusAngle.setAngle(ang);
+    positionPlusAngle.setAngle(0/*ang*/);
     positionPlusAngle.setX(posX);
     positionPlusAngle.setY(posY);
 

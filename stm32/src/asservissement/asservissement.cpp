@@ -195,9 +195,9 @@ else
         else
         {   //Sinon les roues tourne de façon borné et le fait d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
             // à tourner et avancer correctement
-            limit = 0.3f;
-            roues.gauche.tourne(MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));
-            roues.droite.tourne(MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));
+            limit = 1.0f;
+            roues.gauche.tourne(0.4*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));
+            roues.droite.tourne(0.4*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));
         }
 /*
 
@@ -228,8 +228,8 @@ else
     }
     else
     {
-        roues.gauche.tourne(0.);
-        roues.droite.tourne(0.);
+        roues.gauche.tourne(0.0);
+        roues.droite.tourne(0.0);
     }
 #else
 }
@@ -289,18 +289,18 @@ extern "C" void SysTick_Handler()
 
     Odometrie::odometrie->update();
 
-    /*//currentTimer++;
-    float xx = Odometrie::odometrie->getPos().angle;
+    //currentTimer++;
+    float xx = Odometrie::odometrie->getPos().position.x;
 
-    if (xx>0.5*3.14156)
+    if (xx>1050.)
     {
         allumerLED();
-        currentTimer = 0;
+        //currentTimer = 0;
     }
     else
-        eteindreLED();*/
+        eteindreLED();
 
-    Asservissement::counter++;
+    /*Asservissement::counter++;
     if (Asservissement::counter>100)
     {
         allumerLED();
@@ -308,7 +308,7 @@ extern "C" void SysTick_Handler()
             Asservissement::counter = 0;
     }
     else
-        eteindreLED();
+        eteindreLED();*/
 
 /*#ifdef CAPTEURS
     Sensors* sensors = Sensors::getSensors();

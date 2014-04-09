@@ -69,81 +69,89 @@ int main()
 
     ServosNumeriques::initClocksAndPortsGPIO();
     for (int i = 0; i < 10000; i++);
-    ServosNumeriques::initUART(19231);
+        ServosNumeriques::initUART(1000000);
     for (int i = 0; i < 10000; i++);
-    ServosNumeriques::sendMode();
+        ServosNumeriques::sendMode();
 
-    /*
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(1, MBD_ID);
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(1, MBG_ID);
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(1, MHD_ID);
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(1, MHG_ID);
+    /******************************************************
+    *                 NUMERIC SERVO TEST
+    ******************************************************/
+    /*while(1)
+    {
+        // @debug - Servomoteur numérique
+        for (int id = 12; id < 13; id++)
+        {
+            for (int i = 0; i < 10000; i++);
+            {
+                ServosNumeriques::setLedState(1, id);
+                ServosNumeriques::moveToAtSpeed(MBD_ENFONCE, MBD_VITESSE_DESCENTE, id);
+            }
+        }
+
         allumerLED();
         for (int i = 0; i < 10000000; i++)
+        {}
+
+        for (int id = 12; id < 13; id++)
         {
+            for (int i = 0; i < 10000; i++);
+            {
+                ServosNumeriques::setLedState(0, id);
+                ServosNumeriques::moveToAtSpeed(MBD_ENFONCE, MBD_VITESSE_DESCENTE, id);
+            }
         }
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(0, MBD_ID);
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(0, MBG_ID);
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(0, MHD_ID);
-    for (int i = 0; i < 10000; i++);
-    ServosNumeriques::setLedState(0, MHG_ID);
+
         eteindreLED();
         for (int i = 0; i < 10000000; i++)
-        {}*/
+        {}
+    }*/
 
-    /*
-    while(1)
+
+    /*while(1)
     {
 
 
-       // Marteaux::enfoncerBasDroit();
+        Marteaux::enfoncerBasDroit();
         Marteaux::enfoncerBasGauche();
-        //Marteaux::enfoncerHautDroit();
-        //Marteaux::enfoncerHautGauche();
+        Marteaux::enfoncerHautDroit();
+        Marteaux::enfoncerHautGauche();
         allumerLED();
         for (int i = 0; i < 6000000; i++)
         {
         }
 
         eteindreLED();
-        //Marteaux::releverBasDroit();
+        Marteaux::releverBasDroit();
         Marteaux::releverBasGauche();
-        //Marteaux::releverHautDroit();
-       // Marteaux::releverHautGauche();
+        Marteaux::releverHautDroit();
+        Marteaux::releverHautGauche();
         for (int i = 0; i < 6000000; i++)
         {
         }
 
-        //Marteaux::enfoncerBasDroit();
+        Marteaux::enfoncerBasDroit();
         Marteaux::enfoncerBasGauche();
-        //Marteaux::enfoncerHautDroit();
-        //Marteaux::enfoncerHautGauche();
+        Marteaux::enfoncerHautDroit();
+        Marteaux::enfoncerHautGauche();
         allumerLED();
         for (int i = 0; i < 6000000; i++)
         {
         }
 
         eteindreLED();
-        //Marteaux::releverBasDroit();
+        Marteaux::releverBasDroit();
         Marteaux::releverBasGauche();
-        //Marteaux::releverHautDroit();
-        //Marteaux::releverHautGauche();
+        Marteaux::releverHautDroit();
+        Marteaux::releverHautGauche();
         for (int i = 0; i < 13000000; i++)
         {
         }
 
         eteindreLED();
-        //Marteaux::rangerBasDroit();
+        Marteaux::rangerBasDroit();
         Marteaux::rangerBasGauche();
-        //Marteaux::rangerHautDroit();
-        //Marteaux::rangerHautGauche();
+        Marteaux::rangerHautDroit();
+        Marteaux::rangerHautGauche();
         for (int i = 0; i < 10000000; i++)
         {
         }
@@ -229,13 +237,19 @@ int main()
         }
     }*/
 
-    /*
-    uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
+    /******************************************************
+    *                   SHARP TEST
+    ******************************************************/
+
+    /*uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
     uint16_t* data = AnalogSensor::initialiserADC(10, channels);
     int nbSharp = 10;
     SharpSensor** sharps = new SharpSensor*[nbSharp];
     sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
+
+    // Not working sharp FRONT_RIGHT returns 2800... and is so always on
     sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
+
     sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
     sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
     sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
@@ -249,34 +263,32 @@ int main()
     while(1)
     {
         AnalogSensor::startConversion();
-        allumerLED2();
+
+        //sharps[SharpSensor::ELEVATOR_TOP]->updateValue();
         for (int i = 0; i < 10; i++)
         {
-            sharps[i]->updateValue();
+            if (sharps[i]->getName()!=SharpSensor::FRONT_SIDE_LEFT)
+                sharps[i]->updateValue();
         }
-        bool allume = false;
+
+        // all tests
+
+        bool on = false;
+
         for (int i = 0; i < 10; i++)
-        {
             if (sharps[i]->getValue().b)
-            {
-                allume = true;
-            }
-        }
-        if (allume) {
+                on = true;
+
+        allumerLED2();
+
+        if (on) {
             allumerLED();
         }
         else {
             eteindreLED();
         }
-        for (int i = 0; i < 1000; i++)
-        {
-        }
-        eteindreLED2();
-        for (int i = 0; i < 1000; i++)
-        {
-        }
-    }
-    */
+    }*/
+
     /*StrategieV2* strat = new StrategieV2();
 
     while(1)
@@ -284,8 +296,8 @@ int main()
         strat->update();
         for (int i = 0; i < 1000; i++);
     }*/
-    /*
-    GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
+
+    /*GPIO_PinRemapConfig(GPIO_FullRemap_TIM1, ENABLE);
     Servo::initPin(GPIOE, GPIO_Pin_9);
     Servo::initPin(GPIOE, GPIO_Pin_11);
     Servo::initPin(GPIOE, GPIO_Pin_13);
@@ -296,22 +308,34 @@ int main()
 
     Servo* porteGaucheAsc = new Servo(timer1, 1, 0.01f, 0.11f);
     Servo* porteDroiteAsc = new Servo(timer1, 2, 0.01f, 0.11f);
-  //  Servo* porteDroiteBas = new Servo(timer1, 3, 0.01f, 0.11f);
- //   Servo* porteGaucheBas = new Servo(timer1, 4, 0.02f, 0.14f);
+    Servo* porteDroiteBas = new Servo(timer1, 3, 0.01f, 0.11f);
+    Servo* porteGaucheBas = new Servo(timer1, 4, 0.02f, 0.14f);
 
 
     //Portes* portesAscenseur = new Portes(porteGaucheAsc, porteDroiteAsc, 20.0f, 50.0f, 160.0f, 130.0f);
 
     while(1)
     {
-        for (int i = 0; i < 60000000; i++)
+        for (int i = 0; i < 5000000; i++)
         {
         }
-            porteGaucheAsc->goToAngle(0.0f);
-        for (int i = 0; i < 60000000; i++)
+
+        //porteGaucheAsc->goToAngle(0.0f);
+        //porteDroiteAsc->goToAngle(0.0f);
+        //porteDroiteBas->goToAngle(0.0f);
+        porteGaucheBas->goToAngle(0.0f);
+        allumerLED();
+
+        for (int i = 0; i < 5000000; i++)
         {
-        }je vais peut être commencer à adapter le code du robot à ma carte STM32 H103 Krabi Jr 2014
-            porteGaucheAsc->goToAngle(90.f);
+        }//je vais peut être commencer à adapter le code du robot à ma carte STM32 H103 Krabi Jr 2014
+
+        //porteGaucheAsc->goToAngle(90.0f);
+        //porteDroiteAsc->goToAngle(90.0f);
+        //porteDroiteBas->goToAngle(90.0f);
+        porteGaucheBas->goToAngle(90.0f);
+        eteindreLED();
+
     }*/
 
     #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
@@ -321,8 +345,8 @@ int main()
         Tirette tirette(GPIOE, GPIO_Pin_5);
     #endif
 
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
+    /*tirette.attendreRemise();
+    tirette.attendreEnlevee();*/
 
 
     #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
@@ -335,12 +359,25 @@ int main()
         QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     #endif
 
+    /************************************************
+    **             TEST roues codeuses             **
+    ************************************************/
+
+    /*int16_t posLeft = 0, posRight = 0;
+    while(true)
+    {
+        posLeft += rcg->getTickValue();     // BreakPoint Here
+        posRight += rcd->getTickValue();
+    }*/
+
+    /************ FIN TEST roues codeuses ***********/
+
 
 // Pour la v1 :
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
-    Position pos(98,1360, isBlue());
+    Position pos(1000,1000, isBlue());
     PositionPlusAngle posPlusAngle(pos,0.0f);
     if (!isBlue())
         posPlusAngle = PositionPlusAngle(pos,M_PI);
