@@ -7,6 +7,9 @@
 
 #define DBG_SIZE 250
 
+/* DEBUG AA */
+#include "../hardware/leds.h"
+
 
 
 //int roueGauche[DBG_SIZE];
@@ -24,6 +27,9 @@ float angularDuty[DBG_SIZE];
 //float posy[DBG_SIZE];
 //float angle[DBG_SIZE];
 uint32_t dbgInc = 0;
+
+Command* Asservissement::commandDebugTest = NULL;
+int Asservissement::counter = 0;
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
 bool Asservissement::matchFini = false;
@@ -163,8 +169,9 @@ else
         angularDutySent = pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
-        linearDutySent =  MIN(MAX(linearDutySent, -1.0f),1.0f);
-        angularDutySent = MIN(MAX(angularDutySent, -1.0f),1.0f);
+        float limit = 1.0f;
+        linearDutySent =  MIN(MAX(linearDutySent, -limit),limit);
+        angularDutySent = MIN(MAX(angularDutySent, -limit),limit);
 
         //On évite que le robot fasse du bruit quand il est à l'arrêt
  //       linearDutySent = fabs(linearDutySent) > 0.05 || vitesse_lineaire_a_atteindre > 0.01 ? linearDutySent : 0;
@@ -186,10 +193,11 @@ else
             roues.droite.tourne(0.);
         }
         else
-        {   //Sinon les roues tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
+        {   //Sinon les roues tourne de façon borné et le fait d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
             // à tourner et avancer correctement
-            roues.gauche.tourne(MIN(MAX(+linearDutySent-angularDutySent, -1.0f),1.0f));
-            roues.droite.tourne(MIN(MAX(+linearDutySent+angularDutySent, -1.0f),1.0f));
+            limit = 1.0f;
+            roues.gauche.tourne(0.4*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));
+            roues.droite.tourne(0.4*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));
         }
 /*
 
@@ -220,8 +228,8 @@ else
     }
     else
     {
-        roues.gauche.tourne(0.);
-        roues.droite.tourne(0.);
+        roues.gauche.tourne(0.0);
+        roues.droite.tourne(0.0);
     }
 #else
 }
@@ -232,29 +240,24 @@ else
 void xallumerLED()
 {
 #ifdef STM32F10X_MD // stm32 h103
-#ifdef ROBOTHW
     GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
 #endif
 #ifdef STM32F10X_CL // stm32 h107
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
 #endif
-#endif
 }
 
 void xeteindreLED()
 {
-#ifdef ROBOTHW
 #ifdef STM32F10X_MD // stm32 h103
     GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
 #endif
 #ifdef STM32F10X_CL // stm32 h107
     GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
 #endif
-#endif
 }
 
 // 2ème LED du stm h107 (LED jaune)
-#ifdef ROBOTHW
 #ifdef STM32F10X_CL
 void xallumerLED2()
 {
@@ -265,7 +268,9 @@ void xeteindreLED2()
     GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
 }
 #endif
-#endif
+
+int currentTimer = 0;
+//PositionPlusAngle posOdo;
 
 #ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
@@ -283,15 +288,47 @@ extern "C" void SysTick_Handler()
 */
 
     Odometrie::odometrie->update();
-/*
 
-#ifdef CAPTEURS
+    //currentTimer++;
+    float xx = Odometrie::odometrie->getPos().position.x;
+
+    if (xx>1050.)
+    {
+        allumerLED();
+        //currentTimer = 0;
+    }
+    else
+        eteindreLED();
+
+    /*Asservissement::counter++;
+    if (Asservissement::counter>100)
+    {
+        allumerLED();
+        if (Asservissement::counter>200)
+            Asservissement::counter = 0;
+    }
+    else
+        eteindreLED();*/
+
+/*#ifdef CAPTEURS
     Sensors* sensors = Sensors::getSensors();
     if (sensors != NULL)
         sensors->update();
 #endif
 */
   StrategieV2::update();
+
+  /*Asservissement::commandDebugTest->update();
+  if (Asservissement::commandDebugTest->fini())
+  {
+      Asservissement::asservissement->setAngularSpeed(0.);
+      Asservissement::asservissement->setLinearSpeed(0.);
+  }
+  else
+   Asservissement::asservissement->setCommandSpeeds(Asservissement::commandDebugTest);*/
+
+   /*if (StrategieV2::strategie != NULL)
+    StrategieV2::strategie->update();*/
 
   Asservissement::asservissement->update();
 
@@ -320,9 +357,9 @@ extern "C" void SysTick_Handler()
     i++;
 */
 
-    Ascenseur* ascenseur = Ascenseur::get();
+    /*Ascenseur* ascenseur = Ascenseur::get();
     if (ascenseur != NULL)
-        ascenseur->update();
+        ascenseur->update();*/
 
 /*
 if (Odometrie::odometrie->ang < 0.2*3.1415/180.0 && Odometrie::odometrie->ang > -0.2*3.1415/180.0)

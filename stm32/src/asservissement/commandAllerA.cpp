@@ -80,7 +80,7 @@ void CommandAllerEnArcA::update()
         vdnorme = -vdnorme;
     Position pInter(centre.x + vdnorme*vdx, centre.y + vdnorme*vdy);
 */
-    /*
+
     float pmcx = pos.x-centre.x;
     float pmcy = pos.y-centre.y;
     float bmcx = but.x-centre.x;
@@ -143,14 +143,14 @@ void CommandAllerEnArcA::update()
         else
             angSpeed += accAngMax;
     }
-*/
+
     // pour garder la trajectoire de cercle
 //    std::cout << linSpeed << std::endl;
-    /*
+
     if (abs(angSpeed) > abs(linSpeed/rVise))
         angSpeed = linSpeed/rVise;
     else if (abs(linSpeed) > abs(rVise*angSpeed))
-        linSpeed = rVise*angSpeed;*/
+        linSpeed = rVise*angSpeed;
 
 
 }
@@ -233,7 +233,7 @@ void CommandAllerA::update()
     float angleMaxPourAvancer = M_PI/25.0f;//25.0f;
     if (!bonAngle)
     {
-        StrategieV2::setTourneSurSoiMeme(true);
+        //StrategieV2::setTourneSurSoiMeme(true);
         if (abs(diffAng) < angleMaxPourAvancer)
         {
             bonAngle = true;
@@ -245,7 +245,7 @@ void CommandAllerA::update()
             return;
         }
     }
-    StrategieV2::setTourneSurSoiMeme(false);
+    //StrategieV2::setTourneSurSoiMeme(false);
 
     // vitesse linéaire
     float distanceBut = delta.getNorme();
@@ -273,19 +273,35 @@ void CommandAllerA::update()
     }
     else
     {
-        float linSpeedVisee;
+        if (m_reculer)
+        {
+            float linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
+            if (linSpeed - accLinMax < linSpeedVisee)
+                linSpeed = linSpeedVisee;
+            else
+                linSpeed -= accLinMax;
+        }
+        else
+        {
+            float linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
+            if (linSpeed + accLinMax > linSpeedVisee)
+                linSpeed = linSpeedVisee;
+            else
+                linSpeed += accLinMax;
+        }
+        /*float linSpeedVisee;
         if (m_reculer)
             linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
         else
             linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
-            
+
          if (m_reculer)
             linSpeed -= accLinMax;
          else
             linSpeed += accLinMax;
 
         if (abs(linSpeed) > abs(linSpeedVisee))
-            linSpeed = linSpeedVisee;
+            linSpeed = linSpeedVisee;*/
     }
 }
 
@@ -366,10 +382,29 @@ void CommandTournerVers::update()
     }
     else
     {
-        if (diff >= 0)
+        /*if (diff >= 0)
             angSpeed = sqrt(2.0f*diff*accAngMax);
         else
-            angSpeed = -sqrt(-2.0f*diff*accAngMax);
+            angSpeed = -sqrt(-2.0f*diff*accAngMax);*/
+        if (diff >= 0)
+        {
+            float angSpeedVisee = sqrt(2.0f*diff*accAngMax);
+
+            if (angSpeed + accAngMax > angSpeedVisee)
+                angSpeed = angSpeedVisee;
+            else
+                angSpeed += accAngMax;
+
+        }
+        else
+        {
+            float angSpeedVisee = -sqrt(-2.0f*diff*accAngMax);
+
+            if (angSpeed - accAngMax < angSpeedVisee)
+                angSpeed = angSpeedVisee;
+            else
+                angSpeed -= accAngMax;
+        }
     }
 
 }
@@ -385,6 +420,82 @@ Angle CommandTournerVers::getAngularSpeed()
 }
 
 bool CommandTournerVers::fini() const
+{
+    return m_fini;
+}
+
+
+    ////////////////////////////////
+    //   CommandTournerVersAngle  //
+    ////////////////////////////////
+
+CommandTournerVersAngle::CommandTournerVersAngle(float angleVise)
+    : Command()
+{
+    but = angleVise;
+    angSpeed = 0;
+
+    m_fini = false;
+    signeAngle = SGN_UNDEF;
+}
+
+void CommandTournerVersAngle::update()
+{
+    float accAngMax = ACCELERATION_ANGULAIRE_MAX;
+    float vitAngMax = VITESSE_ANGULAIRE_MAX;
+    // float angleVitesseMax = M_PI/6.0f;
+    float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
+    float angle = Odometrie::odometrie->getPos().getAngle();
+    float angleVise = but;
+    float diff = diffAngle(angleVise,angle);
+
+    // gestion de si la commande a fini
+    if (abs(diff) < M_PI/90.0f)// || (signeAngle == SGN_NEG && diff > 0.0f) || (signeAngle == SGN_POS && diff < 0.0f))
+    {
+        m_fini = true;
+    }
+    else if (signeAngle == SGN_UNDEF && abs(diff) < 1.0f)
+    {
+        if (diff > 0.0f)
+            signeAngle = SGN_POS;
+        else
+            signeAngle = SGN_NEG;
+    }
+
+    // calcul de la vitesse angulaire
+    if (abs(diff) > angleVitesseMax)
+    {
+         if (diff > 0)
+            angSpeed += accAngMax;
+         else if (diff < 0)
+            angSpeed -= accAngMax;
+
+        if (angSpeed > vitAngMax)
+            angSpeed = vitAngMax;
+        else if (angSpeed < -vitAngMax)
+            angSpeed = -vitAngMax;
+    }
+    else
+    {
+        if (diff >= 0)
+            angSpeed = sqrt(2.0f*diff*accAngMax);
+        else
+            angSpeed = -sqrt(-2.0f*diff*accAngMax);
+    }
+
+}
+
+Vitesse CommandTournerVersAngle::getLinearSpeed()
+{
+    return 0.0f;
+}
+
+Angle CommandTournerVersAngle::getAngularSpeed()
+{
+    return angSpeed;
+}
+
+bool CommandTournerVersAngle::fini() const
 {
     return m_fini;
 }

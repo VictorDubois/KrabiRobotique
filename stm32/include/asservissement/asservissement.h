@@ -89,6 +89,8 @@ class Asservissement
 
         /**@brief On stock l'asservissement en statique car un seul peut exister en meme temps */
         static Asservissement* asservissement;
+        static Command* commandDebugTest;
+        static int counter;
 
         /**@brief temps entre deux mise à jours */
         static const uint16_t nb_ms_between_updates;

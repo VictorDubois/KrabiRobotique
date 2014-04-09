@@ -78,6 +78,29 @@ class CommandTournerVers : public Command
 };
 
     ////////////////////////////////
+    //  CommandTournerVersAngle   //
+    ////////////////////////////////
+
+class CommandTournerVersAngle : public Command
+{
+    float but;
+    float angSpeed;
+
+    bool m_fini;
+    int signeAngle;
+    public:
+        CommandTournerVersAngle(float angleVise);
+
+        virtual void update();
+        virtual Vitesse getLinearSpeed();
+        virtual Angle getAngularSpeed();
+
+        // est ce que la commande a fini ?
+        virtual bool fini() const;
+};
+
+
+    ////////////////////////////////
     //       CommandVirage        //
     ////////////////////////////////
 
