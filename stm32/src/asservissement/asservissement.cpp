@@ -1,15 +1,18 @@
 #include "asservissement.h"
 #include "strategieV2.h"
 #include "ascenseur.h"
+#include "commandAllerA.h"
 
 #include "misc.h"
 #include "capteurCouleur.h"
 
-#define DBG_SIZE 250
+#define DBG_SIZE 750
 
 /* DEBUG AA */
 #include "../hardware/leds.h"
 
+
+#define FREEWHEEL 0
 
 
 //int roueGauche[DBG_SIZE];
@@ -22,6 +25,10 @@ float linearDuty[DBG_SIZE];
 float vitesseAng[DBG_SIZE];
 float vitesseAngE[DBG_SIZE];
 float angularDuty[DBG_SIZE];
+
+float posX[DBG_SIZE];
+float posY[DBG_SIZE];
+float posAng[DBG_SIZE];
 
 //float posx[DBG_SIZE];
 //float posy[DBG_SIZE];
@@ -69,12 +76,12 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
 
 void Asservissement::setLinearSpeed(Vitesse vitesse)
 {
-    vitesseLineaire = vitesse;
+    vitesseLineaire = vitesse;//3.5f;
 }
 
 void Asservissement::setAngularSpeed(VitesseAngulaire vitesse)
 {
-    vitesseAngulaire = vitesse;
+    vitesseAngulaire = vitesse;//0.015f;
 }
 
 void Asservissement::setCommandSpeeds(Command* command)
@@ -179,14 +186,18 @@ else
 
 
         // test d'arret complet si c'est l'ordre qu'on lui donne
-        if (vitesse_lineaire_a_atteindre == 0.0f && vitesse_angulaire_a_atteindre == 0.0f)
+        /*if (vitesse_lineaire_a_atteindre == 0.0f && vitesse_angulaire_a_atteindre == 0.0f)
         {
             linearDutySent = 0.0f;
             angularDutySent = 0.0f;
-        }
+        }*/
+
+        limit = 1.0f;
+        float rapportLeft = 1.0*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit);
+        float rapportRight = 1.0*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit);
 
 
-        if (0/*buffer_collision == 0x0 */)//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
+        if (FREEWHEEL/*buffer_collision == 0x0 */)//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
         {   //Si on détecte quelque chose, on s'arréte
 
             roues.gauche.tourne(0.);
@@ -195,25 +206,39 @@ else
         else
         {   //Sinon les roues tourne de façon borné et le fait d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
             // à tourner et avancer correctement
-            limit = 1.0f;
-            roues.gauche.tourne(0.4*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));
-            roues.droite.tourne(0.4*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));
+            limit = 0.4f;
+
+            roues.gauche.tourne(rapportLeft);
+            roues.droite.tourne(rapportRight);
         }
-/*
+
 
         // Pour afficher les courbes :
             if(dbgInc<DBG_SIZE)
             {
 
-                  vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
-                   vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-                  linearDuty[dbgInc] = linearDutySent;
+                vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
+                vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
+                linearDuty[dbgInc] = linearDutySent;
 
-                   vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
-                   vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                   angularDuty[dbgInc] = angularDutySent;
+                vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
+                vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
+                angularDuty[dbgInc] = angularDutySent;
 
-                  dbgInc++;
+                if (StrategieV2::currentCommand!=0)
+                {
+                    posX[dbgInc] = ((CommandAllerA*)(StrategieV2::currentCommand))->_angleVise;//positionPlusAngleActuelle.position.x;
+                    posY[dbgInc] = ((CommandAllerA*)(StrategieV2::currentCommand))->_angleLimit;//positionPlusAngleActuelle.position.y;
+                }
+                else
+                {
+                    posX[dbgInc] = -1.;//positionPlusAngleActuelle.position.x;
+                    posY[dbgInc] = -1.;//positionPlusAngleActuelle.position.y;
+                }
+
+                posAng[dbgInc] = positionPlusAngleActuelle.angle;
+
+                dbgInc++;
 
             }
             else
@@ -222,9 +247,12 @@ else
                 roues.gauche.tourne(0.0);
                 roues.droite.tourne(0.0);
                 dbgInc++;
+                roues.gauche.tourne(0.0);
+                roues.droite.tourne(0.0);
             }
+        // Courbes - fin
 
-*/
+
     }
     else
     {
@@ -236,6 +264,7 @@ else
 #endif
 }
 
+#ifdef ROBOTHW
 // allume ou éteint une LED
 void xallumerLED()
 {
@@ -269,6 +298,8 @@ void xeteindreLED2()
 }
 #endif
 
+#endif
+
 int currentTimer = 0;
 //PositionPlusAngle posOdo;
 
@@ -290,7 +321,8 @@ extern "C" void SysTick_Handler()
     Odometrie::odometrie->update();
 
     //currentTimer++;
-    float xx = Odometrie::odometrie->getPos().position.x;
+#ifdef ROBOTHW
+    /*float xx = Odometrie::odometrie->getPos().angle;
 
     if (xx>1050.)
     {
@@ -298,7 +330,8 @@ extern "C" void SysTick_Handler()
         //currentTimer = 0;
     }
     else
-        eteindreLED();
+        eteindreLED();*/
+#endif
 
     /*Asservissement::counter++;
     if (Asservissement::counter>100)

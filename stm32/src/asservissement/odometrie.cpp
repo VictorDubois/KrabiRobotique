@@ -1,6 +1,7 @@
 #include "odometrie.h"
 
 #include "stm32f10x_gpio.h"
+#include "leds.h"
 
 Odometrie* Odometrie::odometrie = NULL;
 
@@ -35,6 +36,8 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
     posX = 0.0;
     posY = 0.0;
     ang = 0.0;
+
+    absAng = 0.0;
 
 }
 
@@ -96,6 +99,8 @@ void Odometrie::update()
         posX += distAvancee*cos(ang)-distTranslatee*sin(ang);
         posY += distAvancee*sin(ang)+distTranslatee*cos(ang);
 
+        absAng += vitesseAngulaire;
+
         ang += vitesseAngulaire;
         if (ang > M_PI)
             ang -= 2.0*M_PI;
@@ -103,9 +108,18 @@ void Odometrie::update()
             ang += 2.0*M_PI;
     }
 
-    positionPlusAngle.setAngle(0/*ang*/);
+    positionPlusAngle.setAngle(ang);
     positionPlusAngle.setX(posX);
     positionPlusAngle.setY(posY);
+
+    // CALIBRAGE n tours pour calibrer l'odométrie
+
+    /*if (absAng<0. || absAng > M_PI*4.0)
+        allumerLED();
+    else
+        eteindreLED();*/
+
+    // FIN CALIBRAGE
 
 }
 
