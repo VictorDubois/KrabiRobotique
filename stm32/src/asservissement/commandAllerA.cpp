@@ -187,6 +187,9 @@ CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax,
     bonAngle = false;
 
     m_fini = false;
+
+    _angleVise = 0;
+    _angleLimit = 0;
 }
 
 void CommandAllerA::update()
@@ -211,26 +214,9 @@ void CommandAllerA::update()
 
     float diffAng = diffAngle(angleVise,angle);
 
-    // vitesse angulaire
-    if (abs(diffAng) > angleVitesseMax)
-    {
-         if (diffAng > 0)
-            angSpeed += accAngMax;
-         else
-            angSpeed -= accAngMax;
-
-        if (angSpeed > vitAngMax)
-            angSpeed = vitAngMax;
-        else if (angSpeed < -vitAngMax)
-            angSpeed = -vitAngMax;
-    }
-    else
-    {
-        angSpeed = diffAng*vitAngMax/angleVitesseMax;
-    }
-
     // reste sur place tant que le robot n'a pas le bon angle
-    float angleMaxPourAvancer = M_PI/25.0f;//25.0f;
+    float angleMaxPourAvancer = M_PI/10.0f;//25.0f;
+    float angleMaxPourContinuer = M_PI/90.f;;
     if (!bonAngle)
     {
         //StrategieV2::setTourneSurSoiMeme(true);
@@ -245,13 +231,58 @@ void CommandAllerA::update()
             return;
         }
     }
+
+    float distanceBut = delta.getNorme();
+
+    bool distanceOk = /*(distanceBut > derniereDistance) || */(distanceBut < 30.0f);
+
+    // vitesse angulaire
+    if (distanceOk)
+    {
+        vitAngMax = VITESSE_ANGULAIRE_SLOW_MAX;
+        //linSpeed = 0.;
+    }
+    if (abs(diffAng) > angleVitesseMax)
+    {
+        bool hasToDecelerate = (!distanceOk) && (fabs(diffAng) < (angSpeed * angSpeed / accAngMax - accAngMax*2.));
+        if (diffAng > 0)
+        {
+            if (!hasToDecelerate)
+                angSpeed += accAngMax;
+            else if (angSpeed > accAngMax)
+                angSpeed -= accAngMax;
+
+            if (angSpeed > vitAngMax)
+                angSpeed = vitAngMax;
+        }
+        else
+        {
+            if (!hasToDecelerate)
+                angSpeed -= accAngMax;
+            else if (angSpeed < -accAngMax)
+                angSpeed += accAngMax;
+
+            if (angSpeed < -vitAngMax)
+                angSpeed = -vitAngMax;
+        }
+
+    }
+    else
+    {
+        angSpeed = diffAng*vitAngMax/angleVitesseMax;
+    }
+
+    _angleVise = but.getX();
+    _angleLimit = but.getY();
+
     //StrategieV2::setTourneSurSoiMeme(false);
 
     // vitesse linéaire
-    float distanceBut = delta.getNorme();
 
-    if (distanceBut > derniereDistance || distanceBut < 10.0f)
+    if (distanceOk/* && (abs(diffAng) < angleMaxPourContinuer)*/)
     {
+        angSpeed = 0.;
+        linSpeed = 0.;
         m_fini = true;
     }
 
@@ -259,49 +290,52 @@ void CommandAllerA::update()
     {
         linSpeed *= 0.97f;
     }
-    else if (distanceBut > distanceVitesseMax)
+    else if (!distanceOk)
     {
-         if (m_reculer)
-            linSpeed -= accLinMax;
-         else
-            linSpeed += accLinMax;
-
-        if (linSpeed > vitLinMax)
-            linSpeed = vitLinMax;
-        else if (linSpeed < -vitLinMax)
-            linSpeed = -vitLinMax;
-    }
-    else
-    {
-        if (m_reculer)
+        if (distanceBut > distanceVitesseMax)
         {
-            float linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
-            if (linSpeed - accLinMax < linSpeedVisee)
-                linSpeed = linSpeedVisee;
-            else
+             if (m_reculer)
                 linSpeed -= accLinMax;
+             else
+                linSpeed += accLinMax;
+
+            if (linSpeed > vitLinMax)
+                linSpeed = vitLinMax;
+            else if (linSpeed < -vitLinMax)
+                linSpeed = -vitLinMax;
         }
         else
         {
-            float linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
-            if (linSpeed + accLinMax > linSpeedVisee)
-                linSpeed = linSpeedVisee;
+            if (m_reculer)
+            {
+                float linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
+                if (linSpeed - accLinMax < linSpeedVisee)
+                    linSpeed = linSpeedVisee;
+                else
+                    linSpeed -= accLinMax;
+            }
             else
+            {
+                float linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
+                if (linSpeed + accLinMax > linSpeedVisee)
+                    linSpeed = linSpeedVisee;
+                else
+                    linSpeed += accLinMax;
+            }
+            /*float linSpeedVisee;
+            if (m_reculer)
+                linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
+            else
+                linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
+
+             if (m_reculer)
+                linSpeed -= accLinMax;
+             else
                 linSpeed += accLinMax;
+
+            if (abs(linSpeed) > abs(linSpeedVisee))
+                linSpeed = linSpeedVisee;*/
         }
-        /*float linSpeedVisee;
-        if (m_reculer)
-            linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
-        else
-            linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
-
-         if (m_reculer)
-            linSpeed -= accLinMax;
-         else
-            linSpeed += accLinMax;
-
-        if (abs(linSpeed) > abs(linSpeedVisee))
-            linSpeed = linSpeedVisee;*/
     }
 }
 
