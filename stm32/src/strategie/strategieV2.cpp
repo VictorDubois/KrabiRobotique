@@ -151,7 +151,7 @@ StrategieV2::StrategieV2(bool blue)
 //    actionsToDo[0] = new EteindreBougies(isBlue); // action d'éteindre les bougies
 //    actionsToDo[1] = new ActionGoTo(Position(400,1000), true);
     //actionsToDo[1] = new RecalibrerOdometrie(); //EteindreBougies(isBlue); // action d'éteindre les bougies
-    actionsToDo[1] = new RamasserVerres(); //new ActionGoTo(Position(300,1300,StrategieV2::getIsBlue()), true); // //action de ramasser les verres
+//    actionsToDo[1] = new RamasserVerres(); //new ActionGoTo(Position(300,1300,StrategieV2::getIsBlue()), true); // //action de ramasser les verres
 //    actionsToDo[0] = new ActionGoTo(Position(1200, 1000, isBlue), false);
 //    actionsToDo[1] = new ActionGoTo(Position(800, 1000, isBlue), false);
     //actionsToDo[0] = new ActionGoTo(Position(1200,550), false);//RamasserVerreV2(Position(900,550));
@@ -306,7 +306,7 @@ void StrategieV2::update()
     }
 
     //TIR FILET
-#ifdef KRABI
+/*#ifdef KRABI
     if(updateCount > 18200 && updateCount < 18210)
         //if(updateCount > 3000 && updateCount < 3010)
     {
@@ -318,6 +318,7 @@ void StrategieV2::update()
 
     }
 #endif
+*/
 #ifndef ROBOTHW
     //qDebug() << updateCount;
 #endif

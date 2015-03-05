@@ -109,6 +109,12 @@ int main()
     //Debug::testADC_DMASampleF4();
     //Debug::testSharps();
 #endif
+    allumerLED();
+    eteindreLED();
+    allumerLED2();
+    eteindreLED2();
+    allumerLED();
+
 
 //    UartDebug::initClocksAndPortsGPIO();
 //    UartDebug::init(19200);
@@ -155,7 +161,7 @@ int main()
         Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
         BrasLateral::initBrasLateraux();
-        CanonLances* canon = CanonLances::getSingleton();
+//        CanonLances* canon = CanonLances::getSingleton();
     #endif
 
 #ifdef ALLOW_DEBUG
@@ -171,7 +177,7 @@ int main()
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
 
     #elif defined(STM32F10X_CL) // H107
-        Brak* bracquemart = Brak::getSingleton();
+//        Brak* bracquemart = Brak::getSingleton();
         Sensors* sensors = Sensors::getSingleton();
         ServosNumeriques::setLedState(1, 12);
     #endif

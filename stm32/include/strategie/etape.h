@@ -26,6 +26,10 @@ public:
         FEU_COTE = 15,
         CENTRE_TABLE = 16,
         CLAP = 17,
+        GOBELET = 18,
+        PIED = 19,
+        AMPOULE = 20,
+        //TAPIS = 21,
         ROBOT_POINT_PASSAGE = POINT_PASSAGE + 20,
         ROBOT_COLLECT =       COLLECT + 20,
         ROBOT_FRUIT =         FRUIT + 20,
@@ -42,7 +46,11 @@ public:
         ROBOT_TIR_FILET = TIR_FILET + 20,
         ROBOT_FEU_MINI_BRAS = FEU_MINI_BRAS + 20,
         ROBOT_CENTRE_TABLE = CENTRE_TABLE + 20,
-        ROBOT_CLAP = CLAP + 20
+        ROBOT_CLAP = CLAP + 20,
+        ROBOT_GOBELET = GOBELET + 20,
+        ROBOT_PIED = PIED + 20,
+        ROBOT_AMPOULE = AMPOULE + 20,
+        //ROBOT_TAPIS = TAPIS + 20
 
     };
 
