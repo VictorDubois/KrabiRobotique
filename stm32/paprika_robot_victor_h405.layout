@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="LibrariesF4/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" open="1" top="0" tabpos="2">
+		<Cursor position="100031" topLine="1467" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h" open="1" top="0" tabpos="12">
+		<Cursor position="6486" topLine="152" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rcc.h" open="1" top="0" tabpos="15">
+		<Cursor position="18640" topLine="382" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_usart.h" open="1" top="0" tabpos="16">
+		<Cursor position="15315" topLine="359" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c" open="1" top="0" tabpos="9">
+		<Cursor position="17509" topLine="413" />
+	</File>
+	<File name="include/constantes.h" open="1" top="1" tabpos="18">
+		<Cursor position="3157" topLine="69" />
+	</File>
+	<File name="include/debug.h" open="1" top="0" tabpos="6">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="include/interfaceServosNumeriques.h" open="1" top="0" tabpos="7">
+		<Cursor position="527" topLine="0" />
+	</File>
+	<File name="src/actionneurs/sensors.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="5587" topLine="101" />
+	</File>
+	<File name="src/asservissement/asservissement.cpp" open="1" top="0" tabpos="17">
+		<Cursor position="4939" topLine="145" />
+	</File>
+	<File name="src/debug.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="14828" topLine="403" />
+	</File>
+	<File name="src/initialisation.cpp" open="1" top="0" tabpos="14">
+		<Cursor position="2440" topLine="39" />
+	</File>
+	<File name="src/interfaceDebugSerie.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="534" topLine="3" />
+	</File>
+	<File name="src/interfaceServosNumeriques.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="338" topLine="0" />
+	</File>
+	<File name="src/main.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="2903" topLine="82" />
+	</File>
+	<File name="src/strategie/strategiev3.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="76043" topLine="1595" />
+	</File>
+	<File name="startup_stm32f40_41xxxRIDE.s" open="1" top="0" tabpos="8">
+		<Cursor position="2992" topLine="48" />
+	</File>
+</CodeBlocks_layout_file>

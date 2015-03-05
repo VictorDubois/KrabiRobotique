@@ -224,7 +224,7 @@ int Remote::receiveData()
 }
 
 void Remote::update(bool allowChangeMode)
-{
+{/*
 #ifdef KRABI
     if (timerLances>=0)
     {
@@ -233,7 +233,7 @@ void Remote::update(bool allowChangeMode)
             CanonLances::getSingleton()->fire();
     }
 #endif
-
+*/
     //if (allowChangeMode)
     {
         if (dataAvailable() && !remoteMode)
@@ -252,6 +252,7 @@ void Remote::update(bool allowChangeMode)
         int order = receiveData();
         Remote::log("Got:");
         Remote::getSingleton()->sendData(order);
+        /*
 #ifdef KRABI_JR
         switch(order)
         {
@@ -353,7 +354,7 @@ void Remote::update(bool allowChangeMode)
             break;
         }
 #endif
-
+*/
         // Linear Speed
         if (order>=0 and order<=50)
             linSpeed = ((float)(order-25)) / 25. * LINEAR_REMOTE_SPEED_LIMIT;

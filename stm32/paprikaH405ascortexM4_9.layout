@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="LibrariesF4/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" open="1" top="0" tabpos="15">
+		<Cursor position="612424" topLine="48" />
+	</File>
+	<File name="LibrariesF4/CMSIS/Include/core_cm4.h" open="1" top="0" tabpos="66">
+		<Cursor position="7469" topLine="151" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma.h" open="1" top="0" tabpos="33">
+		<Cursor position="16219" topLine="355" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_exti.h" open="1" top="0" tabpos="53">
+		<Cursor position="7492" topLine="93" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h" open="1" top="0" tabpos="17">
+		<Cursor position="4066" topLine="93" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_tim.h" open="1" top="0" tabpos="54">
+		<Cursor position="44681" topLine="1013" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/misc.c" open="1" top="0" tabpos="30">
+		<Cursor position="6895" topLine="86" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c" open="1" top="0" tabpos="31">
+		<Cursor position="279" topLine="21" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c" open="1" top="0" tabpos="32">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c" open="1" top="0" tabpos="51">
+		<Cursor position="7389" topLine="197" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c" open="1" top="0" tabpos="65">
+		<Cursor position="19311" topLine="424" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c" open="1" top="0" tabpos="58">
+		<Cursor position="16139" topLine="409" />
+	</File>
+	<File name="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c" open="1" top="0" tabpos="20">
+		<Cursor position="9778" topLine="206" />
+	</File>
+	<File name="include/actionneurs/sensors.h" open="1" top="0" tabpos="1">
+		<Cursor position="5496" topLine="68" />
+	</File>
+	<File name="include/asservissement/command.h" open="1" top="0" tabpos="64">
+		<Cursor position="2292" topLine="0" />
+	</File>
+	<File name="include/asservissement/commandAllerA.h" open="1" top="0" tabpos="67">
+		<Cursor position="1088" topLine="68" />
+	</File>
+	<File name="include/constantes.h" open="1" top="0" tabpos="28">
+		<Cursor position="375" topLine="0" />
+	</File>
+	<File name="include/hardware/analogSensor.h" open="1" top="0" tabpos="14">
+		<Cursor position="2406" topLine="0" />
+	</File>
+	<File name="include/hardware/ax12api.h" open="1" top="0" tabpos="19">
+		<Cursor position="544" topLine="34" />
+	</File>
+	<File name="include/hardware/capteurCouleur.h" open="1" top="0" tabpos="56">
+		<Cursor position="3811" topLine="64" />
+	</File>
+	<File name="include/hardware/leds.h" open="1" top="0" tabpos="52">
+		<Cursor position="295" topLine="0" />
+	</File>
+	<File name="include/hardware/pwmHandler.h" open="1" top="0" tabpos="8">
+		<Cursor position="336" topLine="0" />
+	</File>
+	<File name="include/hardware/roue.h" open="1" top="0" tabpos="4">
+		<Cursor position="223" topLine="0" />
+	</File>
+	<File name="include/hardware/timerHandler.h" open="1" top="0" tabpos="9">
+		<Cursor position="986" topLine="0" />
+	</File>
+	<File name="include/hardware/tirette.h" open="1" top="0" tabpos="6">
+		<Cursor position="189" topLine="0" />
+	</File>
+	<File name="include/hardware/tourelle.h" open="1" top="0" tabpos="50">
+		<Cursor position="3689" topLine="90" />
+	</File>
+	<File name="include/memory.h" open="1" top="0" tabpos="61">
+		<Cursor position="418" topLine="0" />
+	</File>
+	<File name="include/strategie/strategieV2.h" open="1" top="0" tabpos="36">
+		<Cursor position="2460" topLine="39" />
+	</File>
+	<File name="include/strategie/strategiev3.h" open="1" top="0" tabpos="39">
+		<Cursor position="192" topLine="0" />
+	</File>
+	<File name="include/vector.h" open="1" top="0" tabpos="41">
+		<Cursor position="2420" topLine="58" />
+	</File>
+	<File name="src/actionneurs/moteur.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="928" topLine="0" />
+	</File>
+	<File name="src/actionneurs/roues.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="717" topLine="0" />
+	</File>
+	<File name="src/actionneurs/sensor.cpp" open="1" top="0" tabpos="48">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/actionneurs/sensors.cpp" open="1" top="0" tabpos="42">
+		<Cursor position="3206" topLine="204" />
+	</File>
+	<File name="src/actionneurs/servo.cpp" open="1" top="0" tabpos="27">
+		<Cursor position="705" topLine="0" />
+	</File>
+	<File name="src/angle.cpp" open="1" top="0" tabpos="38">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/asservissement/asservissement.cpp" open="1" top="0" tabpos="25">
+		<Cursor position="8631" topLine="243" />
+	</File>
+	<File name="src/asservissement/command.cpp" open="1" top="0" tabpos="62">
+		<Cursor position="1165" topLine="0" />
+	</File>
+	<File name="src/asservissement/commandAllerA.cpp" open="1" top="0" tabpos="68">
+		<Cursor position="5266" topLine="171" />
+	</File>
+	<File name="src/asservissement/odometrie.cpp" open="1" top="0" tabpos="29">
+		<Cursor position="1099" topLine="15" />
+	</File>
+	<File name="src/asservissement/pidFilterDistance.cpp" open="1" top="0" tabpos="63">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/distance.cpp" open="1" top="0" tabpos="37">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/hardware/analogSensorF4.cpp" open="1" top="0" tabpos="23">
+		<Cursor position="931" topLine="16" />
+	</File>
+	<File name="src/hardware/ax12api.cpp" open="1" top="0" tabpos="18">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/hardware/capteurCouleur.cpp" open="1" top="0" tabpos="55">
+		<Cursor position="3674" topLine="62" />
+	</File>
+	<File name="src/hardware/leds.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="544" topLine="0" />
+	</File>
+	<File name="src/hardware/pwmHandlerF4.cpp" open="1" top="0" tabpos="24">
+		<Cursor position="158" topLine="0" />
+	</File>
+	<File name="src/hardware/quadratureCoderHandlerF4.cpp" open="1" top="0" tabpos="16">
+		<Cursor position="2617" topLine="0" />
+	</File>
+	<File name="src/hardware/roue.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="2598" topLine="7" />
+	</File>
+	<File name="src/hardware/sharpSensor.cpp" open="1" top="0" tabpos="40">
+		<Cursor position="492" topLine="4" />
+	</File>
+	<File name="src/hardware/timerHandlerF4.cpp" open="1" top="0" tabpos="45">
+		<Cursor position="652" topLine="0" />
+	</File>
+	<File name="src/hardware/tirette.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="745" topLine="6" />
+	</File>
+	<File name="src/hardware/tourelle.cpp" open="1" top="0" tabpos="49">
+		<Cursor position="9770" topLine="293" />
+	</File>
+	<File name="src/hardware/ultrasoundSensor.cpp" open="1" top="0" tabpos="60">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/initialisationF4.cpp" open="1" top="1" tabpos="11">
+		<Cursor position="8051" topLine="131" />
+	</File>
+	<File name="src/interfaceServosNumeriques.cpp" open="1" top="0" tabpos="21">
+		<Cursor position="4381" topLine="84" />
+	</File>
+	<File name="src/main.cpp" open="1" top="0" tabpos="35">
+		<Cursor position="16539" topLine="526" />
+	</File>
+	<File name="src/memory.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="357" topLine="11" />
+	</File>
+	<File name="src/position.cpp" open="1" top="0" tabpos="26">
+		<Cursor position="1162" topLine="13" />
+	</File>
+	<File name="src/strategie/actionGoTo.cpp" open="1" top="0" tabpos="22">
+		<Cursor position="3096" topLine="46" />
+	</File>
+	<File name="src/strategie/dijkstra.cpp" open="1" top="0" tabpos="46">
+		<Cursor position="5537" topLine="116" />
+	</File>
+	<File name="src/strategie/etape.cpp" open="1" top="0" tabpos="47">
+		<Cursor position="176" topLine="0" />
+	</File>
+	<File name="src/strategie/eteindreBougieV2.cpp" open="1" top="0" tabpos="57">
+		<Cursor position="554" topLine="9" />
+	</File>
+	<File name="src/strategie/recalibrerOdometrie.cpp" open="1" top="0" tabpos="59">
+		<Cursor position="2625" topLine="16" />
+	</File>
+	<File name="src/strategie/strategieV2.cpp" open="1" top="0" tabpos="34">
+		<Cursor position="4214" topLine="100" />
+	</File>
+	<File name="src/strategie/strategiev3.cpp" open="1" top="0" tabpos="43">
+		<Cursor position="598" topLine="45" />
+	</File>
+	<File name="src/stub.c" open="1" top="0" tabpos="44">
+		<Cursor position="0" topLine="31" />
+	</File>
+	<File name="startup_stm32f40_41xxxRIDE.s" open="1" top="0" tabpos="3">
+		<Cursor position="2992" topLine="74" />
+	</File>
+</CodeBlocks_layout_file>

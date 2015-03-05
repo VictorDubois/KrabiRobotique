@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Happy Birthday" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_compiler__stm32" />
+		<Build>
+			<Target title="Debug">
+				<Option output="main.out" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gnu_gcc_compiler__stm32_architecture" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add directory="/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/" />
+					<Add directory="/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/LibrariesF4/CMSIS/Device/ST/STM32F4xx/Include/" />
+					<Add directory="/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/LibrariesF4/CMSIS/Include/" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="main.out" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gnu_gcc_compiler__stm32" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-fno-rtti -fno-exceptions" />
+			<Add option="-DSTM32F40_41xxx" />
+			<Add option="-DROBOTHW" />
+			<Add option="-DROUES" />
+			<Add option="-DCAPTEURS" />
+			<Add option="-DHSE_VALUE=8000000" />
+			<Add directory="include" />
+			<Add directory="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc" />
+			<Add directory="include/strategie" />
+			<Add directory="include/hardware" />
+			<Add directory="include/asservissement" />
+			<Add directory="include/actionneurs" />
+		</Compiler>
+		<Linker>
+			<Add option="-Tstm32LinkerScript.cmd --verbose" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="arm-none-eabi-objcopy -Obinary main.out main.bin" />
+			<Add after="arm-none-eabi-objdump -S main.out &gt; main.list" />
+			<Mode after="always" />
+		</ExtraCommands>
+		<Unit filename="LibrariesF4/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" />
+		<Unit filename="LibrariesF4/CMSIS/Device/ST/STM32F4xx/Source/system_stm32f4xx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="LibrariesF4/CMSIS/Include/core_cm4.h" />
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_conf.h" />
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h" />
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rcc.h" />
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_tim.h" />
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="include/actionneurs/servo.h" />
+		<Unit filename="include/constantes.h" />
+		<Unit filename="include/hardware/leds.h" />
+		<Unit filename="include/hardware/timerHandler.h" />
+		<Unit filename="include/hardware/tirette.h" />
+		<Unit filename="include/initialisation.h" />
+		<Unit filename="include/memory.h" />
+		<Unit filename="include/vector.h" />
+		<Unit filename="src/actionneurs/servo.cpp" />
+		<Unit filename="src/hardware/leds.cpp" />
+		<Unit filename="src/hardware/pwmHandler.cpp" />
+		<Unit filename="src/hardware/timerHandler.cpp" />
+		<Unit filename="src/hardware/tirette.cpp" />
+		<Unit filename="src/initialisationF4.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/memory.cpp" />
+		<Unit filename="src/stub.c"> 
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="startup_stm32f40_41xxxRIDE.s" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger>
+				<search_path add="../../../../../Lien vers partageMV" />
+				<remote_debugging target="Debug">
+					<options conn_type="0" serial_baud="115200" ip_address="192.168.1.30" ip_port="3333" additional_cmds_before="source ~/.gdbinit" />
+				</remote_debugging>
+			</debugger>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
