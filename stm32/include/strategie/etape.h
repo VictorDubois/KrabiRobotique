@@ -29,7 +29,7 @@ public:
         GOBELET = 18,
         PIED = 19,
         AMPOULE = 20,
-        //TAPIS = 21,
+        TAPIS = 21,
         ROBOT_POINT_PASSAGE = POINT_PASSAGE + 20,
         ROBOT_COLLECT =       COLLECT + 20,
         ROBOT_FRUIT =         FRUIT + 20,
@@ -50,7 +50,7 @@ public:
         ROBOT_GOBELET = GOBELET + 20,
         ROBOT_PIED = PIED + 20,
         ROBOT_AMPOULE = AMPOULE + 20,
-        //ROBOT_TAPIS = TAPIS + 20
+        ROBOT_TAPIS = TAPIS + 20
 
     };
 

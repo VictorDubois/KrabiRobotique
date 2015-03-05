@@ -1,25 +1,22 @@
-#ifndef KRABI2015_H
-#define KRABI2015_H
+#ifndef KRABIJUNIOR2015_H
+#define KRABIJUNIOR2015_H
 
 #define ETAPE_GARAGE 1
-#define NOMBRE_ETAPES 27
+#define NOMBRE_ETAPES 10
 
 
 #include "strategiev3.h"
 #include "etape.h"
 #include "clap.h"
-#include "gobelet.h"
 
-class Krabi2015 : public StrategieV3
+class KrabiJunior2015 : public StrategieV3
 {
 public:
     /** @brief Constructeur de la stratégie *
     * @param isBlue le côté de départ */
-    Krabi2015(bool isBlue);
+    KrabiJunior2015(bool isBlue);
 
-    /** @brief Actions de Krabi */
-    Clap actionClap[3];
-    Gobelet actionGobelet[5];
+    /** @brief Actions de KrabiJunior */
 
 
 private:
@@ -38,4 +35,5 @@ private:
 };
 
 
-#endif // Krabi2015_H
+
+#endif // KRABIJUNIOR2015_H
