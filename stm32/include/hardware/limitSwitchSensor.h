@@ -4,7 +4,11 @@
 #include "sensor.h"
 
 #ifdef ROBOTHW
-#include "stm32f10x_gpio.h"
+    #ifdef STM32F40_41xxx
+        #include "stm32f4xx_gpio.h"
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        #include "stm32f10x_gpio.h"
+    #endif
 #endif
 
 /// @brief Classe des gestions des capteurs fin de course

@@ -37,17 +37,97 @@ void Dijkstra::setEtapeCourante(int numeroEtapeCourante)
 }
 
 //Calcul des distances de toutes les étapes par rapport à l'étape en cours (étape origine)
-void Dijkstra::run()
+int Dijkstra::run()
 {
+  /*  int step = 0;
+    int resultatMiniRun = -2;
+    while(resultatMiniRun == -2)
+    {
+        resultatMiniRun = miniRun(step);
+        step++;
+    }
+
+    if(resultatMiniRun == -1)
+        return -1;
+    else
+        return 0;*/
+
+
+
+    int min = -2;
     initialiser();
 
     mettreAJourVoisins(this->numeroEtapeCourante);
 
     for(int i = 0 ; i < this->nombreEtapes-2 ; i++)
     {
-        this->numeroEtapeCourante = trouverMin(i+1);
+        min = trouverMin(i+1);
+        // Si min vaut -1, c'est que le robot était coincé, et donc qu'il a fallut réinitialiser la recherche
+        // Donc on arrete la recherche en cours, une nouvelle a été lancée
+        if(min == -1)
+        {
+            return -1;
+        }
+        if(min == -2)
+        {
+            return 0;
+        }
+        this->numeroEtapeCourante = min;
         mettreAJourVoisins(this->numeroEtapeCourante);
     }
+    return 0;
+}
+
+int Dijkstra::miniRun(int step)
+{
+    if (step == 0)
+    {
+        initialiser();
+    }
+    else if(step < this->nombreEtapes-2)
+    {
+        int min = trouverMin(step+1);
+        // Si min vaut -1, c'est que le robot était coincé, et donc qu'il a fallut réinitialiser la recherche
+        // Donc on arrete la recherche en cours, une nouvelle a été lancée
+        if(min == -1)
+        {
+            return -1;
+        }
+        if(min == -2)
+        {
+            return 0;
+        }
+        this->numeroEtapeCourante = min;
+        mettreAJourVoisins(this->numeroEtapeCourante);
+    }
+    else
+    {
+        return 0;
+    }
+    return -2;
+/*
+    int min = -2;
+
+
+    mettreAJourVoisins(this->numeroEtapeCourante);
+
+    for(int i = 0 ; i < this->nombreEtapes-2 ; i++)
+    {
+        min = trouverMin(i+1);
+        // Si min vaut -1, c'est que le robot était coincé, et donc qu'il a fallut réinitialiser la recherche
+        // Donc on arrete la recherche en cours, une nouvelle a été lancée
+        if(min == -1)
+        {
+            return -1;
+        }
+        if(min == -2)
+        {
+            return 0;
+        }
+        this->numeroEtapeCourante = min;
+        mettreAJourVoisins(this->numeroEtapeCourante);
+    }
+    return 0;*/
 }
 
 //On réinitialise le tableau avant le commencer une nouvelle recherche
@@ -56,9 +136,13 @@ void Dijkstra::initialiser()
     for(int i = 0 ; i<this->nombreEtapes ; i++)
     {
         this->tableauEtapes[i]->setDistance(-1);
-        if(this->tableauEtapes[i]->getState() != -2)
+        if(!(this->tableauEtapes[i]->aEviter()))//getState() != -2)
         {
             this->tableauEtapes[i]->setState(-1);
+        }
+        else
+        {
+            this->tableauEtapes[i]->setState(-2);
         }
     }
     this->tableauEtapes[this->numeroEtapeCourante]->setDistance(0);
@@ -69,13 +153,75 @@ void Dijkstra::initialiser()
 int Dijkstra::trouverMin(int classementEtapeMinimale)
 {
     int minimum = -1;
-    int numeroEtapeLaPlusProche;
+    int numeroEtapeLaPlusProche = -1;
+
     for(int i = 0 ; i < this->nombreEtapes ; i++)
     {
-        if(this->tableauEtapes[i]->getState()==-1 && (minimum == -1 || (this->tableauEtapes[i]->getDistance() < minimum && this->tableauEtapes[i]->getDistance() >= 0)))
+        if(this->tableauEtapes[i]->getState()==-1 && (!(this->tableauEtapes[i]->aEviter())) && (!(this->tableauEtapes[i]->getDistance()==-1)) && (minimum == -1 || this->tableauEtapes[i]->getDistance() < minimum))
         {
             minimum = this->tableauEtapes[i]->getDistance();
             numeroEtapeLaPlusProche = i;
+        }
+    }
+    /*TODO: WHAT THE HELL IS THAT ???*/
+
+
+    Etape* etape1 = this->tableauEtapes[0];
+    Etape* etape2 = this->tableauEtapes[1];
+    Etape* etape3 = this->tableauEtapes[2];
+    Etape* etape4 = this->tableauEtapes[3];
+    Etape* etape5 = this->tableauEtapes[4];
+    Etape* etape6 = this->tableauEtapes[5];
+    Etape* etape7 = this->tableauEtapes[6];
+    Etape* etape8 = this->tableauEtapes[7];
+    Etape* etape9 = this->tableauEtapes[8];
+    Etape* etape10 = this->tableauEtapes[9];
+    Etape* etape11 = this->tableauEtapes[10];
+    Etape* etape12 = this->tableauEtapes[11];
+    Etape* etape13 = this->tableauEtapes[12];
+    Etape* etape14 = this->tableauEtapes[13];
+    Etape* etape15 = this->tableauEtapes[14];
+    Etape* etape16 = this->tableauEtapes[15];
+    Etape* etape17 = this->tableauEtapes[16];
+    Etape* etape18 = this->tableauEtapes[17];
+    Etape* etape19 = this->tableauEtapes[18];
+    Etape* etape20 = this->tableauEtapes[19];
+    Etape* etape21 = this->tableauEtapes[20];
+    Etape* etape22= this->tableauEtapes[21];
+    //Si on ne trouve pas d'étape la plus proche, alors c'est qu'on est coincé par les autres robots.
+    //Il faut donc faire des allers-retours entre les différentes étapes possibles.
+    //Pour cela, on change le status des étapes "robot vu" à "point de passage", puis relancer une passe de Dijkstra (récursion powa!!!).
+    if(numeroEtapeLaPlusProche == -1)
+    {
+        //On check si on a encore des points à marquer dans la zone ou on est confiné
+        bool onEstCoinceDansUnEndroitPourri = true;
+        for(int i = 0 ; i < this->nombreEtapes ; i++)
+        {
+            if(this->etapeRapporte(this->tableauEtapes[i]) && (!(this->tableauEtapes[i]->aEviter())) && this->tableauEtapes[i]->getDistance() != -1 && this->tableauEtapes[i]->getState() != -2)
+            {
+                onEstCoinceDansUnEndroitPourri = false;
+            }
+        }
+        //Sinon on supprime les barrières en oubliant qu'on a vu des robots
+        if(onEstCoinceDansUnEndroitPourri)
+        {
+            for(int i = 0 ; i < this->nombreEtapes ; i++)
+            {
+                //On reset numeroEtapeEnCours à l'étape où on est actuellement
+                if(this->tableauEtapes[i]->getDistance() == 0)
+                {
+                    this->numeroEtapeCourante = i; //-1?
+                }
+
+                this->tableauEtapes[i]->oublieRobotVu();
+            }
+
+            this->run();
+            return -1;
+        }
+        else
+        {
+            return -2;
         }
     }
     this->tableauEtapes[numeroEtapeLaPlusProche]->setState(classementEtapeMinimale);
@@ -92,13 +238,16 @@ void Dijkstra::mettreAJourVoisins(int numeroEtape)
     for(int i = 0 ; i < this->tableauEtapes[numeroEtape]->getNbChildren() ; i++)
     {
         //Si cette étape n'est pas bannie
-        if(this->tableauEtapes[numeroEtape]->getChild(i)->getState() > -2)
+        //if(this->tableauEtapes[numeroEtape]->getChild(i)->getState() > -2 && ((int) this->tableauEtapes[numeroEtape]->getChild(i)->getEtapeType() < 20))
+        if(!(this->tableauEtapes[numeroEtape]->getChild(i)->aEviter()))
         {
             distanceChildCourant = this->tableauEtapes[numeroEtape]->getChild(i)->getDistance();
-            distanceEtapeVersChild = calculDistanceDirect(this->tableauEtapes[numeroEtape]->getChild(i), this->tableauEtapes[numeroEtape]);
-
+            distanceEtapeVersChild = this->tableauEtapes[numeroEtape]->getDistances()[i];
+            //distanceEtapeVersChild = calculDistanceDirect(this->tableauEtapes[numeroEtape]->getChild(i), this->tableauEtapes[numeroEtape]);
+            if(!distanceEtapeVersChild)
+                distanceEtapeVersChild = 1;//Pas de distances nulles
             //Si le chemin vers ce voisin est plus court en passant par l'étape actuelle, mise à jour de ce voisin
-            //Si le voisin n'avait pas encore été atteind par un chemin, aors on le met à jour aussi (distanceChildCourant == -1)
+            //Si le voisin n'avait pas encore été atteind par un chemin, alors on le met à jour aussi (distanceChildCourant == -1)
             if(distanceChildCourant == -1 || distanceChildCourant > distanceEtapeCourante + distanceEtapeVersChild)
             {
                 this->tableauEtapes[numeroEtape]->getChild(i)->setDistance(distanceEtapeCourante + distanceEtapeVersChild);
@@ -116,4 +265,9 @@ int Dijkstra::getDistance(int numeroEtape)
 int Dijkstra::getDistance(Etape* etape)
 {
     return etape->getDistance();
+}
+
+bool Dijkstra::etapeRapporte(Etape* etape)
+{
+    return (bool) etape->getScore();
 }

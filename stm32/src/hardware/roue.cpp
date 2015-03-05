@@ -1,6 +1,10 @@
 #include "roue.h"
 
-#include "stm32f10x_rcc.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_rcc.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_rcc.h"
+#endif
 #include <math.h>
 
 Roue::Roue(TIM_TypeDef* TIMx, unsigned char OCx, GPIO_TypeDef* GPIOx_pwm, uint16_t GPIO_Pin_pwm, GPIO_TypeDef* GPIOx_Sens, uint16_t GPIO_Pin_Sens)
@@ -8,6 +12,7 @@ Roue::Roue(TIM_TypeDef* TIMx, unsigned char OCx, GPIO_TypeDef* GPIOx_pwm, uint16
 {
     this->GPIOx_Sens = GPIOx_Sens;
     this->GPIO_Pin_Sens = GPIO_Pin_Sens;
+   // this->oppositeDirection = oppositeDirection;
 
     // GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
 
@@ -60,7 +65,12 @@ Roue::Roue(TIM_TypeDef* TIMx, unsigned char OCx, GPIO_TypeDef* GPIOx_pwm, uint16
     // initialiser pins d'entrée sur le STM du port x_sens
     GPIO_InitTypeDef GPIO_InitStructureSortie2;
     GPIO_InitStructureSortie2.GPIO_Pin =  GPIO_Pin_Sens;
-    GPIO_InitStructureSortie2.GPIO_Mode = GPIO_Mode_Out_PP;
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructureSortie2.GPIO_Mode = GPIO_Mode_OUT;
+        GPIO_InitStructureSortie2.GPIO_OType = GPIO_OType_PP;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructureSortie2.GPIO_Mode = GPIO_Mode_Out_PP;
+    #endif
     GPIO_InitStructureSortie2.GPIO_Speed = GPIO_Speed_2MHz;        //La vitesse de rafraichissement du port
     GPIO_Init(GPIOx_Sens, &GPIO_InitStructureSortie2);
 
@@ -69,7 +79,8 @@ Roue::Roue(TIM_TypeDef* TIMx, unsigned char OCx, GPIO_TypeDef* GPIOx_pwm, uint16
 void Roue::tourne(float rapport)
 {
     //rapport = 1;
-    if(rapport >= 0)
+    if(rapport >=0)
+    //if((rapport >= 0 && !oppositeDirection) || (rapport<0 && oppositeDirection))
     {
         GPIO_WriteBit(GPIOx_Sens, GPIO_Pin_Sens, Bit_RESET);
         pwm.setDutyCycle(rapport);

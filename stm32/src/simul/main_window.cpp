@@ -6,7 +6,7 @@
 #include <QResizeEvent>
 #include <QShortcut>
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(bool isBlue)
 {
 	QTimer* timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -18,7 +18,7 @@ MainWindow::MainWindow()
 
 	inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 
-	table = new Table(inter);
+    table = new Table(inter, isBlue);
 
 	this->setFixedSize(900,600);
 }
@@ -30,6 +30,11 @@ MainWindow::~MainWindow()
 void MainWindow::update()
 {
 	table->update(dt);
+}
+
+void MainWindow::mousePressEvent(QMouseEvent* evt)
+{
+    table->mousePressEvent(evt,true);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* evt)

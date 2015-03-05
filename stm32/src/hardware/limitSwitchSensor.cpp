@@ -11,7 +11,12 @@ LimitSwitchSensor::LimitSwitchSensor(LimitSwitchSensor::LimitSwitchName name, ui
 
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin =  pin;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    #endif
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(group, &GPIO_InitStructure);
 }
@@ -27,7 +32,7 @@ void  LimitSwitchSensor::updateValue()
 
     // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true
     // et que rien a été detecté au moins 8 fois pour retourner false.
-    output = (counter == 0xff);/*output ? !((counter & 0xff) == 0x00) :*/ 
+    output = (counter == 0xff);/*output ? !((counter & 0xff) == 0x00) :*/
 }
 
 Sensor::OutputSensor LimitSwitchSensor::getValue()

@@ -59,6 +59,9 @@ class Odometrie
         /**@brief Pour connaitre la vitesse angulaire du robot */
         Angle getVitesseAngulaire() const;
 
+        /**@brief Pour récupérer l'angle absolu du robot */
+        Angle getAbsoluteAngle() const;
+
         /**@brief Pour connaitre la vitesse linéaire du robot */
         Distance getVitesseLineaire() const;
 
@@ -116,6 +119,10 @@ class Odometrie
         /** @brief Permet de définir une nouvelle valeur pour l'angle du robot
         *   @param a Nouvel angle du robot en radian */
         void setAngle(Angle a);
+
+    private:
+        /**@brief Position absolue du robot depuis le départ */
+        Angle absAngle;
 
 };
 

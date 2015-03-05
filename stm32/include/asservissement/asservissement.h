@@ -2,10 +2,18 @@
 #define ASSERVISSEMENT_H
 
 #ifdef ROBOTHW
-#include "stm32f10x.h"
-#include "stm32f10x_tim.h"
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_gpio.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_tim.h"
+    #include "stm32f4xx.h"
+    #include "stm32f4xx_rcc.h"
+    #include "stm32f4xx_gpio.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x.h"
+    #include "stm32f10x_tim.h"
+    #include "stm32f10x_rcc.h"
+    #include "stm32f10x_gpio.h"
+#endif
+
 
 #include "roues.h"
 //#include "capteurs.h"
@@ -20,16 +28,21 @@
 #include "pidFilterAngle.h"
 #include "command.h"
 
+#include "remote.h"
+
 #include <stdint.h>
 #include <math.h>
 
 #define STK_CTRL_ADDR 0xe000e010
 #define STK_LOAD_ADDR (STK_CTRL_ADDR+0x04)
 
+#define FIXED_LINEAR_DUTY_MAX 0.2
+#define FIXED_ANGULAR_DUTY_MAX 0.2
+
 /**@brief classe permettant de vérifier que le robot fait bien ce qu'on lui dit et de corriger les erreurs */
 class Asservissement
 {
-    public://private:
+    private:
 
         /**@brief vitesse réelle à appliquer à la roue pour obtenir la bonne vitesse linéaire*/
         float linearDutySent;
@@ -68,6 +81,10 @@ class Asservissement
         Vitesse vitesseLineaire;
         Angle vitesseAngulaire;
 
+        bool activePIDDistance, activePIDAngle;
+
+        float fixedLinearDuty, fixedAngularDuty;
+
     public:
 
         /**@brief Constructeur de l'asservissement (avec forcement l'odometrie) */
@@ -89,8 +106,6 @@ class Asservissement
 
         /**@brief On stock l'asservissement en statique car un seul peut exister en meme temps */
         static Asservissement* asservissement;
-        static Command* commandDebugTest;
-        static int counter;
 
         /**@brief temps entre deux mise à jours */
         static const uint16_t nb_ms_between_updates;
@@ -98,11 +113,23 @@ class Asservissement
         /**@brief fonction appelée à chaque mise à jour */
         void update(void);
 
+        void setEnabledPIDDistance(bool enabled);
+
+        void setEnabledPIDAngle(bool enabled);
+
+        void setLinearDuty(float duty);
+
+        void setAngularDuty(float duty);
+
+        void resetFixedDuty();
+
         static void finMatch();
 
         static bool matchFini;
 
 };
+
+static long systick_count = 0;
 
 /**@brief fonction externe appellé directement par le microcontroleur à chaque mise à jour. C'est grace à cette fonction que des actions sont exécutés à intervalle régulier */
 extern "C" void SysTick_Handler();

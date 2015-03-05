@@ -36,12 +36,13 @@ public:
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
 
-    Table(QWidget* widget = NULL);
+    Table(QWidget* widget = NULL, bool isBlue = true);
 	virtual ~Table();
 
 	void update(int dt);
 	void paintEvent(QPaintEvent* evt);
 	void keyPressEvent(QKeyEvent* evt, bool press);
+    void mousePressEvent(QMouseEvent* evt, bool press);
 
     float getDistanceToObject(Position pos);
     void removeClosestObject(Position pos);

@@ -2,9 +2,15 @@
 #define CAPTEURS_H_INCLUDED
 
 #include "constantes.h"
-#include "stm32f10x_adc.h"
-#include "stm32f10x_dma.h"
-#include "stm32f10x_gpio.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_gpio.h"
+    #include "stm32f4xx_adc.h"
+    #include "stm32f4xx_dma.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_adc.h"
+    #include "stm32f10x_dma.h"
+    #include "stm32f10x_gpio.h"
+#endif
 
 /** @brief Classe gérant les capteurs infrarouges de distance. */
 /** @warning Cette classe est rendu obsolètes par les classes héritants de Sensor et de Sensors */

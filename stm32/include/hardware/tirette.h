@@ -1,7 +1,11 @@
 #ifndef DEF_TIRETTE
 #define DEF_TIRETTE
 
-#include "stm32f10x_gpio.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_gpio.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_gpio.h"
+#endif
 
 class Tirette
 {

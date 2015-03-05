@@ -4,6 +4,7 @@
 #include "element.h"
 #include "cstdlib"
 #include "time.h"
+#include "strategieV2.h"
 
 #define PI 3.14159265358979323846264338327950
 //#include <iostream>
@@ -23,23 +24,17 @@ Position getCaseCenter(unsigned int i, unsigned int j)
 b2AABB Table::getWorldAABB()
 {
 	b2AABB a;
-    //2013
     a.lowerBound.Set(0,0);
     a.upperBound.Set(tableWidth, tableHeight);
-    //2014
-    //a.lowerBound.Set(102,102);
-    //a.upperBound.Set(tableWidth-127, tableHeight-127);
 	return a;
 }
 
-Table::Table(QWidget* parent) :
+Table::Table(QWidget* parent, bool isBlue) :
 	QWidget(parent),
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
-//	world(b2Vec2(0.f,0.f), false)
     world(b2Vec2(0.f,0.f))
-    //world(b2Vec2(127.0,102.0))
 #endif
 {
     contactListenerTable = ContactListener();
@@ -51,21 +46,26 @@ Table::Table(QWidget* parent) :
 	p.setColor(QPalette::Window,QColor(Qt::darkGray));
 	setPalette(p);
 
-    //création des robots
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(3000-270,560), M_PI), true));
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(195,1360, true), 0), false)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    // ####### création des robots ######
+    //Robot adversaire
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(2700,1000, isBlue), M_PI), true, !isBlue));
+    //Robot à nous
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(300,1000, isBlue), 3*M_PI/2), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    //195,1760
 
+    // ################################ Coupe 2014 ################################
+#ifdef COUPE_2014
     //création des feux
     // côté rouge
     objets.push_back(new Objet(world, Position(885.,1470.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(915.,470.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(330.,915.), Objet::fireUp, 0, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(915.,330.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(470.,915.), Objet::fireUp, 0, QColor(0, 0, 0)));
     objets.push_back(new Objet(world, Position(0.,1270.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
     objets.push_back(new Objet(world, Position(1370.,30.), Objet::fireUp, 0, QColor(0, 0, 0)));
 
     //côté jaune
     objets.push_back(new Objet(world, Position(2085.,1470.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2115.,470.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2115.,330.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
     objets.push_back(new Objet(world, Position(2530.,885.), Objet::fireUp, PI, QColor(0, 0, 0)));
     objets.push_back(new Objet(world, Position(2970.,1270.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
     objets.push_back(new Objet(world, Position(1630.,0.), Objet::fireUp, PI, QColor(0, 0, 0)));
@@ -75,8 +75,12 @@ Table::Table(QWidget* parent) :
     objets.push_back(new Objet(world, Position(900.,900.), Objet::torch, 0, QColor(108, 59, 42)));
     //torche jaune
     objets.push_back(new Objet(world, Position(2100.,900.), Objet::torch, 0, QColor(108, 59, 42)));
-    //Verres 2012l
-    /* // côté bleu
+#endif
+
+    // ################################ Coupe 2013 ################################
+#ifdef COUPE_2013
+    //Verres 2013
+    // côté bleu
     objets.push_back(new Objet(world, Position(900.,550.), Objet::glass, 0, QColor(170, 170, 170)));
     objets.push_back(new Objet(world, Position(1200.,550.), Objet::glass, 0, QColor(170, 170, 170)));
     objets.push_back(new Objet(world, Position(1050.,800.), Objet::glass, 0, QColor(170, 170, 170)));
@@ -91,9 +95,37 @@ Table::Table(QWidget* parent) :
     objets.push_back(new Objet(world, Position(1650.,800.), Objet::glass, 0, QColor(170, 170, 170)));
     objets.push_back(new Objet(world, Position(2100.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
     objets.push_back(new Objet(world, Position(1800.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-    */
+#endif
 
+    // ################################ Coupe 2015 ################################
+#ifdef COUPE_2015
+    //Gobelets à pop-corn
+    objets.push_back(new Objet(world, Position(250.,1750.), Objet::cup, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(910.,800.), Objet::cup, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(1500.,1650.), Objet::cup, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(2090.,800.), Objet::cup, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(2750.,1750.), Objet::cup, 0, QColor(255, 255, 255)));
 
+    //Pieds verts
+    objets.push_back(new Objet(world, Position(90.,200.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,1750.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,1850.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(850.,100.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(850.,200.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(870.,1355.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(1100.,1770.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(1300.,1400.), Objet::stand, 0, QColor(252, 189, 31)));
+
+    //Pieds jaunes
+    objets.push_back(new Objet(world, Position(2910.,200.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,1750.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,1850.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2150.,100.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2150.,200.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2130.,1355.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(1900.,1770.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(1700.,1400.), Objet::stand, 0, QColor(79, 168, 51)));
+#endif
 
 	//Geometry
 	b2BodyDef bodyDef;
@@ -130,7 +162,8 @@ Table::Table(QWidget* parent) :
 	tableBody->CreateFixture(&fixture);
     // fin bordures
 
-    /* table 2013
+#ifdef COUPE_2013
+    // table 2013
     // plateaux blancs bords zones départ
     box.SetAsBox(4,1, b2Vec2(0,0),0);
     tableBody->CreateFixture(&fixture);
@@ -152,7 +185,10 @@ Table::Table(QWidget* parent) :
     circle.m_p.Set(15.,20.);
 	tableBody->CreateFixture(&fixtureDef);
 
-    */
+
+#endif
+
+#ifdef COUPE_2014
     // table 2014
 
     //Foyer central
@@ -190,43 +226,15 @@ Table::Table(QWidget* parent) :
     tableBody->CreateFixture(&fixture);
     box.SetAsBox(3.5,0.85, b2Vec2(22.5,17.85),0);
     tableBody->CreateFixture(&fixture);
+#endif
 
-    /*
-    // plateaux blancs bords zones départ
-    box.SetAsBox(4,1, b2Vec2(0,0),0);
-    tableBody->CreateFixture(&fixture);
-
-    box.SetAsBox(4,1, b2Vec2(30,0),0);
-    tableBody->CreateFixture(&fixture);
-
-    box.SetAsBox(4,1, b2Vec2(0,20),0);
-    tableBody->CreateFixture(&fixture);
-
-    box.SetAsBox(4,1, b2Vec2(30,20),0);
-    tableBody->CreateFixture(&fixture);
-
-    // gateau
-    b2CircleShape circle;
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &circle;
-    circle.m_radius = 5.f;
-    circle.m_p.Set(15.,20.);
-    tableBody->CreateFixture(&fixtureDef);
-
-*/
 	// load the graphics of the game.
-    tableGraphics.load("/home/alex/Documents/Krabi/gitRobotique/simulation/qtcreator-files/paprikaSimulateur/tabledata.xml");
-    //tableGraphics.load("tabledata.xml");
-    //2013
-    tableGraphics.addYOffset(-tableHeight);
-    // tableGraphics.addYOffset();
-    //2014
-    //tableGraphics.addYOffset(-tableHeight+102); // because we want the (0,0) point to be at the bottom left.
-    //tableGraphics.addXOffset(+150); // because we want the (0,0) point to be at the bottom left.
+    tableGraphics.load("../paprikaSimulateur/tabledata.xml");
+    tableGraphics.createSolids(tableBody);
 
-
+#ifdef COUPE_2013
     // création des bougies :
- /*   QColor colors[20];
+    QColor colors[20];
     colors[0] = QColor(0,0,255);
     colors[1] = QColor(255,0,0);
     colors[2] = QColor(255,0,0);
@@ -265,7 +273,8 @@ Table::Table(QWidget* parent) :
     for (int i = 12; i < 20; i++)
     {
         p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 33.f);
-    }*/
+    }
+#endif
 }
 
 Table::~Table()
@@ -330,11 +339,15 @@ void Table::paintEvent(QPaintEvent* evt)
 {
 	QPainter p(this);
 	p.setRenderHints(QPainter::Antialiasing,true);
-    p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));
+    //p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));
+    p.setWindow(QRect(0,0,tableWidth,tableHeight));
 	p.setWorldMatrixEnabled(true);
+
+
 
 	// dessine la table
 	tableGraphics.draw(&p);
+
 
 
     for (unsigned int i=0; i < objets.size(); i++)
@@ -352,15 +365,45 @@ void Table::paintEvent(QPaintEvent* evt)
 	dt = 0;
 
     // Dessin d'un trajet
-/*	PositionPlusAngle** path = CommandGoTo::path();
+   /* PositionPlusAngle** path = CommandGoTo::path();
     	p.setPen(QColor(Qt::black));
 	if (path)
 	{
 		for(unsigned int i=0; i+1 < PATH_LENGTH; i++)
 		p.drawLine(path[i]->position.x, -path[i]->position.y, path[i+1]->position.x, -path[i+1]->position.y);
-	CommandGoTo::deletePath(path);
-	}
-*/
+    CommandGoTo::deletePath(path);
+    }*/
+
+    // On dessine le graphe de la strat
+    if(true)
+    {
+        this->getMainRobot()->paintStrategie(p);
+    }
+
+    QFont font;
+    font.setPixelSize(50);
+    p.setFont(font);
+    p.setOpacity(1);
+    p.setPen(QColor("krabicolor"));
+    //p.setBrush(QBrush("black"));
+    p.drawText( QPoint(2625,100), "Pos X : ");
+    p.drawText( QPoint(2800,100), QString::number(robots[1]->getPos().position.getX()));
+    p.drawText( QPoint(2625,200), "Pos Y : ");
+    p.drawText( QPoint(2800,200), QString::number(robots[1]->getPos().position.getY()));
+    p.drawText( QPoint(2625,300), "Angle : ");
+    p.drawText( QPoint(2800,300), QString::number(robots[1]->getPos().getAngle()*180/M_PI));
+    p.drawText( QPoint(2625,400), "Timer : ");
+    p.drawText( QPoint(2800,400), QString::number(StrategieV2::getTimeSpent()/1000.) + " s");
+
+    p.drawText( QPoint(2625,500), "Check Sharps: ");
+    QString sharpsChecked = "";
+
+    for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
+        if (StrategieV2::getSharpsToCheck()[i])
+            sharpsChecked.append((!sharpsChecked.isEmpty() ? QString(", ") : QString()) + QString::number(i));
+
+    p.drawText( QPoint(2625,600), sharpsChecked);
+
     evt->ignore();
 }
 
@@ -371,6 +414,11 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
 
 
     Sensors::getSensors()->keyPressEvent(evt,press);
+}
+
+void Table::mousePressEvent(QMouseEvent* evt, bool press)
+{
+    qDebug() << "X : " << (evt->x()/900.0)*3000 << "    -    Y : " << (evt->y()/600.0)*2000;
 }
 
 Position getSideElemCenter(bool right, unsigned int elem)

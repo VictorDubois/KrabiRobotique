@@ -1,4 +1,5 @@
 #include "simul/objet.h"
+#include <QDebug>
 
 
 Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) : p(p), type(type),  theta(theta), world(&world), p_color(color)
@@ -76,6 +77,32 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
     }
+    else if (type == cup )
+    {
+        b2CircleShape circle;
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circle;
+        circle.m_radius = 0.475f;
+        circle.m_p.Set(0.,0.);
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+    }
+    else if (type == stand )
+    {
+        b2CircleShape circle;
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circle;
+        circle.m_radius = 0.3f;
+        circle.m_p.Set(0.,0.);
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+    }
 }
 
 Objet::~Objet()
@@ -92,7 +119,7 @@ void Objet::paint(QPainter &pa)
             pa.setBrush(p_color);
             pa.setPen(p_color);
 
-			pa.drawEllipse(QPoint(p.x,-p.y),40,-40);
+            pa.drawEllipse(QPoint(p.x,p.y),40,40);
             break;
 		}
 		case gift:
@@ -100,14 +127,14 @@ void Objet::paint(QPainter &pa)
             pa.setBrush(p_color);
             pa.setPen(p_color);
 
-			pa.drawRect(p.x-75, -p.y+25,150,-50);
+            pa.drawRect(p.x-75, p.y-25,150,50);
 			break;
 		}
         case fireUp:
         {
 
 
-            pa.translate(QPointF(p.x,-p.y));
+            pa.translate(QPointF(p.x,p.y));
             pa.rotate(-theta*180/3.14);
 
             //Dessin:
@@ -130,7 +157,7 @@ void Objet::paint(QPainter &pa)
             pa.drawRect(0,-25,140,-5);
 
             pa.rotate(theta*180/3.14);
-            pa.translate(QPointF(-p.x,p.y));
+            pa.translate(QPointF(-p.x,-p.y));
             break;
         }
         case torch:
@@ -138,11 +165,29 @@ void Objet::paint(QPainter &pa)
             pa.setBrush(p_color);
             pa.setPen(p_color);
 
-            pa.drawEllipse(QPoint(p.x,-p.y),80,-80);
+            pa.drawEllipse(QPoint(p.x,p.y),80,80);
+
+            break;
+        }
+        case cup:
+        {
+            pa.setBrush(p_color);
+            pa.setPen(p_color);
+            pa.setOpacity(0.7);
+            pa.drawEllipse(QPoint(p.x,p.y),47.5,47.5);
+            pa.setOpacity(1);
+            break;
+        }
+        case stand:
+        {
+            pa.setBrush(p_color);
+            pa.setPen(p_color);
+
+            pa.drawEllipse(QPoint(p.x,p.y),30,30);
             break;
         }
 		default:
-			break;
+            break;
     }
     return;
 }

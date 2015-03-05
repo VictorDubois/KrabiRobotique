@@ -2,6 +2,7 @@
 #include "userdata.h"
 #include "sharpSensor.h"
 #include <iostream>
+#include <QDebug>
 
 ContactListener::ContactListener() : b2ContactListener()
 {
@@ -20,7 +21,7 @@ void ContactListener::BeginContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->setEvent();
-            std::cout << "Sensor " << detectingSharpSensor->getName() << " is detecting something !!!\n";
+            qDebug() << "Sensor " << detectingSharpSensor->getName() << " is detecting something !!!\n";
         }
     }
 
@@ -32,7 +33,7 @@ void ContactListener::BeginContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->setEvent();
-            std::cout << "Sensor " << detectingSharpSensor->getName() << " is detecting something !!!\n";
+            qDebug() << "Sensor " << detectingSharpSensor->getName() << " is detecting something !!!\n";
         }
     }
 }
@@ -52,7 +53,7 @@ void ContactListener::EndContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->unsetEvent();
-            std::cout << "Sensor " << detectingSharpSensor->getName() << " has stopped detecting something !!!\n";
+            qDebug() << "Sensor " << detectingSharpSensor->getName() << " has stopped detecting something !!!\n";
         }
     }
 
@@ -64,7 +65,7 @@ void ContactListener::EndContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->unsetEvent();
-            std::cout << "Sensor " << detectingSharpSensor->getName() << " has stopped detecting something !!!\n";
+            qDebug() << "Sensor " << detectingSharpSensor->getName() << " has stopped detecting something !!!\n";
         }
     }
 }

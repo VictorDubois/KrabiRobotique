@@ -23,6 +23,7 @@
 #include <vector>
 #include <QPainter>
 #include <QColor>
+#include <Box2D.h>
 #include "XMLReader.h"
 
 /*! \class Shape
@@ -73,9 +74,13 @@ class Shape
 		 * \param yOffset Valeur de l'offset.
 		 */
 		virtual void addYOffset(int yOffset) = 0;
+        bool getSolid() const;
+        void setSolid(bool solid);
+        virtual void createSolid(b2Body* body);
 
 	protected:
 		QColor p_color; /*!< Couleur. */
+        bool solid; /*!< Is physical ? */
 		int p_z; /*!< Côte. Non implémenté actuellement (inutile) */
 };
 
@@ -87,7 +92,7 @@ class Point2d
 		virtual void addXOffset(int xOffset);
 		virtual void addYOffset(int yOffset);
 
-		virtual void readSelf(XMLTag* tree);
+        virtual void readSelf(XMLTag* tree);
 
 		int x; /*!< Coordonnée X */
 		int y; /*!< Coordonnée Y */
@@ -104,6 +109,8 @@ class Rect : public Shape
 		virtual void drawSelf(QPainter* painter);
 		virtual void addXOffset(int xOffset);
 		virtual void addYOffset(int yOffset);
+
+        virtual void createSolid(b2Body* body);
 	
 	protected:
 		Point2d p_start; /*!< Position du coin haut-gauche. */
@@ -188,6 +195,7 @@ class TableGraphics
 		 * \param painter Pointeur sur le QPainter étant chargé du dessin.
 		 */
 		void draw(QPainter* painter);
+        void createSolids(b2Body* body);
 
 		
 	private:

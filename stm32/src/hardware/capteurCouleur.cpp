@@ -1,6 +1,13 @@
-#include "stm32f10x.h"
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_gpio.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx.h"
+    #include "stm32f4xx_rcc.h"
+    #include "stm32f4xx_gpio.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x.h"
+    #include "stm32f10x_rcc.h"
+    #include "stm32f10x_gpio.h"
+#endif
+
 
 #include "capteurCouleur.h"
 #include "timerHandler.h"
@@ -9,7 +16,12 @@
 void initialiserPinCapteur(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_Out_PP;
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    #endif
     GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_x;
     GPIO_Init(GPIOx, &GPIO_InitStructure);
@@ -23,7 +35,7 @@ void initialiserPinCapteur(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x)
 /// @brief Constructeur en spécifiant le timer et la pin
 /// Le channel 1 du timer doit etre utiliseé
 /// On donne aussi les pins des diodes rouges, bleues et les 2 pins de selection du capteur
-CapteurCouleur::CapteurCouleur(TIM_TypeDef* TIMx, GPIO_TypeDef* GPIO_timer, uint16_t GPIO_Pin_timer,  
+CapteurCouleur::CapteurCouleur(TIM_TypeDef* TIMx, GPIO_TypeDef* GPIO_timer, uint16_t GPIO_Pin_timer,
                                GPIO_TypeDef* GPIO_diodesRouges, uint16_t GPIO_Pin_diodesRouges,
                                GPIO_TypeDef* GPIO_diodesBleues, uint16_t GPIO_Pin_diodesBleues,
                                GPIO_TypeDef* GPIO_selectCapteur1, uint16_t GPIO_Pin_selectCapteur1,
@@ -40,7 +52,12 @@ CapteurCouleur::CapteurCouleur(TIM_TypeDef* TIMx, GPIO_TypeDef* GPIO_timer, uint
 {
     // Initialisation de la pin du timer
     GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_IPU;
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    #endif
     GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_timer;
     GPIO_Init(GPIO_timer, &GPIO_InitStructure);

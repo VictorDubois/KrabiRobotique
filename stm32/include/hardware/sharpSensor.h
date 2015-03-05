@@ -15,24 +15,60 @@ class SharpSensor : public AnalogSensor
         /** @brief Permet de nommer les différents capteurs */
         enum SharpName
         {
-            NONE = 6,
-            BACK_RIGHT = 4,
-            BACK_LEFT = 9,
-            BACK_MIDDLE = 5,
-            FRONT_SIDE_LEFT = 2,
-            FRONT_SIDE_RIGHT = 3,
-            FRONT_LEFT = 0,
-            FRONT_RIGHT = 1,
-            ELEVATOR_DOWN = 8,
-            ELEVATOR_TOP = 7,
-            END_SHARP_NAME = 10
+            #if defined(STM32F10X_MD) || defined(STM32F40_41xxx) // Pin pour le stm32 h103
+                BACK_RIGHT,
+                BACK_LEFT,
+                BACK_MIDDLE,
+                FRONT_RIGHT,
+                FRONT_LEFT,
+                FRONT_MIDDLE,
+                END_SHARP_NAME,
+                NONE = 7
+            #else // Pin pour le stm32 h107 et le simu
+
+                BACK_RIGHT,
+                BACK_LEFT,
+                FRONT_LEFT,
+                FRONT_RIGHT,
+                LEFT_FRONT,
+                LEFT_BACK,
+                RIGHT_FRONT,
+                RIGHT_BACK,
+                END_SHARP_NAME,
+                NONE = 8
+//
+//                NONE = 8,
+//                BACK_RIGHT = 6,
+//                BACK_LEFT = 4,
+//                FRONT_LEFT = 0,
+//                FRONT_RIGHT = 1,
+//                LEFT_FRONT = 2,
+//                LEFT_BACK = 5,
+//                RIGHT_FRONT = 3,
+//                RIGHT_BACK = 7,
+//                END_SHARP_NAME = 8
+                /*
+                NONE = 6,
+                BACK_RIGHT = 4,
+                BACK_LEFT = 9,
+                BACK_MIDDLE = 5,
+                FRONT_SIDE_LEFT = 2,
+                FRONT_SIDE_RIGHT = 3,
+                FRONT_LEFT = 0,
+                FRONT_RIGHT = 1,
+                ELEVATOR_DOWN = 8,
+                ELEVATOR_TOP = 7,
+                END_SHARP_NAME = 10
+                */
+            #endif
+
         };
 
         /** @brief Constructeur d'un capteur sharp *
         *   @param name Identifient du capteur sharp pour la stratégie *
         *   @param channel Canal de l'ADC utilisé pour ce capteur. *
         *   @param pData Pointeur vers les données brutes du capteur directement sortie du ADC*/
-        SharpSensor(SharpName name,uint8_t channel, uint16_t* pData, uint16_t seuil = SEUIL_DETECTION);
+        SharpSensor(SharpName name,uint8_t channel, DMA_MEMORY_TYPE* pData, int seuil = SEUIL_DETECTION);
 
         /** @brief Destructeur de cette classe */
         virtual ~SharpSensor();
@@ -49,7 +85,7 @@ class SharpSensor : public AnalogSensor
         void updateValue();
 
         /** @brief Seuil de détection utilisé pour les calibrer les capteurs sharp. Un retour supérieur à ce seuil sera considéré comme la détection d'un obstacle */
-        static uint16_t threshold;
+        static int threshold;
 
         /** @brief Permet d'activer ce capteur sharp */
         void setActif();
@@ -78,11 +114,13 @@ class SharpSensor : public AnalogSensor
         /** @brief Indique si le capteur actuel est activé ou non. Si on il est à false, le capteur renvoie toujours false.*/
         bool actif;
 
+        int value;
+
         #ifndef ROBOTHW
         bool evt;
         #endif
-        
-        uint16_t seuilDetection;
+
+        DMA_MEMORY_TYPE seuilDetection;
 };
 
 

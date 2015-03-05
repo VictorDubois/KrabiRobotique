@@ -31,3 +31,20 @@ void MediumLevelAction::setGoBack(bool val)
 {
     goBack = val;
 }
+
+void MediumLevelAction::reset()
+{
+
+}
+
+#ifndef ROBOTHW
+void MediumLevelAction::paint(QPainter* p)
+{
+
+}
+#endif
+
+void MediumLevelAction::updateTime(int millisecondesRestantes)
+{
+    this->millisecondesRestantes = millisecondesRestantes;
+}

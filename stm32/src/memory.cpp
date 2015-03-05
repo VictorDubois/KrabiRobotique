@@ -1,5 +1,6 @@
 #include "memory.h"
-
+#include "leds.h"
+#include "tirette.h"
 Header *memory_ptr = &_end; // fin du programme (et début du tas)
 static Header* nextFreeMemory;
 static Header* base = NULL;
@@ -13,6 +14,9 @@ void * operator new(size_t size) throw()
     {
         base = memory_ptr;
         base->s.nextFree = memory_ptr;
+        #ifdef STM32F40_41xxx // stm h405
+        base->s.size = 48000;   // Initialisation de la mémoire = Taille disponible dans la ram en unit de base de la mémoire (une unité = 4 octets). Ici 192kB -> 48000 unit
+        #endif
         #ifdef STM32F10X_MD // stm h103
         base->s.size = 5000;   // Initialisation de la mémoire = Taille disponible dans la ram en unit de base de la mémoire (une unité = 4 octets). Ici 20kB -> 5000 unit
         #endif

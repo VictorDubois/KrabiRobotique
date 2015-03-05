@@ -2,6 +2,7 @@
 #include "odometrie.h"
 #include <math.h>
 #include "strategieV2.h"
+#include "leds.h"
 
 #ifndef abs
 #define abs(x) fabs(x)
@@ -80,7 +81,7 @@ void CommandAllerEnArcA::update()
         vdnorme = -vdnorme;
     Position pInter(centre.x + vdnorme*vdx, centre.y + vdnorme*vdy);
 */
-
+    /*
     float pmcx = pos.x-centre.x;
     float pmcy = pos.y-centre.y;
     float bmcx = but.x-centre.x;
@@ -143,14 +144,14 @@ void CommandAllerEnArcA::update()
         else
             angSpeed += accAngMax;
     }
-
+*/
     // pour garder la trajectoire de cercle
 //    std::cout << linSpeed << std::endl;
-
+    /*
     if (abs(angSpeed) > abs(linSpeed/rVise))
         angSpeed = linSpeed/rVise;
     else if (abs(linSpeed) > abs(rVise*angSpeed))
-        linSpeed = rVise*angSpeed;
+        linSpeed = rVise*angSpeed;*/
 
 
 }
@@ -175,7 +176,7 @@ bool CommandAllerEnArcA::fini() const
     //       CommandAllerA        //
     ////////////////////////////////
 
-CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin)
+CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin, float precisionAngle)
     : Command()
 {
     but = p;
@@ -185,11 +186,9 @@ CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax,
     linSpeed = Odometrie::odometrie->getVitesseLineaire();
     angSpeed = Odometrie::odometrie->getVitesseAngulaire();
     bonAngle = false;
+    this->precisionAngle = -1.f;//precisionAngle;
 
     m_fini = false;
-
-    _angleVise = 0;
-    _angleLimit = 0;
 }
 
 void CommandAllerA::update()
@@ -199,6 +198,17 @@ void CommandAllerA::update()
     float accLinMax = ACCELERATION_LINEAIRE_MAX;
     float decLinMax = DECELERATION_LINEAIRE_MAX;
     float vitLinMax = vitesseLinMax;//VITESSE_LINEAIRE_MAX;
+
+    if(this->getLimit())
+    {
+        vitLinMax = vitesseLinMax/3;
+        allumerLED();
+        allumerLED2();
+    }
+    else
+    {
+        //eteindreLED();
+    }
 
     //float angleVitesseMax = M_PI/10.0f;
     float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
@@ -215,12 +225,14 @@ void CommandAllerA::update()
     float diffAng = diffAngle(angleVise,angle);
 
     // reste sur place tant que le robot n'a pas le bon angle
-    float angleMaxPourAvancer = M_PI/10.0f;//25.0f;
-    float angleMaxPourContinuer = M_PI/90.f;;
+    float angleMaxPourAvancer;
+    if (precisionAngle<0.)
+        angleMaxPourAvancer = M_PI/25.0f;//25.0f;
+    else
+        angleMaxPourAvancer = DEGTORAD(3.);//25.0f;
     if (!bonAngle)
     {
-        //StrategieV2::setTourneSurSoiMeme(true);
-        if (abs(diffAng) < angleMaxPourAvancer)
+        if (fabs(diffAng) < angleMaxPourAvancer)
         {
             bonAngle = true;
             derniereDistance = 1000000.0f;
@@ -228,9 +240,18 @@ void CommandAllerA::update()
         else
         {
             linSpeed *= 0.95f;
-            return;
         }
     }
+
+    // Check sharps
+    StrategieV2::setTourneSurSoiMeme((!bonAngle)&&(abs(linSpeed)<0.2f));
+
+    if (linSpeed > 0.2f)
+        StrategieV2::enableSharpsGroup(true);
+    else if (linSpeed < -0.2f)
+        StrategieV2::enableSharpsGroup(false);
+    else
+        StrategieV2::emptySharpsToCheck();
 
     float distanceBut = delta.getNorme();
 
@@ -239,18 +260,22 @@ void CommandAllerA::update()
     // vitesse angulaire
     if (distanceOk)
     {
-        vitAngMax = VITESSE_ANGULAIRE_SLOW_MAX;
+        //vitAngMax = VITESSE_ANGULAIRE_SLOW_MAX;
         //linSpeed = 0.;
     }
-    if (abs(diffAng) > angleVitesseMax)
+    if (bonAngle && precisionAngle>0.)
     {
-        bool hasToDecelerate = (!distanceOk) && (fabs(diffAng) < (angSpeed * angSpeed / accAngMax - accAngMax*2.));
+        angSpeed = 0.;
+    }
+    else if (abs(diffAng) > angleVitesseMax)
+    {
+        bool hasToDecelerate = /*(!distanceOk) && */(fabs(diffAng) < (angSpeed * angSpeed / accAngMax - accAngMax*2.));
         if (diffAng > 0)
         {
             if (!hasToDecelerate)
                 angSpeed += accAngMax;
-            else if (angSpeed > accAngMax)
-                angSpeed -= accAngMax;
+            else if (angSpeed > accAngMax*2)
+                angSpeed -= accAngMax*2;
 
             if (angSpeed > vitAngMax)
                 angSpeed = vitAngMax;
@@ -259,8 +284,8 @@ void CommandAllerA::update()
         {
             if (!hasToDecelerate)
                 angSpeed -= accAngMax;
-            else if (angSpeed < -accAngMax)
-                angSpeed += accAngMax;
+            else if (angSpeed < -accAngMax*2)
+                angSpeed += accAngMax*2;
 
             if (angSpeed < -vitAngMax)
                 angSpeed = -vitAngMax;
@@ -272,27 +297,38 @@ void CommandAllerA::update()
         angSpeed = diffAng*vitAngMax/angleVitesseMax;
     }
 
-    _angleVise = but.getX();
-    _angleLimit = but.getY();
+    // vitesse angulaire
+    /*if (abs(diffAng) > angleVitesseMax)
+    {
+         if (diffAng > 0)
+            angSpeed += accAngMax;
+         else
+            angSpeed -= accAngMax;
 
-    //StrategieV2::setTourneSurSoiMeme(false);
+        if (angSpeed > vitAngMax)
+            angSpeed = vitAngMax;
+        else if (angSpeed < -vitAngMax)
+            angSpeed = -vitAngMax;
+    }
+    else
+    {
+        angSpeed = diffAng*vitAngMax/angleVitesseMax;
+    }*/
 
     // vitesse linéaire
-
-    if (distanceOk/* && (abs(diffAng) < angleMaxPourContinuer)*/)
+    if (distanceBut > derniereDistance || distanceBut < 10.0f)
     {
-        angSpeed = 0.;
-        linSpeed = 0.;
         m_fini = true;
     }
 
-    if (abs(diffAng) > angleMaxPourAvancer)
+    if (bonAngle)
     {
-        linSpeed *= 0.97f;
-    }
-    else if (!distanceOk)
-    {
-        if (distanceBut > distanceVitesseMax)
+
+        if (fabs(diffAng) > angleMaxPourAvancer)
+        {
+            linSpeed *= 0.97f;
+        }
+        else if (distanceBut > distanceVitesseMax)
         {
              if (m_reculer)
                 linSpeed -= accLinMax;
@@ -306,23 +342,7 @@ void CommandAllerA::update()
         }
         else
         {
-            if (m_reculer)
-            {
-                float linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
-                if (linSpeed - accLinMax < linSpeedVisee)
-                    linSpeed = linSpeedVisee;
-                else
-                    linSpeed -= accLinMax;
-            }
-            else
-            {
-                float linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
-                if (linSpeed + accLinMax > linSpeedVisee)
-                    linSpeed = linSpeedVisee;
-                else
-                    linSpeed += accLinMax;
-            }
-            /*float linSpeedVisee;
+            float linSpeedVisee;
             if (m_reculer)
                 linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
             else
@@ -334,7 +354,7 @@ void CommandAllerA::update()
                 linSpeed += accLinMax;
 
             if (abs(linSpeed) > abs(linSpeedVisee))
-                linSpeed = linSpeedVisee;*/
+                linSpeed = linSpeedVisee;
         }
     }
 }
@@ -366,125 +386,94 @@ bool CommandAllerA::fini() const
     //    CommandTournerVers      //
     ////////////////////////////////
 
-CommandTournerVers::CommandTournerVers(Position p)
+CommandTournerVers::CommandTournerVers(Position p, float maxSpeed)
     : Command()
 {
     but = p;
+    butAngle = 0;
     angSpeed = 0;
+    useAngle = false;
 
     m_fini = false;
     signeAngle = SGN_UNDEF;
+
+    maxAngSpeed = maxSpeed;
+}
+
+//#include <QDebug>
+
+CommandTournerVers::CommandTournerVers(Angle a, float maxSpeed)
+    : Command()
+{
+    but = Position();
+    butAngle = a;
+    angSpeed = 0;
+    useAngle = true;
+
+    m_fini = false;
+    signeAngle = SGN_UNDEF;
+
+    maxAngSpeed = maxSpeed;
 }
 
 void CommandTournerVers::update()
 {
     float accAngMax = ACCELERATION_ANGULAIRE_MAX;
-    float vitAngMax = VITESSE_ANGULAIRE_MAX;
+    float vitAngMax = maxAngSpeed;
     // float angleVitesseMax = M_PI/6.0f;
     float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
     float angle = Odometrie::odometrie->getPos().getAngle();
     Position pos = Odometrie::odometrie->getPos().getPosition();
-    Position delta = but-pos;
-    float angleVise = atan2(delta.getY(),delta.getX());
-    float diff = diffAngle(angleVise,angle);
-
-    // gestion de si la commande a fini
-    if (abs(diff) < M_PI/90.0f)// || (signeAngle == SGN_NEG && diff > 0.0f) || (signeAngle == SGN_POS && diff < 0.0f))
+    float angleVise;
+    if (!useAngle)
     {
-        m_fini = true;
-    }
-    else if (signeAngle == SGN_UNDEF && abs(diff) < 1.0f)
-    {
-        if (diff > 0.0f)
-            signeAngle = SGN_POS;
-        else
-            signeAngle = SGN_NEG;
-    }
-
-    // calcul de la vitesse angulaire
-    if (abs(diff) > angleVitesseMax)
-    {
-         if (diff > 0)
-            angSpeed += accAngMax;
-         else if (diff < 0)
-            angSpeed -= accAngMax;
-
-        if (angSpeed > vitAngMax)
-            angSpeed = vitAngMax;
-        else if (angSpeed < -vitAngMax)
-            angSpeed = -vitAngMax;
+        Position delta = but-pos;
+        angleVise = atan2(delta.getY(),delta.getX());
     }
     else
     {
-        /*if (diff >= 0)
-            angSpeed = sqrt(2.0f*diff*accAngMax);
-        else
-            angSpeed = -sqrt(-2.0f*diff*accAngMax);*/
-        if (diff >= 0)
+        angleVise = butAngle;
+    }
+    float diffAng = diffAngle(angleVise,angle);
+
+    // Check sharps
+    StrategieV2::setTourneSurSoiMeme(true);
+
+
+    //qDebug() << abs(angleVise)*180./3.14 << angleVitesseMax;
+
+    if (abs(diffAng) > angleVitesseMax)
+    {
+        bool hasToDecelerate = (fabs(diffAng) < (angSpeed * angSpeed / accAngMax - accAngMax*2.));
+        if (diffAng > 0)
         {
-            float angSpeedVisee = sqrt(2.0f*diff*accAngMax);
-
-            if (angSpeed + accAngMax > angSpeedVisee)
-                angSpeed = angSpeedVisee;
-            else
+            if (!hasToDecelerate)
                 angSpeed += accAngMax;
+            else if (angSpeed > accAngMax*2)
+                angSpeed -= accAngMax*2;
 
+            if (angSpeed > vitAngMax)
+                angSpeed = vitAngMax;
         }
         else
         {
-            float angSpeedVisee = -sqrt(-2.0f*diff*accAngMax);
-
-            if (angSpeed - accAngMax < angSpeedVisee)
-                angSpeed = angSpeedVisee;
-            else
+            if (!hasToDecelerate)
                 angSpeed -= accAngMax;
+            else if (angSpeed < -accAngMax*2)
+                angSpeed += accAngMax*2;
+
+            if (angSpeed < -vitAngMax)
+                angSpeed = -vitAngMax;
         }
     }
+    else
+    {
+        angSpeed = diffAng*vitAngMax/angleVitesseMax;
+    }
 
-}
-
-Vitesse CommandTournerVers::getLinearSpeed()
-{
-    return 0.0f;
-}
-
-Angle CommandTournerVers::getAngularSpeed()
-{
-    return angSpeed;
-}
-
-bool CommandTournerVers::fini() const
-{
-    return m_fini;
-}
-
-
-    ////////////////////////////////
-    //   CommandTournerVersAngle  //
-    ////////////////////////////////
-
-CommandTournerVersAngle::CommandTournerVersAngle(float angleVise)
-    : Command()
-{
-    but = angleVise;
-    angSpeed = 0;
-
-    m_fini = false;
-    signeAngle = SGN_UNDEF;
-}
-
-void CommandTournerVersAngle::update()
-{
-    float accAngMax = ACCELERATION_ANGULAIRE_MAX;
-    float vitAngMax = VITESSE_ANGULAIRE_MAX;
-    // float angleVitesseMax = M_PI/6.0f;
-    float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
-    float angle = Odometrie::odometrie->getPos().getAngle();
-    float angleVise = but;
-    float diff = diffAngle(angleVise,angle);
 
     // gestion de si la commande a fini
-    if (abs(diff) < M_PI/90.0f)// || (signeAngle == SGN_NEG && diff > 0.0f) || (signeAngle == SGN_POS && diff < 0.0f))
+    /*if (abs(diff) < M_PI/90.0f)// || (signeAngle == SGN_NEG && diff > 0.0f) || (signeAngle == SGN_POS && diff < 0.0f))
     {
         m_fini = true;
     }
@@ -515,25 +504,24 @@ void CommandTournerVersAngle::update()
             angSpeed = sqrt(2.0f*diff*accAngMax);
         else
             angSpeed = -sqrt(-2.0f*diff*accAngMax);
-    }
+    }*/
 
 }
 
-Vitesse CommandTournerVersAngle::getLinearSpeed()
+Vitesse CommandTournerVers::getLinearSpeed()
 {
     return 0.0f;
 }
 
-Angle CommandTournerVersAngle::getAngularSpeed()
+Angle CommandTournerVers::getAngularSpeed()
 {
     return angSpeed;
 }
 
-bool CommandTournerVersAngle::fini() const
+bool CommandTournerVers::fini() const
 {
     return m_fini;
 }
-
 
     ////////////////////////////////
     //       CommandVirage        //
@@ -686,4 +674,3 @@ Angle CommandTestTournerGauche::getAngularSpeed()
 {
     return VITESSE_ANGULAIRE_MAX;
 }
-
