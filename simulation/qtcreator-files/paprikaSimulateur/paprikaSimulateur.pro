@@ -75,7 +75,8 @@ HEADERS += \
     ../../include/strategie/krabi2015.h \
     ../../src/strategie/ClapV2.h \
     ../../include/strategie/clap.h \
-    ../../include/strategie/gobelet.h
+    ../../include/strategie/gobelet.h \
+    ../../include/strategie/krabijunior2015.h
 
 
 SOURCES += \
@@ -141,5 +142,6 @@ SOURCES += \
     ../../src/strategie/krabi2014.cpp \
     ../../src/strategie/krabi2015.cpp \
     ../../src/strategie/clap.cpp \
-    ../../src/strategie/gobelet.cpp
+    ../../src/strategie/gobelet.cpp \
+    ../../src/strategie/krabijunior2015.cpp
 

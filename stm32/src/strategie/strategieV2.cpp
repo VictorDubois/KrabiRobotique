@@ -1,6 +1,7 @@
 #include "strategieV2.h"
 //#include "krabi2014.h"
 #include "krabi2015.h"
+//#include "krabijunior2015.h"
 #include "leds.h"
 #include "positionPlusAngle.h"
 #include "asservissement.h"
@@ -85,8 +86,12 @@ StrategieV2::StrategieV2(bool blue)
     //actionsToDo[2] = new RecalibrerOdometrie(blue, Position(2500, 500, blue), RecalibrerOdometrie::COTE_DEPART_ADVERSAIRE_BAS);
     //actionsToDo[3] = new RecalibrerOdometrie(blue, Position(2800, 1500, blue), RecalibrerOdometrie::COTE_DEPART_ADVERSAIRE_HAUT);
     //actionsToDo[0] = new StrategieV3(blue);
+
+    /* Appel des stratégies */
+
     //actionsToDo[0] = (MediumLevelAction*) new Krabi2014(blue);
     actionsToDo[0] = (MediumLevelAction*) new Krabi2015(blue);
+    //actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(blue);
 
     // 2014 :
     //CanonFilet::getSingleton()->attente();
