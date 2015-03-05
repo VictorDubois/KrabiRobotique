@@ -8,7 +8,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
 	virtual ~MainWindow();
-	MainWindow();
+    MainWindow(bool isBlue);
 private:
 
 	class Table* table;
@@ -18,6 +18,7 @@ private slots:
 	void update();
 protected:
 	void resizeEvent(QResizeEvent* event);
+    void mousePressEvent(QMouseEvent* evt);
 	void keyPressEvent(QKeyEvent* evt);
 	void keyReleaseEvent(QKeyEvent* evt);
 };

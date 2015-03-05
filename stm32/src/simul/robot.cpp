@@ -23,27 +23,27 @@ Odometrie::Odometrie(Robot* robot) : robot(robot)
 
 PositionPlusAngle Odometrie::getPos() const
 {
-	return robot->getPos();
+    return robot->getPos();
 }
 
 Distance Odometrie::getVitesseLineaire() const
 {
-	return robot->getVitesseLineaire();
+    return robot->getVitesseLineaire();
 }
 
 Angle Odometrie::getVitesseAngulaire() const
 {
-	return robot->getVitesseAngulaire();
+    return robot->getVitesseAngulaire();
 }
 
 void Odometrie::setPos(const PositionPlusAngle& p)
 {
-	robot->setPos(p);
+    robot->setPos(p);
 }
 
 /////////
 
-Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(world), olds(10000)
+Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue) : world(world), olds(10000)
 {
     leftUpperHammerStatus = 0;
     leftLowerHammerStatus = 0;
@@ -51,104 +51,206 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     rightLowerHammerStatus = 0;
 
     this->manual = manual;
-	level = 0;
+    level = 0;
 
-	odometrie = new Odometrie(this);
+    odometrie = new Odometrie(this);
 
     odometrie->setPos(depart);
     pos = odometrie->getPos();
+
+    this->isBlue = isBlue;
    //new Sensors();
 
-    strategie = new StrategieV2(true);
+    strategie = new StrategieV2(isBlue);//true);
 
-	asservissement = new Asservissement(odometrie);
-
-
+    asservissement = new Asservissement(odometrie);
 
 
-	//asservissement->strategie = strategie;
 
-	deriv.position.x = 0;
-	deriv.position.y = 0;
-	deriv.angle = 0;
+
+    //asservissement->strategie = strategie;
+
+    deriv.position.x = 0;
+    deriv.position.y = 0;
+    deriv.angle = 0;
 
     /// Déclaration graphique (QT)
-	int inc = 0;
-	robotPolygonPoints[inc++] = QPoint(24,0);
-	robotPolygonPoints[inc++] = QPoint(36,30);
-	robotPolygonPoints[inc++] = QPoint(45,36);
-	robotPolygonPoints[inc++] = QPoint(66,42);
-	robotPolygonPoints[inc++] = QPoint(108,42);
-	robotPolygonPoints[inc++] = QPoint(133,87);
-	robotPolygonPoints[inc++] = QPoint(53,160);
-	robotPolygonPoints[inc++] = QPoint(-25,160);
-	robotPolygonPoints[inc++] = QPoint(-95,140);
-	robotPolygonPoints[inc++] = QPoint(-95,-140);
-	robotPolygonPoints[inc++] = QPoint(-25,-160);
-	robotPolygonPoints[inc++] = QPoint(53,-160);
-	robotPolygonPoints[inc++] = QPoint(133,-87);
-	robotPolygonPoints[inc++] = QPoint(108,-42);
-	robotPolygonPoints[inc++] = QPoint(66,-42);
-	robotPolygonPoints[inc++] = QPoint(45,-36);
-	robotPolygonPoints[inc++] = QPoint(36,-30);
+    int inc = 0;
+
+    //Krabi 2013
+#ifdef KRABI_2013
+    robotPolygonPoints[inc++] = QPoint(24,0);
+    robotPolygonPoints[inc++] = QPoint(36,30);
+    robotPolygonPoints[inc++] = QPoint(45,36);
+    robotPolygonPoints[inc++] = QPoint(66,42);
+    robotPolygonPoints[inc++] = QPoint(108,42);
+    robotPolygonPoints[inc++] = QPoint(133,87);
+    robotPolygonPoints[inc++] = QPoint(53,160);
+    robotPolygonPoints[inc++] = QPoint(-25,160);
+    robotPolygonPoints[inc++] = QPoint(-95,140);
+    robotPolygonPoints[inc++] = QPoint(-95,-140);
+    robotPolygonPoints[inc++] = QPoint(-25,-160);
+    robotPolygonPoints[inc++] = QPoint(53,-160);
+    robotPolygonPoints[inc++] = QPoint(133,-87);
+    robotPolygonPoints[inc++] = QPoint(108,-42);
+    robotPolygonPoints[inc++] = QPoint(66,-42);
+    robotPolygonPoints[inc++] = QPoint(45,-36);
+    robotPolygonPoints[inc++] = QPoint(36,-30);
+#endif
+
+    //Krabi 2014
+#ifdef KRABI
+    robotPolygonPoints[inc++] = QPoint(146,0);
+    robotPolygonPoints[inc++] = QPoint(161,42);
+    robotPolygonPoints[inc++] = QPoint(161,97);
+    robotPolygonPoints[inc++] = QPoint(101,150);
+    robotPolygonPoints[inc++] = QPoint(34,175);
+    robotPolygonPoints[inc++] = QPoint(-97,175);
+    robotPolygonPoints[inc++] = QPoint(-128,86);
+    robotPolygonPoints[inc++] = QPoint(-128,-86);
+    robotPolygonPoints[inc++] = QPoint(-97,-175);
+    robotPolygonPoints[inc++] = QPoint(34,-175);
+    robotPolygonPoints[inc++] = QPoint(101,-150);
+    robotPolygonPoints[inc++] = QPoint(161,-97);
+    robotPolygonPoints[inc++] = QPoint(161,-42);
+    robotPolygonPoints[inc++] = QPoint(146,-0);
+#endif
+
+#ifdef KRABI_JR
+    robotPolygonPoints[inc++] = QPoint(86,0);
+    robotPolygonPoints[inc++] = QPoint(86,94);
+    robotPolygonPoints[inc++] = QPoint(64,115);
+    robotPolygonPoints[inc++] = QPoint(-40,115);
+    robotPolygonPoints[inc++] = QPoint(-40,-115);
+    robotPolygonPoints[inc++] = QPoint(64,-115);
+    robotPolygonPoints[inc++] = QPoint(86,-94);
+    robotPolygonPoints[inc++] = QPoint(86,-0);
+#endif
 
     /// Déclaration Physique (Box2D)
-	b2BodyDef bodyDef;
+    b2BodyDef bodyDef;
 #ifndef BOX2D_2_0_1
-	bodyDef.type = b2_dynamicBody;
+    bodyDef.type = b2_dynamicBody;
 #endif
-	bodyDef.position.Set(pos.position.x/100., pos.position.y/100.);
-	bodyDef.angle = pos.angle;
+    bodyDef.position.Set(pos.position.x/100., pos.position.y/100.);
+    bodyDef.angle = pos.angle;
 
-	body = world.CreateBody(&bodyDef);
+    body = world.CreateBody(&bodyDef); // Si le code plante ici, c'est souvent parceque les nombres d'étapes dans strategieV3.cpp et dans strategie.h ne correspondent pas
 
 
 #ifdef BOX2D_2_0_1
-	b2PolygonDef box;
-	b2PolygonDef &fixture = box;
+    b2PolygonDef box;
+    b2PolygonDef &fixture = box;
 #define CreateFixture CreateShape
 #else
-	b2PolygonShape box;
-	b2FixtureDef fixture;
-	fixture.shape = &box;
+    b2PolygonShape box;
+    b2FixtureDef fixture;
+    fixture.shape = &box;
 #endif
-	fixture.density = 10.0f;
-	fixture.friction = 1.0f;
+    fixture.density = 10.0f;
+    fixture.friction = 1.0f;
 
     // On crée la "box" de base du robot : void b2PolygonShape::SetAsBox(float32 hx,float32 hy,const b2Vec2 & center,float32 angle)
-	box.SetAsBox(60*ratio_qt_box2d,42*ratio_qt_box2d,b2Vec2((24.f-60.f)*ratio_qt_box2d,0),0);
-	body->CreateFixture(&fixture);
+/*#ifdef KRABI
+    box.SetAsBox(60*ratio_qt_box2d,42*ratio_qt_box2d,b2Vec2((24.f-60.f)*ratio_qt_box2d,0),0);
+#endif
+#ifdef KRABI_JR
+    box.SetAsBox(60*ratio_qt_box2d,42*ratio_qt_box2d,b2Vec2((24.f-40.f)*ratio_qt_box2d,0),0);
+#endif
+    body->CreateFixture(&fixture);*/
 
 #ifdef BOX2D_2_0_1
-	b2Vec2* v = box.vertices;
-    box.vertexCount = 6;
+    b2Vec2* v = box.vertices;
+    box.vertexCount = 8;
 #else
-    b2Vec2 v[6];
+    b2Vec2 v[8];
 #endif
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
-	inc = 0;
-	v[inc++].Set(-95.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-	v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-	v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
-	v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
-	v[inc++].Set(-25.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
-	v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+    inc = 0;
+    // Krabi 2013
+//	v[inc++].Set(-95.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+//	v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+//	v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+//	v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+//	v[inc++].Set(-25.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+//	v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+
+
+#ifdef KRABI
+    v[inc++].Set(146.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
+    v[inc++].Set(161.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+    v[inc++].Set(161.f*ratio_qt_box2d,97.f*ratio_qt_box2d);
+    v[inc++].Set(101.f*ratio_qt_box2d,150.f*ratio_qt_box2d);
+    v[inc++].Set(34.f*ratio_qt_box2d,175.f*ratio_qt_box2d);
+    v[inc++].Set(-97.f*ratio_qt_box2d,175.f*ratio_qt_box2d);
+    v[inc++].Set(-128.f*ratio_qt_box2d,86.f*ratio_qt_box2d);
+    v[inc++].Set(-128.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
+#endif
+
+#ifdef KRABI_JR
+    v[inc++].Set(86.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
+    v[inc++].Set(86.f*ratio_qt_box2d,94.f*ratio_qt_box2d);
+    v[inc++].Set(64.f*ratio_qt_box2d,115.f*ratio_qt_box2d);
+    v[inc++].Set(-40.f*ratio_qt_box2d,115.f*ratio_qt_box2d);
+    v[inc++].Set(-40.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
+#endif
+
 #ifndef BOX2D_2_0_1
-	box.Set(v, 6);
+    #ifdef KRABI_2013
+        box.Set(v, 8);
+    #endif
+    #ifdef KRABI
+        box.Set(v, 8);
+    #endif
+    #ifdef KRABI_JR
+        box.Set(v, 5);
+    #endif
 #endif
     fixture.filter.categoryBits=0x9;
-	body->CreateFixture(&fixture);
+    body->CreateFixture(&fixture);
 
     // on déclare les points de la deuxieme partie : Attention, doit être convexe et orientée dans le sens indirect
     inc = 0;
+    //Krabi 2013
+#ifdef KRABI_2013
     v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
     v[inc++].Set(-25.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
     v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
-	v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
+    v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
     v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
     v[inc++].Set(-95.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+#endif
+
+    //Krabi 2014
+#ifdef KRABI
+    v[inc++].Set(-128.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
+    v[inc++].Set(-128.f*ratio_qt_box2d,-86.f*ratio_qt_box2d);
+    v[inc++].Set(-97.f*ratio_qt_box2d,-175.f*ratio_qt_box2d);
+    v[inc++].Set(34.f*ratio_qt_box2d,-175.f*ratio_qt_box2d);
+    v[inc++].Set(101.f*ratio_qt_box2d,-150.f*ratio_qt_box2d);
+    v[inc++].Set(161.f*ratio_qt_box2d,-97.f*ratio_qt_box2d);
+    v[inc++].Set(161.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+    v[inc++].Set(146.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
+#endif
+
+#ifdef KRABI_JR
+    v[inc++].Set(-40.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
+    v[inc++].Set(-40.f*ratio_qt_box2d,-115.f*ratio_qt_box2d);
+    v[inc++].Set(64.f*ratio_qt_box2d,-115.f*ratio_qt_box2d);
+    v[inc++].Set(86.f*ratio_qt_box2d,-94.f*ratio_qt_box2d);
+    v[inc++].Set(86.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
+#endif
+
 #ifndef BOX2D_2_0_1
-	box.Set(v, 6);
+    #ifdef KRABI_2013
+        box.Set(v, 8);
+    #endif
+    #ifdef KRABI
+        box.Set(v, 8);
+    #endif
+    #ifdef KRABI_JR
+        box.Set(v, 5);
+    #endif
 #endif
     fixture.filter.categoryBits=0x9;
     body->CreateFixture(&fixture);
@@ -173,10 +275,19 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp avant droit
     inc = 0;
-    v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
-    v[inc++].Set(183.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
-    v[inc++].Set(188.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
-    v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+
+    //Krabi 2013
+//    v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
+//    v[inc++].Set(183.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
+//    v[inc++].Set(188.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+//    v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+
+    //Krabi 2014
+    v[inc++].Set(161.f*ratio_qt_box2d,-97.f*ratio_qt_box2d);
+    v[inc++].Set(211.f*ratio_qt_box2d,-97.f*ratio_qt_box2d);
+    v[inc++].Set(211.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+    v[inc++].Set(161.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
+
 #ifndef BOX2D_2_0_1
     box.Set(v, 4);
 #endif
@@ -194,10 +305,18 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp avant gauche
     inc = 0;
-    v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-    v[inc++].Set(188.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-    v[inc++].Set(183.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
-    v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+
+    //Krabi 2013
+//    v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+//    v[inc++].Set(188.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+//    v[inc++].Set(183.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+//    v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
+
+    //Krabi 2014
+    v[inc++].Set(161.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+    v[inc++].Set(211.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
+    v[inc++].Set(211.f*ratio_qt_box2d,97.f*ratio_qt_box2d);
+    v[inc++].Set(161.f*ratio_qt_box2d,97.f*ratio_qt_box2d);
 
 #ifndef BOX2D_2_0_1
     box.Set(v, 4);
@@ -214,10 +333,19 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp cote droit
     inc = 0;
-    v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
-    v[inc++].Set(103.f*ratio_qt_box2d,-205.f*ratio_qt_box2d);
-    v[inc++].Set(143.f*ratio_qt_box2d,-168.5f*ratio_qt_box2d);
-    v[inc++].Set(93.f*ratio_qt_box2d,-123.5f*ratio_qt_box2d);
+
+    //Krabi 2013
+//    v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
+//    v[inc++].Set(103.f*ratio_qt_box2d,-205.f*ratio_qt_box2d);
+//    v[inc++].Set(143.f*ratio_qt_box2d,-168.5f*ratio_qt_box2d);
+//    v[inc++].Set(93.f*ratio_qt_box2d,-123.5f*ratio_qt_box2d);
+
+    //Krabi 2014
+    v[inc++].Set(102.f*ratio_qt_box2d,-150.f*ratio_qt_box2d);
+    v[inc++].Set(142.f*ratio_qt_box2d,-180.f*ratio_qt_box2d);
+    v[inc++].Set(173.f*ratio_qt_box2d,-153.5f*ratio_qt_box2d);
+    v[inc++].Set(133.f*ratio_qt_box2d,-123.f*ratio_qt_box2d);
+
 #ifndef BOX2D_2_0_1
     box.Set(v, 4);
 #endif
@@ -234,10 +362,19 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp cote gauche
     inc = 0;
-    v[inc++].Set(93.f*ratio_qt_box2d,123.5f*ratio_qt_box2d);
-    v[inc++].Set(143.f*ratio_qt_box2d,168.5f*ratio_qt_box2d);
-    v[inc++].Set(103.f*ratio_qt_box2d,205.f*ratio_qt_box2d);
-    v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+
+    //Krabi 2013
+//    v[inc++].Set(93.f*ratio_qt_box2d,123.5f*ratio_qt_box2d);
+//    v[inc++].Set(143.f*ratio_qt_box2d,168.5f*ratio_qt_box2d);
+//    v[inc++].Set(103.f*ratio_qt_box2d,205.f*ratio_qt_box2d);
+//    v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
+
+    //Krabi 2014
+    v[inc++].Set(133.f*ratio_qt_box2d,123.f*ratio_qt_box2d);
+    v[inc++].Set(173.f*ratio_qt_box2d,153.f*ratio_qt_box2d);
+    v[inc++].Set(142.f*ratio_qt_box2d,180.f*ratio_qt_box2d);
+    v[inc++].Set(102.f*ratio_qt_box2d,150.f*ratio_qt_box2d);
+
 
 
 
@@ -257,10 +394,17 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp arriere milieu
     inc = 0;
-    v[inc++].Set(-95.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
-    v[inc++].Set(-145.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
-    v[inc++].Set(-145.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
-    v[inc++].Set(-95.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
+    //Krabi 2013
+//    v[inc++].Set(-95.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
+//    v[inc++].Set(-145.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
+//    v[inc++].Set(-145.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
+//    v[inc++].Set(-95.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
+
+    //Krabi 2014
+    v[inc++].Set(-128.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
+    v[inc++].Set(-178.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
+    v[inc++].Set(-178.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
+    v[inc++].Set(-128.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
 
 
 
@@ -280,12 +424,29 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp arriere droit
     inc = 0;
+    //Krabi 2013
+#ifdef KRABI_2013
     v[inc++].Set(-95.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
     v[inc++].Set(-145.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
     v[inc++].Set(-145.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
     v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+#endif
 
+    //Krabi 2014
+#ifdef KRABI
+    v[inc++].Set(-128.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
+    v[inc++].Set(-178.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
+    v[inc++].Set(-160.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+    v[inc++].Set(-111.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+#endif
 
+    //Krabi Jr 2014
+#ifdef KRABI_JR
+    v[inc++].Set(-128.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
+    v[inc++].Set(-178.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
+    v[inc++].Set(-160.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+    v[inc++].Set(-111.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
+#endif
 
 #ifndef BOX2D_2_0_1
     box.Set(v, 4);
@@ -303,10 +464,19 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual) : world(wor
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp arriere gauche
     inc = 0;
-    v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
-    v[inc++].Set(-145.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
-    v[inc++].Set(-145.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
-    v[inc++].Set(-95.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+
+    //Krabi 2013
+//    v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+//    v[inc++].Set(-145.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+//    v[inc++].Set(-145.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+//    v[inc++].Set(-95.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+
+    //Krabi 2014
+    v[inc++].Set(-111.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+    v[inc++].Set(-160.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
+    v[inc++].Set(-178.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+    v[inc++].Set(-128.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
+
 #ifndef BOX2D_2_0_1
     box.Set(v, 4);
 #endif
@@ -332,58 +502,58 @@ Robot::~Robot()
 
 void Robot::updateForces(int dt)
 {
-	if(dt == 0)
-		return;
+    if(dt == 0)
+        return;
 
-	Position impulse;
-	impulse.x = (deriv.position.x*(float)cos(pos.angle) - deriv.position.y*(float)sin(pos.angle));
-	impulse.y = (deriv.position.x*(float)sin(pos.angle) + deriv.position.y*(float)cos(pos.angle));
+    Position impulse;
+    impulse.x = (deriv.position.x*(float)cos(pos.angle) - deriv.position.y*(float)sin(pos.angle));
+    impulse.y = (deriv.position.x*(float)sin(pos.angle) + deriv.position.y*(float)cos(pos.angle));
 
-	float32 rdt = 1000./(float)dt;
+    float32 rdt = 1000./(float)dt;
 
-	b2Vec2 bvelocity = 0.01*rdt*b2Vec2(impulse.x,impulse.y);
-	float bangular = deriv.angle*rdt;
-	//body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
-	//body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
+    b2Vec2 bvelocity = 0.01*rdt*b2Vec2(impulse.x,impulse.y);
+    float bangular = deriv.angle*rdt;
+    //body->ApplyForce(10*body->GetMass()*(bimpulse - body->GetLinearVelocity()), body->GetWorldCenter());
+    //body->ApplyTorque((bangular - body->GetAngularVelocity())*body->GetInertia());
 
-	body->SetLinearVelocity(bvelocity);
-	body->SetAngularVelocity(bangular);
+    body->SetLinearVelocity(bvelocity);
+    body->SetAngularVelocity(bangular);
 
 }
 
 
 void Robot::paint(QPainter &p, int dt)
 {
-	if(dt)
-	{
-		pos.position.x = 100*body->GetPosition().x;
-		pos.position.y = 100*body->GetPosition().y;
-		pos.angle = body->GetAngle();
+    if(dt)
+    {
+        pos.position.x = 100*body->GetPosition().x;
+        pos.position.y = 100*body->GetPosition().y;
+        pos.angle = body->GetAngle();
 
-		float rdt = (float)dt/1000.;
-		deriv.angle = body->GetAngularVelocity()*rdt;
-		float derx = 100*body->GetLinearVelocity().x*rdt;
-		float dery = 100*body->GetLinearVelocity().y*rdt;
+        float rdt = (float)dt/1000.;
+        deriv.angle = body->GetAngularVelocity()*rdt;
+        float derx = 100*body->GetLinearVelocity().x*rdt;
+        float dery = 100*body->GetLinearVelocity().y*rdt;
 
-		deriv.position.x = derx*cos(pos.angle) + dery*sin(pos.angle);
-		deriv.position.y = 0;
+        deriv.position.x = derx*cos(pos.angle) + dery*sin(pos.angle);
+        deriv.position.y = 0;
 
-		//olds.push_back(pos);
-		if(manual)
-		{
-			keyPressEvent(NULL,false);
-			deriv.position.x = deriv.position.x* 0.97f;
-			deriv.angle = deriv.angle * 0.9;
-		}
-		else
-		{
+        //olds.push_back(pos);
+        if(manual)
+        {
+            keyPressEvent(NULL,false);
+            deriv.position.x = deriv.position.x* 0.97f;
+            deriv.angle = deriv.angle * 0.9;
+        }
+        else
+        {
             Odometrie::odometrie->update();
             StrategieV2::update();
             Asservissement::asservissement->update();
-			deriv.position.x = asservissement->getLinearSpeed();
-			deriv.position.y = 0;
-			deriv.angle = asservissement->getAngularSpeed();
-		}
+            deriv.position.x = asservissement->getLinearSpeed();
+            deriv.position.y = 0;
+            deriv.angle = asservissement->getAngularSpeed();
+        }
 
         // hammers update
 
@@ -414,21 +584,35 @@ void Robot::paint(QPainter &p, int dt)
         if (rightUpperHammerStatus > 200)
             rightUpperHammerStatus = 200;
 
-	}
+    }
 
-    p.setWorldTransform(QTransform().translate(pos.position.x,-pos.position.y).rotateRadians(-pos.angle));
+    p.setWorldTransform(QTransform().translate(pos.position.x,pos.position.y).rotateRadians(pos.angle));
 
 
-	p.setPen(QColor(Qt::black));
-	p.setBrush(QBrush(QColor(90,90,90)));
-	p.setOpacity(.3);
+    p.setPen(QColor(Qt::black));
+    p.setBrush(QBrush(QColor(90,90,90)));
+    p.setOpacity(.3);
 
     // on peint le robot.
-	p.drawConvexPolygon(robotPolygonPoints, 17);
+    p.drawConvexPolygon(robotPolygonPoints, 17);
     p.drawRect(-20, 160, 20, rightUpperHammerStatus);
     p.drawRect(0, 160, 20, rightLowerHammerStatus);
     p.drawRect(-20, -160, 20, -leftUpperHammerStatus);
     p.drawRect(0, -160, 20, -leftLowerHammerStatus);
+
+    //On peint le carré de la couleur du départ
+    if(isBlue)
+    {
+        p.setPen(QColor(Qt::green));
+        p.setBrush(QBrush(Qt::green));//QColor(90,90,90)));
+    }
+    else
+    {
+        p.setPen(QColor(Qt::yellow));
+        p.setBrush(QBrush(Qt::yellow));//QColor(90,90,90)));
+    }
+    p.setOpacity(.3);
+    p.drawRect(-40, -40, 80, 80);
 
     if(true)//On dessine les champs des capteurs
     {
@@ -436,51 +620,118 @@ void Robot::paint(QPainter &p, int dt)
         p.setBrush(QBrush(QColor(255,0,0)));
         p.setOpacity(.2);
 
-/*
-        polygonCapteurSharpAvantDroit;
-        polygonCapteurSharpAvantGauche;
-        polygonCapteurSharpcoteDroit;
-        polygonCapteurSharpcoteGauche;
-        polygonCapteurSharpArriereMilieu;
-        polygonCapteurSharpArriereDroit;
-        polygonCapteurSharpArriereGauche;*/
+        //Krabi 2013
+        #ifdef KRABI_2013
+            QPolygon polygonCapteurSharpAvantGauche;
+            polygonCapteurSharpAvantGauche << QPoint(133.f,-87.f) << QPoint(183.f,-87.f)
+                    << QPoint(188.f,-42.f) << QPoint(108.f,-42.f);
+            p.drawPolygon(polygonCapteurSharpAvantGauche);
 
+            QPolygon polygonCapteurSharpAvantDroit;
+            polygonCapteurSharpAvantDroit << QPoint(133.f,87.f) << QPoint(183.f,87.f)
+                     << QPoint(188.f,42.f) << QPoint(108.f,42.f);
+            p.drawPolygon(polygonCapteurSharpAvantDroit);
 
-        QPolygon polygonCapteurSharpAvantGauche;
-        polygonCapteurSharpAvantGauche << QPoint(133.f,-87.f) << QPoint(183.f,-87.f)
-                << QPoint(188.f,-42.f) << QPoint(108.f,-42.f);
-        p.drawPolygon(polygonCapteurSharpAvantGauche);
+            QPolygon polygonCapteurSharpcoteGauche;
+            polygonCapteurSharpcoteGauche << QPoint(53.f,-160.f) << QPoint(103.f,-205.f)
+                    << QPoint(143.f,-168.5f) << QPoint(93.f,-123.5f);
+            p.drawPolygon(polygonCapteurSharpcoteGauche);
 
-        QPolygon polygonCapteurSharpAvantDroit;
-        polygonCapteurSharpAvantDroit << QPoint(133.f,87.f) << QPoint(183.f,87.f)
-                 << QPoint(188.f,42.f) << QPoint(108.f,42.f);
-        p.drawPolygon(polygonCapteurSharpAvantDroit);
+            QPolygon polygonCapteurSharpcoteDroit;
+            polygonCapteurSharpcoteDroit << QPoint(53.f,160.f) << QPoint(103.f,205.f)
+                    << QPoint(143.f,168.5f) << QPoint(93.f,123.5f);
+            p.drawPolygon(polygonCapteurSharpcoteDroit);
 
-        QPolygon polygonCapteurSharpcoteGauche;
-        polygonCapteurSharpcoteGauche << QPoint(53.f,-160.f) << QPoint(103.f,-205.f)
-                << QPoint(143.f,-168.5f) << QPoint(93.f,-123.5f);
-        p.drawPolygon(polygonCapteurSharpcoteGauche);
+            QPolygon polygonCapteurSharpArriereDroit;
+            polygonCapteurSharpArriereDroit << QPoint(-95.f,140.f) << QPoint(-145.f,140.f)
+                    << QPoint(-145.f,90.f) << QPoint(-95.f,90.f);
+            p.drawPolygon(polygonCapteurSharpArriereDroit);
 
-        QPolygon polygonCapteurSharpcoteDroit;
-        polygonCapteurSharpcoteDroit << QPoint(53.f,160.f) << QPoint(103.f,205.f)
-                << QPoint(143.f,168.5f) << QPoint(93.f,123.5f);
-        p.drawPolygon(polygonCapteurSharpcoteDroit);
+            QPolygon polygonCapteurSharpArriereMilieu;
+            polygonCapteurSharpArriereMilieu << QPoint(-95.f,-25) << QPoint(-145.f,-25.f)
+                    << QPoint(-145.f,25.f) << QPoint(-95.f,25.f);
+            p.drawPolygon(polygonCapteurSharpArriereMilieu);
 
-        QPolygon polygonCapteurSharpArriereDroit;
-        polygonCapteurSharpArriereDroit << QPoint(-95.f,140.f) << QPoint(-145.f,140.f)
-                << QPoint(-145.f,90.f) << QPoint(-95.f,90.f);
-        p.drawPolygon(polygonCapteurSharpArriereDroit);
+            QPolygon polygonCapteurSharpArriereGauche;
+            polygonCapteurSharpArriereGauche << QPoint(-95.f,-140.f) << QPoint(-145.f,-140.f)
+                    << QPoint(-145.f,-90.f) << QPoint(-95.f,-90.f);
+            p.drawPolygon(polygonCapteurSharpArriereGauche);
 
-        QPolygon polygonCapteurSharpArriereMilieu;
-        polygonCapteurSharpArriereMilieu << QPoint(-95.f,-25) << QPoint(-145.f,-25.f)
-                << QPoint(-145.f,25.f) << QPoint(-95.f,25.f);
-        p.drawPolygon(polygonCapteurSharpArriereMilieu);
+        #endif
+        //Krabi 2014
+        #ifdef KRABI
+            QPolygon polygonCapteurSharpAvantGauche;
+            polygonCapteurSharpAvantGauche << QPoint(161.f,-97.f) << QPoint(211.f,-97.f)
+                    << QPoint(211.f,-42.f) << QPoint(161.f,-42.f);
+            p.drawPolygon(polygonCapteurSharpAvantGauche);
 
-        QPolygon polygonCapteurSharpArriereGauche;
-        polygonCapteurSharpArriereGauche << QPoint(-95.f,-140.f) << QPoint(-145.f,-140.f)
-                << QPoint(-145.f,-90.f) << QPoint(-95.f,-90.f);
-        p.drawPolygon(polygonCapteurSharpArriereGauche);
+            QPolygon polygonCapteurSharpAvantDroit;
+            polygonCapteurSharpAvantDroit << QPoint(161.f,97.f) << QPoint(211.f,97.f)
+                     << QPoint(211.f,42.f) << QPoint(161.f,42.f);
+            p.drawPolygon(polygonCapteurSharpAvantDroit);
 
+            QPolygon polygonCapteurSharpcoteGauche;
+            polygonCapteurSharpcoteGauche << QPoint(102.f,-150.f) << QPoint(142.f,-180.f)
+                    << QPoint(173.f,-153.f) << QPoint(133.f,-123.f);
+            p.drawPolygon(polygonCapteurSharpcoteGauche);
+
+            QPolygon polygonCapteurSharpcoteDroit;
+            polygonCapteurSharpcoteDroit << QPoint(102.f,150.f) << QPoint(142.f,180.f)
+                    << QPoint(173.f,153.f) << QPoint(133.f,123.f);
+            p.drawPolygon(polygonCapteurSharpcoteDroit);
+
+            QPolygon polygonCapteurSharpArriereDroit;
+            polygonCapteurSharpArriereDroit << QPoint(-111.f,140.f) << QPoint(-160.f,140.f)
+                    << QPoint(-178.f,90.f) << QPoint(-128.f,90.f);
+            p.drawPolygon(polygonCapteurSharpArriereDroit);
+
+            QPolygon polygonCapteurSharpArriereMilieu;
+            polygonCapteurSharpArriereMilieu << QPoint(-128.f,-25) << QPoint(-178.f,-25.f)
+                    << QPoint(-178.f,25.f) << QPoint(-128.f,25.f);
+            p.drawPolygon(polygonCapteurSharpArriereMilieu);
+
+            QPolygon polygonCapteurSharpArriereGauche;
+            polygonCapteurSharpArriereGauche << QPoint(-111.f,-140.f) << QPoint(-160.f,-140.f)
+                    << QPoint(-178.f,-90.f) << QPoint(-128.f,-90.f);
+            p.drawPolygon(polygonCapteurSharpArriereGauche);
+        #endif
+
+        #ifdef KRABI_JR
+            QPolygon polygonCapteurSharpAvantGauche;
+            polygonCapteurSharpAvantGauche << QPoint(161.f,-97.f) << QPoint(211.f,-97.f)
+                    << QPoint(211.f,-42.f) << QPoint(161.f,-42.f);
+            p.drawPolygon(polygonCapteurSharpAvantGauche);
+
+            QPolygon polygonCapteurSharpAvantDroit;
+            polygonCapteurSharpAvantDroit << QPoint(161.f,97.f) << QPoint(211.f,97.f)
+                     << QPoint(211.f,42.f) << QPoint(161.f,42.f);
+            p.drawPolygon(polygonCapteurSharpAvantDroit);
+
+            QPolygon polygonCapteurSharpcoteGauche;
+            polygonCapteurSharpcoteGauche << QPoint(102.f,-150.f) << QPoint(142.f,-180.f)
+                    << QPoint(173.f,-153.f) << QPoint(133.f,-123.f);
+            p.drawPolygon(polygonCapteurSharpcoteGauche);
+
+            QPolygon polygonCapteurSharpcoteDroit;
+            polygonCapteurSharpcoteDroit << QPoint(102.f,150.f) << QPoint(142.f,180.f)
+                    << QPoint(173.f,153.f) << QPoint(133.f,123.f);
+            p.drawPolygon(polygonCapteurSharpcoteDroit);
+
+            QPolygon polygonCapteurSharpArriereDroit;
+            polygonCapteurSharpArriereDroit << QPoint(-111.f,140.f) << QPoint(-160.f,140.f)
+                    << QPoint(-178.f,90.f) << QPoint(-128.f,90.f);
+            p.drawPolygon(polygonCapteurSharpArriereDroit);
+
+            QPolygon polygonCapteurSharpArriereMilieu;
+            polygonCapteurSharpArriereMilieu << QPoint(-128.f,-25) << QPoint(-178.f,-25.f)
+                    << QPoint(-178.f,25.f) << QPoint(-128.f,25.f);
+            p.drawPolygon(polygonCapteurSharpArriereMilieu);
+
+            QPolygon polygonCapteurSharpArriereGauche;
+            polygonCapteurSharpArriereGauche << QPoint(-111.f,-140.f) << QPoint(-160.f,-140.f)
+                    << QPoint(-178.f,-90.f) << QPoint(-128.f,-90.f);
+            p.drawPolygon(polygonCapteurSharpArriereGauche);
+        #endif
 
 
 
@@ -519,19 +770,19 @@ void Robot::paint(QPainter &p, int dt)
     }
 
 //	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
-	//p.drawRect(-268, -179.5, 268, 359);
-	//drawTriangle(p, 0, 0,  65, 0,  60, 0);
-	p.setOpacity(1);
+    //p.drawRect(-268, -179.5, 268, 359);
+    //drawTriangle(p, 0, 0,  65, 0,  60, 0);
+    p.setOpacity(1);
 
-	p.setPen(QColor(Qt::red));
-	p.drawLine(0,0,pos.position.x,0);
-	p.drawLine(0,100*pos.angle,0,0);
-	p.setWorldTransform(QTransform());
+    p.setPen(QColor(Qt::red));
+    p.drawLine(0,0,pos.position.x,0);
+    p.drawLine(0,100*pos.angle,0,0);
+    p.setWorldTransform(QTransform());
 
 
-	p.setPen(QColor(Qt::green));
-	for(unsigned int i=0; i+1 < olds.size(); i++)
-		p.drawLine(olds[i].position.x, -olds[i].position.y, olds[i+1].position.x, -olds[i+1].position.y);
+    p.setPen(QColor(Qt::green));
+    for(unsigned int i=0; i+1 < olds.size(); i++)
+        p.drawLine(olds[i].position.x, -olds[i].position.y, olds[i+1].position.x, -olds[i+1].position.y);
 }
 
 #define IF_KEYSWITCH(n,a) \
@@ -540,44 +791,44 @@ if(evt) n= a ? press : n; if(n)
 
 void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 {
-	if(evt && press && evt->text() == "e" && !evt->isAutoRepeat())
-		manual = !manual;
+    if(evt && press && evt->text() == "e" && !evt->isAutoRepeat())
+        manual = !manual;
 
 
-	if(evt && press && evt->text() == "u" && !evt->isAutoRepeat())
-	{
-		level = (level != 100) ? 100 : 0;
+    if(evt && press && evt->text() == "u" && !evt->isAutoRepeat())
+    {
+        level = (level != 100) ? 100 : 0;
 #ifdef BOX2D_2_0_1
 #define b2Filter b2FilterData
 #define GetFixtureList GetShapeList
 #endif
-		b2Filter filter;
-		if(level == 100)
-		{
-			filter.categoryBits = 0x4;
-			filter.maskBits = 0x3;
-		}
-		else
-		{
-			filter.maskBits = 0x3;
-			filter.categoryBits = 0x1;
-		}
-	}
+        b2Filter filter;
+        if(level == 100)
+        {
+            filter.categoryBits = 0x4;
+            filter.maskBits = 0x3;
+        }
+        else
+        {
+            filter.maskBits = 0x3;
+            filter.categoryBits = 0x1;
+        }
+    }
 
 
-	if(manual)
-	{
+    if(manual)
+    {
         float dinc = .25;
         float ainc = 0.0025;
 
-		IF_KEYSWITCH(avant,evt->key() == Qt::Key_Up)
-			deriv.position.x += dinc;
-		IF_KEYSWITCH(arriere,evt->key() == Qt::Key_Down)
-			deriv.position.x -= dinc;
-		IF_KEYSWITCH(gauche,evt->key() == Qt::Key_Right)
-			deriv.angle -= ainc;
-		IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
-			deriv.angle += ainc;
+        IF_KEYSWITCH(avant,evt->key() == Qt::Key_Up)
+            deriv.position.x += dinc;
+        IF_KEYSWITCH(arriere,evt->key() == Qt::Key_Down)
+            deriv.position.x -= dinc;
+        IF_KEYSWITCH(gauche,evt->key() == Qt::Key_Right)
+            deriv.angle += ainc;
+        IF_KEYSWITCH(droite,evt->key() == Qt::Key_Left)
+            deriv.angle -= ainc;
         IF_KEYSWITCH(leftUpperHammerUp,evt->key() == Qt::Key_W)
             leftUpperHammerStatus = 1;
         IF_KEYSWITCH(leftUpperHammerDown,evt->key() == Qt::Key_X)
@@ -597,23 +848,23 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
 
 void Robot::setLevel()
 {
-    		level = (level != 100) ? 100 : 0;
+            level = (level != 100) ? 100 : 0;
 #ifdef BOX2D_2_0_1
 #define b2Filter b2FilterData
 #define GetFixtureList GetShapeList
 #endif
-		b2Filter filter;
-		if(level == 100)
-		{
-			filter.categoryBits = 0x4;
-			filter.maskBits = 0x3;
-		}
-		else
-		{
-			filter.maskBits = 0x3;
-			filter.categoryBits = 0x1;
+        b2Filter filter;
+        if(level == 100)
+        {
+            filter.categoryBits = 0x4;
+            filter.maskBits = 0x3;
+        }
+        else
+        {
+            filter.maskBits = 0x3;
+            filter.categoryBits = 0x1;
 
-		}
+        }
 }
 
 PositionPlusAngle Robot::getPos()
@@ -673,4 +924,9 @@ void Robot::startLeftLowerHammer()
 void Robot::startRightLowerHammer()
 {
     leftUpperHammerStatus = 1;
+}
+
+void Robot::paintStrategie(QPainter& p)
+{
+    strategie->paint(&p);
 }

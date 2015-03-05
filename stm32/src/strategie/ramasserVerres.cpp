@@ -34,8 +34,8 @@ RamasserVerres::RamasserVerres() : MediumLevelAction()
     positionsToGo[2][4] = ActionGoTo(Position(900, 550, isBlue), false);
     positionsToGo[2][5] = ActionGoTo(Position(350, 450, isBlue), false);
     positionsToGo[2][6] = ActionGoTo(Position(350, 450, isBlue), true);
-    
-    
+
+
     positionsToGo[3][0] = ActionGoTo(Position(600, 800, isBlue), false);
     //positionsToGo[2][1] = new ActionGoTo(Position(2100, 800, isBlue), false);
     positionsToGo[3][1] = ActionGoTo(Position(2100, 800, isBlue), false);
@@ -45,8 +45,8 @@ RamasserVerres::RamasserVerres() : MediumLevelAction()
     positionsToGo[3][4] = ActionGoTo(Position(1500, 1050, isBlue), false);
     positionsToGo[3][5] = ActionGoTo(Position(350, 350, isBlue), false);
     positionsToGo[3][6] = ActionGoTo(Position(30, 1050, isBlue), true);
-    
-    
+
+
     positionsToGo[4][0] = ActionGoTo(Position(600, 1050, isBlue), false);
     //positionsToGo[2][1] = new ActionGoTo(Position(2100, 800, isBlue), false);
     positionsToGo[4][1] = ActionGoTo(Position(2100, 550, isBlue), false);
@@ -56,8 +56,8 @@ RamasserVerres::RamasserVerres() : MediumLevelAction()
     positionsToGo[4][4] = ActionGoTo(Position(1500, 800, isBlue), false);
     positionsToGo[4][5] = ActionGoTo(Position(350, 350, isBlue), false);
     positionsToGo[4][6] = ActionGoTo(Position(1500, 800, isBlue), true);
-    
-    
+
+
     positionsToGo[5][0] = ActionGoTo(Position(600, 800, isBlue), false);
     //positionsToGo[2][1] = new ActionGoTo(Position(2100, 800, isBlue), false);
     positionsToGo[5][1] = ActionGoTo(Position(2100, 800, isBlue), false);
@@ -67,12 +67,12 @@ RamasserVerres::RamasserVerres() : MediumLevelAction()
     positionsToGo[5][4] = ActionGoTo(Position(1500, 550, isBlue), false);
     positionsToGo[5][5] = ActionGoTo(Position(350, 350, isBlue), false);
     positionsToGo[5][6] = ActionGoTo(Position(1000, 1000, isBlue), true);
-    
+
 
     for (int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)
             demiLignesRamassees[i][j] = false;
-            
+
     myTurn = false;
     nextPosition = 0;
     ligneEnCours = -1;
@@ -100,7 +100,7 @@ int RamasserVerres::update()
             }
         }*/
         // une ligne non entierement faite est détectée
-        
+
         if (ligneEnCours >= 0 && ligneEnCours < 3) // if (ligneAFaire >= 0 && ligneAFaire <=5)
         {
             // reste-il la demi-ligne la plus lointaine ?
@@ -126,11 +126,11 @@ int RamasserVerres::update()
     }
     else if (status == 2) // suivre les positions
     {
-        allumerLED2();
+//        allumerLED2();
         if (nextPosition >= 6) // fini
         {
             myTurn = true; // on vient de finir notre action
-            // enregistrer les actions faites 
+            // enregistrer les actions faites
             if (ramasserTouteLaLigne)
             {
                 demiLignesRamassees[ligneEnCours][0] = true;
@@ -143,7 +143,7 @@ int RamasserVerres::update()
             status = 1; // passer a l'action suivante
         }
         else
-        { 
+        {
             // config des capteurs sharp
             //StrategieV2::emptySharpsToCheck();
             /*if (positionsToGo[ligneEnCours][nextPosition]->getGoBack()) // si on recule
@@ -177,7 +177,7 @@ int RamasserVerres::update()
     }
     if (status == 900)
     {
-        
+
     }
 
     return status;

@@ -1,7 +1,10 @@
 #include "odometrie.h"
 
-#include "stm32f10x_gpio.h"
-#include "leds.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_gpio.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_gpio.h"
+#endif
 
 Odometrie* Odometrie::odometrie = NULL;
 
@@ -37,7 +40,7 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
     posY = 0.0;
     ang = 0.0;
 
-    absAng = 0.0;
+    absAngle = 0.0;
 
 }
 
@@ -58,7 +61,11 @@ void Odometrie::update()
 
     // On a le moins pour prendre en compte que les deux roux codeuses sont montées dans des sens opposés car pas du même coté du robot
     prevDeltaTicksRoueDroite[0] = -roueCodeuseDroite->getTickValue();
-    prevDeltaTicksRoueGauche[0] = roueCodeuseGauche->getTickValue();
+    #if defined(STM32F40_41xxx) || defined(STM32F10X_MD)
+        prevDeltaTicksRoueGauche[0] = -roueCodeuseGauche->getTickValue();
+    #else
+        prevDeltaTicksRoueGauche[0] = roueCodeuseGauche->getTickValue();
+    #endif
 
     int32_t sommeGauche = 0;
     int32_t sommeDroite = 0;
@@ -68,17 +75,18 @@ void Odometrie::update()
         sommeDroite += prevDeltaTicksRoueDroite[i];
     }
 
-   // double filteredDeltaTicksRoueGauche = (deltaTicksRoueGauche+prevDeltaTicksRoueGauche)/2.0;
-   double filteredDeltaTicksRoueGauche = (double)sommeGauche/(double)tailleTabPrevTicks;
+    // double filteredDeltaTicksRoueGauche = (deltaTicksRoueGauche+prevDeltaTicksRoueGauche)/2.0;
+    double filteredDeltaTicksRoueGauche = (double)sommeGauche/(double)tailleTabPrevTicks;
 
-   // double filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2.0;
-   double filteredDeltaTicksRoueDroite = (double)sommeDroite/(double)tailleTabPrevTicks;
+    // double filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2.0;
+    double filteredDeltaTicksRoueDroite = (double)sommeDroite/(double)tailleTabPrevTicks;
 
     double tmpDeltaAngle = (filteredDeltaTicksRoueGauche-filteredDeltaTicksRoueDroite)*coeffAngle;  // cf coef angle
 
 	double tmpDist = (filteredDeltaTicksRoueGauche+filteredDeltaTicksRoueDroite)*coeffDistance;     // soit le nombre moyen de tours de roue * le perimetre de la roue
 
     vitesseLineaire = Distance(tmpDist);
+
     vitesseAngulaire = Angle(tmpDeltaAngle);
 
 	//positionPlusAngle.setAngle(positionPlusAngle.getAngle()+vitesseAngulaire);
@@ -99,9 +107,8 @@ void Odometrie::update()
         posX += distAvancee*cos(ang)-distTranslatee*sin(ang);
         posY += distAvancee*sin(ang)+distTranslatee*cos(ang);
 
-        absAng += vitesseAngulaire;
-
         ang += vitesseAngulaire;
+        absAngle += vitesseAngulaire;
         if (ang > M_PI)
             ang -= 2.0*M_PI;
         else if (ang < -M_PI)
@@ -111,15 +118,6 @@ void Odometrie::update()
     positionPlusAngle.setAngle(ang);
     positionPlusAngle.setX(posX);
     positionPlusAngle.setY(posY);
-
-    // CALIBRAGE n tours pour calibrer l'odométrie
-
-    /*if (absAng<0. || absAng > M_PI*4.0)
-        allumerLED();
-    else
-        eteindreLED();*/
-
-    // FIN CALIBRAGE
 
 }
 
@@ -144,6 +142,11 @@ Angle Odometrie::getVitesseAngulaire() const
 Distance Odometrie::getVitesseLineaire() const
 {
     return vitesseLineaire;
+}
+
+Angle Odometrie::getAbsoluteAngle() const
+{
+    return absAngle;
 }
 
 void Odometrie::setX(Distance x)

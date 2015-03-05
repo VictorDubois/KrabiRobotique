@@ -1,6 +1,6 @@
 ############### FOND #################
 <Rect>
-	<Color>#57A639</Color>
+	<Color>#1761AB</Color>
 	<Position> 
 		<x>0</x>
 		<y>0</y>
@@ -12,143 +12,242 @@
 </Rect>
 ############# FIN FOND ###############
 
+########### LOGO CENTRAL #############
+
+Bordure noire
+<Rect><Color>#03050A</Color><Position>	<x>910</x><y>820</y>		</Position><Size><x>1180</x><y>500</y></Size></Rect>
+Rectangle rouge
+<Rect><Color>#C71712</Color><Position>	<x>920</x><y>830</y>		</Position><Size><x>1160</x><y>480</y></Size></Rect>
+Vert Oppose
+<Ellipse><Color>#03050A</Color><Center><x>2090</x><y>820</y></Center><Radius>100</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>2090</x><y>820</y></Center><Radius>90</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>1980</x><y>600</y>		</Position><Size><x>220</x><y>220</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>2090</x><y>820</y>		</Position><Size><x>110</x><y>220</y></Size></Rect>
+Vert Estrade
+<Ellipse><Color>#03050A</Color><Center><x>2090</x><y>1320</y></Center><Radius>100</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>2090</x><y>1320</y></Center><Radius>90</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>1980</x><y>1320</y>		</Position><Size><x>220</x><y>220</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>2090</x><y>1210</y>		</Position><Size><x>110</x><y>220</y></Size></Rect>
+
+Jaune Oppose
+<Ellipse><Color>#03050A</Color><Center><x>910</x><y>820</y></Center><Radius>100</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>910</x><y>820</y></Center><Radius>90</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>800</x><y>600</y>		</Position><Size><x>220</x><y>220</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>800</x><y>820</y>		</Position><Size><x>110</x><y>220</y></Size></Rect>
+
+Jaune Estrade
+<Ellipse><Color>#03050A</Color><Center><x>910</x><y>1320</y></Center><Radius>100</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>910</x><y>1320</y></Center><Radius>90</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>800</x><y>1320</y>		</Position><Size><x>220</x><y>220</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>800</x><y>1210</y>		</Position><Size><x>110</x><y>220</y></Size></Rect>
+
+
+######### FIN LOGO CENTRAL ###########
+
 ########## LIGNE  SUIVI 1 ############
 
-Zone Rouge : 
-Contour extérieur
-<RoundedRect><Color>#0A0A0A</Color><radius>160</radius><Position><x>-1360</x><y>-610</y></Position><Size><x>2720</x><y>1220</y></Size></RoundedRect>
-Contour intérieur
-<RoundedRect><Color>#57A639</Color><radius>140</radius><Position><x>-1340</x><y>-590</y></Position><Size><x>2680</x><y>1180</y></Size></RoundedRect>
+### Cote depart jaune
 
-Zone Jaune : 
-Contour extérieur
-<RoundedRect><Color>#0A0A0A</Color><radius>160</radius><Position><x>1640</x><y>-610</y></Position><Size><x>2720</x><y>1220</y></Size></RoundedRect>
-Contour intérieur
-<RoundedRect><Color>#57A639</Color><radius>140</radius><Position><x>1660</x><y>-590</y></Position><Size><x>2680</x><y>1180</y></Size></RoundedRect>
+Premier virage
+<Ellipse><Color>#03050A</Color><Center><x>390</x><y>1690</y></Center><Radius>170</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>390</x><y>1690</y></Center><Radius>150</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>0</x><y>0</y>		</Position><Size><x>390</x><y>2000</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>0</x><y>0</y>		</Position><Size><x>850</x><y>1690</y></Size></Rect>
+
+Virage pres coin
+<Ellipse><Color>#03050A</Color><Center><x>390</x><y>1990</y></Center><Radius>150</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>390</x><y>1990</y></Center><Radius>130</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>410</x><y>1860</y>		</Position><Size><x>390</x><y>140</y></Size></Rect>
+
+Virage 3
+<Ellipse><Color>#03050A</Color><Center><x>850</x><y>1690</y></Center><Radius>170</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>850</x><y>1690</y></Center><Radius>150</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>600</x><y>1500</y>		</Position><Size><x>250</x><y>500</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>850</x><y>1500</y>		</Position><Size><x>270</x><y>190</y></Size></Rect>
+
+Virage 4
+<Ellipse><Color>#03050A</Color><Center><x>1150</x><y>1680</y></Center><Radius>150</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>1150</x><y>1680</y></Center><Radius>130</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>1150</x><y>1500</y>		</Position><Size><x>170</x><y>300</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>1020</x><y>1690</y>		</Position><Size><x>170</x><y>170</y></Size></Rect>
+
+Pres distributeurs
+<Rect><Color>#03050A</Color><Position>	<x>540</x><y>1840</y>		</Position><Size><x>320</x><y>160</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>560</x><y>1860</y>		</Position><Size><x>280</x><y>140</y></Size></Rect>
+
+
+### Cote depart vert
+
+Premier virage
+<Ellipse><Color>#03050A</Color><Center><x>2610</x><y>1690</y></Center><Radius>170</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>2610</x><y>1690</y></Center><Radius>150</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>2460</x><y>1490</y>		</Position><Size><x>340</x><y>200</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>2610</x><y>1690</y>		</Position><Size><x>490</x><y>310</y></Size></Rect>
+
+Virage pres coin
+<Ellipse><Color>#03050A</Color><Center><x>2610</x><y>1990</y></Center><Radius>150</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>2610</x><y>1990</y></Center><Radius>130</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>2410</x><y>1860</y>		</Position><Size><x>200</x><y>140</y></Size></Rect>
+
+Virage 3
+<Ellipse><Color>#03050A</Color><Center><x>2150</x><y>1690</y></Center><Radius>170</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>2150</x><y>1690</y></Center><Radius>150</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>1900</x><y>1500</y>		</Position><Size><x>270</x><y>190</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>2150</x><y>1500</y>		</Position><Size><x>270</x><y>340</y></Size></Rect>
+
+Virage 4
+<Ellipse><Color>#03050A</Color><Center><x>1850</x><y>1680</y></Center><Radius>150</Radius></Ellipse>
+<Ellipse><Color>#1761AB</Color><Center><x>1850</x><y>1680</y></Center><Radius>130</Radius></Ellipse>
+Masques
+<Rect><Color>#1761AB</Color><Position>	<x>1500</x><y>1550</y>		</Position><Size><x>350</x><y>450</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>1500</x><y>1680</y>		</Position><Size><x>480</x><y>190</y></Size></Rect>
+
+Pres distributeurs
+<Rect><Color>#03050A</Color><Position>	<x>2140</x><y>1840</y>		</Position><Size><x>320</x><y>160</y></Size></Rect>
+<Rect><Color>#1761AB</Color><Position>	<x>2160</x><y>1860</y>		</Position><Size><x>280</x><y>140</y></Size></Rect>
+
 
 ######## FIN LIGNE  SUIVI 1 ##########
 
-########## ZONE DE DEPART ############
+########## SALLES DE CINEMA ############
 
-Zone Rouge : 
-Contour extérieur
-<RoundedRect><Color>#CC0605</Color><radius>310</radius><Position><x>-400</x><y>-700</y></Position><Size><x>800</x><y>1400</y></Size></RoundedRect>
-Contour intérieur
-<RoundedRect><Color>#B8B799</Color><radius>290</radius><Position><x>-380</x><y>-680</y></Position><Size><x>760</x><y>1360</y></Size></RoundedRect>
+Zone Depart Jaune
+<Ellipse><Color>#FCBD1F</Color><Center><x>400</x><y>1000</y></Center><Radius>200</Radius></Ellipse>
+<Rect><Color>#FCBD1F</Color><Position>	<x>0</x><y>778</y>		</Position><Size><x>400</x><y>444</y></Size></Rect>
 
-Zone Jaune : 
-Contour extérieur
-<RoundedRect><Color>#FAD201</Color><radius>310</radius><Position><x>2600</x><y>-700</y></Position><Size><x>800</x><y>1400</y></Size></RoundedRect>
-Contour intérieur
-<RoundedRect><Color>#B8B799</Color><radius>290</radius><Position><x>2620</x><y>-680</y></Position><Size><x>760</x><y>1360</y></Size></RoundedRect>
+Salle jaune cote publique
+<Rect><Color>#FCBD1F</Color><Position>	<x>2600</x><y>1222</y>		</Position><Size><x>400</x><y>378</y></Size></Rect>
+Salle jaune cote marches
+<Rect><Color>#FCBD1F</Color><Position>	<x>2600</x><y>400</y>		</Position><Size><x>400</x><y>378</y></Size></Rect>
+
+Zone Depart vert
+<Ellipse><Color>#4FA833</Color><Center><x>2600</x><y>1000</y></Center><Radius>200</Radius></Ellipse>
+<Rect><Color>#4FA833</Color><Position>	<x>2600</x><y>778</y>		</Position><Size><x>400</x><y>444</y></Size></Rect>
+
+Salle vert cote publique
+<Rect><Color>#4FA833</Color><Position>	<x>0</x><y>1222</y>		</Position><Size><x>400</x><y>378</y></Size></Rect>
+Salle vert cote marches
+<Rect><Color>#4FA833</Color><Position>	<x>0</x><y>400</y>		</Position><Size><x>400</x><y>378</y></Size></Rect>
+
+Tasseaux cote jaune
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>0</x><y>778</y>		</Position><Size><x>400</x><y>22</y></Size></Rect>
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>0</x><y>1200</y>		</Position><Size><x>400</x><y>22</y></Size></Rect>
+Tasseaux cote jaune estrade interieure
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>48</x><y>800</y>		</Position><Size><x>22</x><y>165</y></Size></Rect>
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>48</x><y>1035</y>		</Position><Size><x>22</x><y>165</y></Size></Rect>
+Estrade interieure cote jaune
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>0</x><y>965</y>		</Position><Size><x>70</x><y>70</y></Size></Rect>
+
+Tasseaux cote vert
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2600</x><y>778</y>		</Position><Size><x>400</x><y>22</y></Size></Rect>
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2600</x><y>1200</y>		</Position><Size><x>400</x><y>22</y></Size></Rect>
+Tasseaux cote vert estrade interieure
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2930</x><y>800</y>		</Position><Size><x>22</x><y>165</y></Size></Rect>
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2930</x><y>1035</y>		</Position><Size><x>22</x><y>165</y></Size></Rect>
+Estrade interieure cote vert
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2930</x><y>965</y>		</Position><Size><x>70</x><y>70</y></Size></Rect>
 
 ######## FIN ZONE DE DEPART ##########
 
 ########## LIGNE  SUIVI 2 ############
 
-Repassage zone rouge
-<Rect><Color>#0A0A0A</Color><Position>	<x>0</x><y>590</y>		</Position><Size><x>1000</x><y>20</y></Size></Rect>
-Repassage zone jaune
-<Rect><Color>#0A0A0A</Color><Position>	<x>2000</x><y>590</y>		</Position><Size><x>1000</x><y>20</y></Size></Rect>
+Cote depart jaune
+<Rect><Color>#03050A</Color><Position>	<x>540</x><y>840</y>		</Position><Size><x>20</x><y>850</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>390</x><y>1840</y>		</Position><Size><x>160</x><y>20</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>1150</x><y>1530</y>		</Position><Size><x>350</x><y>20</y></Size></Rect>
+
+Cote depart vert
+<Rect><Color>#03050A</Color><Position>	<x>2440</x><y>840</y>		</Position><Size><x>20</x><y>850</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>2430</x><y>1840</y>		</Position><Size><x>160</x><y>20</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>1500</x><y>1530</y>		</Position><Size><x>350</x><y>20</y></Size></Rect>
 
 ######## FIN LIGNE  SUIVI 2 ##########
 
-############## ARBRES ################
+############## ESTRADE ###############
 
-Arbre côté rouge
-<Ellipse><Color>#00BB2D</Color><Center><x>0</x><y>1300</y></Center><Radius>150</Radius></Ellipse>
-Arbre côté jaune
-<Ellipse><Color>#00BB2D</Color><Center><x>2300</x><y>2000</y></Center><Radius>150</Radius></Ellipse>
-Arbre bas côté rouge
-<Ellipse><Color>#00BB2D</Color><Center><x>700</x><y>2000</y></Center><Radius>150</Radius></Ellipse>
-Arbre bas côté jaune
-<Ellipse><Color>#00BB2D</Color><Center><x>3000</x><y>1300</y></Center><Radius>150</Radius></Ellipse>
+<RoundedRect><Color>#C71712</Color><radius>100</radius><Position><x>1100</x><y>1800</y></Position><Size><x>800</x><y>400</y></Size></RoundedRect>
 
-############ FIN ARBRES ##############
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>1200</x><y>1900</y>		</Position><Size><x>600</x><y>100</y></Size></Rect>
+<Rect><Color>#C71712</Color><Position>	<x>1204</x><y>1904</y>		</Position><Size><x>592</x><y>96</y></Size></Rect>
 
-############## FOYERS ################
+############ FIN ESTRADE #############
 
-Foyer central
-<Ellipse><Color>#6C3B2A</Color><Center><x>1500</x><y>1050</y></Center><Radius>150</Radius></Ellipse>
-Foyer rouge
-<Ellipse><Color>#6C3B2A</Color><Center><x>0</x><y>2000</y></Center><Radius>250</Radius></Ellipse>
-Foyer jaune
-<Ellipse><Color>#6C3B2A</Color><Center><x>3000</x><y>2000</y></Center><Radius>250</Radius></Ellipse>
+############## MARCHES ################
 
-############ FIN FOYERS ##############
+Bordure escalier
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>967</x><y>0</y>		</Position><Size><x>1067</x><y>580</y></Size></Rect>
 
-########## BLOC DE DEPOSE ############
+Zone Jaune
+<Rect><Color>#FCBD1F</Color><Position>	<x>989</x><y>22</y>		</Position><Size><x>500</x><y>558</y></Size></Rect>
 
-Bloc jaune côté rouge
-<Rect><Color>#00BB2D</Color><Position>	<x>400</x><y>0</y>		</Position><Size><x>700</x><y>130</y></Size></Rect>
-<Rect><Color>#FAD201</Color><Position>	<x>400</x><y>130</y>		</Position><Size><x>700</x><y>170</y></Size></Rect>
-Bloc jaune côté rouge
-<Rect><Color>#00BB2D</Color><Position>	<x>1900</x><y>0</y>		</Position><Size><x>700</x><y>130</y></Size></Rect>
-<Rect><Color>#CC0605</Color><Position>	<x>1900</x><y>130</y>		</Position><Size><x>700</x><y>170</y></Size></Rect>
+Zone Verte
+<Rect><Color>#4FA833</Color><Position>	<x>1511</x><y>22</y>		</Position><Size><x>500</x><y>558</y></Size></Rect>
 
-######## FIN BLOC DE DEPOSE ##########
+Zone tapis grise 1
+<Rect><Color>#BBBBBB</Color><Position>	<x>989</x><y>300</y>		</Position><Size><x>100</x><y>280</y></Size></Rect>
+Zone tapis grise 2
+<Rect><Color>#BBBBBB</Color><Position>	<x>1389</x><y>300</y>		</Position><Size><x>100</x><y>280</y></Size></Rect>
+Zone tapis grise 3
+<Rect><Color>#BBBBBB</Color><Position>	<x>1511</x><y>300</y>		</Position><Size><x>100</x><y>280</y></Size></Rect>
+Zone tapis grise 4
+<Rect><Color>#BBBBBB</Color><Position>	<x>1911</x><y>300</y>		</Position><Size><x>100</x><y>280</y></Size></Rect>
 
-########### SUPPORT FEUX #############
+Traits marches
+<Rect><Color>#03050A</Color><Position>	<x>989</x><y>576</y>		</Position><Size><x>1022</x><y>4</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>989</x><y>506</y>		</Position><Size><x>1022</x><y>4</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>989</x><y>436</y>		</Position><Size><x>1022</x><y>4</y></Size></Rect>
+<Rect><Color>#03050A</Color><Position>	<x>989</x><y>366</y>		</Position><Size><x>1022</x><y>4</y></Size></Rect>
 
-Support côté rouge
-<Rect><Color>#6C3B2A</Color><Position>	<x>0</x><y>731</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-<Rect><Color>#6C3B2A</Color><Position>	<x>0</x><y>847</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-Support bas côté rouge
-<Rect><Color>#6C3B2A</Color><Position>	<x>1231</x><y>1978</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-<Rect><Color>#6C3B2A</Color><Position>	<x>1347</x><y>1978</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-Support bas côté jaune
-<Rect><Color>#6C3B2A</Color><Position>	<x>1631</x><y>1978</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-<Rect><Color>#6C3B2A</Color><Position>	<x>1747</x><y>1978</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-Support côté jaune
-<Rect><Color>#6C3B2A</Color><Position>	<x>2978</x><y>731</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
-<Rect><Color>#6C3B2A</Color><Position>	<x>2978</x><y>847</y>		</Position><Size><x>22</x><y>22</y></Size></Rect>
+############ FIN MARCHES ##############
 
-######### FIN SUPPORT FEUX ###########
+############ CLAPS ##############
+Clap 1
+<Rect><Color>#FCBD1F</Color><Position>	<x>240</x><y>1970</y>		</Position><Size><x>160</x><y>30</y></Size></Rect>
+<Rect><Color>#CC8D0F</Color><Position>	<x>210</x><y>1970</y>		</Position><Size><x>30</x><y>30</y></Size></Rect>
 
-############## FRUITS ################
+Clap 2
+<Rect><Color>#4FA833</Color><Position>	<x>540</x><y>1970</y>		</Position><Size><x>160</x><y>30</y></Size></Rect>
+<Rect><Color>#1F7803</Color><Position>	<x>510</x><y>1970</y>		</Position><Size><x>30</x><y>30</y></Size></Rect>
 
-Fruits côté rouge
-<Ellipse><Color>#924E7D</Color><Center><x>0</x><y>1180</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>103</x><y>1240</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>103</x><y>1360</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>0</x><y>1420</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>-103</x><y>1240</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>-103</x><y>1360</y></Center><Radius>12</Radius></Ellipse>
-Fruits bas côté rouge
-<Ellipse><Color>#924E7D</Color><Center><x>580</x><y>2000</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>640</x><y>1897</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>760</x><y>1897</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>820</x><y>2000</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>640</x><y>2103</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>760</x><y>2103</y></Center><Radius>12</Radius></Ellipse>
-Fruits bas côté jaune
-<Ellipse><Color>#924E7D</Color><Center><x>2180</x><y>2000</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2240</x><y>1897</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2360</x><y>1897</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2420</x><y>2000</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2240</x><y>2103</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2360</x><y>2103</y></Center><Radius>12</Radius></Ellipse>
-Fruits côté jaune
-<Ellipse><Color>#924E7D</Color><Center><x>3000</x><y>1180</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2897</x><y>1240</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>2897</x><y>1360</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>3000</x><y>1420</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>3103</x><y>1240</y></Center><Radius>12</Radius></Ellipse>
-<Ellipse><Color>#924E7D</Color><Center><x>3103</x><y>1360</y></Center><Radius>12</Radius></Ellipse>
+Clap 3
+<Rect><Color>#FCBD1F</Color><Position>	<x>840</x><y>1970</y>		</Position><Size><x>160</x><y>30</y></Size></Rect>
+<Rect><Color>#CC8D0F</Color><Position>	<x>810</x><y>1970</y>		</Position><Size><x>30</x><y>30</y></Size></Rect>
 
-############ FIN FRUITS ##############
+Clap 4
+<Rect><Color>#4FA833</Color><Position>	<x>2000</x><y>1970</y>		</Position><Size><x>160</x><y>30</y></Size></Rect>
+<Rect><Color>#1F7803</Color><Position>	<x>2160</x><y>1970</y>		</Position><Size><x>30</x><y>30</y></Size></Rect>
 
-############## FRESQUE ###############
+Clap 5
+<Rect><Color>#FCBD1F</Color><Position>	<x>2300</x><y>1970</y>		</Position><Size><x>160</x><y>30</y></Size></Rect>
+<Rect><Color>#CC8D0F</Color><Position>	<x>2460</x><y>1970</y>		</Position><Size><x>30</x><y>30</y></Size></Rect>
 
-<Rect><Color>#FFFFFF</Color><Position>	<x>1200</x><y>0</y>		</Position><Size><x>600</x><y>10</y></Size></Rect>
+Clap 6
+<Rect><Color>#4FA833</Color><Position>	<x>2600</x><y>1970</y>		</Position><Size><x>160</x><y>30</y></Size></Rect>
+<Rect><Color>#1F7803</Color><Position>	<x>2760</x><y>1970</y>		</Position><Size><x>30</x><y>30</y></Size></Rect>
 
-############ FIN FRESQUE #############
+############ FIN CLAPS ##############
 
-########## VELCRO MAMOUTH ############
+############ DISTRIBUTEURS ##############
+Dist 1
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>265</x><y>0</y>		</Position><Size><x>70</x><y>70</y></Size></Rect>
 
-<Rect><Color>#000000</Color><Position>	<x>586</x><y>0</y>		</Position><Size><x>329</x><y>10</y></Size></Rect>
-<Rect><Color>#000000</Color><Position>	<x>2086</x><y>0</y>		</Position><Size><x>329</x><y>10</y></Size></Rect>
+Dist 2
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>565</x><y>0</y>		</Position><Size><x>70</x><y>70</y></Size></Rect>
 
-######## FIN VELCRO MAMOUTH ##########
+Dist 3
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2365</x><y>0</y>		</Position><Size><x>70</x><y>70</y></Size></Rect>
 
-
+Dist 4
+<Rect solid="1"><Color>#03050A</Color><Position>	<x>2665</x><y>0</y>		</Position><Size><x>70</x><y>70</y></Size></Rect>
+############ FIN DISTRIBUTEURS ##############

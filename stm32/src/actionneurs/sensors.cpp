@@ -1,24 +1,47 @@
 #include "sensors.h"
 
 Sensors* Sensors::sensors = NULL;
+Sensors* Sensors::singleton = 0;
+
+Sensors* Sensors::getSingleton()
+{
+    if(singleton == 0)
+    {
+        singleton = new Sensors;
+    }
+    return singleton;
+}
 
 Sensors::Sensors()
 {
+
     Sensors::sensors = this;
 
-    //uint8_t channels[NB_CAPTEUR_A_ADC] = {12, 13, 14, 2, 15, 10};
-    uint8_t channels[NB_CAPTEUR_A_ADC] = {9,13,8,11,5,10,4,12,14,15}; // Les capteurs analogique doivent être définie dans le même ordre que les canaux dans ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
+    /* Les capteurs analogique doivent être définie dans le même ordre que les canaux dans
+    *  ce tableau car sinon on ne récupérera pas les données dans le bon emplacement dans la mémoire
+    */
+    #if defined(STM32F10X_MD) || defined(STM32F40_41xxx) // KJ - H405
+        uint8_t channels[NB_CAPTEUR_A_ADC] = {9,7,11,6,8,10,13,15}; // D2,G2,AG(AD?),F2,D1,G1,AD(AG?),F1 //{10,11,12,13,14,15}; //
+    #else // K - H107
+        uint8_t channels[NB_CAPTEUR_A_ADC] = {9,14,13,11,5,4,15,12,8,10};
+    #endif
 
-    uint16_t* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
+
+    DMA_MEMORY_TYPE* data = AnalogSensor::initialiserADC(NB_CAPTEUR_A_ADC, channels);
     /// @warning ATTENTION, on doit avoir NB_CAPTEUR_A_ADC = nbSharp + nbUltrasound
 
     // On initialise le nombre de capteur de chaque type
-    nbSharp = 10;
-#ifdef ROBOTHW
-    nbUltrasound = 0;
-    nbLimitSwitch = 0;
-    nbLigthBarrier = 0;
-#endif
+    #if defined(STM32F10X_MD) || defined(STM32F40_41xxx) // KJ - H405
+        nbSharp = 8;
+    #else // K - H107
+        nbSharp = 10;
+    #endif
+
+    #ifdef ROBOTHW
+        nbUltrasound = 0;
+        nbLimitSwitch = 0;
+        nbLigthBarrier = 0;
+    #endif
 
     //sharpNameVector = new SharpNameVector(nbSharp);
 #ifdef ROBOTHW
@@ -29,41 +52,41 @@ Sensors::Sensors()
 
     // On initialise les tableaux de pointeur qui contiendront les capteurs
     sharps = new SharpSensor*[nbSharp];
-    #ifdef STM32F10X_MD // Pin pour le stm32 h103
-        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 15, data); // front left 9
-        sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 6, data); // front side right 13
-        sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 10, data); // front side left 8
-        sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 8, data); // avant side droite 11
-        sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 11, data); // ARRIERE gauche 5
-        sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 7, data); // back middle 10 //CAPTEUR G2
-        sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 13, data); // arriere droit 4
-        //sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
-        //sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
-        //sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+    #if defined(STM32F10X_MD) || defined(STM32F40_41xxx) // Pin pour le stm32 h103
+        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data);      // - 10
+        sharps[1] = new SharpSensor(SharpSensor::FRONT_MIDDLE, 7, data);   // - 11
+        sharps[2] = new SharpSensor(SharpSensor::FRONT_RIGHT, 11, data);    // - 12
+        sharps[3] = new SharpSensor(SharpSensor::BACK_LEFT, 6, data);      // - 13
+        sharps[4] = new SharpSensor(SharpSensor::BACK_MIDDLE, 8, data);     // - 14
+        sharps[5] = new SharpSensor(SharpSensor::BACK_RIGHT, 10, data);     // - 15
+        sharps[6] = new SharpSensor(SharpSensor::NONE, 13, data);            // rien
+        sharps[7] = new SharpSensor(SharpSensor::NONE, 15, data);           // rien
+        /*sharps[8] = new SharpSensor(SharpSensor::NONE, 8, data);            // rien
+        sharps[9] = new SharpSensor(SharpSensor::NONE, 10, data);*/           // rien
     #endif
     #ifdef STM32F10X_CL // Pin pour le stm32 h107
-        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
-        sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
-        sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
-        sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
-        sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
-        sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
-        sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
-        sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
-        sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
-        sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
+        sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data);      // F1 - 9
+        sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 14, data);    // F2 - 14
+        sharps[2] = new SharpSensor(SharpSensor::LEFT_FRONT, 13, data);     // G2 - 13
+        sharps[3] = new SharpSensor(SharpSensor::LEFT_BACK, 11, data);      // G1 - 11
+        sharps[4] = new SharpSensor(SharpSensor::BACK_RIGHT, 5, data);      // AD - 5
+        sharps[5] = new SharpSensor(SharpSensor::BACK_LEFT, 4, data);       // AG - 4
+        sharps[6] = new SharpSensor(SharpSensor::RIGHT_FRONT, 15, data);    // D1 - 15
+        sharps[7] = new SharpSensor(SharpSensor::RIGHT_BACK, 12, data);     // D2 - 12
+        sharps[8] = new SharpSensor(SharpSensor::NONE, 8, data);            // rien
+        sharps[9] = new SharpSensor(SharpSensor::NONE, 10, data);           // rien
     #endif
 
     #ifndef ROBOTHW //Si on est dans le simu, idem que pour le H107
         sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data); // front left 9
         sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
-        sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
-        sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
+        sharps[2] = new SharpSensor(SharpSensor::LEFT_FRONT, 8, data); // front side left 8
+        sharps[3] = new SharpSensor(SharpSensor::RIGHT_FRONT, 11, data); // avant side droite 11
         sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
-        sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data); // back middle 10
+        sharps[5] = new SharpSensor(SharpSensor::RIGHT_BACK, 10, data); // back middle 10
         sharps[6] = new SharpSensor(SharpSensor::BACK_RIGHT, 4, data); // arriere droit 4
-        sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
-        sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
+        sharps[7] = new SharpSensor(SharpSensor::NONE, 12, data); // capteur haut ascenseur 12
+        sharps[8] = new SharpSensor(SharpSensor::NONE, 14, data); // capteur bas ascenseur 14
         sharps[9] = new SharpSensor(SharpSensor::NONE, 15, data); // rien
     #endif
     //activeAllSharp();
@@ -325,12 +348,12 @@ void Sensors::activeAllSharp()
     }
 }
 
-#ifndef ROBOTHW
+
 SharpSensor** Sensors::getSharpSensorsList()
 {
     return Sensors::sharps;
 }
-
+#ifndef ROBOTHW
 void Sensors::keyPressEvent(QKeyEvent* evt, bool press)
 {
     if(evt && evt->text() == "0" && !evt->isAutoRepeat())

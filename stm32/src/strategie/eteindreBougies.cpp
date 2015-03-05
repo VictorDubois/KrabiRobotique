@@ -10,7 +10,7 @@ EteindreBougies::EteindreBougies(bool isBlue) : MediumLevelAction()
 {
     //bool isBlue = StrategieV2::getIsBlue();
     bleuVersRouge = isBlue;
-    
+
     if (StrategieV2::getIsBlue())
     {
     bougiesBas[0] = new EteindreBougieV2(Position(850.00,   1793, StrategieV2::getIsBlue()), -1.2200,   true,   true, isBlue,   bleuVersRouge);
@@ -32,9 +32,9 @@ EteindreBougies::EteindreBougies(bool isBlue) : MediumLevelAction()
     bougiesBas[16] = new EteindreBougieV2(Position(2120.00, 1620, StrategieV2::getIsBlue()), 0.916298,  true,   true, !isBlue,  bleuVersRouge);
     bougiesBas[17] = new EteindreBougieV2(Position(2160.00, 1780, StrategieV2::getIsBlue()), 1.1781,    true,   true, !isBlue,  bleuVersRouge);
     bougiesBas[18] = new EteindreBougieV2(Position(2174.18, 1890, StrategieV2::getIsBlue()), 1.4399,    true,   true, !isBlue,  bleuVersRouge);
-    
+
     //bougiesBas[7] = new EteindreBougieV2(Position(2150, 1895, StrategieV2::getIsBlue()), 1.10,  false, true, true, bleuVersRouge);
-    
+
     }
     else
     {
@@ -55,7 +55,7 @@ EteindreBougies::~EteindreBougies()
 
 int EteindreBougies::update()
 {
-    allumerLED2();
+    //allumerLED2();
     if (status == 0)
         status = 1;
     else if (status == 1) // mise en place du robot
@@ -66,7 +66,7 @@ int EteindreBougies::update()
     else if (status == 2) // mise en place du robot
     {
         Position vect = Position(1000, 1360, StrategieV2::getIsBlue()) - Odometrie::odometrie->getPos().getPosition();
-        allumerLED2();
+      //  allumerLED2();
         if (vect.getNorme() < 10)
         {
             StrategieV2::setCurrentGoal(Position(850, 1793, StrategieV2::getIsBlue()), true); // positions a changer pour ne faire que les blanches
@@ -113,7 +113,7 @@ int EteindreBougies::update()
     }
     else if (status > 6)
         status ++;
-        
-    
+
+
     return status;
 }

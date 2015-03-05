@@ -25,7 +25,7 @@ void Ascenseur::monter()
     if (!toutEnHaut())
     {
         m_tourne = true;
-        m_vis->tourne(1.0f);
+        m_vis->tourne(0.5f);
     }
 }
 
@@ -37,7 +37,7 @@ void Ascenseur::descendre()
     if (!toutEnHaut())
     {
         m_tourne = true;
-        m_vis->tourne(-1.0f);
+        m_vis->tourne(-0.5f);
     }
 }
 

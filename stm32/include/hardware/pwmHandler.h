@@ -1,7 +1,12 @@
 #ifndef PWMHANDLER_H
 #define PWMHANDLER_H
 
-#include "stm32f10x_tim.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_tim.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_tim.h"
+#endif
+
 #include "timerHandler.h"
 
 /// @brief Classe représentant un générateur de PWM.

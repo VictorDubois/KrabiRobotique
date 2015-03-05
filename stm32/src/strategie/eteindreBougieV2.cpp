@@ -28,7 +28,8 @@ int EteindreBougieV2::update()
         status = 1;
         StrategieV2::setCurrentGoal(goalPosition, false, 0.50*VITESSE_LINEAIRE_MAX);
         // choose ourselves sharps to check
-        StrategieV2::emptySharpsToCheck();
+        //Ne compile plus avec le nouvel enum des SHARPS
+        /*StrategieV2::emptySharpsToCheck();
         StrategieV2::enableSharp(SharpSensor::FRONT_LEFT);
         StrategieV2::enableSharp(SharpSensor::FRONT_RIGHT);
         if (StrategieV2::getIsBlue())
@@ -36,7 +37,7 @@ int EteindreBougieV2::update()
         else
             StrategieV2::enableSharp(SharpSensor::FRONT_SIDE_LEFT);
         if (this->checked && !this->mustPress)
-            status = -1;
+            status = -1;*/
     }
     else if (status == 1)
     {
@@ -62,21 +63,21 @@ int EteindreBougieV2::update()
     }
     else if (status == 100) //
     {
-        Marteaux::releverMarteau(bougieBasse, bleuVersRouge); // 
+        Marteaux::releverMarteau(bougieBasse, bleuVersRouge); //
         status++;
     }
     else if (status == 150) //
     {
         allumerLED();
-        Marteaux::enfoncerMarteau(bougieBasse, bleuVersRouge); // 
+        Marteaux::enfoncerMarteau(bougieBasse, bleuVersRouge); //
         status++;
     }
     else if (status == 200) //
     {
         if (bougieBasse)
-            Marteaux::rangerMarteau(bougieBasse, bleuVersRouge); // 
+            Marteaux::rangerMarteau(bougieBasse, bleuVersRouge); //
         else
-            Marteaux::releverMarteau(bougieBasse, bleuVersRouge); // 
+            Marteaux::releverMarteau(bougieBasse, bleuVersRouge); //
         status++;
     }
     else if (status == 250)

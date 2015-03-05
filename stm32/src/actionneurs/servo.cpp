@@ -1,5 +1,9 @@
 
-#include "stm32f10x_gpio.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_gpio.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_gpio.h"
+#endif
 
 #include "servo.h"
 
@@ -21,7 +25,13 @@ void Servo::initPin(GPIO_TypeDef* GPIOx, uint16_t pinX)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin = pinX;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    #endif
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOx, &GPIO_InitStructure);
 }

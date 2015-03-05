@@ -1,9 +1,16 @@
 #ifndef INTERFACE_SERVOS_NUMERIQUES_H_INCLUDED
 #define INTERFACE_SERVOS_NUMERIQUES_H_INCLUDED
 
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_gpio.h"
-#include "stm32f10x_usart.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_rcc.h"
+    #include "stm32f4xx_gpio.h"
+    #include "stm32f4xx_usart.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_rcc.h"
+    #include "stm32f10x_gpio.h"
+    #include "stm32f10x_usart.h"
+#endif
+
 #include "ax12api.h"
 
 void ServosNumeriques_sendData(int data);
@@ -24,9 +31,9 @@ int receiveData();
 
 int receiveStatusPacket(int* tableau);
 
-void moveToAtSpeed(uint16_t position, uint16_t vitesse, uint8_t servo);
-void moveTo(uint16_t position, uint8_t servo);
-void moveAtSpeed(uint16_t vitesse, uint8_t servo);
+void moveToAtSpeed(uint16_t position, uint16_t vitesse, uint8_t servo); // vitesse min : 0x0000 (stupide), vitesse max : 0x07ff
+void moveTo(uint16_t position, uint8_t servo); // position min : 0x0000, position max : 0x03ff
+void moveAtSpeed(uint16_t vitesse, uint8_t servo); // définie la vitesse des prochains mouvements
 void setLedState(uint8_t ledOn, uint8_t servo);
 
 void setMinimumAngle(uint16_t angle, uint8_t servo);

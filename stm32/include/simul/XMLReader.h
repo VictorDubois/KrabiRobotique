@@ -145,13 +145,17 @@ class XMLTag
 		 * \return true si p_inside est vide, false sinon.
 		*/
 		bool finishedReading() const;
+
+        const bool& getSolid() const;
+
+        void setSolid(bool solid);
 	
 	private:
 		const XMLTag* p_parent; /*!< Père. */
 		std::vector<XMLTag*> p_children; /*!< Enfants. */
 		QString p_type; /*!< Type (<A></A> a pour type A). */
 		QString p_value; /*!< Valeur (<A>3</A> a pour valeur 3). */
-		
+        bool p_solid; /*!< Valeur pour savoir si objet solide. */
 		QString p_inside; /*!< Contenu non encore traité. */
 };
 

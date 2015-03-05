@@ -1,8 +1,13 @@
 #ifndef TIMERHANDLER_H
 #define TIMERHANDLER_H
-
-#include "stm32f10x_tim.h"
-#include "stm32f10x_rcc.h"
+#ifdef ROBOTHW
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_tim.h"
+    #include "stm32f4xx_rcc.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_tim.h"
+    #include "stm32f10x_rcc.h"
+#endif
 
 /// @brief Structure décrivant l’état d’un timer
 class Timer
@@ -44,5 +49,5 @@ class Timer
         static void enableTimerClock(TIM_TypeDef* TIMx);
 };
 
-
+#endif
 #endif // TIMERHANDLER_H

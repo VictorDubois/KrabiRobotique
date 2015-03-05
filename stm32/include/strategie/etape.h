@@ -1,7 +1,6 @@
 #ifndef ETAPE_H
 #define ETAPE_H
 #include "position.h"
-#define NB_MAX_CHILDREN 4
 
 class Etape
 {
@@ -18,9 +17,15 @@ public:
         DEPOSE_FEU = 6,
         DEPOSE_FRUIT = 7,
         TORCHE_MOBILE = 8,
-        FEU_COTE = 9,
-        FEU_TERRAIN = 10,
-        TIR_MAMMOUTH = 11,
+        FEU_COTE_NOTRE_COULEUR_FACE_TERRAIN = 9,
+        FEU_COTE_NOTRE_COULEUR_FACE_EXTERIEUR = 10,
+        FEU_TERRAIN = 11,
+        TIR_MAMMOUTH = 12,
+        TIR_FILET = 13,
+        FEU_MINI_BRAS = 14,
+        FEU_COTE = 15,
+        CENTRE_TABLE = 16,
+        CLAP = 17,
         ROBOT_POINT_PASSAGE = POINT_PASSAGE + 20,
         ROBOT_COLLECT =       COLLECT + 20,
         ROBOT_FRUIT =         FRUIT + 20,
@@ -30,20 +35,26 @@ public:
         ROBOT_DEPOSE_FEU =    DEPOSE_FEU + 20,
         ROBOT_DEPOSE_FRUIT  = DEPOSE_FRUIT + 20,
         ROBOT_TORCHE_MOBILE = TORCHE_MOBILE + 20,
-        ROBOT_FEU_COTE =      FEU_COTE + 20,
+        ROBOT_FEU_COTE_NOTRE_COULEUR_FACE_TERRAIN = FEU_COTE_NOTRE_COULEUR_FACE_TERRAIN + 20,
+        ROBOT_FEU_COTE_NOTRE_COULEUR_FACE_EXTERIEUR = FEU_COTE_NOTRE_COULEUR_FACE_EXTERIEUR + 20,
         ROBOT_FEU_TERRAIN =   FEU_TERRAIN + 20,
         ROBOT_TIR_MAMMOUTH =  TIR_MAMMOUTH + 20,
+        ROBOT_TIR_FILET = TIR_FILET + 20,
+        ROBOT_FEU_MINI_BRAS = FEU_MINI_BRAS + 20,
+        ROBOT_CENTRE_TABLE = CENTRE_TABLE + 20,
+        ROBOT_CLAP = CLAP + 20
+
     };
 
     /** @brief Constructeur d'une etape *
     *   @param position Position de cette étape *
-    *   @param children Tableau des étapes attachées à celle-ci *
     *   @param le nombre d'étapes attachées à celle_ci *
     *   @param le numero de cette étape *
+    *   @param le tableau contenant toutes les étapes, pour qu'elle s'y ajoute *
     *   @param typeType d'étape (un feu, un point de passage...) *
-    *   @param state Etat de cette étape, utilisé pour l'exploration du graphe */
-    Etape(Position position, Etape** children, int nbChildren, int numero, EtapeType type, int state);
-    //Etape(Position position, Etape* (&children)[NB_MAX_CHILDREN], int nbChildren, EtapeType type, int state);
+    *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
+    *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
+    Etape(Position position,/* int nbChildren, */int numero, Etape** tableauEtapesTotal, EtapeType type, int state, int nombreEtapesLieesParFinirEtape);
 
     /** @brief Constructeur vide d'une etape */
     Etape();
@@ -98,10 +109,47 @@ public:
     /** @brief Renvoi le numero de cette étape */
     int getNumero();
 
+    /** @brief Renvoi true s'il faut éviter cette étape */
+    bool aEviter();
+
+    /** @brief Oublie qu'on a vu un robot ici*/
+    void oublieRobotVu();
+
+    /** @brief Renvoi un tableau des distances vers les etapes attachees a celle-ci */
+    int* getDistances();
+
+    /** @brief set un tableau des distances vers les etapes attachees a celle-ci *
+    *   @param distances Tableau des distances vers les etapes attachées à celle-ci */
+    void setDistances(int* distances);
+
+    void computeChildDistances();
+
+    /** @brief Renvoi un tableau des étapes qui doivent être considérées comme finie si celle-ci l'est */
+    int* getEtapesLieesParFinirEtape();
+
+    /** @brief set un tableau des étapes qui doivent être considérées comme finie si celle-ci l'est *
+    *   @param children Tableau des étapes qui doivent être considérées comme finie si celle-ci l'est */
+    void setEtapesLieesParFinirEtape(int* numerosEtapesLieesParFinirEtape);
+
+    /** @brief Renvoi le nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
+    int getNombreEtapesLieesParFinirEtape();
+
+    /** @brief Effectue les changements nécessaires pour considérer l'étape comme effectuée */
+    void finir(void);
+
+    /** @brief set le score de l'étape *
+    *   @param score le score de l'étape */
+    void setScore(int score);
+
+    /** @brief Renvoi le score de l'étape */
+    int getScore();
+
+    /** @brief Ajoute un voisinau tableau de voisins */
+    Etape* addVoisin(Etape* newVoisin, bool autreSens=true);
+
 private:
     /** @brief Tableau des étapes attachées à celle-ci */
     Etape** children;
-    //Etape* (&children)[NB_MAX_CHILDREN];
 
     /** @brief Etape précédente pour remonter à l'étape en cours, utilisé pour l'exploration du graphe */
     Etape* parent;
@@ -123,6 +171,18 @@ private:
 
     /** @brief int le numero de cette étape */
     int numero;
+
+    /** @brief Tableau des distances vers les étapes attachées à celle-ci */
+    int* distances;
+
+    /** @brief Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
+    int nombreEtapesLieesParFinirEtape;
+
+    /** @brief Tableau des étapes qui doivent être considérées comme finie si celle-ci l'est */
+    int* numerosEtapesLieesParFinirEtape;
+
+    /** @brief Score de l'étape, correspondant à si on veut que le robot la réalise ou pas*/
+    int score;
 };
 
 #endif // ETAPE_H

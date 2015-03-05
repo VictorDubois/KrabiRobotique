@@ -1,6 +1,6 @@
 #ifndef MOTEUR_H
 #define MOTEUR_H
-
+#ifdef ROBOTHW
 #include "pwmHandler.h"
 
 /// @brief Classe utilisé pour gérer les moteurs (Souvent par héritage).
@@ -22,5 +22,5 @@ class Moteur
         /// @param rapport est l'angle de rotation du moteur pour le servoMoteur
         void tourne(float rapport);
 };
-
+#endif
 #endif // MOTEUR_H

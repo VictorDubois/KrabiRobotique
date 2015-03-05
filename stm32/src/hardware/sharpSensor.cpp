@@ -1,16 +1,17 @@
 #include "sharpSensor.h"
 #include "leds.h"
 
-uint16_t SharpSensor::threshold = SEUIL_DETECTION;
+int SharpSensor::threshold = SEUIL_DETECTION;
 bool SharpSensor::estDesactive = false;
 
-SharpSensor::SharpSensor(SharpName name, uint8_t channel, uint16_t* pData, uint16_t seuil) : AnalogSensor(channel, pData)
+SharpSensor::SharpSensor(SharpName name, uint8_t channel, DMA_MEMORY_TYPE* pData, int seuil) : AnalogSensor(channel, pData)
 {
     this->name = name;
     counter = 0;
     output = false;
     actif = true;
     seuilDetection = seuil;
+    value = 0;
     #ifndef ROBOTHW
     this->evt = false;
     #endif
@@ -34,8 +35,16 @@ void SharpSensor::updateValue()
      **                                           **
      **                                           **
      ***********************************************/
+
+    #if defined(STM32F10X_MD) || defined(STM32F40_41xxx) // KJ - H405
+        value = *data;
+        value >>= 4;
+    #else // K - H107
+        value = *data;
+    #endif
+
     counter <<= 1;
-    counter |= (*data > seuilDetection);
+    counter |= (value > seuilDetection);
     //if (*data > threshold)
     //    allumerLED();
     output = output ? !((counter & 0xff) == 0x00) : (counter & 0xff) == 0xff ; // Permet de s'assurer qu'au moins 8 détections succéssive ont eu lieu avant de retourner un true et que rien a été detecté au moins 8 fois pour retourner false.
@@ -57,8 +66,8 @@ Sensor::OutputSensor SharpSensor::getValue()
 {
     OutputSensor outputR;
     outputR.type = SHARP;
-    outputR.f = 0;
-    outputR.b = (output);// && actif && !SharpSensor::estDesactive);
+    outputR.f = (float)value;
+    outputR.b = (output && actif);// && actif && !SharpSensor::estDesactive);
     return outputR;
 }
 

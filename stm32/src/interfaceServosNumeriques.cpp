@@ -1,4 +1,5 @@
 #include "interfaceServosNumeriques.h"
+//#include "stm32f4xx_usart.h"
 
 void ServosNumeriques_sendData(int data)
 {
@@ -12,6 +13,46 @@ namespace ServosNumeriques
 
 void initClocksAndPortsGPIO()
 {
+#ifdef STM32F40_41xxx // Pin pour le stm32 h405
+    // bus APB1 : allow usart 3
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+
+    // on remap l'usart3 pour que le stm soit bien configuré sur les ports 10 et 11 du GPIOC, et le sens sur le par 5 du GPIOB
+    GPIO_PinAFConfig(GPIOC, GPIO_Pin_10, GPIO_AF_USART3);
+    GPIO_PinAFConfig(GPIOC, GPIO_Pin_11, GPIO_AF_USART3);
+    //GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
+
+    GPIO_InitTypeDef GPIO_InitStructure;
+ 	// port C pin 10 TX : un servo numérique en Ecriture
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    #endif
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+ 	// port C pin 11 RX : un servo numérique en Lecture
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+ 	// port B pin 5 : la direction (TX/RX)
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    #endif
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; // La vitesse de rafraichissement du port
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+#endif
 #ifdef STM32F10X_MD // Pin pour le stm32 h103
     // bus APB1 : allow usart 3
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
@@ -89,12 +130,20 @@ void initUART(int baudRate)
 void sendMode()
 {
 	// on veut envoyer des paquets, on met le bit d'envoi à 1
+	#ifdef STM32F10X_CL
 	GPIO_WriteBit(GPIOD, GPIO_Pin_10, Bit_SET);
+	#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+	GPIO_WriteBit(GPIOB, GPIO_Pin_5, Bit_SET);
+	#endif
 }
 void receiveMode()
 {
 	// on veut recevoir des paquets, on met le bit d'envoi à 0
+	#ifdef STM32F10X_CL
 	GPIO_WriteBit(GPIOD, GPIO_Pin_10, Bit_RESET);
+	#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+	GPIO_WriteBit(GPIOB, GPIO_Pin_5, Bit_SET);
+	#endif
 }
 
 void sendData(int data)

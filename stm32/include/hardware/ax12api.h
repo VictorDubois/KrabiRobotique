@@ -68,7 +68,9 @@
 #define AX12_SYNC_WRITE 			0x83
 #define AX12_SYNC_WRITE_PARAMS 		4
 
-#include "memory.h"
+#ifdef ROBOTHW
+    #include "memory.h"
+#endif
 #include <stdint.h>
 
 /** Calcul de la checksum d'un paquet

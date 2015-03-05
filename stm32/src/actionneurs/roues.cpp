@@ -10,7 +10,10 @@ Roues::Roues()
     : droite(TIM2, 2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_4), gauche(TIM2, 1, GPIOA, GPIO_Pin_1, GPIOC, GPIO_Pin_4)
 #endif
 #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
-    : droite(TIM5, 4, GPIOA, GPIO_Pin_3, GPIOD, GPIO_Pin_4), gauche(TIM5, 2, GPIOA, GPIO_Pin_1, GPIOD, GPIO_Pin_3)
+    : droite(TIM5, 4, GPIOA, GPIO_Pin_3, GPIOD, GPIO_Pin_4), gauche(TIM5, 2, GPIOA, GPIO_Pin_1, GPIOD, GPIO_Pin_6)
+#endif
+#ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
+    : droite(TIM2, 2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_4), gauche(TIM2, 1, GPIOA, GPIO_Pin_1, GPIOC, GPIO_Pin_4)
 #endif
 
 {

@@ -43,13 +43,15 @@ class CommandAllerA : public Command
 
     float derniereDistance;
     bool m_fini;
+    float precisionAngle;
     public:
-        CommandAllerA(Position p, bool reculer, float vitesseLineaireMax = VITESSE_LINEAIRE_MAX, float vitesseFin = 0.0f);
+        CommandAllerA(Position p, bool reculer, float vitesseLineaireMax = VITESSE_LINEAIRE_MAX, float vitesseFin = 0.0f, float precisionAngle = -1.);
 
         virtual void update();
         virtual Vitesse getLinearSpeed();
         virtual Angle getAngularSpeed();
         virtual void resetSpeeds();
+        //virtual void limitSpeed();
 
         // est ce que la commande a fini ?
         virtual bool fini() const;
@@ -62,12 +64,13 @@ class CommandAllerA : public Command
 class CommandTournerVers : public Command
 {
     Position but;
-    float angSpeed;
+    float angSpeed, butAngle;
 
-    bool m_fini;
+    bool m_fini, useAngle;
     int signeAngle;
     public:
-        CommandTournerVers(Position p);
+        CommandTournerVers(Position p, float maxSpeed = VITESSE_ANGULAIRE_MAX);
+        CommandTournerVers(Angle a, float maxSpeed = VITESSE_ANGULAIRE_MAX);
 
         virtual void update();
         virtual Vitesse getLinearSpeed();
@@ -75,28 +78,9 @@ class CommandTournerVers : public Command
 
         // est ce que la commande a fini ?
         virtual bool fini() const;
-};
 
-    ////////////////////////////////
-    //  CommandTournerVersAngle   //
-    ////////////////////////////////
-
-class CommandTournerVersAngle : public Command
-{
-    float but;
-    float angSpeed;
-
-    bool m_fini;
-    int signeAngle;
-    public:
-        CommandTournerVersAngle(float angleVise);
-
-        virtual void update();
-        virtual Vitesse getLinearSpeed();
-        virtual Angle getAngularSpeed();
-
-        // est ce que la commande a fini ?
-        virtual bool fini() const;
+private:
+        float maxAngSpeed;
 };
 
 

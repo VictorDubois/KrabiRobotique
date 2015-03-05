@@ -2,7 +2,11 @@
 #define CAPTEURCOULEUR_H
 
 #ifdef ROBOTHW
-#include "stm32f10x_tim.h"
+#ifdef STM32F40_41xxx
+    #include "stm32f4xx_tim.h"
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+    #include "stm32f10x_tim.h"
+#endif
 #include "command.h"
 
 enum PositionCapteurCouleur

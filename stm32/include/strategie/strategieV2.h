@@ -7,8 +7,13 @@
 #include "sharpSensor.h"
 #include "ultrasoundSensor.h"
 #include "strategiev3.h"
+#include "canonFilet.h"
+
 #ifndef ROBOTHW
 #include "sensors.h"
+#include <QPainter>
+#else
+#include "tourelle.h"
 #endif
 
 class StrategieV2
@@ -18,9 +23,10 @@ class StrategieV2
         virtual ~StrategieV2();
 
         static void update();
-        static void setCurrentGoal(Position goal, bool goBack, float maxSpeed = VITESSE_LINEAIRE_MAX);
-        static void setCurrentGoal(Position goal, Position center, float vitesse, bool goBack);
-        static void lookAt(Position pos);
+        static void setCurrentGoal(Position goal, bool goBack, float maxSpeed = VITESSE_LINEAIRE_MAX, Angle precisionAngle = -100.00);
+        static void setCurrentGoal(Position goal, Position center, float vitesse, bool goBack, Angle precisionAngle = -100.00);
+        static void lookAt(Position pos, float maxSpeed = VITESSE_ANGULAIRE_MAX);
+        static void lookAt(Angle a, float maxSpeed = VITESSE_ANGULAIRE_MAX);
         static void addTemporaryAction(MediumLevelAction* action);
         static void gatherGlass();
         static void setJustAvoided(bool value);
@@ -31,17 +37,20 @@ class StrategieV2
         static void emptySharpsToCheck();
         static void setEnTrainDeRecalibrer(bool recalibre);
         static void enableSharp(SharpSensor::SharpName name);
+        static void enableSharpsGroup(bool front);
         static void setCommand(Command* command);
         static bool sharpDetects(SharpSensor::SharpName name);
         static void setTourneSurSoiMeme(bool tourne);
+        static long getTimeSpent();
+        static bool *getSharpsToCheck();
 
 #ifndef ROBOTHW
         static SharpSensor** getSensors();
+
+static void paint(QPainter* p);
 #endif
         static bool somethingDetected;
-        
 
-    protected:
     private:
         static bool isBlue;
         static int updateCount;
@@ -66,6 +75,11 @@ class StrategieV2
         static int timer;
         static bool sharpsToCheck[SharpSensor::END_SHARP_NAME];
         static bool tourneSurSoiMeme;
+        static int timeToRestart;
+        #ifdef ROBOTHW
+            static Tourelle* tourelle;
+            static int hysteresisTourelle;
+        #endif
 };
 
 #endif // STRATEGIEV2_H_INCLUDED

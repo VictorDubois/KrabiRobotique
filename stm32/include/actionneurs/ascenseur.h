@@ -1,6 +1,7 @@
 #ifndef DEF_ASCENSEUR
 #define DEF_ASCENSEUR
 
+#ifdef ROBOTHW
 #include "limitSwitchSensor.h"
 #include "roue.h"
 
@@ -49,4 +50,5 @@ class Ascenseur
 
 };
 
+#endif
 #endif

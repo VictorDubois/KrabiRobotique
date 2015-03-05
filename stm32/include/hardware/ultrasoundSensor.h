@@ -23,7 +23,7 @@ class UltrasoundSensor : public AnalogSensor
         /** @brief Constructeur d'un capteur ultrason *
         *   @param channel Canal de l'ADC utilisé pour ce capteur. *
         *   @param pData Pointeur vers les données brutes du capteur directement sortie de l'ADC*/
-        UltrasoundSensor(UltrasoundName name, uint8_t channel, uint16_t* pData);
+        UltrasoundSensor(UltrasoundName name, uint8_t channel, DMA_MEMORY_TYPE* pData);
 
         /** @brief Destructeur de cette classe */
         virtual ~UltrasoundSensor();

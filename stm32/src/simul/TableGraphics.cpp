@@ -1,4 +1,5 @@
 #include "simul/TableGraphics.h"
+#include <QDebug>
 
 using namespace std;
 
@@ -32,10 +33,23 @@ void Point2d::readSelf(XMLTag* tree)
 Shape::Shape()
 {
 	p_z = 0;
+    solid = false;
 }
+
 Shape::~Shape()
 {
 }
+
+void Shape::setSolid(bool solid)
+{
+    this->solid = solid;
+}
+
+bool Shape::getSolid() const
+{
+    return solid;
+}
+
 void Shape::readSelf(XMLTag* tree)
 {
 	std::vector<XMLTag*> children = tree->getChildren();
@@ -53,6 +67,10 @@ void Shape::drawSelf(QPainter* painter)
 {
     painter->setBrush(p_color);
     painter->setPen(p_color);
+}
+
+void Shape::createSolid(b2Body* body)
+{
 }
 
 Rect::Rect()
@@ -89,6 +107,27 @@ void Rect::drawSelf(QPainter* painter)
 {
 	//Shape::drawSelf(painter);
 	painter->fillRect(p_start.x, p_start.y, p_size.x, p_size.y, p_color);
+}
+
+void Rect::createSolid(b2Body* body)
+{
+#ifdef BOX2D_2_0_1
+    b2PolygonDef box;
+    b2PolygonDef &fixture = box;
+#else
+    b2PolygonShape box;
+    b2FixtureDef fixture;
+    fixture.shape = &box;
+#endif
+    fixture.friction = 0.5;
+    fixture.density = 0;
+
+#ifdef BOX2D_2_0_1
+#define CreateFixture CreateShape
+#endif
+
+    box.SetAsBox(p_size.x/200.,p_size.y/200., b2Vec2((p_start.x + p_size.x/2.)/100.,(p_start.y + p_size.y/2.)/100.),0);
+    body->CreateFixture(&fixture);
 }
 	
 RoundedRect::RoundedRect() : Rect()
@@ -212,24 +251,26 @@ void TableGraphics::load(QString filename)
 	for (int i = 0; i < size; i++)
 	{
 		QString type = children[i]->getType();
+        Shape* shape;
 		if (type == "Rect" || type == "rect")
 		{
-			Rect* shape = new Rect();
+            shape = new Rect();
 			shape->readSelf(children[i]);
 			shapes.push_back(shape);
 		}
 		else if (type == "RoundedRect" || type == "roundedrect")
 		{
-			RoundedRect* shape = new RoundedRect();
+            shape = new RoundedRect();
 			shape->readSelf(children[i]);
 			shapes.push_back(shape);
 		}
-		else if (type == "Ellipse" || type == "ellipse")
+        else if (type == "Ellipse" || type == "ellipse")
 		{
-			Ellipse* shape = new Ellipse();
+            shape = new Ellipse();
 			shape->readSelf(children[i]);
 			shapes.push_back(shape);
 		}
+        shape->setSolid(children[i]->getSolid());
 	}
 }
 
@@ -238,6 +279,14 @@ void TableGraphics::draw(QPainter* painter)
 	int size = shapes.size();
 	for (int i = 0; i < size; i++)
 		shapes[i]->drawSelf(painter);
+}
+
+void TableGraphics::createSolids(b2Body* body)
+{
+    int size = shapes.size();
+    for (int i = 0; i < size; i++)
+        if (shapes[i]->getSolid())
+            shapes[i]->createSolid(body);
 }
 
 

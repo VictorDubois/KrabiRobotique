@@ -1,42 +1,37 @@
 #include "asservissement.h"
 #include "strategieV2.h"
 #include "ascenseur.h"
-#include "commandAllerA.h"
 
 #include "misc.h"
 #include "capteurCouleur.h"
 
-#define DBG_SIZE 750
+#include "remote.h"
 
-/* DEBUG AA */
-#include "../hardware/leds.h"
+#define DEBUG_ODOMEDTRIE 1
 
+#define DEBUG_ASSERV 0
+#define DEBUG_ASSERV_SIZE 800
 
-#define FREEWHEEL 0
+#define DEBUG_BLINK_EACH_SECOND 0
 
+#if DEBUG_ASSERV == 1
+    //int roueGauche[DEBUG_ASSERV_SIZE];
+    //int roueDroite[DEBUG_ASSERV_SIZE];
 
-//int roueGauche[DBG_SIZE];
-//int roueDroite[DBG_SIZE];
+    float vitesseLin[DEBUG_ASSERV_SIZE];
+    float vitesseLinE[DEBUG_ASSERV_SIZE];
+    float linearDuty[DEBUG_ASSERV_SIZE];
 
-float vitesseLin[DBG_SIZE];
-float vitesseLinE[DBG_SIZE];
-float linearDuty[DBG_SIZE];
+    float vitesseAng[DEBUG_ASSERV_SIZE];
+    float vitesseAngE[DEBUG_ASSERV_SIZE];
+    float angularDuty[DEBUG_ASSERV_SIZE];
 
-float vitesseAng[DBG_SIZE];
-float vitesseAngE[DBG_SIZE];
-float angularDuty[DBG_SIZE];
+    float posx[DEBUG_ASSERV_SIZE];
+    float posy[DEBUG_ASSERV_SIZE];
+    float angle[DEBUG_ASSERV_SIZE];
 
-float posX[DBG_SIZE];
-float posY[DBG_SIZE];
-float posAng[DBG_SIZE];
-
-//float posx[DBG_SIZE];
-//float posy[DBG_SIZE];
-//float angle[DBG_SIZE];
-uint32_t dbgInc = 0;
-
-Command* Asservissement::commandDebugTest = NULL;
-int Asservissement::counter = 0;
+    uint32_t dbgInc = 0;
+#endif
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
 bool Asservissement::matchFini = false;
@@ -50,6 +45,11 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     vitesseAngulaire = 0;
 	odometrie = _odometrie;
 
+    activePIDDistance = true;
+    activePIDAngle = true;
+
+    resetFixedDuty();
+
     linearDutySent = 0;
     angularDutySent = 0;
     Asservissement::asservissement = this;
@@ -60,7 +60,11 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
 
 #ifdef ROBOTHW  //on définie les interruptions possibles dues à certains ports
     *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
+#ifdef STM32F40_41xxx
+    *((uint32_t *)(STK_LOAD_ADDR)) = 21000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
+#else
     *((uint32_t *)(STK_LOAD_ADDR)) = 9000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
+#endif
     // le micro controlleur tourne à une frequence f (72Mhz ici), la valeur à mettre est (0.001*(f/8))*(temps en ms entre chaque update)
     // voir p190 de la doc
 
@@ -76,12 +80,14 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
 
 void Asservissement::setLinearSpeed(Vitesse vitesse)
 {
-    vitesseLineaire = vitesse;//3.5f;
+    vitesseLineaire = vitesse;
+    //setEnabledPIDDistance(true);
 }
 
 void Asservissement::setAngularSpeed(VitesseAngulaire vitesse)
 {
-    vitesseAngulaire = vitesse;//0.015f;
+    vitesseAngulaire = vitesse;
+    //setEnabledPIDAngle(true);
 }
 
 void Asservissement::setCommandSpeeds(Command* command)
@@ -96,84 +102,63 @@ void Asservissement::setCommandSpeeds(Command* command)
         setLinearSpeed(0.0f);
         setAngularSpeed(0.0f);
     }
+
+    /*setEnabledPIDDistance(true);
+    setEnabledPIDAngle(true);
+    resetFixedDuty();*/
 }
 
 Distance Asservissement::getLinearSpeed()
 {
-    return vitesseLineaire;
+  /*  if (Remote::getSingleton()->isRemoteMode())
+        return Remote::getSingleton()->getLeftPWM();
+    else*/
+        return vitesseLineaire;
 }
 
 Angle Asservissement::getAngularSpeed()
 {
-    return vitesseAngulaire;
+   /* if (Remote::getSingleton()->isRemoteMode())
+        return Remote::getSingleton()->getRightPWM();
+    else*/
+        return vitesseAngulaire;
 }
 
 void Asservissement::update(void)
 {
-/*
-#ifdef CAPTEURS
-        AnalogSensor::startConversion(); // On lance la conversion des données que l'on reçois des capteurs pour les avoir au bon moment
+#ifdef ROBOTHW
+    #if DEBUG_ODOMEDTRIE == 1
+    PositionPlusAngle pos = Odometrie::odometrie->getPos();
+    Angle absAngle = Odometrie::odometrie->getAbsoluteAngle();
+    if ( pos.position.x > 400. /* absAngle > 3.14159265358979323846*2.*/)
+        Led::setOn(0);
+    else
+        Led::setOff(0);
+    #endif
 #endif
-*/
+
     asserCount++;
-/*
-#ifdef ROUES
-    //On arrete le robot pour être sur que tout soit réinitialisé
-    if(asserCount > CPT_BEFORE_RAZ)
-    {
-        roues.gauche.tourne(0);
-        roues.droite.tourne(0);
-    }
-#endif*/
 
-
-    if (1/*asserCount< 85000/MS_BETWEEN_UPDATE && !Asservissement::matchFini*/)
+    if (true)
     {
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
 
-#ifdef ROUES
-/*
-#ifdef CAPTEURS
-    bool testcap = sensors->detectedSharp()->getSize() > 0;
-#else
-
-    bool testcap = false;
-#endif*/
-
-/*if (testcap)
-{
-    Command::freinageDUrgence(true);
-  //  linearDutySent = 0;
-  //  angularDutySent = 0;
-}
-else
-    Command::freinageDUrgence(false);*/
-#endif //ROUES
-
         //Puis on les récupéres
 
         float vitesse_lineaire_a_atteindre = getLinearSpeed();
-     //   vitesse_lineaire_a_atteindre += ACCELERATION_LINEAIRE_MAX;
-     //   vitesse_lineaire_a_atteindre = (vitesse_lineaire_a_atteindre >= 4.0) ? 4.0f : vitesse_lineaire_a_atteindre;
         float vitesse_angulaire_a_atteindre = getAngularSpeed();
-      //     vitesse_angulaire_a_atteindre += ACCELERATION_ANGULAIRE_MAX;
-     //   vitesse_angulaire_a_atteindre = (vitesse_angulaire_a_atteindre >= VITESSE_ANGULAIRE_MAX) ? VITESSE_ANGULAIRE_MAX : vitesse_angulaire_a_atteindre;
-//vitesse_angulaire_a_atteindre = (vitesse_angulaire_a_atteindre <= -VITESSE_ANGULAIRE_MAX) ? -VITESSE_ANGULAIRE_MAX : vitesse_angulaire_a_atteindre;
 
-        // le buffer de collision se vide si l'accélération demandé est trop forte. Normalement la commande vérifie ça.
- /*       //Il faudrai qu'il passe de marche arriére à marche avant à toute vitesse pour avoir une collision ...
-        buffer_collision <<= 1;
-        buffer_collision |= fabs((vitesse_lineaire_atteinte - vitesse_lineaire_a_atteindre)) < seuil_collision && fabs((vitesse_angulaire_atteinte - vitesse_angulaire_a_atteindre)) < SEUIL_COLISION_ANG;
-*/
+        //qDebug() << fixedLinearDuty << " = " << activePIDAngle;
+
 #ifdef ROUES
 
 
         //on filtre l'erreur de vitesse lineaire et angulaire
-        linearDutySent = pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte);
-        angularDutySent = pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte);
+        linearDutySent = activePIDDistance ? pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte) : fixedLinearDuty;
+        angularDutySent = activePIDAngle ? pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte) : fixedAngularDuty;
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
         float limit = 1.0f;
@@ -186,57 +171,50 @@ else
 
 
         // test d'arret complet si c'est l'ordre qu'on lui donne
-        /*if (vitesse_lineaire_a_atteindre == 0.0f && vitesse_angulaire_a_atteindre == 0.0f)
+        if (vitesse_lineaire_a_atteindre == 0.0f && vitesse_angulaire_a_atteindre == 0.0f)
         {
             linearDutySent = 0.0f;
             angularDutySent = 0.0f;
-        }*/
-
-        limit = 1.0f;
-        float rapportLeft = 1.0*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit);
-        float rapportRight = 1.0*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit);
-
-
-        if (FREEWHEEL/*buffer_collision == 0x0 */)//|| GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11)  == Bit_RESET) //Actif si le buffer_de colision est vide.
-        {   //Si on détecte quelque chose, on s'arréte
-
-            roues.gauche.tourne(0.);
-            roues.droite.tourne(0.);
-        }
-        else
-        {   //Sinon les roues tourne de façon borné et le fait d'avoir filtrées les valeurs permet de compenser les erreurs passées et de faire tournées chaque roues de façon
-            // à tourner et avancer correctement
-            limit = 0.4f;
-
-            roues.gauche.tourne(rapportLeft);
-            roues.droite.tourne(rapportRight);
         }
 
+        // Tourne de façon borné et le fais d'avoir filtrées les valeurs permet de compenser les erreurs
+        // passées et de faire tourner chaque roues de façon à tourner et avancer correctement
+        /*if (Remote::getSingleton()->isRemoteMode())
+        {
+            roues.droite.tourne(Remote::getSingleton()->getRightPWM());
+            roues.gauche.tourne(Remote::getSingleton()->getLeftPWM());
+        }
+        else*/
+        {
+        #if defined(STM32F40_41xxx) || defined(STM32F10X_MD)
+            roues.droite.tourne(0.8*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));
+            roues.gauche.tourne(0.8*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));
+        #else
+            roues.droite.tourne(0.95*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));//*1
+            roues.gauche.tourne(0.95*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));//*1
+        #endif
+        }
 
-        // Pour afficher les courbes :
-            if(dbgInc<DBG_SIZE)
+        #if DEBUG_ASSERV == 1
+        /** Pour afficher les courbes d'asservissement : **/
+            if(dbgInc<DEBUG_ASSERV_SIZE)
             {
 
-                vitesseLin[dbgInc] = vitesse_lineaire_atteinte;
-                vitesseLinE[dbgInc] = vitesse_lineaire_a_atteindre;
-                linearDuty[dbgInc] = linearDutySent;
+                int index = dbgInc/4;
 
-                vitesseAng[dbgInc] = vitesse_angulaire_atteinte;
-                vitesseAngE[dbgInc] = vitesse_angulaire_a_atteindre;
-                angularDuty[dbgInc] = angularDutySent;
+                vitesseLin[index] = vitesse_lineaire_atteinte;
+                vitesseLinE[index] = vitesse_lineaire_a_atteindre;
+                linearDuty[index] = linearDutySent;
 
-                if (StrategieV2::currentCommand!=0)
-                {
-                    posX[dbgInc] = ((CommandAllerA*)(StrategieV2::currentCommand))->_angleVise;//positionPlusAngleActuelle.position.x;
-                    posY[dbgInc] = ((CommandAllerA*)(StrategieV2::currentCommand))->_angleLimit;//positionPlusAngleActuelle.position.y;
-                }
-                else
-                {
-                    posX[dbgInc] = -1.;//positionPlusAngleActuelle.position.x;
-                    posY[dbgInc] = -1.;//positionPlusAngleActuelle.position.y;
-                }
+                vitesseAng[index] = vitesse_angulaire_atteinte;
+                vitesseAngE[index] = vitesse_angulaire_a_atteindre;
+                angularDuty[index] = angularDutySent;
 
-                posAng[dbgInc] = positionPlusAngleActuelle.angle;
+                PositionPlusAngle pos = Odometrie::odometrie->getPos();
+
+                posx[index] = pos.position.x;
+                posy[index] = pos.position.y;
+                angle[index] = pos.angle;
 
                 dbgInc++;
 
@@ -247,17 +225,16 @@ else
                 roues.gauche.tourne(0.0);
                 roues.droite.tourne(0.0);
                 dbgInc++;
-                roues.gauche.tourne(0.0);
-                roues.droite.tourne(0.0);
-            }
-        // Courbes - fin
 
+            }
+        /** FIN **/
+        #endif
 
     }
     else
     {
-        roues.gauche.tourne(0.0);
-        roues.droite.tourne(0.0);
+        roues.gauche.tourne(0.);
+        roues.droite.tourne(0.);
     }
 #else
 }
@@ -265,206 +242,23 @@ else
 }
 
 #ifdef ROBOTHW
-// allume ou éteint une LED
-void xallumerLED()
-{
-#ifdef STM32F10X_MD // stm32 h103
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);
-#endif
-#ifdef STM32F10X_CL // stm32 h107
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET); // LED verte
-#endif
-}
-
-void xeteindreLED()
-{
-#ifdef STM32F10X_MD // stm32 h103
-    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
-#endif
-#ifdef STM32F10X_CL // stm32 h107
-    GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET); // LED verte
-#endif
-}
-
-// 2ème LED du stm h107 (LED jaune)
-#ifdef STM32F10X_CL
-void xallumerLED2()
-{
-    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
-}
-void xeteindreLED2()
-{
-    GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-}
-#endif
-
-#endif
-
-int currentTimer = 0;
-//PositionPlusAngle posOdo;
-
-#ifdef ROBOTHW
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
 {
-/*
-   static Roue* ascensseur = NULL;
-   if (ascensseur==NULL)
-        ascensseur = new Roue(TIM5, 3, GPIOA, GPIO_Pin_2, GPIOD, GPIO_Pin_5);
+    // Count the number of SysTick_Handler call
+    systick_count++;
 
-    if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == Bit_SET)
-        ascensseur->tourne(-1.0f);
-    else
-        ascensseur->tourne(1.0f);
-*/
+#if DEBUG_BLINK_EACH_SECOND
+    if (systick_count%200 == 0){
+        Led::toggle(0);
+    }
+#endif
 
     Odometrie::odometrie->update();
 
-    //currentTimer++;
-#ifdef ROBOTHW
-    /*float xx = Odometrie::odometrie->getPos().angle;
+    StrategieV2::update();
 
-    if (xx>1050.)
-    {
-        allumerLED();
-        //currentTimer = 0;
-    }
-    else
-        eteindreLED();*/
-#endif
-
-    /*Asservissement::counter++;
-    if (Asservissement::counter>100)
-    {
-        allumerLED();
-        if (Asservissement::counter>200)
-            Asservissement::counter = 0;
-    }
-    else
-        eteindreLED();*/
-
-/*#ifdef CAPTEURS
-    Sensors* sensors = Sensors::getSensors();
-    if (sensors != NULL)
-        sensors->update();
-#endif
-*/
-  StrategieV2::update();
-
-  /*Asservissement::commandDebugTest->update();
-  if (Asservissement::commandDebugTest->fini())
-  {
-      Asservissement::asservissement->setAngularSpeed(0.);
-      Asservissement::asservissement->setLinearSpeed(0.);
-  }
-  else
-   Asservissement::asservissement->setCommandSpeeds(Asservissement::commandDebugTest);*/
-
-   /*if (StrategieV2::strategie != NULL)
-    StrategieV2::strategie->update();*/
-
-  Asservissement::asservissement->update();
-
-
-/*
-    static int i = 0;
-
-    if (i % 200 == 0)
-    {
-    //    ascensseur->tourne(0.9f);
-    //    Asservissement::asservissement->roues.gauche.tourne(0.7f);
-    //    Asservissement::asservissement->roues.droite.tourne(-0.5f);
-        xeteindreLED();
-        xallumerLED2();
-
-    }
-    else if (i % 100 == 0)
-    {
-  //      ascensseur->tourne(-0.7f);
-   //     Asservissement::asservissement->roues.gauche.tourne(-0.5f);
-   //     Asservissement::asservissement->roues.droite.tourne(0.8f);
-        xallumerLED();
-        xeteindreLED2();
-
-    }
-    i++;
-*/
-
-    /*Ascenseur* ascenseur = Ascenseur::get();
-    if (ascenseur != NULL)
-        ascenseur->update();*/
-
-/*
-if (Odometrie::odometrie->ang < 0.2*3.1415/180.0 && Odometrie::odometrie->ang > -0.2*3.1415/180.0)
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
-    }
-    else
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
-    }
-*/
-/*
-   Odometrie::odometrie->update();
-   if (Odometrie::odometrie->posX > -5000.0)
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_SET);
-    }
-    else if (Odometrie::odometrie->posX < -5000.0)
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_SET);
-    }
-    else
-    {
-        GPIO_WriteBit(GPIOC, GPIO_Pin_7, Bit_RESET);
-        GPIO_WriteBit(GPIOC, GPIO_Pin_6, Bit_RESET);
-    }
-*/
-
-/*
-    static CapteurCouleur* c = NULL;
-    static int seuilMax = 200;
-    static int seuilMin = 120;
-
-    if (c == NULL)
-        c = new CapteurCouleur(TIM2, GPIOA, GPIO_Pin_6);
-
-    static uint16_t ticks[DBG_SIZE];
-    static int nbBoucles = 0;
-
-    if (nbBoucles % 200 == 100)
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
-    if (nbBoucles % 200 == 199)
-        GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_RESET);*/
-
-/*
-    uint16_t nbTicks = c->getTickValue();
-
-    if (nbTicks > seuilMax)
-        xallumerLED2();
-    else
-        xeteindreLED2();
-
-    if (nbTicks < seuilMin)
-        xallumerLED();
-    else
-        xeteindreLED();*/
-/*
-    if (nbBoucles < DBG_SIZE)
-    {
-
-        ticks[nbBoucles] = c->getTickValue();
-        nbBoucles++;
-    }
-    else
-    {
-        nbBoucles++;
-    }
-*/
+    Asservissement::asservissement->update();
 }
 
 #endif
@@ -476,4 +270,32 @@ void Asservissement::finMatch()
 
 
     #endif
+}
+
+void Asservissement::setEnabledPIDDistance(bool enabled)
+{
+    activePIDDistance = enabled;
+}
+
+void Asservissement::setEnabledPIDAngle(bool enabled)
+{
+    activePIDAngle = enabled;
+}
+
+void Asservissement::setLinearDuty(float duty)
+{
+    setEnabledPIDDistance(false);
+    fixedLinearDuty = MAX( MIN( duty, FIXED_LINEAR_DUTY_MAX), -FIXED_LINEAR_DUTY_MAX);
+}
+
+void Asservissement::setAngularDuty(float duty)
+{
+    setEnabledPIDAngle(false);
+    fixedAngularDuty = MAX( MIN( duty, FIXED_ANGULAR_DUTY_MAX), -FIXED_ANGULAR_DUTY_MAX);
+}
+
+void Asservissement::resetFixedDuty()
+{
+    fixedLinearDuty = 0.;
+    fixedAngularDuty = 0.;
 }

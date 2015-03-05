@@ -47,13 +47,15 @@ private:
 	b2Body* body;
     QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];
 
+    bool isBlue;
+
 public:
 
 	unsigned int level;
 
     /** @brief Constructeur de la classe
         @param world Référence vers le b2World dans lequel évolura le robot*/
-    Robot(b2World &world, PositionPlusAngle depart, bool manual);
+    Robot(b2World &world, PositionPlusAngle depart, bool manual, bool isBlue);
 	/** @brief Destructeur de la classe*/
 	~Robot();
     /** @brief Permet d'afficher le robot à l'écran
@@ -86,6 +88,7 @@ public:
     void startRightUpperHammer();
     void startLeftLowerHammer();
     void startRightLowerHammer();
+    void paintStrategie(QPainter&);
 };
 
 #endif //ROBOT_H_INCLUDED

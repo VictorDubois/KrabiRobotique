@@ -18,7 +18,8 @@ class Sensors
 {
     public:
         /** @brief Constructeur de la classe */
-        Sensors();
+        static Sensors* getSingleton();
+
 
         /** @brief Destructeur de la classe */
         virtual ~Sensors();
@@ -104,12 +105,15 @@ class Sensors
 
         #ifndef ROBOTHW
         void keyPressEvent(QKeyEvent* evt, bool press);
-        SharpSensor** getSharpSensorsList();
-        #endif
 
+        #endif
+        SharpSensor** getSharpSensorsList();
 
 
     private:
+
+        Sensors();
+        static Sensors* singleton;
 
         /** @brief Tableau des capteurs sharps */
         SharpSensor** sharps;

@@ -3,6 +3,7 @@
 #include "strategieV2.h"
 #include "sharpSensor.h"
 #ifndef ROBOTHW
+#include <QDebug>
     #define abs fabs
 #endif
 #include "leds.h"
@@ -60,6 +61,9 @@ int ActionGoTo::update()
 {
     if (status == 0)
     {
+#ifndef ROBOTHW
+        qDebug() << "actionGoTo";
+#endif
         //allumerLED2();
         Position pos = Odometrie::odometrie->getPos().getPosition();
         //Position vect = goalPosition - pos;

@@ -1,4 +1,5 @@
 #include "simul/XMLReader.h"
+#include <QDebug>
 
 using namespace std;
 
@@ -9,6 +10,7 @@ XMLTag::XMLTag()
 	p_type = "";
 	p_inside = "";
 	p_value = "";
+    p_solid = false;
 }
 
 QString XMLTag::convertInsideValuesToTags(QString values)
@@ -89,7 +91,12 @@ QString XMLTag::readSelf(QString input)
 	else // no lonely tag
 		partial = partial.left(posEnd);
 
-	int nameEnd = partial.indexOf(' ', posStart+1);
+    QString searchSolid = "solid=\"0\"";//"solid=\"1\"";
+    bool isSolid = partial.mid(posEnd - searchSolid.length(), searchSolid.length()) == searchSolid;
+    if(isSolid)
+        setSolid(true);
+
+    int nameEnd = partial.indexOf(' ');
 	if (nameEnd < 0) // no spaces, {myType} tag
 	{
 		setType(partial);
@@ -174,6 +181,11 @@ void XMLTag::readInside()
 	}
 }
 
+void XMLTag::setSolid(bool solid)
+{
+    p_solid = solid;
+}
+
 void XMLTag::setType(QString type)
 {
 	p_type = type;
@@ -195,6 +207,10 @@ void XMLTag::setInside(QString inside)
 	p_inside = inside;
 }
 
+const bool& XMLTag::getSolid() const
+{
+    return p_solid;
+}
 const QString& XMLTag::getType() const
 {
 	return p_type;

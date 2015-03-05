@@ -8,6 +8,8 @@ INCLUDEPATH += ../../include/simul ../../include/strategie ../../include/asservi
 
 LIBS += -L/usr/local/lib/ -lBox2D
 
+DEFINES += "KRABI"
+#DEFINES += "KRABI_JR"
 
 HEADERS += \
     ../../include/positionPlusAngle.h \
@@ -58,7 +60,22 @@ HEADERS += \
 	../../include/strategie/actionGoTo.h \
 	../../include/strategie/ramasserVerres.h \
     ../../include/simul/userdata.h \
-    ../../include/simul/contactlistener.h
+    ../../include/simul/contactlistener.h \
+    ../../include/strategie/strategiev3.h \
+    ../../include/strategie/etape.h \
+    ../../include/strategie/dijkstra.h \
+    ../../include/hardware/tourelle.h \
+    ../../include/strategie/feuCote.h \
+    ../../include/strategie/tireLances.h \
+    ../../include/strategie/fresque.h \
+    ../../include/actionneurs/container.h \
+    ../../include/actionneurs/braslateral.h \
+    ../../include/strategie/krabi2014.h \
+    ../../src/strategie/clap.h \
+    ../../include/strategie/krabi2015.h \
+    ../../src/strategie/ClapV2.h \
+    ../../include/strategie/clap.h \
+    ../../include/strategie/gobelet.h
 
 
 SOURCES += \
@@ -103,5 +120,26 @@ SOURCES += \
 	../../src/strategie/eteindreBougies.cpp \
 	../../src/strategie/ramasserVerres.cpp \
     ../../src/simul/userdata.cpp \
-    ../../src/simul/contactlistener.cpp
+    ../../src/simul/contactlistener.cpp \
+    ../../src/strategie/strategiev3.cpp \
+    ../../src/strategie/etape.cpp \
+    ../../src/strategie/dijkstra.cpp \
+    ../../src/hardware/tourelle.cpp \
+    ../../src/strategie/feuCote.cpp \
+    ../../src/strategie/tireLances.cpp \
+    ../../src/strategie/fresque.cpp \
+    ../../src/actionneurs/container.cpp \
+    ../../src/actionneurs/braslateral.cpp \
+    ../../src/actionneurs/canonLances.cpp \
+    ../../src/actionneurs/canonFilet.cpp \
+    ../../src/actionneurs/brak.cpp \
+    ../../src/strategie/feukrabilateral.cpp \
+    ../../src/strategie/feuKrabi.cpp \
+    ../../src/strategie/feuCoteKrabi.cpp \
+    ../../src/strategie/torchemobile.cpp \
+    ../../src/strategie/tireFilet.cpp \
+    ../../src/strategie/krabi2014.cpp \
+    ../../src/strategie/krabi2015.cpp \
+    ../../src/strategie/clap.cpp \
+    ../../src/strategie/gobelet.cpp
 
