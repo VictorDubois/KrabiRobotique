@@ -14,7 +14,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     int numeroEtape = 0;
 
     // Création des étapes
-    //arguments : Position, tableau des etapes liées, nombre d'étapes liées, numéro de l'étape, type d'étape, état de l'étape, nombreEtapesLieesParFinirEtape
+   //gniark 
     Etape* etape0 = new Etape(Position(250, 1000, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::DEPART, -1, 0); //départ au fond de la zone de départ
     Etape* etape1 = new Etape(Position(700, 1000, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape2 = new Etape(Position(836, 1780, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::CLAP, -1, 0);
