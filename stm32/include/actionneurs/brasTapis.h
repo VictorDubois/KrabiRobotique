@@ -9,55 +9,58 @@
 
 /** @class BrasTapis La classe BrasTapis permet de controler les bras sur l'avant de Krabi
 */
-class BrasTapis
+class BrasTapis : public BrasKrabi
 {
     public:
         /** @brief Constructeur
           * @fn BrasTapis()
         */
-        BrasTapis();
+        BrasTapis(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded);
 
         /** @brief Destructeur
         */
         ~BrasTapis();
 
-
+        static void initBrasTapis();
 
         /// @brief getLeft() renvoit le BrasTapisGauche courant
-        BrasKrabi *getLeft();
+        BrasTapis *getLeft();
 
         /// @brief getLeft() renvoit le BrasTapisDroit courant
-        BrasKrabi *getRight();
+        BrasTapis *getRight();
 
         void expand();
         void collapse();
         void front();
 
     private:
-        static BrasKrabi *brasTapisLeft;
-        static BrasKrabi *brasTapisRight;
+        static BrasTapis *brasTapisLeft;
+        static BrasTapis *brasTapisRight;
 };
 #else
 
 class BrasTapis
 {
     public:
-        BrasTapis();
-        ~BrasTapis();
 
-    private:
-        static BrasKrabi *brasTapisLeft;
-        static BrasKrabi *brasTapisRight;
-
-        /// @brief getLeft() renvoit le brasTapisGauche courant
-        static BrasKrabi *getLeft();
-
-        /// @brief getLeft() renvoit le brasTapisDroit courant
-        static BrasKrabi *getRight();
+        static void initTapis();
+        static BrasTapis *brasTapisLeft;
+        static BrasTapis *brasTapisRight;
 
         void expand();
         void collapse();
         void front();
+
+    private :
+        BrasTapis();
+        ~BrasTapis();
+
+        /// @brief getLeft() renvoit le brasTapisGauche courant
+        static BrasTapis *getLeft();
+
+        /// @brief getLeft() renvoit le brasTapisDroit courant
+        static BrasTapis *getRight();
+
 };
 
 #endif
