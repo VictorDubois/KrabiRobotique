@@ -19,6 +19,7 @@ class BrasKrabi
         */
         ~BrasKrabi();
 
+    private :
         Servo* servo;
         float angleCollapsed, angleExpanded, angleFront;
 
@@ -40,7 +41,6 @@ class BrasKrabi
         BrasKrabi();
         ~BrasKrabi();
 
-    protected:
     private:
         void expand();
         void collapse();
