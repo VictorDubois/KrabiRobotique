@@ -26,7 +26,7 @@ Etape::Etape(Position position, /*int nbChildren, */int numero, Etape** tableauE
     tableauEtapesTotal[numero] = this;
 }
 
-Etape::Etape(){};
+Etape::Etape(){}
 
 Etape* Etape::getChild(int nb){
     return this->children[nb];
@@ -88,7 +88,7 @@ void Etape::robotVu()
 {
     if(!aEviter())
     {
-        this->type = (EtapeType)(this->type + 20);
+        this->type = (EtapeType)(this->type + ROBOT_VU_ICI);
     }
 }
 
@@ -114,7 +114,7 @@ void Etape::oublieRobotVu()
     if(this->aEviter())
     {
         //On oublie qu'on a vu un robot
-        this->setEtapeType((EtapeType) ((int)this->getEtapeType() - 20));
+        this->setEtapeType((EtapeType) ((int)this->getEtapeType() - ROBOT_VU_ICI));
     }
 }
 
@@ -154,7 +154,7 @@ int Etape::getNombreEtapesLieesParFinirEtape()
 
 void Etape::finir(void)
 {
-    if(this->type == FEU || this->type == FRUIT || this->type == FEU_COTE_NOTRE_COULEUR_FACE_TERRAIN || this->type == FEU_COTE_NOTRE_COULEUR_FACE_EXTERIEUR)
+    if(this->type == FRUIT)
     {
         this->type = POINT_PASSAGE;
     }
