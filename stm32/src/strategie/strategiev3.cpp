@@ -6,7 +6,6 @@
 #include "asservissement.h"
 #include "dijkstra.h"
 #include "etape.h"
-#include "feuCote.h"
 
 #ifndef ROBOTHW
     #include <QDebug>

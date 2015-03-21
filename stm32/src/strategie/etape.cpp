@@ -88,7 +88,7 @@ void Etape::robotVu()
 {
     if(!aEviter())
     {
-        this->type = (EtapeType)(this->type + ROBOT_VU_ICI);
+        this->type = (EtapeType)(this->type + 20);
     }
 }
 
@@ -114,7 +114,7 @@ void Etape::oublieRobotVu()
     if(this->aEviter())
     {
         //On oublie qu'on a vu un robot
-        this->setEtapeType((EtapeType) ((int)this->getEtapeType() - ROBOT_VU_ICI));
+        this->setEtapeType((EtapeType) ((int)this->getEtapeType() - 20));
     }
 }
 

@@ -11,10 +11,6 @@
 #include "actionGoTo.h"
 #include "recalibrerOdometrie.h"
 #include "commandAllerA.h"
-#include "ramasserVerres.h"
-#include "eteindreBougies.h"
-#include "marteaux.h"
-#include "fresque.h"
 
 #include "sensors.h"
 #include "remote.h"
