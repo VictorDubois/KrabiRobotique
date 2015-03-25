@@ -2,7 +2,6 @@
 #define STRATEGIEV2_H_INCLUDED
 
 #include "command.h"
-#include "ramasserVerreV2.h"
 #include "mediumLevelAction.h"
 #include "sharpSensor.h"
 #include "ultrasoundSensor.h"

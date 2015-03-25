@@ -1,6 +1,5 @@
 #include "asservissement.h"
 #include "strategieV2.h"
-#include "ascenseur.h"
 
 #include "misc.h"
 #include "capteurCouleur.h"

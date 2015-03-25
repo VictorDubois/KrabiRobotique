@@ -72,11 +72,19 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/actionneurs/ascenseur.h" />
+<<<<<<< HEAD
+		<Unit filename="include/actionneurs/brasKrabi.h" />
+		<Unit filename="include/actionneurs/brasLateraux.h" />
+		<Unit filename="include/actionneurs/brasTapis.h" />
+		<Unit filename="include/actionneurs/canonFilet.h" />
+		<Unit filename="include/actionneurs/canonLances.h" />
+=======
 		<Unit filename="include/actionneurs/bras.h" />
 		<Unit filename="include/actionneurs/brasKrabi.h" />
 		<Unit filename="include/actionneurs/brasLaterauxKrabi.h" />
 		<Unit filename="include/actionneurs/brasTapis.h" />
 		<Unit filename="include/actionneurs/braslateral.h" />
+>>>>>>> a72f126ca38516703f08d3074efbefaa94eb9270
 		<Unit filename="include/actionneurs/container.h" />
 		<Unit filename="include/actionneurs/moteur.h" />
 		<Unit filename="include/actionneurs/roues.h" />
@@ -125,12 +133,18 @@
 		<Unit filename="include/strategie/tapis.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/actionneurs/ascenseur.cpp" />
+<<<<<<< HEAD
+		<Unit filename="src/actionneurs/brasKrabi.cpp" />
+		<Unit filename="src/actionneurs/brasLateraux.cpp" />
+		<Unit filename="src/actionneurs/brasTapis.cpp" />
+=======
 		<Unit filename="src/actionneurs/brak (copie).cpp.victor" />
 		<Unit filename="src/actionneurs/bras.cpp" />
 		<Unit filename="src/actionneurs/brasKrabi.cpp" />
 		<Unit filename="src/actionneurs/brasLaterauxKrabi.cpp" />
 		<Unit filename="src/actionneurs/brasTapis.cpp" />
 		<Unit filename="src/actionneurs/braslateral.cpp" />
+>>>>>>> a72f126ca38516703f08d3074efbefaa94eb9270
 		<Unit filename="src/actionneurs/container.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />
