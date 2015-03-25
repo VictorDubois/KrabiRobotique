@@ -5,9 +5,9 @@
 #define BRAS_DROIT_DEPLOYE 90
 #define BRAS_DROIT_REPLIE 90
 
-BrasLaterauxKrabi* BrasLaterauxKrabi::brasLaterauxKrabi = NULL;
-BrasLaterauxKrabi* BrasLaterauxKrabi::brasDroit = new Servo(TIM1,1,0,RC180DEGRES_BRAS);
-BrasLaterauxKrabi* BrasLaterauxKrabi::brasGauche = new Servo(TIM1,2,0,RC180DEGRES_BRAS);
+BrasLaterauxKrabi* BrasLaterauxKrabi::brasLaterauxKrabi = 0;
+//BrasLaterauxKrabi* BrasLaterauxKrabi::brasDroit = new Servo(TIM1,1,0,RC180DEGRES_BRAS);
+//BrasLaterauxKrabi* BrasLaterauxKrabi::brasGauche = new Servo(TIM1,2,0,RC180DEGRES_BRAS);
 
 BrasLaterauxKrabi::BrasLaterauxKrabi():
 brasGaucheDeploye(false), brasDroitDeploye(false)
@@ -24,31 +24,31 @@ BrasLaterauxKrabi::~BrasLaterauxKrabi()
     delete brasLaterauxKrabi;
 }
 
-BrasLaterauxKrabi::deployerBrasGauche()
+void BrasLaterauxKrabi::deployerBrasGauche()
 {
-    brasGauche->goToAngle(BRAS_GAUCHE_DEPLOYE)
+    brasGauche->goToAngle(BRAS_GAUCHE_DEPLOYE);
     brasGaucheDeploye=true;
 }
 
-BrasLaterauxKrabi::replierBrasGauche()
+void BrasLaterauxKrabi::replierBrasGauche()
 {
-    brasGauche->goToAngle(BRAS_GAUCHE_REPLIE)
+    brasGauche->goToAngle(BRAS_GAUCHE_REPLIE);
     brasGaucheDeploye=false;
 }
 
-BrasLaterauxKrabi::deployerBrasDroit()
+void BrasLaterauxKrabi::deployerBrasDroit()
 {
-    brasDroit>goToAngle(BRAS_DROIT_DEPLOYE)
+    brasDroit->goToAngle(BRAS_DROIT_DEPLOYE);
     brasDroitDeploye=true;
 }
 
-BrasLaterauxKrabi::replierBrasDroit()
+void BrasLaterauxKrabi::replierBrasDroit()
 {
-    brasDroit->goToAngle(BRAS_DROIT_REPLIE)
+    brasDroit->goToAngle(BRAS_DROIT_REPLIE);
     brasDroitDeploye=false;
 }
 
-BrasLaterauxKrabi::getBrasLaterauxKrabi()
+BrasLaterauxKrabi* BrasLaterauxKrabi::getBrasLaterauxKrabi()
 {
     return BrasLaterauxKrabi::brasLaterauxKrabi;
 }

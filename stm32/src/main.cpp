@@ -29,7 +29,6 @@
 #include "tirette.h"
 #include "leds.h"
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
-#include "marteaux.h"
 #include "commandAllerA.h"
 #include "etape.h"
 #include "dijkstra.h"
