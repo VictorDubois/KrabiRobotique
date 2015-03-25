@@ -72,8 +72,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/actionneurs/ascenseur.h" />
-		<Unit filename="include/actionneurs/brasLaterauxJr.h" />
-		<Unit filename="include/actionneurs/brasLaterauxKrabi.h" />
+		<Unit filename="include/actionneurs/brasKrabi.h" />
+		<Unit filename="include/actionneurs/brasLateraux.h" />
+		<Unit filename="include/actionneurs/brasTapis.h" />
 		<Unit filename="include/actionneurs/canonFilet.h" />
 		<Unit filename="include/actionneurs/canonLances.h" />
 		<Unit filename="include/actionneurs/container.h" />
@@ -125,7 +126,9 @@
 		<Unit filename="include/strategie/tapis.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/actionneurs/ascenseur.cpp" />
-		<Unit filename="src/actionneurs/braslateral.cpp" />
+		<Unit filename="src/actionneurs/brasKrabi.cpp" />
+		<Unit filename="src/actionneurs/brasLateraux.cpp" />
+		<Unit filename="src/actionneurs/brasTapis.cpp" />
 		<Unit filename="src/actionneurs/container.cpp" />
 		<Unit filename="src/actionneurs/marteaux.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
