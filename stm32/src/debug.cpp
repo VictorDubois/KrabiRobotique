@@ -329,12 +329,12 @@ void Debug::testBrasLateraux()
         for (int i = 0; i < 10000000; i++);
     }*/
 
-    BrasLateraux::initBrasLateraux();
+    BrasLateral::initBrasLateraux();
 
     while(true)
     {
-        BrasLateraux::getLeft()->expand();
-        BrasLateraux::getRight()->expand();
+        BrasLateral::getLeft()->expand();
+        BrasLateral::getRight()->expand();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
@@ -345,8 +345,8 @@ void Debug::testBrasLateraux()
 
         for(int i=0; i<10000000; i++);*/
 
-        BrasLateraux::getLeft()->collapse();
-        BrasLateraux::getRight()->collapse();
+        BrasLateral::getLeft()->collapse();
+        BrasLateral::getRight()->collapse();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
@@ -356,26 +356,26 @@ void Debug::testBrasLateraux()
 void Debug::testContainer()
 {
     Container::getSingleton();
-    BrasLateraux::initBrasLateraux();
+    BrasLateral::initBrasLateraux();
 
     while(true)
     {
         Container::getSingleton()->open();
-        BrasLateraux::getLeft()->expand();
-        BrasLateraux::getRight()->expand();
+        BrasLateral::getLeft()->expand();
+        BrasLateral::getRight()->expand();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
 
-        BrasLateraux::getLeft()->front();
-        BrasLateraux::getRight()->front();
+        BrasLateral::getLeft()->front();
+        BrasLateral::getRight()->front();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
 
         Container::getSingleton()->close();
-        BrasLateraux::getLeft()->collapse();
-        BrasLateraux::getRight()->collapse();
+        BrasLateral::getLeft()->collapse();
+        BrasLateral::getRight()->collapse();
         Led::toggle(0);
 
         for(int i=0; i<20000000; i++);

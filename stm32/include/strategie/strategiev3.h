@@ -53,6 +53,13 @@ protected:
     MediumLevelAction** actionEtape;
     ActionGoTo* actionGoto;
 
+/*
+#ifdef KRABI_JR
+    FeuCote actionFeuCote[4];
+    DeposeFruits actionDeposeFruits[1];
+
+#endif
+*/
     /** @brief la classe dijkstra pour calculer les distances */
     Dijkstra* dijkstra;
 
