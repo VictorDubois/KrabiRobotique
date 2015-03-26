@@ -299,14 +299,13 @@
 	"container.h"
 	"braslateral.h"
 
-1427376288 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/strategieV2.h
+1427380583 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/strategieV2.h
 	"command.h"
 	"ramasserVerreV2.h"
 	"mediumLevelAction.h"
 	"sharpSensor.h"
 	"ultrasoundSensor.h"
 	"strategiev3.h"
-	"canonFilet.h"
 	"sensors.h"
 	<QPainter>
 	"tourelle.h"
@@ -399,10 +398,10 @@
 1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/asservissement/pidFilterDistance.cpp
 	"pidFilterDistance.h"
 
-1427377394 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/debug.cpp
+1427380642 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/debug.cpp
 	"debug.h"
 
-1427377414 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/debug.h
+1427380590 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/debug.h
 	"servo.h"
 	"leds.h"
 	"stm32f10x_gpio.h"
@@ -430,7 +429,6 @@
 	"etape.h"
 	"dijkstra.h"
 	"brasLateraux.h"
-	"container.h"
 	"remote.h"
 
 1427374630 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/initialisation.h
@@ -545,4 +543,157 @@
 
 1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/interfaceServosNumeriques.cpp
 	"interfaceServosNumeriques.h"
+
+1427380458 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/main.cpp
+	"stm32f10x_gpio.h"
+	"stm32f4xx_conf.h"
+	"system_stm32f4xx.h"
+	"stm32f4xx_rcc.h"
+	"stm32f4xx_gpio.h"
+	"initialisation.h"
+	"actionneurs/servo.h"
+	"memory.h"
+	"servo.h"
+	"odometrie.h"
+	"asservissement.h"
+	"sensors.h"
+	"quadratureCoderHandler.h"
+	"roues.h"
+	"roue.h"
+	"strategieV2.h"
+	"sharpSensor.h"
+	"ax12api.h"
+	"interfaceServosNumeriques.h"
+	"capteurCouleur.h"
+	"tirette.h"
+	"leds.h"
+	"commandAllerA.h"
+	"etape.h"
+	"dijkstra.h"
+	"debug.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/memory.cpp
+	"memory.h"
+	"leds.h"
+	"tirette.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/position.cpp
+	<math.h>
+	"position.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/positionPlusAngle.cpp
+	<math.h>
+	"positionPlusAngle.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/actionGoTo.cpp
+	"actionGoTo.h"
+	"odometrie.h"
+	"strategieV2.h"
+	"sharpSensor.h"
+	<QDebug>
+	"leds.h"
+
+1427377279 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/clap.cpp
+	"clap.h"
+	"strategieV2.h"
+	"mediumLevelAction.h"
+	"command.h"
+	"position.h"
+	"brasLateraux.h"
+
+1427378066 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/clap.h
+	"position.h"
+	"mediumLevelAction.h"
+	"command.h"
+	"brasLateraux.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/dijkstra.cpp
+	"dijkstra.h"
+	<math.h>
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/etape.cpp
+	"etape.h"
+	"dijkstra.h"
+	<QDebug>
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/gobelet.cpp
+	"gobelet.h"
+	"strategieV2.h"
+	"mediumLevelAction.h"
+	"command.h"
+
+1427374630 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/gobelet.h
+	"position.h"
+	"mediumLevelAction.h"
+	"command.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/krabi2015.cpp
+	"krabi2015.h"
+
+1427374630 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/krabi2015.h
+	"strategiev3.h"
+	"etape.h"
+	"clap.h"
+	"gobelet.h"
+	"tapis.h"
+
+1427374630 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/tapis.h
+	"position.h"
+	"mediumLevelAction.h"
+	"command.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/mediumLevelAction.cpp
+	"mediumLevelAction.h"
+	"strategieV2.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/recalibrerOdometrie.cpp
+	"recalibrerOdometrie.h"
+	"odometrie.h"
+	"strategieV2.h"
+	"asservissement.h"
+	"leds.h"
+	<QDebug>
+
+1427374630 /home/alex/Documents/Krabi/Gits/gitRobotique/stm32/include/strategie/recalibrerOdometrie.h
+	"mediumLevelAction.h"
+	"limitSwitchSensor.h"
+
+1427377348 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/strategieV2.cpp
+	"strategieV2.h"
+	"krabi2015.h"
+	"leds.h"
+	"positionPlusAngle.h"
+	"asservissement.h"
+	"memory.h"
+	"actionGoTo.h"
+	"recalibrerOdometrie.h"
+	"commandAllerA.h"
+	"sensors.h"
+	"remote.h"
+	"tourelle.h"
+	"tirette.h"
+	<QDebug>
+
+1427377314 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/strategiev3.cpp
+	"strategiev3.h"
+	"strategieV2.h"
+	"actionGoTo.h"
+	"leds.h"
+	"odometrie.h"
+	"asservissement.h"
+	"dijkstra.h"
+	"etape.h"
+	<QDebug>
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/strategie/tapis.cpp
+	"tapis.h"
+	"strategieV2.h"
+	"mediumLevelAction.h"
+	"command.h"
+	"position.h"
+
+1427374630 source:/home/alex/Documents/Krabi/Gits/gitRobotique/stm32/src/stub.c
+	<errno.h>
+	<unistd.h>
+	<sys/stat.h>
 

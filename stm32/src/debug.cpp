@@ -352,7 +352,7 @@ void Debug::testBrasLateraux()
         for(int i=0; i<10000000; i++);
     }
 }
-
+/*
 void Debug::testContainer()
 {
     Container::getSingleton();
@@ -381,7 +381,7 @@ void Debug::testContainer()
         for(int i=0; i<20000000; i++);
     }
 
-    /*Container::getSingleton();
+    Container::getSingleton();
 
     while(true)
     {
@@ -394,8 +394,8 @@ void Debug::testContainer()
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
-    }*/
-}
+    }
+}*/
 
 void Debug::testTirette(Tirette* t)
 {

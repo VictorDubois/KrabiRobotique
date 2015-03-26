@@ -7,7 +7,7 @@
 #include "sharpSensor.h"
 #include "ultrasoundSensor.h"
 #include "strategiev3.h"
-#include "canonFilet.h"
+//#include "canonFilet.h"
 
 #ifndef ROBOTHW
 #include "sensors.h"
