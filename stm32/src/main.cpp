@@ -141,6 +141,29 @@ int main()
     ServosNumeriques::initUART(19231);
     ServosNumeriques::sendMode();
 
+
+    for(int id = 0; id < 255; id++)
+    {
+        ServosNumeriques::setLedState(1, id);
+    }
+    ServosNumeriques::setLedState(1, 21);
+    ServosNumeriques::moveTo(0x0000, 21);
+    for(int i = 0; i<5000000; i++);
+    ServosNumeriques::moveAtSpeed(0x01ff, 21);
+    for(int i = 0; i<5000000; i++);
+    ServosNumeriques::moveTo(0x0000, 21);
+    for(int i = 0; i<5000000; i++);
+    ServosNumeriques::moveToAtSpeed(0x01ff, 0x0100, 21);
+    ServosNumeriques::receiveMode();
+    uint16_t position;
+    position = ServosNumeriques::getPosition(21);
+    while(position != 0x01ff)
+    {
+        position = ServosNumeriques::getPosition(21);
+    }
+    ServosNumeriques::sendMode();
+    ServosNumeriques::setLedState(1, 21);
+
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif

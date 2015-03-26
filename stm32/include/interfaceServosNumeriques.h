@@ -43,6 +43,8 @@ void setBaudRate(uint8_t baudRate, uint8_t servo);
 void setTorqueLimite(uint16_t torque, uint8_t servo); // dans la RAM
 void setMaxTorque(uint16_t torque, uint8_t servo); // EEPROM, automatiquement mis dans la RAM au démarrage
 
+uint16_t getPosition(uint8_t servo);
+
 
 }
 
