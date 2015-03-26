@@ -5,7 +5,7 @@
     #include "servo.h"
 
 
-/** @class BrasKrabi : La classe BrasKrabi est une classe générique utilisée par BrasAvant
+/** @class BrasKrabi : La classe BrasKrabi est une classe generique pour generer des servos analogiquespar heritage
 */
 class BrasKrabi
 {
