@@ -14907,1126 +14907,1126 @@ Bras::~Bras()
     55cc:	46bd      	mov	sp, r7
     55ce:	bd80      	pop	{r7, pc}
 
-000055d0 <_ZN17BrasLaterauxKrabiC2Ev>:
+000055d0 <_ZN12BrasLateraux5frontEv>:
+    void BrasLateraux::collapse()
+    {
+        servo->goToAngle(angleCollapsed);
+    }
 
-BrasLaterauxKrabi* BrasLaterauxKrabi::brasLaterauxKrabi = 0;
-//BrasLaterauxKrabi* BrasLaterauxKrabi::brasDroit = new Servo(TIM1,1,0,RC180DEGRES_BRAS);
-//BrasLaterauxKrabi* BrasLaterauxKrabi::brasGauche = new Servo(TIM1,2,0,RC180DEGRES_BRAS);
-
-BrasLaterauxKrabi::BrasLaterauxKrabi():
-    55d0:	b480      	push	{r7}
-    55d2:	b083      	sub	sp, #12
+    void BrasLateraux::front()
+    55d0:	b580      	push	{r7, lr}
+    55d2:	b082      	sub	sp, #8
     55d4:	af00      	add	r7, sp, #0
     55d6:	6078      	str	r0, [r7, #4]
-brasGaucheDeploye(false), brasDroitDeploye(false)
-    55d8:	687a      	ldr	r2, [r7, #4]
-    55da:	4b0a      	ldr	r3, [pc, #40]	(5604 <_ZN17BrasLaterauxKrabiC2Ev+0x34>)
-    55dc:	6013      	str	r3, [r2, #0]
-    55de:	687a      	ldr	r2, [r7, #4]
-    55e0:	f04f 0300 	mov.w	r3, #0	; 0x0
-    55e4:	7113      	strb	r3, [r2, #4]
-    55e6:	687a      	ldr	r2, [r7, #4]
-    55e8:	f04f 0300 	mov.w	r3, #0	; 0x0
-    55ec:	7153      	strb	r3, [r2, #5]
-{
-BrasLaterauxKrabi::brasLaterauxKrabi=this;
-    55ee:	4a06      	ldr	r2, [pc, #24]	(5608 <_ZN17BrasLaterauxKrabiC2Ev+0x38>)
-    55f0:	687b      	ldr	r3, [r7, #4]
-    55f2:	6013      	str	r3, [r2, #0]
-}
-    55f4:	687b      	ldr	r3, [r7, #4]
-    55f6:	4618      	mov	r0, r3
-    55f8:	f107 070c 	add.w	r7, r7, #12	; 0xc
-    55fc:	46bd      	mov	sp, r7
-    55fe:	bc80      	pop	{r7}
-    5600:	4770      	bx	lr
-    5602:	46c0      	nop			(mov r8, r8)
-    5604:	000220d0 	.word	0x000220d0
-    5608:	20000550 	.word	0x20000550
+    {
+        servo->goToAngle(angleFront);
+    55d8:	687b      	ldr	r3, [r7, #4]
+    55da:	681a      	ldr	r2, [r3, #0]
+    55dc:	687b      	ldr	r3, [r7, #4]
+    55de:	68db      	ldr	r3, [r3, #12]
+    55e0:	4610      	mov	r0, r2
+    55e2:	4619      	mov	r1, r3
+    55e4:	f002 f824 	bl	7630 <_ZN5Servo9goToAngleEf>
+    }
+    55e8:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    55ec:	46bd      	mov	sp, r7
+    55ee:	bd80      	pop	{r7, pc}
 
-0000560c <_ZN17BrasLaterauxKrabiC1Ev>:
+000055f0 <_ZN12BrasLateraux8collapseEv>:
+    void BrasLateraux::expand()
+    {
+        servo->goToAngle(angleExpanded);
+    }
+
+    void BrasLateraux::collapse()
+    55f0:	b580      	push	{r7, lr}
+    55f2:	b082      	sub	sp, #8
+    55f4:	af00      	add	r7, sp, #0
+    55f6:	6078      	str	r0, [r7, #4]
+    {
+        servo->goToAngle(angleCollapsed);
+    55f8:	687b      	ldr	r3, [r7, #4]
+    55fa:	681a      	ldr	r2, [r3, #0]
+    55fc:	687b      	ldr	r3, [r7, #4]
+    55fe:	685b      	ldr	r3, [r3, #4]
+    5600:	4610      	mov	r0, r2
+    5602:	4619      	mov	r1, r3
+    5604:	f002 f814 	bl	7630 <_ZN5Servo9goToAngleEf>
+    }
+    5608:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    560c:	46bd      	mov	sp, r7
+    560e:	bd80      	pop	{r7, pc}
+
+00005610 <_ZN12BrasLateraux6expandEv>:
+        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
+    {
+        servo = new Servo(timer, OCx, RC0degre, RC180degres);
+    }
+
+    void BrasLateraux::expand()
+    5610:	b580      	push	{r7, lr}
+    5612:	b082      	sub	sp, #8
+    5614:	af00      	add	r7, sp, #0
+    5616:	6078      	str	r0, [r7, #4]
+    {
+        servo->goToAngle(angleExpanded);
+    5618:	687b      	ldr	r3, [r7, #4]
+    561a:	681a      	ldr	r2, [r3, #0]
+    561c:	687b      	ldr	r3, [r7, #4]
+    561e:	689b      	ldr	r3, [r3, #8]
+    5620:	4610      	mov	r0, r2
+    5622:	4619      	mov	r1, r3
+    5624:	f002 f804 	bl	7630 <_ZN5Servo9goToAngleEf>
+    }
+    5628:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    562c:	46bd      	mov	sp, r7
+    562e:	bd80      	pop	{r7, pc}
+
+00005630 <_ZN12BrasLaterauxC1EP5Timerhfffff>:
+BrasLateraux* BrasLateraux::left = 0;
+BrasLateraux* BrasLateraux::right = 0;
+
+#ifdef ROBOTHW
+
+    BrasLateraux::BrasLateraux(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
+    5630:	b580      	push	{r7, lr}
+    5632:	b088      	sub	sp, #32
+    5634:	af02      	add	r7, sp, #8
+    5636:	6178      	str	r0, [r7, #20]
+    5638:	6139      	str	r1, [r7, #16]
+    563a:	60bb      	str	r3, [r7, #8]
+    563c:	4613      	mov	r3, r2
+    563e:	73fb      	strb	r3, [r7, #15]
+        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
+    5640:	697a      	ldr	r2, [r7, #20]
+    5642:	6a7b      	ldr	r3, [r7, #36]
+    5644:	6053      	str	r3, [r2, #4]
+    5646:	697a      	ldr	r2, [r7, #20]
+    5648:	6abb      	ldr	r3, [r7, #40]
+    564a:	6093      	str	r3, [r2, #8]
+    564c:	697a      	ldr	r2, [r7, #20]
+    564e:	6afb      	ldr	r3, [r7, #44]
+    5650:	60d3      	str	r3, [r2, #12]
+    {
+        servo = new Servo(timer, OCx, RC0degre, RC180degres);
+    5652:	f04f 0014 	mov.w	r0, #20	; 0x14
+    5656:	f009 fa4b 	bl	eaf0 <_Znwj>
+    565a:	4603      	mov	r3, r0
+    565c:	603b      	str	r3, [r7, #0]
+    565e:	683a      	ldr	r2, [r7, #0]
+    5660:	2a00      	cmp	r2, #0
+    5662:	d00a      	beq.n	567a <_ZN12BrasLaterauxC1EP5Timerhfffff+0x4a>
+    5664:	7bfa      	ldrb	r2, [r7, #15]
+    5666:	6a3b      	ldr	r3, [r7, #32]
+    5668:	9300      	str	r3, [sp, #0]
+    566a:	6838      	ldr	r0, [r7, #0]
+    566c:	6939      	ldr	r1, [r7, #16]
+    566e:	68bb      	ldr	r3, [r7, #8]
+    5670:	f002 f84e 	bl	7710 <_ZN5ServoC1EP5Timerhff>
+    5674:	683b      	ldr	r3, [r7, #0]
+    5676:	607b      	str	r3, [r7, #4]
+    5678:	e001      	b.n	567e <_ZN12BrasLaterauxC1EP5Timerhfffff+0x4e>
+    567a:	683a      	ldr	r2, [r7, #0]
+    567c:	607a      	str	r2, [r7, #4]
+    567e:	697b      	ldr	r3, [r7, #20]
+    5680:	687a      	ldr	r2, [r7, #4]
+    5682:	601a      	str	r2, [r3, #0]
+    }
+    5684:	697b      	ldr	r3, [r7, #20]
+    5686:	4618      	mov	r0, r3
+    5688:	f107 0718 	add.w	r7, r7, #24	; 0x18
+    568c:	46bd      	mov	sp, r7
+    568e:	bd80      	pop	{r7, pc}
+
+00005690 <_ZN12BrasLateraux16initBrasLaterauxEv>:
+    void BrasLateraux::front()
+    {
+        servo->goToAngle(angleFront);
+    }
+
+    void BrasLateraux::initBrasLateraux()
+    5690:	b580      	push	{r7, lr}
+    5692:	b08c      	sub	sp, #48
+    5694:	af04      	add	r7, sp, #16
+            TIM_CtrlPWMOutputs(TIM3, ENABLE);
+
+            left = new BrasLateraux(timer, 1, 0.01f, 0.11f, 87.f, 51.f, 15.f);
+            right = new BrasLateraux(timer, 3, 0.01f, 0.11f, 0.f, 40.f, 77.f);
+        #else // Krabi - STM32 H107
+            Timer* timer = new Timer(TIM1, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
+    5696:	f04f 000c 	mov.w	r0, #12	; 0xc
+    569a:	f009 fa29 	bl	eaf0 <_Znwj>
+    569e:	4603      	mov	r3, r0
+    56a0:	603b      	str	r3, [r7, #0]
+    56a2:	683a      	ldr	r2, [r7, #0]
+    56a4:	2a00      	cmp	r2, #0
+    56a6:	d00d      	beq.n	56c4 <_ZN12BrasLateraux16initBrasLaterauxEv+0x34>
+    56a8:	f04f 0300 	mov.w	r3, #0	; 0x0
+    56ac:	9300      	str	r3, [sp, #0]
+    56ae:	6838      	ldr	r0, [r7, #0]
+    56b0:	4930      	ldr	r1, [pc, #192]	(5774 <_ZN12BrasLateraux16initBrasLaterauxEv+0xe4>)
+    56b2:	f644 6220 	movw	r2, #20000	; 0x4e20
+    56b6:	f04f 0347 	mov.w	r3, #71	; 0x47
+    56ba:	f008 f98d 	bl	d9d8 <_ZN5TimerC1EP11TIM_TypeDefttNS_11ClkDivisionE>
+    56be:	683b      	ldr	r3, [r7, #0]
+    56c0:	607b      	str	r3, [r7, #4]
+    56c2:	e001      	b.n	56c8 <_ZN12BrasLateraux16initBrasLaterauxEv+0x38>
+    56c4:	683a      	ldr	r2, [r7, #0]
+    56c6:	607a      	str	r2, [r7, #4]
+    56c8:	687b      	ldr	r3, [r7, #4]
+    56ca:	61fb      	str	r3, [r7, #28]
+            TIM_CtrlPWMOutputs(TIM1, ENABLE);
+    56cc:	4829      	ldr	r0, [pc, #164]	(5774 <_ZN12BrasLateraux16initBrasLaterauxEv+0xe4>)
+    56ce:	f04f 0101 	mov.w	r1, #1	; 0x1
+    56d2:	f7fd fccf 	bl	3074 <TIM_CtrlPWMOutputs>
+
+            right = new BrasLateraux(timer, 2, 0.01f, 0.11f, 20.f, 86.f, 84.f);
+    56d6:	f04f 0010 	mov.w	r0, #16	; 0x10
+    56da:	f009 fa09 	bl	eaf0 <_Znwj>
+    56de:	4603      	mov	r3, r0
+    56e0:	60bb      	str	r3, [r7, #8]
+    56e2:	68ba      	ldr	r2, [r7, #8]
+    56e4:	2a00      	cmp	r2, #0
+    56e6:	d011      	beq.n	570c <_ZN12BrasLateraux16initBrasLaterauxEv+0x7c>
+    56e8:	4b23      	ldr	r3, [pc, #140]	(5778 <_ZN12BrasLateraux16initBrasLaterauxEv+0xe8>)
+    56ea:	9300      	str	r3, [sp, #0]
+    56ec:	4b23      	ldr	r3, [pc, #140]	(577c <_ZN12BrasLateraux16initBrasLaterauxEv+0xec>)
+    56ee:	9301      	str	r3, [sp, #4]
+    56f0:	4b23      	ldr	r3, [pc, #140]	(5780 <_ZN12BrasLateraux16initBrasLaterauxEv+0xf0>)
+    56f2:	9302      	str	r3, [sp, #8]
+    56f4:	4b23      	ldr	r3, [pc, #140]	(5784 <_ZN12BrasLateraux16initBrasLaterauxEv+0xf4>)
+    56f6:	9303      	str	r3, [sp, #12]
+    56f8:	68b8      	ldr	r0, [r7, #8]
+    56fa:	69f9      	ldr	r1, [r7, #28]
+    56fc:	f04f 0202 	mov.w	r2, #2	; 0x2
+    5700:	4b21      	ldr	r3, [pc, #132]	(5788 <_ZN12BrasLateraux16initBrasLaterauxEv+0xf8>)
+    5702:	f7ff ff95 	bl	5630 <_ZN12BrasLaterauxC1EP5Timerhfffff>
+    5706:	68bb      	ldr	r3, [r7, #8]
+    5708:	60fb      	str	r3, [r7, #12]
+    570a:	e001      	b.n	5710 <_ZN12BrasLateraux16initBrasLaterauxEv+0x80>
+    570c:	68ba      	ldr	r2, [r7, #8]
+    570e:	60fa      	str	r2, [r7, #12]
+    5710:	4b1e      	ldr	r3, [pc, #120]	(578c <_ZN12BrasLateraux16initBrasLaterauxEv+0xfc>)
+    5712:	68fa      	ldr	r2, [r7, #12]
+    5714:	601a      	str	r2, [r3, #0]
+            left = new BrasLateraux(timer, 3, 0.01f, 0.11f, 120.f, 36.f, 1.f);
+    5716:	f04f 0010 	mov.w	r0, #16	; 0x10
+    571a:	f009 f9e9 	bl	eaf0 <_Znwj>
+    571e:	4603      	mov	r3, r0
+    5720:	613b      	str	r3, [r7, #16]
+    5722:	693b      	ldr	r3, [r7, #16]
+    5724:	2b00      	cmp	r3, #0
+    5726:	d011      	beq.n	574c <_ZN12BrasLateraux16initBrasLaterauxEv+0xbc>
+    5728:	4b13      	ldr	r3, [pc, #76]	(5778 <_ZN12BrasLateraux16initBrasLaterauxEv+0xe8>)
+    572a:	9300      	str	r3, [sp, #0]
+    572c:	4b18      	ldr	r3, [pc, #96]	(5790 <_ZN12BrasLateraux16initBrasLaterauxEv+0x100>)
+    572e:	9301      	str	r3, [sp, #4]
+    5730:	4b18      	ldr	r3, [pc, #96]	(5794 <_ZN12BrasLateraux16initBrasLaterauxEv+0x104>)
+    5732:	9302      	str	r3, [sp, #8]
+    5734:	4b18      	ldr	r3, [pc, #96]	(5798 <_ZN12BrasLateraux16initBrasLaterauxEv+0x108>)
+    5736:	9303      	str	r3, [sp, #12]
+    5738:	6938      	ldr	r0, [r7, #16]
+    573a:	69f9      	ldr	r1, [r7, #28]
+    573c:	f04f 0203 	mov.w	r2, #3	; 0x3
+    5740:	4b11      	ldr	r3, [pc, #68]	(5788 <_ZN12BrasLateraux16initBrasLaterauxEv+0xf8>)
+    5742:	f7ff ff75 	bl	5630 <_ZN12BrasLaterauxC1EP5Timerhfffff>
+    5746:	693a      	ldr	r2, [r7, #16]
+    5748:	617a      	str	r2, [r7, #20]
+    574a:	e001      	b.n	5750 <_ZN12BrasLateraux16initBrasLaterauxEv+0xc0>
+    574c:	693b      	ldr	r3, [r7, #16]
+    574e:	617b      	str	r3, [r7, #20]
+    5750:	4b12      	ldr	r3, [pc, #72]	(579c <_ZN12BrasLateraux16initBrasLaterauxEv+0x10c>)
+    5752:	697a      	ldr	r2, [r7, #20]
+    5754:	601a      	str	r2, [r3, #0]
+
+
+        #endif
+
+        left->collapse();
+    5756:	4b11      	ldr	r3, [pc, #68]	(579c <_ZN12BrasLateraux16initBrasLaterauxEv+0x10c>)
+    5758:	681b      	ldr	r3, [r3, #0]
+    575a:	4618      	mov	r0, r3
+    575c:	f7ff ff48 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
+        right->collapse();
+    5760:	4b0a      	ldr	r3, [pc, #40]	(578c <_ZN12BrasLateraux16initBrasLaterauxEv+0xfc>)
+    5762:	681b      	ldr	r3, [r3, #0]
+    5764:	4618      	mov	r0, r3
+    5766:	f7ff ff43 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
+    }
+    576a:	f107 0720 	add.w	r7, r7, #32	; 0x20
+    576e:	46bd      	mov	sp, r7
+    5770:	bd80      	pop	{r7, pc}
+    5772:	46c0      	nop			(mov r8, r8)
+    5774:	40012c00 	.word	0x40012c00
+    5778:	3de147ae 	.word	0x3de147ae
+    577c:	41a00000 	.word	0x41a00000
+    5780:	42ac0000 	.word	0x42ac0000
+    5784:	42a80000 	.word	0x42a80000
+    5788:	3c23d70a 	.word	0x3c23d70a
+    578c:	20000554 	.word	0x20000554
+    5790:	42f00000 	.word	0x42f00000
+    5794:	42100000 	.word	0x42100000
+    5798:	3f800000 	.word	0x3f800000
+    579c:	20000550 	.word	0x20000550
+
+000057a0 <_ZN12BrasLateraux8getRightEv>:
+        initBrasLateraux();
+
+    return left;
+}
+
+BrasLateraux* BrasLateraux::getRight()
+    57a0:	b580      	push	{r7, lr}
+    57a2:	af00      	add	r7, sp, #0
+{
+    if (right==0)
+    57a4:	4b05      	ldr	r3, [pc, #20]	(57bc <_ZN12BrasLateraux8getRightEv+0x1c>)
+    57a6:	681b      	ldr	r3, [r3, #0]
+    57a8:	2b00      	cmp	r3, #0
+    57aa:	d101      	bne.n	57b0 <_ZN12BrasLateraux8getRightEv+0x10>
+        initBrasLateraux();
+    57ac:	f7ff ff70 	bl	5690 <_ZN12BrasLateraux16initBrasLaterauxEv>
+
+    return right;
+    57b0:	4b02      	ldr	r3, [pc, #8]	(57bc <_ZN12BrasLateraux8getRightEv+0x1c>)
+    57b2:	681b      	ldr	r3, [r3, #0]
+}
+    57b4:	4618      	mov	r0, r3
+    57b6:	46bd      	mov	sp, r7
+    57b8:	bd80      	pop	{r7, pc}
+    57ba:	46c0      	nop			(mov r8, r8)
+    57bc:	20000554 	.word	0x20000554
+
+000057c0 <_ZN12BrasLateraux7getLeftEv>:
+        right = new BrasLateraux();
+    }
+
+#endif
+
+BrasLateraux* BrasLateraux::getLeft()
+    57c0:	b580      	push	{r7, lr}
+    57c2:	af00      	add	r7, sp, #0
+{
+    if (left==0)
+    57c4:	4b05      	ldr	r3, [pc, #20]	(57dc <_ZN12BrasLateraux7getLeftEv+0x1c>)
+    57c6:	681b      	ldr	r3, [r3, #0]
+    57c8:	2b00      	cmp	r3, #0
+    57ca:	d101      	bne.n	57d0 <_ZN12BrasLateraux7getLeftEv+0x10>
+        initBrasLateraux();
+    57cc:	f7ff ff60 	bl	5690 <_ZN12BrasLateraux16initBrasLaterauxEv>
+
+    return left;
+    57d0:	4b02      	ldr	r3, [pc, #8]	(57dc <_ZN12BrasLateraux7getLeftEv+0x1c>)
+    57d2:	681b      	ldr	r3, [r3, #0]
+}
+    57d4:	4618      	mov	r0, r3
+    57d6:	46bd      	mov	sp, r7
+    57d8:	bd80      	pop	{r7, pc}
+    57da:	46c0      	nop			(mov r8, r8)
+    57dc:	20000550 	.word	0x20000550
+
+000057e0 <_ZN12BrasLaterauxC2EP5Timerhfffff>:
+BrasLateraux* BrasLateraux::left = 0;
+BrasLateraux* BrasLateraux::right = 0;
+
+#ifdef ROBOTHW
+
+    BrasLateraux::BrasLateraux(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
+    57e0:	b580      	push	{r7, lr}
+    57e2:	b088      	sub	sp, #32
+    57e4:	af02      	add	r7, sp, #8
+    57e6:	6178      	str	r0, [r7, #20]
+    57e8:	6139      	str	r1, [r7, #16]
+    57ea:	60bb      	str	r3, [r7, #8]
+    57ec:	4613      	mov	r3, r2
+    57ee:	73fb      	strb	r3, [r7, #15]
+        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
+    57f0:	697a      	ldr	r2, [r7, #20]
+    57f2:	6a7b      	ldr	r3, [r7, #36]
+    57f4:	6053      	str	r3, [r2, #4]
+    57f6:	697a      	ldr	r2, [r7, #20]
+    57f8:	6abb      	ldr	r3, [r7, #40]
+    57fa:	6093      	str	r3, [r2, #8]
+    57fc:	697a      	ldr	r2, [r7, #20]
+    57fe:	6afb      	ldr	r3, [r7, #44]
+    5800:	60d3      	str	r3, [r2, #12]
+    {
+        servo = new Servo(timer, OCx, RC0degre, RC180degres);
+    5802:	f04f 0014 	mov.w	r0, #20	; 0x14
+    5806:	f009 f973 	bl	eaf0 <_Znwj>
+    580a:	4603      	mov	r3, r0
+    580c:	603b      	str	r3, [r7, #0]
+    580e:	683a      	ldr	r2, [r7, #0]
+    5810:	2a00      	cmp	r2, #0
+    5812:	d00a      	beq.n	582a <_ZN12BrasLaterauxC2EP5Timerhfffff+0x4a>
+    5814:	7bfa      	ldrb	r2, [r7, #15]
+    5816:	6a3b      	ldr	r3, [r7, #32]
+    5818:	9300      	str	r3, [sp, #0]
+    581a:	6838      	ldr	r0, [r7, #0]
+    581c:	6939      	ldr	r1, [r7, #16]
+    581e:	68bb      	ldr	r3, [r7, #8]
+    5820:	f001 ff76 	bl	7710 <_ZN5ServoC1EP5Timerhff>
+    5824:	683b      	ldr	r3, [r7, #0]
+    5826:	607b      	str	r3, [r7, #4]
+    5828:	e001      	b.n	582e <_ZN12BrasLaterauxC2EP5Timerhfffff+0x4e>
+    582a:	683a      	ldr	r2, [r7, #0]
+    582c:	607a      	str	r2, [r7, #4]
+    582e:	697b      	ldr	r3, [r7, #20]
+    5830:	687a      	ldr	r2, [r7, #4]
+    5832:	601a      	str	r2, [r3, #0]
+    }
+    5834:	697b      	ldr	r3, [r7, #20]
+    5836:	4618      	mov	r0, r3
+    5838:	f107 0718 	add.w	r7, r7, #24	; 0x18
+    583c:	46bd      	mov	sp, r7
+    583e:	bd80      	pop	{r7, pc}
+
+00005840 <_ZN17BrasLaterauxKrabiC2Ev>:
 
 BrasLaterauxKrabi* BrasLaterauxKrabi::brasLaterauxKrabi = 0;
 //BrasLaterauxKrabi* BrasLaterauxKrabi::brasDroit = new Servo(TIM1,1,0,RC180DEGRES_BRAS);
 //BrasLaterauxKrabi* BrasLaterauxKrabi::brasGauche = new Servo(TIM1,2,0,RC180DEGRES_BRAS);
 
 BrasLaterauxKrabi::BrasLaterauxKrabi():
-    560c:	b480      	push	{r7}
-    560e:	b083      	sub	sp, #12
-    5610:	af00      	add	r7, sp, #0
-    5612:	6078      	str	r0, [r7, #4]
+    5840:	b480      	push	{r7}
+    5842:	b083      	sub	sp, #12
+    5844:	af00      	add	r7, sp, #0
+    5846:	6078      	str	r0, [r7, #4]
 brasGaucheDeploye(false), brasDroitDeploye(false)
-    5614:	687a      	ldr	r2, [r7, #4]
-    5616:	4b0a      	ldr	r3, [pc, #40]	(5640 <_ZN17BrasLaterauxKrabiC1Ev+0x34>)
-    5618:	6013      	str	r3, [r2, #0]
-    561a:	687a      	ldr	r2, [r7, #4]
-    561c:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5620:	7113      	strb	r3, [r2, #4]
-    5622:	687a      	ldr	r2, [r7, #4]
-    5624:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5628:	7153      	strb	r3, [r2, #5]
+    5848:	687a      	ldr	r2, [r7, #4]
+    584a:	4b0a      	ldr	r3, [pc, #40]	(5874 <_ZN17BrasLaterauxKrabiC2Ev+0x34>)
+    584c:	6013      	str	r3, [r2, #0]
+    584e:	687a      	ldr	r2, [r7, #4]
+    5850:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5854:	7113      	strb	r3, [r2, #4]
+    5856:	687a      	ldr	r2, [r7, #4]
+    5858:	f04f 0300 	mov.w	r3, #0	; 0x0
+    585c:	7153      	strb	r3, [r2, #5]
 {
 BrasLaterauxKrabi::brasLaterauxKrabi=this;
-    562a:	4a06      	ldr	r2, [pc, #24]	(5644 <_ZN17BrasLaterauxKrabiC1Ev+0x38>)
-    562c:	687b      	ldr	r3, [r7, #4]
-    562e:	6013      	str	r3, [r2, #0]
+    585e:	4a06      	ldr	r2, [pc, #24]	(5878 <_ZN17BrasLaterauxKrabiC2Ev+0x38>)
+    5860:	687b      	ldr	r3, [r7, #4]
+    5862:	6013      	str	r3, [r2, #0]
 }
-    5630:	687b      	ldr	r3, [r7, #4]
-    5632:	4618      	mov	r0, r3
-    5634:	f107 070c 	add.w	r7, r7, #12	; 0xc
-    5638:	46bd      	mov	sp, r7
-    563a:	bc80      	pop	{r7}
-    563c:	4770      	bx	lr
-    563e:	46c0      	nop			(mov r8, r8)
-    5640:	000220d0 	.word	0x000220d0
-    5644:	20000550 	.word	0x20000550
+    5864:	687b      	ldr	r3, [r7, #4]
+    5866:	4618      	mov	r0, r3
+    5868:	f107 070c 	add.w	r7, r7, #12	; 0xc
+    586c:	46bd      	mov	sp, r7
+    586e:	bc80      	pop	{r7}
+    5870:	4770      	bx	lr
+    5872:	46c0      	nop			(mov r8, r8)
+    5874:	000220d0 	.word	0x000220d0
+    5878:	20000558 	.word	0x20000558
 
-00005648 <_ZN17BrasLaterauxKrabi20getBrasLaterauxKrabiEv>:
+0000587c <_ZN17BrasLaterauxKrabiC1Ev>:
+
+BrasLaterauxKrabi* BrasLaterauxKrabi::brasLaterauxKrabi = 0;
+//BrasLaterauxKrabi* BrasLaterauxKrabi::brasDroit = new Servo(TIM1,1,0,RC180DEGRES_BRAS);
+//BrasLaterauxKrabi* BrasLaterauxKrabi::brasGauche = new Servo(TIM1,2,0,RC180DEGRES_BRAS);
+
+BrasLaterauxKrabi::BrasLaterauxKrabi():
+    587c:	b480      	push	{r7}
+    587e:	b083      	sub	sp, #12
+    5880:	af00      	add	r7, sp, #0
+    5882:	6078      	str	r0, [r7, #4]
+brasGaucheDeploye(false), brasDroitDeploye(false)
+    5884:	687a      	ldr	r2, [r7, #4]
+    5886:	4b0a      	ldr	r3, [pc, #40]	(58b0 <_ZN17BrasLaterauxKrabiC1Ev+0x34>)
+    5888:	6013      	str	r3, [r2, #0]
+    588a:	687a      	ldr	r2, [r7, #4]
+    588c:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5890:	7113      	strb	r3, [r2, #4]
+    5892:	687a      	ldr	r2, [r7, #4]
+    5894:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5898:	7153      	strb	r3, [r2, #5]
+{
+BrasLaterauxKrabi::brasLaterauxKrabi=this;
+    589a:	4a06      	ldr	r2, [pc, #24]	(58b4 <_ZN17BrasLaterauxKrabiC1Ev+0x38>)
+    589c:	687b      	ldr	r3, [r7, #4]
+    589e:	6013      	str	r3, [r2, #0]
+}
+    58a0:	687b      	ldr	r3, [r7, #4]
+    58a2:	4618      	mov	r0, r3
+    58a4:	f107 070c 	add.w	r7, r7, #12	; 0xc
+    58a8:	46bd      	mov	sp, r7
+    58aa:	bc80      	pop	{r7}
+    58ac:	4770      	bx	lr
+    58ae:	46c0      	nop			(mov r8, r8)
+    58b0:	000220d0 	.word	0x000220d0
+    58b4:	20000558 	.word	0x20000558
+
+000058b8 <_ZN17BrasLaterauxKrabi20getBrasLaterauxKrabiEv>:
 {
     brasDroit->goToAngle(BRAS_DROIT_REPLIE);
     brasDroitDeploye=false;
 }
 
 BrasLaterauxKrabi* BrasLaterauxKrabi::getBrasLaterauxKrabi()
-    5648:	b480      	push	{r7}
-    564a:	af00      	add	r7, sp, #0
+    58b8:	b480      	push	{r7}
+    58ba:	af00      	add	r7, sp, #0
 {
     return BrasLaterauxKrabi::brasLaterauxKrabi;
-    564c:	4b02      	ldr	r3, [pc, #8]	(5658 <_ZN17BrasLaterauxKrabi20getBrasLaterauxKrabiEv+0x10>)
-    564e:	681b      	ldr	r3, [r3, #0]
+    58bc:	4b02      	ldr	r3, [pc, #8]	(58c8 <_ZN17BrasLaterauxKrabi20getBrasLaterauxKrabiEv+0x10>)
+    58be:	681b      	ldr	r3, [r3, #0]
 }
-    5650:	4618      	mov	r0, r3
-    5652:	46bd      	mov	sp, r7
-    5654:	bc80      	pop	{r7}
-    5656:	4770      	bx	lr
-    5658:	20000550 	.word	0x20000550
+    58c0:	4618      	mov	r0, r3
+    58c2:	46bd      	mov	sp, r7
+    58c4:	bc80      	pop	{r7}
+    58c6:	4770      	bx	lr
+    58c8:	20000558 	.word	0x20000558
 
-0000565c <_ZN17BrasLaterauxKrabi16replierBrasDroitEv>:
+000058cc <_ZN17BrasLaterauxKrabi16replierBrasDroitEv>:
 {
     brasDroit->goToAngle(BRAS_DROIT_DEPLOYE);
     brasDroitDeploye=true;
 }
 
 void BrasLaterauxKrabi::replierBrasDroit()
-    565c:	b580      	push	{r7, lr}
-    565e:	b082      	sub	sp, #8
-    5660:	af00      	add	r7, sp, #0
-    5662:	6078      	str	r0, [r7, #4]
+    58cc:	b580      	push	{r7, lr}
+    58ce:	b082      	sub	sp, #8
+    58d0:	af00      	add	r7, sp, #0
+    58d2:	6078      	str	r0, [r7, #4]
 {
     brasDroit->goToAngle(BRAS_DROIT_REPLIE);
-    5664:	687b      	ldr	r3, [r7, #4]
-    5666:	68db      	ldr	r3, [r3, #12]
-    5668:	4618      	mov	r0, r3
-    566a:	4905      	ldr	r1, [pc, #20]	(5680 <_ZN17BrasLaterauxKrabi16replierBrasDroitEv+0x24>)
-    566c:	f001 ffe0 	bl	7630 <_ZN5Servo9goToAngleEf>
+    58d4:	687b      	ldr	r3, [r7, #4]
+    58d6:	68db      	ldr	r3, [r3, #12]
+    58d8:	4618      	mov	r0, r3
+    58da:	4905      	ldr	r1, [pc, #20]	(58f0 <_ZN17BrasLaterauxKrabi16replierBrasDroitEv+0x24>)
+    58dc:	f001 fea8 	bl	7630 <_ZN5Servo9goToAngleEf>
     brasDroitDeploye=false;
-    5670:	687a      	ldr	r2, [r7, #4]
-    5672:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5676:	7153      	strb	r3, [r2, #5]
+    58e0:	687a      	ldr	r2, [r7, #4]
+    58e2:	f04f 0300 	mov.w	r3, #0	; 0x0
+    58e6:	7153      	strb	r3, [r2, #5]
 }
-    5678:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    567c:	46bd      	mov	sp, r7
-    567e:	bd80      	pop	{r7, pc}
-    5680:	42b40000 	.word	0x42b40000
+    58e8:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    58ec:	46bd      	mov	sp, r7
+    58ee:	bd80      	pop	{r7, pc}
+    58f0:	42b40000 	.word	0x42b40000
 
-00005684 <_ZN17BrasLaterauxKrabi17deployerBrasDroitEv>:
+000058f4 <_ZN17BrasLaterauxKrabi17deployerBrasDroitEv>:
 {
     brasGauche->goToAngle(BRAS_GAUCHE_REPLIE);
     brasGaucheDeploye=false;
 }
 
 void BrasLaterauxKrabi::deployerBrasDroit()
-    5684:	b580      	push	{r7, lr}
-    5686:	b082      	sub	sp, #8
-    5688:	af00      	add	r7, sp, #0
-    568a:	6078      	str	r0, [r7, #4]
+    58f4:	b580      	push	{r7, lr}
+    58f6:	b082      	sub	sp, #8
+    58f8:	af00      	add	r7, sp, #0
+    58fa:	6078      	str	r0, [r7, #4]
 {
     brasDroit->goToAngle(BRAS_DROIT_DEPLOYE);
-    568c:	687b      	ldr	r3, [r7, #4]
-    568e:	68db      	ldr	r3, [r3, #12]
-    5690:	4618      	mov	r0, r3
-    5692:	4905      	ldr	r1, [pc, #20]	(56a8 <_ZN17BrasLaterauxKrabi17deployerBrasDroitEv+0x24>)
-    5694:	f001 ffcc 	bl	7630 <_ZN5Servo9goToAngleEf>
+    58fc:	687b      	ldr	r3, [r7, #4]
+    58fe:	68db      	ldr	r3, [r3, #12]
+    5900:	4618      	mov	r0, r3
+    5902:	4905      	ldr	r1, [pc, #20]	(5918 <_ZN17BrasLaterauxKrabi17deployerBrasDroitEv+0x24>)
+    5904:	f001 fe94 	bl	7630 <_ZN5Servo9goToAngleEf>
     brasDroitDeploye=true;
-    5698:	687a      	ldr	r2, [r7, #4]
-    569a:	f04f 0301 	mov.w	r3, #1	; 0x1
-    569e:	7153      	strb	r3, [r2, #5]
+    5908:	687a      	ldr	r2, [r7, #4]
+    590a:	f04f 0301 	mov.w	r3, #1	; 0x1
+    590e:	7153      	strb	r3, [r2, #5]
 }
-    56a0:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    56a4:	46bd      	mov	sp, r7
-    56a6:	bd80      	pop	{r7, pc}
-    56a8:	42b40000 	.word	0x42b40000
+    5910:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    5914:	46bd      	mov	sp, r7
+    5916:	bd80      	pop	{r7, pc}
+    5918:	42b40000 	.word	0x42b40000
 
-000056ac <_ZN17BrasLaterauxKrabi17replierBrasGaucheEv>:
+0000591c <_ZN17BrasLaterauxKrabi17replierBrasGaucheEv>:
 {
     brasGauche->goToAngle(BRAS_GAUCHE_DEPLOYE);
     brasGaucheDeploye=true;
 }
 
 void BrasLaterauxKrabi::replierBrasGauche()
-    56ac:	b580      	push	{r7, lr}
-    56ae:	b082      	sub	sp, #8
-    56b0:	af00      	add	r7, sp, #0
-    56b2:	6078      	str	r0, [r7, #4]
+    591c:	b580      	push	{r7, lr}
+    591e:	b082      	sub	sp, #8
+    5920:	af00      	add	r7, sp, #0
+    5922:	6078      	str	r0, [r7, #4]
 {
     brasGauche->goToAngle(BRAS_GAUCHE_REPLIE);
-    56b4:	687b      	ldr	r3, [r7, #4]
-    56b6:	689b      	ldr	r3, [r3, #8]
-    56b8:	4618      	mov	r0, r3
-    56ba:	4905      	ldr	r1, [pc, #20]	(56d0 <_ZN17BrasLaterauxKrabi17replierBrasGaucheEv+0x24>)
-    56bc:	f001 ffb8 	bl	7630 <_ZN5Servo9goToAngleEf>
+    5924:	687b      	ldr	r3, [r7, #4]
+    5926:	689b      	ldr	r3, [r3, #8]
+    5928:	4618      	mov	r0, r3
+    592a:	4905      	ldr	r1, [pc, #20]	(5940 <_ZN17BrasLaterauxKrabi17replierBrasGaucheEv+0x24>)
+    592c:	f001 fe80 	bl	7630 <_ZN5Servo9goToAngleEf>
     brasGaucheDeploye=false;
-    56c0:	687a      	ldr	r2, [r7, #4]
-    56c2:	f04f 0300 	mov.w	r3, #0	; 0x0
-    56c6:	7113      	strb	r3, [r2, #4]
+    5930:	687a      	ldr	r2, [r7, #4]
+    5932:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5936:	7113      	strb	r3, [r2, #4]
 }
-    56c8:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    56cc:	46bd      	mov	sp, r7
-    56ce:	bd80      	pop	{r7, pc}
-    56d0:	42b40000 	.word	0x42b40000
+    5938:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    593c:	46bd      	mov	sp, r7
+    593e:	bd80      	pop	{r7, pc}
+    5940:	42b40000 	.word	0x42b40000
 
-000056d4 <_ZN17BrasLaterauxKrabi18deployerBrasGaucheEv>:
+00005944 <_ZN17BrasLaterauxKrabi18deployerBrasGaucheEv>:
     delete brasGauche;
     delete brasDroit;
     delete brasLaterauxKrabi;
 }
 
 void BrasLaterauxKrabi::deployerBrasGauche()
-    56d4:	b580      	push	{r7, lr}
-    56d6:	b082      	sub	sp, #8
-    56d8:	af00      	add	r7, sp, #0
-    56da:	6078      	str	r0, [r7, #4]
+    5944:	b580      	push	{r7, lr}
+    5946:	b082      	sub	sp, #8
+    5948:	af00      	add	r7, sp, #0
+    594a:	6078      	str	r0, [r7, #4]
 {
     brasGauche->goToAngle(BRAS_GAUCHE_DEPLOYE);
-    56dc:	687b      	ldr	r3, [r7, #4]
-    56de:	689b      	ldr	r3, [r3, #8]
-    56e0:	4618      	mov	r0, r3
-    56e2:	4905      	ldr	r1, [pc, #20]	(56f8 <_ZN17BrasLaterauxKrabi18deployerBrasGaucheEv+0x24>)
-    56e4:	f001 ffa4 	bl	7630 <_ZN5Servo9goToAngleEf>
+    594c:	687b      	ldr	r3, [r7, #4]
+    594e:	689b      	ldr	r3, [r3, #8]
+    5950:	4618      	mov	r0, r3
+    5952:	4905      	ldr	r1, [pc, #20]	(5968 <_ZN17BrasLaterauxKrabi18deployerBrasGaucheEv+0x24>)
+    5954:	f001 fe6c 	bl	7630 <_ZN5Servo9goToAngleEf>
     brasGaucheDeploye=true;
-    56e8:	687a      	ldr	r2, [r7, #4]
-    56ea:	f04f 0301 	mov.w	r3, #1	; 0x1
-    56ee:	7113      	strb	r3, [r2, #4]
+    5958:	687a      	ldr	r2, [r7, #4]
+    595a:	f04f 0301 	mov.w	r3, #1	; 0x1
+    595e:	7113      	strb	r3, [r2, #4]
 }
-    56f0:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    56f4:	46bd      	mov	sp, r7
-    56f6:	bd80      	pop	{r7, pc}
-    56f8:	42b40000 	.word	0x42b40000
+    5960:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    5964:	46bd      	mov	sp, r7
+    5966:	bd80      	pop	{r7, pc}
+    5968:	42b40000 	.word	0x42b40000
 
-000056fc <_ZN17BrasLaterauxKrabiD0Ev>:
+0000596c <_ZN17BrasLaterauxKrabiD0Ev>:
 brasGaucheDeploye(false), brasDroitDeploye(false)
 {
 BrasLaterauxKrabi::brasLaterauxKrabi=this;
 }
 
 BrasLaterauxKrabi::~BrasLaterauxKrabi()
-    56fc:	b580      	push	{r7, lr}
-    56fe:	b084      	sub	sp, #16
-    5700:	af00      	add	r7, sp, #0
-    5702:	60f8      	str	r0, [r7, #12]
-    5704:	68fa      	ldr	r2, [r7, #12]
-    5706:	4b20      	ldr	r3, [pc, #128]	(5788 <_ZN17BrasLaterauxKrabiD0Ev+0x8c>)
-    5708:	6013      	str	r3, [r2, #0]
+    596c:	b580      	push	{r7, lr}
+    596e:	b084      	sub	sp, #16
+    5970:	af00      	add	r7, sp, #0
+    5972:	60f8      	str	r0, [r7, #12]
+    5974:	68fa      	ldr	r2, [r7, #12]
+    5976:	4b20      	ldr	r3, [pc, #128]	(59f8 <_ZN17BrasLaterauxKrabiD0Ev+0x8c>)
+    5978:	6013      	str	r3, [r2, #0]
 {
     brasGauche->shutDownServo();
-    570a:	68fb      	ldr	r3, [r7, #12]
-    570c:	689b      	ldr	r3, [r3, #8]
-    570e:	4618      	mov	r0, r3
-    5710:	f001 ff80 	bl	7614 <_ZN5Servo13shutDownServoEv>
+    597a:	68fb      	ldr	r3, [r7, #12]
+    597c:	689b      	ldr	r3, [r3, #8]
+    597e:	4618      	mov	r0, r3
+    5980:	f001 fe48 	bl	7614 <_ZN5Servo13shutDownServoEv>
     brasDroit->shutDownServo();
-    5714:	68fb      	ldr	r3, [r7, #12]
-    5716:	68db      	ldr	r3, [r3, #12]
-    5718:	4618      	mov	r0, r3
-    571a:	f001 ff7b 	bl	7614 <_ZN5Servo13shutDownServoEv>
+    5984:	68fb      	ldr	r3, [r7, #12]
+    5986:	68db      	ldr	r3, [r3, #12]
+    5988:	4618      	mov	r0, r3
+    598a:	f001 fe43 	bl	7614 <_ZN5Servo13shutDownServoEv>
     delete brasGauche;
-    571e:	68fb      	ldr	r3, [r7, #12]
-    5720:	689b      	ldr	r3, [r3, #8]
-    5722:	607b      	str	r3, [r7, #4]
-    5724:	687b      	ldr	r3, [r7, #4]
-    5726:	2b00      	cmp	r3, #0
-    5728:	d005      	beq.n	5736 <_ZN17BrasLaterauxKrabiD0Ev+0x3a>
-    572a:	6878      	ldr	r0, [r7, #4]
-    572c:	f001 ffcc 	bl	76c8 <_ZN5ServoD1Ev>
-    5730:	6878      	ldr	r0, [r7, #4]
-    5732:	f009 fa83 	bl	ec3c <_ZdlPv>
+    598e:	68fb      	ldr	r3, [r7, #12]
+    5990:	689b      	ldr	r3, [r3, #8]
+    5992:	607b      	str	r3, [r7, #4]
+    5994:	687b      	ldr	r3, [r7, #4]
+    5996:	2b00      	cmp	r3, #0
+    5998:	d005      	beq.n	59a6 <_ZN17BrasLaterauxKrabiD0Ev+0x3a>
+    599a:	6878      	ldr	r0, [r7, #4]
+    599c:	f001 fe94 	bl	76c8 <_ZN5ServoD1Ev>
+    59a0:	6878      	ldr	r0, [r7, #4]
+    59a2:	f009 f94b 	bl	ec3c <_ZdlPv>
     delete brasDroit;
-    5736:	68fb      	ldr	r3, [r7, #12]
-    5738:	68db      	ldr	r3, [r3, #12]
-    573a:	60bb      	str	r3, [r7, #8]
-    573c:	68bb      	ldr	r3, [r7, #8]
-    573e:	2b00      	cmp	r3, #0
-    5740:	d005      	beq.n	574e <_ZN17BrasLaterauxKrabiD0Ev+0x52>
-    5742:	68b8      	ldr	r0, [r7, #8]
-    5744:	f001 ffc0 	bl	76c8 <_ZN5ServoD1Ev>
-    5748:	68b8      	ldr	r0, [r7, #8]
-    574a:	f009 fa77 	bl	ec3c <_ZdlPv>
+    59a6:	68fb      	ldr	r3, [r7, #12]
+    59a8:	68db      	ldr	r3, [r3, #12]
+    59aa:	60bb      	str	r3, [r7, #8]
+    59ac:	68bb      	ldr	r3, [r7, #8]
+    59ae:	2b00      	cmp	r3, #0
+    59b0:	d005      	beq.n	59be <_ZN17BrasLaterauxKrabiD0Ev+0x52>
+    59b2:	68b8      	ldr	r0, [r7, #8]
+    59b4:	f001 fe88 	bl	76c8 <_ZN5ServoD1Ev>
+    59b8:	68b8      	ldr	r0, [r7, #8]
+    59ba:	f009 f93f 	bl	ec3c <_ZdlPv>
     delete brasLaterauxKrabi;
-    574e:	4b0f      	ldr	r3, [pc, #60]	(578c <_ZN17BrasLaterauxKrabiD0Ev+0x90>)
-    5750:	681b      	ldr	r3, [r3, #0]
-    5752:	2b00      	cmp	r3, #0
-    5754:	d009      	beq.n	576a <_ZN17BrasLaterauxKrabiD0Ev+0x6e>
-    5756:	4b0d      	ldr	r3, [pc, #52]	(578c <_ZN17BrasLaterauxKrabiD0Ev+0x90>)
-    5758:	681b      	ldr	r3, [r3, #0]
-    575a:	681b      	ldr	r3, [r3, #0]
-    575c:	f103 0304 	add.w	r3, r3, #4	; 0x4
-    5760:	681a      	ldr	r2, [r3, #0]
-    5762:	4b0a      	ldr	r3, [pc, #40]	(578c <_ZN17BrasLaterauxKrabiD0Ev+0x90>)
-    5764:	681b      	ldr	r3, [r3, #0]
-    5766:	4618      	mov	r0, r3
-    5768:	4790      	blx	r2
+    59be:	4b0f      	ldr	r3, [pc, #60]	(59fc <_ZN17BrasLaterauxKrabiD0Ev+0x90>)
+    59c0:	681b      	ldr	r3, [r3, #0]
+    59c2:	2b00      	cmp	r3, #0
+    59c4:	d009      	beq.n	59da <_ZN17BrasLaterauxKrabiD0Ev+0x6e>
+    59c6:	4b0d      	ldr	r3, [pc, #52]	(59fc <_ZN17BrasLaterauxKrabiD0Ev+0x90>)
+    59c8:	681b      	ldr	r3, [r3, #0]
+    59ca:	681b      	ldr	r3, [r3, #0]
+    59cc:	f103 0304 	add.w	r3, r3, #4	; 0x4
+    59d0:	681a      	ldr	r2, [r3, #0]
+    59d2:	4b0a      	ldr	r3, [pc, #40]	(59fc <_ZN17BrasLaterauxKrabiD0Ev+0x90>)
+    59d4:	681b      	ldr	r3, [r3, #0]
+    59d6:	4618      	mov	r0, r3
+    59d8:	4790      	blx	r2
 }
-    576a:	f04f 0301 	mov.w	r3, #1	; 0x1
-    576e:	b2db      	uxtb	r3, r3
-    5770:	2b00      	cmp	r3, #0
-    5772:	d002      	beq.n	577a <_ZN17BrasLaterauxKrabiD0Ev+0x7e>
-    5774:	68f8      	ldr	r0, [r7, #12]
-    5776:	f009 fa61 	bl	ec3c <_ZdlPv>
-    577a:	68fb      	ldr	r3, [r7, #12]
-    577c:	4618      	mov	r0, r3
-    577e:	f107 0710 	add.w	r7, r7, #16	; 0x10
-    5782:	46bd      	mov	sp, r7
-    5784:	bd80      	pop	{r7, pc}
-    5786:	46c0      	nop			(mov r8, r8)
-    5788:	000220d0 	.word	0x000220d0
-    578c:	20000550 	.word	0x20000550
+    59da:	f04f 0301 	mov.w	r3, #1	; 0x1
+    59de:	b2db      	uxtb	r3, r3
+    59e0:	2b00      	cmp	r3, #0
+    59e2:	d002      	beq.n	59ea <_ZN17BrasLaterauxKrabiD0Ev+0x7e>
+    59e4:	68f8      	ldr	r0, [r7, #12]
+    59e6:	f009 f929 	bl	ec3c <_ZdlPv>
+    59ea:	68fb      	ldr	r3, [r7, #12]
+    59ec:	4618      	mov	r0, r3
+    59ee:	f107 0710 	add.w	r7, r7, #16	; 0x10
+    59f2:	46bd      	mov	sp, r7
+    59f4:	bd80      	pop	{r7, pc}
+    59f6:	46c0      	nop			(mov r8, r8)
+    59f8:	000220d0 	.word	0x000220d0
+    59fc:	20000558 	.word	0x20000558
 
-00005790 <_ZN17BrasLaterauxKrabiD1Ev>:
+00005a00 <_ZN17BrasLaterauxKrabiD1Ev>:
 brasGaucheDeploye(false), brasDroitDeploye(false)
 {
 BrasLaterauxKrabi::brasLaterauxKrabi=this;
 }
 
 BrasLaterauxKrabi::~BrasLaterauxKrabi()
-    5790:	b580      	push	{r7, lr}
-    5792:	b084      	sub	sp, #16
-    5794:	af00      	add	r7, sp, #0
-    5796:	60f8      	str	r0, [r7, #12]
-    5798:	68fa      	ldr	r2, [r7, #12]
-    579a:	4b20      	ldr	r3, [pc, #128]	(581c <_ZN17BrasLaterauxKrabiD1Ev+0x8c>)
-    579c:	6013      	str	r3, [r2, #0]
+    5a00:	b580      	push	{r7, lr}
+    5a02:	b084      	sub	sp, #16
+    5a04:	af00      	add	r7, sp, #0
+    5a06:	60f8      	str	r0, [r7, #12]
+    5a08:	68fa      	ldr	r2, [r7, #12]
+    5a0a:	4b20      	ldr	r3, [pc, #128]	(5a8c <_ZN17BrasLaterauxKrabiD1Ev+0x8c>)
+    5a0c:	6013      	str	r3, [r2, #0]
 {
     brasGauche->shutDownServo();
-    579e:	68fb      	ldr	r3, [r7, #12]
-    57a0:	689b      	ldr	r3, [r3, #8]
-    57a2:	4618      	mov	r0, r3
-    57a4:	f001 ff36 	bl	7614 <_ZN5Servo13shutDownServoEv>
+    5a0e:	68fb      	ldr	r3, [r7, #12]
+    5a10:	689b      	ldr	r3, [r3, #8]
+    5a12:	4618      	mov	r0, r3
+    5a14:	f001 fdfe 	bl	7614 <_ZN5Servo13shutDownServoEv>
     brasDroit->shutDownServo();
-    57a8:	68fb      	ldr	r3, [r7, #12]
-    57aa:	68db      	ldr	r3, [r3, #12]
-    57ac:	4618      	mov	r0, r3
-    57ae:	f001 ff31 	bl	7614 <_ZN5Servo13shutDownServoEv>
+    5a18:	68fb      	ldr	r3, [r7, #12]
+    5a1a:	68db      	ldr	r3, [r3, #12]
+    5a1c:	4618      	mov	r0, r3
+    5a1e:	f001 fdf9 	bl	7614 <_ZN5Servo13shutDownServoEv>
     delete brasGauche;
-    57b2:	68fb      	ldr	r3, [r7, #12]
-    57b4:	689b      	ldr	r3, [r3, #8]
-    57b6:	607b      	str	r3, [r7, #4]
-    57b8:	687b      	ldr	r3, [r7, #4]
-    57ba:	2b00      	cmp	r3, #0
-    57bc:	d005      	beq.n	57ca <_ZN17BrasLaterauxKrabiD1Ev+0x3a>
-    57be:	6878      	ldr	r0, [r7, #4]
-    57c0:	f001 ff82 	bl	76c8 <_ZN5ServoD1Ev>
-    57c4:	6878      	ldr	r0, [r7, #4]
-    57c6:	f009 fa39 	bl	ec3c <_ZdlPv>
+    5a22:	68fb      	ldr	r3, [r7, #12]
+    5a24:	689b      	ldr	r3, [r3, #8]
+    5a26:	607b      	str	r3, [r7, #4]
+    5a28:	687b      	ldr	r3, [r7, #4]
+    5a2a:	2b00      	cmp	r3, #0
+    5a2c:	d005      	beq.n	5a3a <_ZN17BrasLaterauxKrabiD1Ev+0x3a>
+    5a2e:	6878      	ldr	r0, [r7, #4]
+    5a30:	f001 fe4a 	bl	76c8 <_ZN5ServoD1Ev>
+    5a34:	6878      	ldr	r0, [r7, #4]
+    5a36:	f009 f901 	bl	ec3c <_ZdlPv>
     delete brasDroit;
-    57ca:	68fb      	ldr	r3, [r7, #12]
-    57cc:	68db      	ldr	r3, [r3, #12]
-    57ce:	60bb      	str	r3, [r7, #8]
-    57d0:	68bb      	ldr	r3, [r7, #8]
-    57d2:	2b00      	cmp	r3, #0
-    57d4:	d005      	beq.n	57e2 <_ZN17BrasLaterauxKrabiD1Ev+0x52>
-    57d6:	68b8      	ldr	r0, [r7, #8]
-    57d8:	f001 ff76 	bl	76c8 <_ZN5ServoD1Ev>
-    57dc:	68b8      	ldr	r0, [r7, #8]
-    57de:	f009 fa2d 	bl	ec3c <_ZdlPv>
+    5a3a:	68fb      	ldr	r3, [r7, #12]
+    5a3c:	68db      	ldr	r3, [r3, #12]
+    5a3e:	60bb      	str	r3, [r7, #8]
+    5a40:	68bb      	ldr	r3, [r7, #8]
+    5a42:	2b00      	cmp	r3, #0
+    5a44:	d005      	beq.n	5a52 <_ZN17BrasLaterauxKrabiD1Ev+0x52>
+    5a46:	68b8      	ldr	r0, [r7, #8]
+    5a48:	f001 fe3e 	bl	76c8 <_ZN5ServoD1Ev>
+    5a4c:	68b8      	ldr	r0, [r7, #8]
+    5a4e:	f009 f8f5 	bl	ec3c <_ZdlPv>
     delete brasLaterauxKrabi;
-    57e2:	4b0f      	ldr	r3, [pc, #60]	(5820 <_ZN17BrasLaterauxKrabiD1Ev+0x90>)
-    57e4:	681b      	ldr	r3, [r3, #0]
-    57e6:	2b00      	cmp	r3, #0
-    57e8:	d009      	beq.n	57fe <_ZN17BrasLaterauxKrabiD1Ev+0x6e>
-    57ea:	4b0d      	ldr	r3, [pc, #52]	(5820 <_ZN17BrasLaterauxKrabiD1Ev+0x90>)
-    57ec:	681b      	ldr	r3, [r3, #0]
-    57ee:	681b      	ldr	r3, [r3, #0]
-    57f0:	f103 0304 	add.w	r3, r3, #4	; 0x4
-    57f4:	681a      	ldr	r2, [r3, #0]
-    57f6:	4b0a      	ldr	r3, [pc, #40]	(5820 <_ZN17BrasLaterauxKrabiD1Ev+0x90>)
-    57f8:	681b      	ldr	r3, [r3, #0]
-    57fa:	4618      	mov	r0, r3
-    57fc:	4790      	blx	r2
+    5a52:	4b0f      	ldr	r3, [pc, #60]	(5a90 <_ZN17BrasLaterauxKrabiD1Ev+0x90>)
+    5a54:	681b      	ldr	r3, [r3, #0]
+    5a56:	2b00      	cmp	r3, #0
+    5a58:	d009      	beq.n	5a6e <_ZN17BrasLaterauxKrabiD1Ev+0x6e>
+    5a5a:	4b0d      	ldr	r3, [pc, #52]	(5a90 <_ZN17BrasLaterauxKrabiD1Ev+0x90>)
+    5a5c:	681b      	ldr	r3, [r3, #0]
+    5a5e:	681b      	ldr	r3, [r3, #0]
+    5a60:	f103 0304 	add.w	r3, r3, #4	; 0x4
+    5a64:	681a      	ldr	r2, [r3, #0]
+    5a66:	4b0a      	ldr	r3, [pc, #40]	(5a90 <_ZN17BrasLaterauxKrabiD1Ev+0x90>)
+    5a68:	681b      	ldr	r3, [r3, #0]
+    5a6a:	4618      	mov	r0, r3
+    5a6c:	4790      	blx	r2
 }
-    57fe:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5802:	b2db      	uxtb	r3, r3
-    5804:	2b00      	cmp	r3, #0
-    5806:	d002      	beq.n	580e <_ZN17BrasLaterauxKrabiD1Ev+0x7e>
-    5808:	68f8      	ldr	r0, [r7, #12]
-    580a:	f009 fa17 	bl	ec3c <_ZdlPv>
-    580e:	68fb      	ldr	r3, [r7, #12]
-    5810:	4618      	mov	r0, r3
-    5812:	f107 0710 	add.w	r7, r7, #16	; 0x10
-    5816:	46bd      	mov	sp, r7
-    5818:	bd80      	pop	{r7, pc}
-    581a:	46c0      	nop			(mov r8, r8)
-    581c:	000220d0 	.word	0x000220d0
-    5820:	20000550 	.word	0x20000550
+    5a6e:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5a72:	b2db      	uxtb	r3, r3
+    5a74:	2b00      	cmp	r3, #0
+    5a76:	d002      	beq.n	5a7e <_ZN17BrasLaterauxKrabiD1Ev+0x7e>
+    5a78:	68f8      	ldr	r0, [r7, #12]
+    5a7a:	f009 f8df 	bl	ec3c <_ZdlPv>
+    5a7e:	68fb      	ldr	r3, [r7, #12]
+    5a80:	4618      	mov	r0, r3
+    5a82:	f107 0710 	add.w	r7, r7, #16	; 0x10
+    5a86:	46bd      	mov	sp, r7
+    5a88:	bd80      	pop	{r7, pc}
+    5a8a:	46c0      	nop			(mov r8, r8)
+    5a8c:	000220d0 	.word	0x000220d0
+    5a90:	20000558 	.word	0x20000558
 
-00005824 <_ZN17BrasLaterauxKrabiD2Ev>:
+00005a94 <_ZN17BrasLaterauxKrabiD2Ev>:
 brasGaucheDeploye(false), brasDroitDeploye(false)
 {
 BrasLaterauxKrabi::brasLaterauxKrabi=this;
 }
 
 BrasLaterauxKrabi::~BrasLaterauxKrabi()
-    5824:	b580      	push	{r7, lr}
-    5826:	b084      	sub	sp, #16
-    5828:	af00      	add	r7, sp, #0
-    582a:	60f8      	str	r0, [r7, #12]
-    582c:	68fa      	ldr	r2, [r7, #12]
-    582e:	4b20      	ldr	r3, [pc, #128]	(58b0 <_ZN17BrasLaterauxKrabiD2Ev+0x8c>)
-    5830:	6013      	str	r3, [r2, #0]
+    5a94:	b580      	push	{r7, lr}
+    5a96:	b084      	sub	sp, #16
+    5a98:	af00      	add	r7, sp, #0
+    5a9a:	60f8      	str	r0, [r7, #12]
+    5a9c:	68fa      	ldr	r2, [r7, #12]
+    5a9e:	4b20      	ldr	r3, [pc, #128]	(5b20 <_ZN17BrasLaterauxKrabiD2Ev+0x8c>)
+    5aa0:	6013      	str	r3, [r2, #0]
 {
     brasGauche->shutDownServo();
-    5832:	68fb      	ldr	r3, [r7, #12]
-    5834:	689b      	ldr	r3, [r3, #8]
-    5836:	4618      	mov	r0, r3
-    5838:	f001 feec 	bl	7614 <_ZN5Servo13shutDownServoEv>
+    5aa2:	68fb      	ldr	r3, [r7, #12]
+    5aa4:	689b      	ldr	r3, [r3, #8]
+    5aa6:	4618      	mov	r0, r3
+    5aa8:	f001 fdb4 	bl	7614 <_ZN5Servo13shutDownServoEv>
     brasDroit->shutDownServo();
-    583c:	68fb      	ldr	r3, [r7, #12]
-    583e:	68db      	ldr	r3, [r3, #12]
-    5840:	4618      	mov	r0, r3
-    5842:	f001 fee7 	bl	7614 <_ZN5Servo13shutDownServoEv>
+    5aac:	68fb      	ldr	r3, [r7, #12]
+    5aae:	68db      	ldr	r3, [r3, #12]
+    5ab0:	4618      	mov	r0, r3
+    5ab2:	f001 fdaf 	bl	7614 <_ZN5Servo13shutDownServoEv>
     delete brasGauche;
-    5846:	68fb      	ldr	r3, [r7, #12]
-    5848:	689b      	ldr	r3, [r3, #8]
-    584a:	607b      	str	r3, [r7, #4]
-    584c:	687b      	ldr	r3, [r7, #4]
-    584e:	2b00      	cmp	r3, #0
-    5850:	d005      	beq.n	585e <_ZN17BrasLaterauxKrabiD2Ev+0x3a>
-    5852:	6878      	ldr	r0, [r7, #4]
-    5854:	f001 ff38 	bl	76c8 <_ZN5ServoD1Ev>
-    5858:	6878      	ldr	r0, [r7, #4]
-    585a:	f009 f9ef 	bl	ec3c <_ZdlPv>
+    5ab6:	68fb      	ldr	r3, [r7, #12]
+    5ab8:	689b      	ldr	r3, [r3, #8]
+    5aba:	607b      	str	r3, [r7, #4]
+    5abc:	687b      	ldr	r3, [r7, #4]
+    5abe:	2b00      	cmp	r3, #0
+    5ac0:	d005      	beq.n	5ace <_ZN17BrasLaterauxKrabiD2Ev+0x3a>
+    5ac2:	6878      	ldr	r0, [r7, #4]
+    5ac4:	f001 fe00 	bl	76c8 <_ZN5ServoD1Ev>
+    5ac8:	6878      	ldr	r0, [r7, #4]
+    5aca:	f009 f8b7 	bl	ec3c <_ZdlPv>
     delete brasDroit;
-    585e:	68fb      	ldr	r3, [r7, #12]
-    5860:	68db      	ldr	r3, [r3, #12]
-    5862:	60bb      	str	r3, [r7, #8]
-    5864:	68bb      	ldr	r3, [r7, #8]
-    5866:	2b00      	cmp	r3, #0
-    5868:	d005      	beq.n	5876 <_ZN17BrasLaterauxKrabiD2Ev+0x52>
-    586a:	68b8      	ldr	r0, [r7, #8]
-    586c:	f001 ff2c 	bl	76c8 <_ZN5ServoD1Ev>
-    5870:	68b8      	ldr	r0, [r7, #8]
-    5872:	f009 f9e3 	bl	ec3c <_ZdlPv>
+    5ace:	68fb      	ldr	r3, [r7, #12]
+    5ad0:	68db      	ldr	r3, [r3, #12]
+    5ad2:	60bb      	str	r3, [r7, #8]
+    5ad4:	68bb      	ldr	r3, [r7, #8]
+    5ad6:	2b00      	cmp	r3, #0
+    5ad8:	d005      	beq.n	5ae6 <_ZN17BrasLaterauxKrabiD2Ev+0x52>
+    5ada:	68b8      	ldr	r0, [r7, #8]
+    5adc:	f001 fdf4 	bl	76c8 <_ZN5ServoD1Ev>
+    5ae0:	68b8      	ldr	r0, [r7, #8]
+    5ae2:	f009 f8ab 	bl	ec3c <_ZdlPv>
     delete brasLaterauxKrabi;
-    5876:	4b0f      	ldr	r3, [pc, #60]	(58b4 <_ZN17BrasLaterauxKrabiD2Ev+0x90>)
-    5878:	681b      	ldr	r3, [r3, #0]
-    587a:	2b00      	cmp	r3, #0
-    587c:	d009      	beq.n	5892 <_ZN17BrasLaterauxKrabiD2Ev+0x6e>
-    587e:	4b0d      	ldr	r3, [pc, #52]	(58b4 <_ZN17BrasLaterauxKrabiD2Ev+0x90>)
-    5880:	681b      	ldr	r3, [r3, #0]
-    5882:	681b      	ldr	r3, [r3, #0]
-    5884:	f103 0304 	add.w	r3, r3, #4	; 0x4
-    5888:	681a      	ldr	r2, [r3, #0]
-    588a:	4b0a      	ldr	r3, [pc, #40]	(58b4 <_ZN17BrasLaterauxKrabiD2Ev+0x90>)
-    588c:	681b      	ldr	r3, [r3, #0]
-    588e:	4618      	mov	r0, r3
-    5890:	4790      	blx	r2
+    5ae6:	4b0f      	ldr	r3, [pc, #60]	(5b24 <_ZN17BrasLaterauxKrabiD2Ev+0x90>)
+    5ae8:	681b      	ldr	r3, [r3, #0]
+    5aea:	2b00      	cmp	r3, #0
+    5aec:	d009      	beq.n	5b02 <_ZN17BrasLaterauxKrabiD2Ev+0x6e>
+    5aee:	4b0d      	ldr	r3, [pc, #52]	(5b24 <_ZN17BrasLaterauxKrabiD2Ev+0x90>)
+    5af0:	681b      	ldr	r3, [r3, #0]
+    5af2:	681b      	ldr	r3, [r3, #0]
+    5af4:	f103 0304 	add.w	r3, r3, #4	; 0x4
+    5af8:	681a      	ldr	r2, [r3, #0]
+    5afa:	4b0a      	ldr	r3, [pc, #40]	(5b24 <_ZN17BrasLaterauxKrabiD2Ev+0x90>)
+    5afc:	681b      	ldr	r3, [r3, #0]
+    5afe:	4618      	mov	r0, r3
+    5b00:	4790      	blx	r2
 }
-    5892:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5896:	b2db      	uxtb	r3, r3
-    5898:	2b00      	cmp	r3, #0
-    589a:	d002      	beq.n	58a2 <_ZN17BrasLaterauxKrabiD2Ev+0x7e>
-    589c:	68f8      	ldr	r0, [r7, #12]
-    589e:	f009 f9cd 	bl	ec3c <_ZdlPv>
-    58a2:	68fb      	ldr	r3, [r7, #12]
-    58a4:	4618      	mov	r0, r3
-    58a6:	f107 0710 	add.w	r7, r7, #16	; 0x10
-    58aa:	46bd      	mov	sp, r7
-    58ac:	bd80      	pop	{r7, pc}
-    58ae:	46c0      	nop			(mov r8, r8)
-    58b0:	000220d0 	.word	0x000220d0
-    58b4:	20000550 	.word	0x20000550
+    5b02:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5b06:	b2db      	uxtb	r3, r3
+    5b08:	2b00      	cmp	r3, #0
+    5b0a:	d002      	beq.n	5b12 <_ZN17BrasLaterauxKrabiD2Ev+0x7e>
+    5b0c:	68f8      	ldr	r0, [r7, #12]
+    5b0e:	f009 f895 	bl	ec3c <_ZdlPv>
+    5b12:	68fb      	ldr	r3, [r7, #12]
+    5b14:	4618      	mov	r0, r3
+    5b16:	f107 0710 	add.w	r7, r7, #16	; 0x10
+    5b1a:	46bd      	mov	sp, r7
+    5b1c:	bd80      	pop	{r7, pc}
+    5b1e:	46c0      	nop			(mov r8, r8)
+    5b20:	000220d0 	.word	0x000220d0
+    5b24:	20000558 	.word	0x20000558
 
-000058b8 <_ZN9BrasTapis6expandEv>:
+00005b28 <_ZN9BrasTapis6expandEv>:
  //   #endif
     brasTapisLeft->collapse();
     brasTapisRight->collapse();
 }
 
 void BrasTapis::expand()
-    58b8:	b580      	push	{r7, lr}
-    58ba:	b082      	sub	sp, #8
-    58bc:	af00      	add	r7, sp, #0
-    58be:	6078      	str	r0, [r7, #4]
+    5b28:	b580      	push	{r7, lr}
+    5b2a:	b082      	sub	sp, #8
+    5b2c:	af00      	add	r7, sp, #0
+    5b2e:	6078      	str	r0, [r7, #4]
 {
     brasTapisRight->expand();
-    58c0:	4b06      	ldr	r3, [pc, #24]	(58dc <_ZN9BrasTapis6expandEv+0x24>)
-    58c2:	681b      	ldr	r3, [r3, #0]
-    58c4:	4618      	mov	r0, r3
-    58c6:	f7ff fff7 	bl	58b8 <_ZN9BrasTapis6expandEv>
+    5b30:	4b06      	ldr	r3, [pc, #24]	(5b4c <_ZN9BrasTapis6expandEv+0x24>)
+    5b32:	681b      	ldr	r3, [r3, #0]
+    5b34:	4618      	mov	r0, r3
+    5b36:	f7ff fff7 	bl	5b28 <_ZN9BrasTapis6expandEv>
     brasTapisLeft->expand();
-    58ca:	4b05      	ldr	r3, [pc, #20]	(58e0 <_ZN9BrasTapis6expandEv+0x28>)
-    58cc:	681b      	ldr	r3, [r3, #0]
-    58ce:	4618      	mov	r0, r3
-    58d0:	f7ff fff2 	bl	58b8 <_ZN9BrasTapis6expandEv>
+    5b3a:	4b05      	ldr	r3, [pc, #20]	(5b50 <_ZN9BrasTapis6expandEv+0x28>)
+    5b3c:	681b      	ldr	r3, [r3, #0]
+    5b3e:	4618      	mov	r0, r3
+    5b40:	f7ff fff2 	bl	5b28 <_ZN9BrasTapis6expandEv>
 }
-    58d4:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    58d8:	46bd      	mov	sp, r7
-    58da:	bd80      	pop	{r7, pc}
-    58dc:	20000558 	.word	0x20000558
-    58e0:	20000554 	.word	0x20000554
+    5b44:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    5b48:	46bd      	mov	sp, r7
+    5b4a:	bd80      	pop	{r7, pc}
+    5b4c:	20000560 	.word	0x20000560
+    5b50:	2000055c 	.word	0x2000055c
 
-000058e4 <_ZN9BrasTapis8collapseEv>:
+00005b54 <_ZN9BrasTapis8collapseEv>:
 
 void BrasTapis::collapse()
-    58e4:	b580      	push	{r7, lr}
-    58e6:	b082      	sub	sp, #8
-    58e8:	af00      	add	r7, sp, #0
-    58ea:	6078      	str	r0, [r7, #4]
+    5b54:	b580      	push	{r7, lr}
+    5b56:	b082      	sub	sp, #8
+    5b58:	af00      	add	r7, sp, #0
+    5b5a:	6078      	str	r0, [r7, #4]
 {
     brasTapisRight->collapse();
-    58ec:	4b06      	ldr	r3, [pc, #24]	(5908 <_ZN9BrasTapis8collapseEv+0x24>)
-    58ee:	681b      	ldr	r3, [r3, #0]
-    58f0:	4618      	mov	r0, r3
-    58f2:	f7ff fff7 	bl	58e4 <_ZN9BrasTapis8collapseEv>
+    5b5c:	4b06      	ldr	r3, [pc, #24]	(5b78 <_ZN9BrasTapis8collapseEv+0x24>)
+    5b5e:	681b      	ldr	r3, [r3, #0]
+    5b60:	4618      	mov	r0, r3
+    5b62:	f7ff fff7 	bl	5b54 <_ZN9BrasTapis8collapseEv>
     brasTapisLeft->collapse();
-    58f6:	4b05      	ldr	r3, [pc, #20]	(590c <_ZN9BrasTapis8collapseEv+0x28>)
-    58f8:	681b      	ldr	r3, [r3, #0]
-    58fa:	4618      	mov	r0, r3
-    58fc:	f7ff fff2 	bl	58e4 <_ZN9BrasTapis8collapseEv>
+    5b66:	4b05      	ldr	r3, [pc, #20]	(5b7c <_ZN9BrasTapis8collapseEv+0x28>)
+    5b68:	681b      	ldr	r3, [r3, #0]
+    5b6a:	4618      	mov	r0, r3
+    5b6c:	f7ff fff2 	bl	5b54 <_ZN9BrasTapis8collapseEv>
 }
-    5900:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    5904:	46bd      	mov	sp, r7
-    5906:	bd80      	pop	{r7, pc}
-    5908:	20000558 	.word	0x20000558
-    590c:	20000554 	.word	0x20000554
+    5b70:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    5b74:	46bd      	mov	sp, r7
+    5b76:	bd80      	pop	{r7, pc}
+    5b78:	20000560 	.word	0x20000560
+    5b7c:	2000055c 	.word	0x2000055c
 
-00005910 <_ZN9BrasTapisC1EP5Timerhffff>:
+00005b80 <_ZN9BrasTapisC1EP5Timerhffff>:
 
-#ifdef ROBOTHW
 BrasTapis* BrasTapis::brasTapisLeft = 0;
 BrasTapis* BrasTapis::brasTapisRight = 0;
 
+#ifdef ROBOTHW
 BrasTapis::BrasTapis(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded):BrasKrabi(timer, OCx, RC0degre, RC180degres, angleCollapsed, angleExpanded, 0.f)
-    5910:	b580      	push	{r7, lr}
-    5912:	b088      	sub	sp, #32
-    5914:	af04      	add	r7, sp, #16
-    5916:	60f8      	str	r0, [r7, #12]
-    5918:	60b9      	str	r1, [r7, #8]
-    591a:	603b      	str	r3, [r7, #0]
-    591c:	4613      	mov	r3, r2
-    591e:	71fb      	strb	r3, [r7, #7]
-    5920:	68fa      	ldr	r2, [r7, #12]
-    5922:	f897 c007 	ldrb.w	ip, [r7, #7]
-    5926:	69bb      	ldr	r3, [r7, #24]
-    5928:	9300      	str	r3, [sp, #0]
-    592a:	69fb      	ldr	r3, [r7, #28]
-    592c:	9301      	str	r3, [sp, #4]
-    592e:	6a3b      	ldr	r3, [r7, #32]
-    5930:	9302      	str	r3, [sp, #8]
-    5932:	4b07      	ldr	r3, [pc, #28]	(5950 <_ZN9BrasTapisC1EP5Timerhffff+0x40>)
-    5934:	9303      	str	r3, [sp, #12]
-    5936:	4610      	mov	r0, r2
-    5938:	68b9      	ldr	r1, [r7, #8]
-    593a:	4662      	mov	r2, ip
-    593c:	683b      	ldr	r3, [r7, #0]
-    593e:	f7ff fe17 	bl	5570 <_ZN9BrasKrabiC2EP5Timerhfffff>
+    5b80:	b580      	push	{r7, lr}
+    5b82:	b088      	sub	sp, #32
+    5b84:	af04      	add	r7, sp, #16
+    5b86:	60f8      	str	r0, [r7, #12]
+    5b88:	60b9      	str	r1, [r7, #8]
+    5b8a:	603b      	str	r3, [r7, #0]
+    5b8c:	4613      	mov	r3, r2
+    5b8e:	71fb      	strb	r3, [r7, #7]
+    5b90:	68fa      	ldr	r2, [r7, #12]
+    5b92:	f897 c007 	ldrb.w	ip, [r7, #7]
+    5b96:	69bb      	ldr	r3, [r7, #24]
+    5b98:	9300      	str	r3, [sp, #0]
+    5b9a:	69fb      	ldr	r3, [r7, #28]
+    5b9c:	9301      	str	r3, [sp, #4]
+    5b9e:	6a3b      	ldr	r3, [r7, #32]
+    5ba0:	9302      	str	r3, [sp, #8]
+    5ba2:	4b07      	ldr	r3, [pc, #28]	(5bc0 <_ZN9BrasTapisC1EP5Timerhffff+0x40>)
+    5ba4:	9303      	str	r3, [sp, #12]
+    5ba6:	4610      	mov	r0, r2
+    5ba8:	68b9      	ldr	r1, [r7, #8]
+    5baa:	4662      	mov	r2, ip
+    5bac:	683b      	ldr	r3, [r7, #0]
+    5bae:	f7ff fcdf 	bl	5570 <_ZN9BrasKrabiC2EP5Timerhfffff>
 {}
-    5942:	68fb      	ldr	r3, [r7, #12]
-    5944:	4618      	mov	r0, r3
-    5946:	f107 0710 	add.w	r7, r7, #16	; 0x10
-    594a:	46bd      	mov	sp, r7
-    594c:	bd80      	pop	{r7, pc}
-    594e:	46c0      	nop			(mov r8, r8)
-    5950:	00000000 	.word	0x00000000
+    5bb2:	68fb      	ldr	r3, [r7, #12]
+    5bb4:	4618      	mov	r0, r3
+    5bb6:	f107 0710 	add.w	r7, r7, #16	; 0x10
+    5bba:	46bd      	mov	sp, r7
+    5bbc:	bd80      	pop	{r7, pc}
+    5bbe:	46c0      	nop			(mov r8, r8)
+    5bc0:	00000000 	.word	0x00000000
 
-00005954 <_ZN9BrasTapis13initBrasTapisEv>:
+00005bc4 <_ZN9BrasTapis13initBrasTapisEv>:
 
 void BrasTapis::initBrasTapis()
-    5954:	b580      	push	{r7, lr}
-    5956:	b08c      	sub	sp, #48
-    5958:	af04      	add	r7, sp, #16
+    5bc4:	b580      	push	{r7, lr}
+    5bc6:	b08c      	sub	sp, #48
+    5bc8:	af04      	add	r7, sp, #16
 //        TIM_CtrlPWMOutputs(TIM3, ENABLE);
 //        this->brasTapisLeft = new BrasTapis(timer, 1, 0.01f, 0.11f, 87.f, 51.f);
 //        this->brasTapisRight = new BrasTapis(2timer, 3, 0.01f, 0.11f, 0.f, 40.f);
 
 //    #else // Krabi - STM32 H107
         Timer* timer = new Timer(TIM1, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
-    595a:	f04f 000c 	mov.w	r0, #12	; 0xc
-    595e:	f009 f8c7 	bl	eaf0 <_Znwj>
-    5962:	4603      	mov	r3, r0
-    5964:	603b      	str	r3, [r7, #0]
-    5966:	683a      	ldr	r2, [r7, #0]
-    5968:	2a00      	cmp	r2, #0
-    596a:	d00d      	beq.n	5988 <_ZN9BrasTapis13initBrasTapisEv+0x34>
-    596c:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5970:	9300      	str	r3, [sp, #0]
-    5972:	6838      	ldr	r0, [r7, #0]
-    5974:	492e      	ldr	r1, [pc, #184]	(5a30 <_ZN9BrasTapis13initBrasTapisEv+0xdc>)
-    5976:	f644 6220 	movw	r2, #20000	; 0x4e20
-    597a:	f04f 0347 	mov.w	r3, #71	; 0x47
-    597e:	f008 f82b 	bl	d9d8 <_ZN5TimerC1EP11TIM_TypeDefttNS_11ClkDivisionE>
-    5982:	683b      	ldr	r3, [r7, #0]
-    5984:	607b      	str	r3, [r7, #4]
-    5986:	e001      	b.n	598c <_ZN9BrasTapis13initBrasTapisEv+0x38>
-    5988:	683a      	ldr	r2, [r7, #0]
-    598a:	607a      	str	r2, [r7, #4]
-    598c:	687b      	ldr	r3, [r7, #4]
-    598e:	61fb      	str	r3, [r7, #28]
+    5bca:	f04f 000c 	mov.w	r0, #12	; 0xc
+    5bce:	f008 ff8f 	bl	eaf0 <_Znwj>
+    5bd2:	4603      	mov	r3, r0
+    5bd4:	603b      	str	r3, [r7, #0]
+    5bd6:	683a      	ldr	r2, [r7, #0]
+    5bd8:	2a00      	cmp	r2, #0
+    5bda:	d00d      	beq.n	5bf8 <_ZN9BrasTapis13initBrasTapisEv+0x34>
+    5bdc:	f04f 0300 	mov.w	r3, #0	; 0x0
+    5be0:	9300      	str	r3, [sp, #0]
+    5be2:	6838      	ldr	r0, [r7, #0]
+    5be4:	492e      	ldr	r1, [pc, #184]	(5ca0 <_ZN9BrasTapis13initBrasTapisEv+0xdc>)
+    5be6:	f644 6220 	movw	r2, #20000	; 0x4e20
+    5bea:	f04f 0347 	mov.w	r3, #71	; 0x47
+    5bee:	f007 fef3 	bl	d9d8 <_ZN5TimerC1EP11TIM_TypeDefttNS_11ClkDivisionE>
+    5bf2:	683b      	ldr	r3, [r7, #0]
+    5bf4:	607b      	str	r3, [r7, #4]
+    5bf6:	e001      	b.n	5bfc <_ZN9BrasTapis13initBrasTapisEv+0x38>
+    5bf8:	683a      	ldr	r2, [r7, #0]
+    5bfa:	607a      	str	r2, [r7, #4]
+    5bfc:	687b      	ldr	r3, [r7, #4]
+    5bfe:	61fb      	str	r3, [r7, #28]
         TIM_CtrlPWMOutputs(TIM1, ENABLE);
-    5990:	4827      	ldr	r0, [pc, #156]	(5a30 <_ZN9BrasTapis13initBrasTapisEv+0xdc>)
-    5992:	f04f 0101 	mov.w	r1, #1	; 0x1
-    5996:	f7fd fb6d 	bl	3074 <TIM_CtrlPWMOutputs>
+    5c00:	4827      	ldr	r0, [pc, #156]	(5ca0 <_ZN9BrasTapis13initBrasTapisEv+0xdc>)
+    5c02:	f04f 0101 	mov.w	r1, #1	; 0x1
+    5c06:	f7fd fa35 	bl	3074 <TIM_CtrlPWMOutputs>
         brasTapisLeft = new BrasTapis(timer, 2, 0.01f, 0.11f, 20.f, 86.f);
-    599a:	f04f 0010 	mov.w	r0, #16	; 0x10
-    599e:	f009 f8a7 	bl	eaf0 <_Znwj>
-    59a2:	4603      	mov	r3, r0
-    59a4:	60bb      	str	r3, [r7, #8]
-    59a6:	68ba      	ldr	r2, [r7, #8]
-    59a8:	2a00      	cmp	r2, #0
-    59aa:	d00f      	beq.n	59cc <_ZN9BrasTapis13initBrasTapisEv+0x78>
-    59ac:	4b21      	ldr	r3, [pc, #132]	(5a34 <_ZN9BrasTapis13initBrasTapisEv+0xe0>)
-    59ae:	9300      	str	r3, [sp, #0]
-    59b0:	4b21      	ldr	r3, [pc, #132]	(5a38 <_ZN9BrasTapis13initBrasTapisEv+0xe4>)
-    59b2:	9301      	str	r3, [sp, #4]
-    59b4:	4b21      	ldr	r3, [pc, #132]	(5a3c <_ZN9BrasTapis13initBrasTapisEv+0xe8>)
-    59b6:	9302      	str	r3, [sp, #8]
-    59b8:	68b8      	ldr	r0, [r7, #8]
-    59ba:	69f9      	ldr	r1, [r7, #28]
-    59bc:	f04f 0202 	mov.w	r2, #2	; 0x2
-    59c0:	4b1f      	ldr	r3, [pc, #124]	(5a40 <_ZN9BrasTapis13initBrasTapisEv+0xec>)
-    59c2:	f7ff ffa5 	bl	5910 <_ZN9BrasTapisC1EP5Timerhffff>
-    59c6:	68bb      	ldr	r3, [r7, #8]
-    59c8:	60fb      	str	r3, [r7, #12]
-    59ca:	e001      	b.n	59d0 <_ZN9BrasTapis13initBrasTapisEv+0x7c>
-    59cc:	68ba      	ldr	r2, [r7, #8]
-    59ce:	60fa      	str	r2, [r7, #12]
-    59d0:	4b1c      	ldr	r3, [pc, #112]	(5a44 <_ZN9BrasTapis13initBrasTapisEv+0xf0>)
-    59d2:	68fa      	ldr	r2, [r7, #12]
-    59d4:	601a      	str	r2, [r3, #0]
+    5c0a:	f04f 0010 	mov.w	r0, #16	; 0x10
+    5c0e:	f008 ff6f 	bl	eaf0 <_Znwj>
+    5c12:	4603      	mov	r3, r0
+    5c14:	60bb      	str	r3, [r7, #8]
+    5c16:	68ba      	ldr	r2, [r7, #8]
+    5c18:	2a00      	cmp	r2, #0
+    5c1a:	d00f      	beq.n	5c3c <_ZN9BrasTapis13initBrasTapisEv+0x78>
+    5c1c:	4b21      	ldr	r3, [pc, #132]	(5ca4 <_ZN9BrasTapis13initBrasTapisEv+0xe0>)
+    5c1e:	9300      	str	r3, [sp, #0]
+    5c20:	4b21      	ldr	r3, [pc, #132]	(5ca8 <_ZN9BrasTapis13initBrasTapisEv+0xe4>)
+    5c22:	9301      	str	r3, [sp, #4]
+    5c24:	4b21      	ldr	r3, [pc, #132]	(5cac <_ZN9BrasTapis13initBrasTapisEv+0xe8>)
+    5c26:	9302      	str	r3, [sp, #8]
+    5c28:	68b8      	ldr	r0, [r7, #8]
+    5c2a:	69f9      	ldr	r1, [r7, #28]
+    5c2c:	f04f 0202 	mov.w	r2, #2	; 0x2
+    5c30:	4b1f      	ldr	r3, [pc, #124]	(5cb0 <_ZN9BrasTapis13initBrasTapisEv+0xec>)
+    5c32:	f7ff ffa5 	bl	5b80 <_ZN9BrasTapisC1EP5Timerhffff>
+    5c36:	68bb      	ldr	r3, [r7, #8]
+    5c38:	60fb      	str	r3, [r7, #12]
+    5c3a:	e001      	b.n	5c40 <_ZN9BrasTapis13initBrasTapisEv+0x7c>
+    5c3c:	68ba      	ldr	r2, [r7, #8]
+    5c3e:	60fa      	str	r2, [r7, #12]
+    5c40:	4b1c      	ldr	r3, [pc, #112]	(5cb4 <_ZN9BrasTapis13initBrasTapisEv+0xf0>)
+    5c42:	68fa      	ldr	r2, [r7, #12]
+    5c44:	601a      	str	r2, [r3, #0]
         brasTapisRight = new BrasTapis(timer, 3, 0.01f, 0.11f, 120.f, 36.f);
-    59d6:	f04f 0010 	mov.w	r0, #16	; 0x10
-    59da:	f009 f889 	bl	eaf0 <_Znwj>
-    59de:	4603      	mov	r3, r0
-    59e0:	613b      	str	r3, [r7, #16]
-    59e2:	693b      	ldr	r3, [r7, #16]
-    59e4:	2b00      	cmp	r3, #0
-    59e6:	d00f      	beq.n	5a08 <_ZN9BrasTapis13initBrasTapisEv+0xb4>
-    59e8:	4b12      	ldr	r3, [pc, #72]	(5a34 <_ZN9BrasTapis13initBrasTapisEv+0xe0>)
-    59ea:	9300      	str	r3, [sp, #0]
-    59ec:	4b16      	ldr	r3, [pc, #88]	(5a48 <_ZN9BrasTapis13initBrasTapisEv+0xf4>)
-    59ee:	9301      	str	r3, [sp, #4]
-    59f0:	4b16      	ldr	r3, [pc, #88]	(5a4c <_ZN9BrasTapis13initBrasTapisEv+0xf8>)
-    59f2:	9302      	str	r3, [sp, #8]
-    59f4:	6938      	ldr	r0, [r7, #16]
-    59f6:	69f9      	ldr	r1, [r7, #28]
-    59f8:	f04f 0203 	mov.w	r2, #3	; 0x3
-    59fc:	4b10      	ldr	r3, [pc, #64]	(5a40 <_ZN9BrasTapis13initBrasTapisEv+0xec>)
-    59fe:	f7ff ff87 	bl	5910 <_ZN9BrasTapisC1EP5Timerhffff>
-    5a02:	693a      	ldr	r2, [r7, #16]
-    5a04:	617a      	str	r2, [r7, #20]
-    5a06:	e001      	b.n	5a0c <_ZN9BrasTapis13initBrasTapisEv+0xb8>
-    5a08:	693b      	ldr	r3, [r7, #16]
-    5a0a:	617b      	str	r3, [r7, #20]
-    5a0c:	4b10      	ldr	r3, [pc, #64]	(5a50 <_ZN9BrasTapis13initBrasTapisEv+0xfc>)
-    5a0e:	697a      	ldr	r2, [r7, #20]
-    5a10:	601a      	str	r2, [r3, #0]
+    5c46:	f04f 0010 	mov.w	r0, #16	; 0x10
+    5c4a:	f008 ff51 	bl	eaf0 <_Znwj>
+    5c4e:	4603      	mov	r3, r0
+    5c50:	613b      	str	r3, [r7, #16]
+    5c52:	693b      	ldr	r3, [r7, #16]
+    5c54:	2b00      	cmp	r3, #0
+    5c56:	d00f      	beq.n	5c78 <_ZN9BrasTapis13initBrasTapisEv+0xb4>
+    5c58:	4b12      	ldr	r3, [pc, #72]	(5ca4 <_ZN9BrasTapis13initBrasTapisEv+0xe0>)
+    5c5a:	9300      	str	r3, [sp, #0]
+    5c5c:	4b16      	ldr	r3, [pc, #88]	(5cb8 <_ZN9BrasTapis13initBrasTapisEv+0xf4>)
+    5c5e:	9301      	str	r3, [sp, #4]
+    5c60:	4b16      	ldr	r3, [pc, #88]	(5cbc <_ZN9BrasTapis13initBrasTapisEv+0xf8>)
+    5c62:	9302      	str	r3, [sp, #8]
+    5c64:	6938      	ldr	r0, [r7, #16]
+    5c66:	69f9      	ldr	r1, [r7, #28]
+    5c68:	f04f 0203 	mov.w	r2, #3	; 0x3
+    5c6c:	4b10      	ldr	r3, [pc, #64]	(5cb0 <_ZN9BrasTapis13initBrasTapisEv+0xec>)
+    5c6e:	f7ff ff87 	bl	5b80 <_ZN9BrasTapisC1EP5Timerhffff>
+    5c72:	693a      	ldr	r2, [r7, #16]
+    5c74:	617a      	str	r2, [r7, #20]
+    5c76:	e001      	b.n	5c7c <_ZN9BrasTapis13initBrasTapisEv+0xb8>
+    5c78:	693b      	ldr	r3, [r7, #16]
+    5c7a:	617b      	str	r3, [r7, #20]
+    5c7c:	4b10      	ldr	r3, [pc, #64]	(5cc0 <_ZN9BrasTapis13initBrasTapisEv+0xfc>)
+    5c7e:	697a      	ldr	r2, [r7, #20]
+    5c80:	601a      	str	r2, [r3, #0]
 
  //   #endif
     brasTapisLeft->collapse();
-    5a12:	4b0c      	ldr	r3, [pc, #48]	(5a44 <_ZN9BrasTapis13initBrasTapisEv+0xf0>)
-    5a14:	681b      	ldr	r3, [r3, #0]
-    5a16:	4618      	mov	r0, r3
-    5a18:	f7ff ff64 	bl	58e4 <_ZN9BrasTapis8collapseEv>
+    5c82:	4b0c      	ldr	r3, [pc, #48]	(5cb4 <_ZN9BrasTapis13initBrasTapisEv+0xf0>)
+    5c84:	681b      	ldr	r3, [r3, #0]
+    5c86:	4618      	mov	r0, r3
+    5c88:	f7ff ff64 	bl	5b54 <_ZN9BrasTapis8collapseEv>
     brasTapisRight->collapse();
-    5a1c:	4b0c      	ldr	r3, [pc, #48]	(5a50 <_ZN9BrasTapis13initBrasTapisEv+0xfc>)
-    5a1e:	681b      	ldr	r3, [r3, #0]
-    5a20:	4618      	mov	r0, r3
-    5a22:	f7ff ff5f 	bl	58e4 <_ZN9BrasTapis8collapseEv>
+    5c8c:	4b0c      	ldr	r3, [pc, #48]	(5cc0 <_ZN9BrasTapis13initBrasTapisEv+0xfc>)
+    5c8e:	681b      	ldr	r3, [r3, #0]
+    5c90:	4618      	mov	r0, r3
+    5c92:	f7ff ff5f 	bl	5b54 <_ZN9BrasTapis8collapseEv>
 }
-    5a26:	f107 0720 	add.w	r7, r7, #32	; 0x20
-    5a2a:	46bd      	mov	sp, r7
-    5a2c:	bd80      	pop	{r7, pc}
-    5a2e:	46c0      	nop			(mov r8, r8)
-    5a30:	40012c00 	.word	0x40012c00
-    5a34:	3de147ae 	.word	0x3de147ae
-    5a38:	41a00000 	.word	0x41a00000
-    5a3c:	42ac0000 	.word	0x42ac0000
-    5a40:	3c23d70a 	.word	0x3c23d70a
-    5a44:	20000554 	.word	0x20000554
-    5a48:	42f00000 	.word	0x42f00000
-    5a4c:	42100000 	.word	0x42100000
-    5a50:	20000558 	.word	0x20000558
+    5c96:	f107 0720 	add.w	r7, r7, #32	; 0x20
+    5c9a:	46bd      	mov	sp, r7
+    5c9c:	bd80      	pop	{r7, pc}
+    5c9e:	46c0      	nop			(mov r8, r8)
+    5ca0:	40012c00 	.word	0x40012c00
+    5ca4:	3de147ae 	.word	0x3de147ae
+    5ca8:	41a00000 	.word	0x41a00000
+    5cac:	42ac0000 	.word	0x42ac0000
+    5cb0:	3c23d70a 	.word	0x3c23d70a
+    5cb4:	2000055c 	.word	0x2000055c
+    5cb8:	42f00000 	.word	0x42f00000
+    5cbc:	42100000 	.word	0x42100000
+    5cc0:	20000560 	.word	0x20000560
 
-00005a54 <_ZN9BrasTapis7getLeftEv>:
+00005cc4 <_ZN9BrasTapis7getLeftEv>:
     if (brasTapisRight == 0)
         initBrasTapis();
     return brasTapisRight;
 }
 
 BrasTapis *BrasTapis::getLeft()
-    5a54:	b580      	push	{r7, lr}
-    5a56:	b082      	sub	sp, #8
-    5a58:	af00      	add	r7, sp, #0
-    5a5a:	6078      	str	r0, [r7, #4]
+    5cc4:	b580      	push	{r7, lr}
+    5cc6:	b082      	sub	sp, #8
+    5cc8:	af00      	add	r7, sp, #0
+    5cca:	6078      	str	r0, [r7, #4]
 {
     if (brasTapisLeft == 0)
-    5a5c:	4b06      	ldr	r3, [pc, #24]	(5a78 <_ZN9BrasTapis7getLeftEv+0x24>)
-    5a5e:	681b      	ldr	r3, [r3, #0]
-    5a60:	2b00      	cmp	r3, #0
-    5a62:	d101      	bne.n	5a68 <_ZN9BrasTapis7getLeftEv+0x14>
+    5ccc:	4b06      	ldr	r3, [pc, #24]	(5ce8 <_ZN9BrasTapis7getLeftEv+0x24>)
+    5cce:	681b      	ldr	r3, [r3, #0]
+    5cd0:	2b00      	cmp	r3, #0
+    5cd2:	d101      	bne.n	5cd8 <_ZN9BrasTapis7getLeftEv+0x14>
         initBrasTapis();
-    5a64:	f7ff ff76 	bl	5954 <_ZN9BrasTapis13initBrasTapisEv>
+    5cd4:	f7ff ff76 	bl	5bc4 <_ZN9BrasTapis13initBrasTapisEv>
     return brasTapisLeft;
-    5a68:	4b03      	ldr	r3, [pc, #12]	(5a78 <_ZN9BrasTapis7getLeftEv+0x24>)
-    5a6a:	681b      	ldr	r3, [r3, #0]
+    5cd8:	4b03      	ldr	r3, [pc, #12]	(5ce8 <_ZN9BrasTapis7getLeftEv+0x24>)
+    5cda:	681b      	ldr	r3, [r3, #0]
 }
-    5a6c:	4618      	mov	r0, r3
-    5a6e:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    5a72:	46bd      	mov	sp, r7
-    5a74:	bd80      	pop	{r7, pc}
-    5a76:	46c0      	nop			(mov r8, r8)
-    5a78:	20000554 	.word	0x20000554
+    5cdc:	4618      	mov	r0, r3
+    5cde:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    5ce2:	46bd      	mov	sp, r7
+    5ce4:	bd80      	pop	{r7, pc}
+    5ce6:	46c0      	nop			(mov r8, r8)
+    5ce8:	2000055c 	.word	0x2000055c
 
-00005a7c <_ZN9BrasTapis8getRightEv>:
+00005cec <_ZN9BrasTapis8getRightEv>:
 {
     brasTapisRight->collapse();
     brasTapisLeft->collapse();
 }
 
 BrasTapis *BrasTapis::getRight()
-    5a7c:	b580      	push	{r7, lr}
-    5a7e:	b082      	sub	sp, #8
-    5a80:	af00      	add	r7, sp, #0
-    5a82:	6078      	str	r0, [r7, #4]
+    5cec:	b580      	push	{r7, lr}
+    5cee:	b082      	sub	sp, #8
+    5cf0:	af00      	add	r7, sp, #0
+    5cf2:	6078      	str	r0, [r7, #4]
 {
     if (brasTapisRight == 0)
-    5a84:	4b06      	ldr	r3, [pc, #24]	(5aa0 <_ZN9BrasTapis8getRightEv+0x24>)
-    5a86:	681b      	ldr	r3, [r3, #0]
-    5a88:	2b00      	cmp	r3, #0
-    5a8a:	d101      	bne.n	5a90 <_ZN9BrasTapis8getRightEv+0x14>
+    5cf4:	4b06      	ldr	r3, [pc, #24]	(5d10 <_ZN9BrasTapis8getRightEv+0x24>)
+    5cf6:	681b      	ldr	r3, [r3, #0]
+    5cf8:	2b00      	cmp	r3, #0
+    5cfa:	d101      	bne.n	5d00 <_ZN9BrasTapis8getRightEv+0x14>
         initBrasTapis();
-    5a8c:	f7ff ff62 	bl	5954 <_ZN9BrasTapis13initBrasTapisEv>
+    5cfc:	f7ff ff62 	bl	5bc4 <_ZN9BrasTapis13initBrasTapisEv>
     return brasTapisRight;
-    5a90:	4b03      	ldr	r3, [pc, #12]	(5aa0 <_ZN9BrasTapis8getRightEv+0x24>)
-    5a92:	681b      	ldr	r3, [r3, #0]
+    5d00:	4b03      	ldr	r3, [pc, #12]	(5d10 <_ZN9BrasTapis8getRightEv+0x24>)
+    5d02:	681b      	ldr	r3, [r3, #0]
 }
-    5a94:	4618      	mov	r0, r3
-    5a96:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    5a9a:	46bd      	mov	sp, r7
-    5a9c:	bd80      	pop	{r7, pc}
-    5a9e:	46c0      	nop			(mov r8, r8)
-    5aa0:	20000558 	.word	0x20000558
+    5d04:	4618      	mov	r0, r3
+    5d06:	f107 0708 	add.w	r7, r7, #8	; 0x8
+    5d0a:	46bd      	mov	sp, r7
+    5d0c:	bd80      	pop	{r7, pc}
+    5d0e:	46c0      	nop			(mov r8, r8)
+    5d10:	20000560 	.word	0x20000560
 
-00005aa4 <_ZN9BrasTapisC2EP5Timerhffff>:
+00005d14 <_ZN9BrasTapisC2EP5Timerhffff>:
 
-#ifdef ROBOTHW
 BrasTapis* BrasTapis::brasTapisLeft = 0;
 BrasTapis* BrasTapis::brasTapisRight = 0;
 
+#ifdef ROBOTHW
 BrasTapis::BrasTapis(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded):BrasKrabi(timer, OCx, RC0degre, RC180degres, angleCollapsed, angleExpanded, 0.f)
-    5aa4:	b580      	push	{r7, lr}
-    5aa6:	b088      	sub	sp, #32
-    5aa8:	af04      	add	r7, sp, #16
-    5aaa:	60f8      	str	r0, [r7, #12]
-    5aac:	60b9      	str	r1, [r7, #8]
-    5aae:	603b      	str	r3, [r7, #0]
-    5ab0:	4613      	mov	r3, r2
-    5ab2:	71fb      	strb	r3, [r7, #7]
-    5ab4:	68fa      	ldr	r2, [r7, #12]
-    5ab6:	f897 c007 	ldrb.w	ip, [r7, #7]
-    5aba:	69bb      	ldr	r3, [r7, #24]
-    5abc:	9300      	str	r3, [sp, #0]
-    5abe:	69fb      	ldr	r3, [r7, #28]
-    5ac0:	9301      	str	r3, [sp, #4]
-    5ac2:	6a3b      	ldr	r3, [r7, #32]
-    5ac4:	9302      	str	r3, [sp, #8]
-    5ac6:	4b07      	ldr	r3, [pc, #28]	(5ae4 <_ZN9BrasTapisC2EP5Timerhffff+0x40>)
-    5ac8:	9303      	str	r3, [sp, #12]
-    5aca:	4610      	mov	r0, r2
-    5acc:	68b9      	ldr	r1, [r7, #8]
-    5ace:	4662      	mov	r2, ip
-    5ad0:	683b      	ldr	r3, [r7, #0]
-    5ad2:	f7ff fd4d 	bl	5570 <_ZN9BrasKrabiC2EP5Timerhfffff>
+    5d14:	b580      	push	{r7, lr}
+    5d16:	b088      	sub	sp, #32
+    5d18:	af04      	add	r7, sp, #16
+    5d1a:	60f8      	str	r0, [r7, #12]
+    5d1c:	60b9      	str	r1, [r7, #8]
+    5d1e:	603b      	str	r3, [r7, #0]
+    5d20:	4613      	mov	r3, r2
+    5d22:	71fb      	strb	r3, [r7, #7]
+    5d24:	68fa      	ldr	r2, [r7, #12]
+    5d26:	f897 c007 	ldrb.w	ip, [r7, #7]
+    5d2a:	69bb      	ldr	r3, [r7, #24]
+    5d2c:	9300      	str	r3, [sp, #0]
+    5d2e:	69fb      	ldr	r3, [r7, #28]
+    5d30:	9301      	str	r3, [sp, #4]
+    5d32:	6a3b      	ldr	r3, [r7, #32]
+    5d34:	9302      	str	r3, [sp, #8]
+    5d36:	4b07      	ldr	r3, [pc, #28]	(5d54 <_ZN9BrasTapisC2EP5Timerhffff+0x40>)
+    5d38:	9303      	str	r3, [sp, #12]
+    5d3a:	4610      	mov	r0, r2
+    5d3c:	68b9      	ldr	r1, [r7, #8]
+    5d3e:	4662      	mov	r2, ip
+    5d40:	683b      	ldr	r3, [r7, #0]
+    5d42:	f7ff fc15 	bl	5570 <_ZN9BrasKrabiC2EP5Timerhfffff>
 {}
-    5ad6:	68fb      	ldr	r3, [r7, #12]
-    5ad8:	4618      	mov	r0, r3
-    5ada:	f107 0710 	add.w	r7, r7, #16	; 0x10
-    5ade:	46bd      	mov	sp, r7
-    5ae0:	bd80      	pop	{r7, pc}
-    5ae2:	46c0      	nop			(mov r8, r8)
-    5ae4:	00000000 	.word	0x00000000
-
-00005ae8 <_ZN11BrasLateral5frontEv>:
-    void BrasLateral::collapse()
-    {
-        servo->goToAngle(angleCollapsed);
-    }
-
-    void BrasLateral::front()
-    5ae8:	b580      	push	{r7, lr}
-    5aea:	b082      	sub	sp, #8
-    5aec:	af00      	add	r7, sp, #0
-    5aee:	6078      	str	r0, [r7, #4]
-    {
-        servo->goToAngle(angleFront);
-    5af0:	687b      	ldr	r3, [r7, #4]
-    5af2:	681a      	ldr	r2, [r3, #0]
-    5af4:	687b      	ldr	r3, [r7, #4]
-    5af6:	68db      	ldr	r3, [r3, #12]
-    5af8:	4610      	mov	r0, r2
-    5afa:	4619      	mov	r1, r3
-    5afc:	f001 fd98 	bl	7630 <_ZN5Servo9goToAngleEf>
-    }
-    5b00:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    5b04:	46bd      	mov	sp, r7
-    5b06:	bd80      	pop	{r7, pc}
-
-00005b08 <_ZN11BrasLateral8collapseEv>:
-    void BrasLateral::expand()
-    {
-        servo->goToAngle(angleExpanded);
-    }
-
-    void BrasLateral::collapse()
-    5b08:	b580      	push	{r7, lr}
-    5b0a:	b082      	sub	sp, #8
-    5b0c:	af00      	add	r7, sp, #0
-    5b0e:	6078      	str	r0, [r7, #4]
-    {
-        servo->goToAngle(angleCollapsed);
-    5b10:	687b      	ldr	r3, [r7, #4]
-    5b12:	681a      	ldr	r2, [r3, #0]
-    5b14:	687b      	ldr	r3, [r7, #4]
-    5b16:	685b      	ldr	r3, [r3, #4]
-    5b18:	4610      	mov	r0, r2
-    5b1a:	4619      	mov	r1, r3
-    5b1c:	f001 fd88 	bl	7630 <_ZN5Servo9goToAngleEf>
-    }
-    5b20:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    5b24:	46bd      	mov	sp, r7
-    5b26:	bd80      	pop	{r7, pc}
-
-00005b28 <_ZN11BrasLateral6expandEv>:
-        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
-    {
-        servo = new Servo(timer, OCx, RC0degre, RC180degres);
-    }
-
-    void BrasLateral::expand()
-    5b28:	b580      	push	{r7, lr}
-    5b2a:	b082      	sub	sp, #8
-    5b2c:	af00      	add	r7, sp, #0
-    5b2e:	6078      	str	r0, [r7, #4]
-    {
-        servo->goToAngle(angleExpanded);
-    5b30:	687b      	ldr	r3, [r7, #4]
-    5b32:	681a      	ldr	r2, [r3, #0]
-    5b34:	687b      	ldr	r3, [r7, #4]
-    5b36:	689b      	ldr	r3, [r3, #8]
-    5b38:	4610      	mov	r0, r2
-    5b3a:	4619      	mov	r1, r3
-    5b3c:	f001 fd78 	bl	7630 <_ZN5Servo9goToAngleEf>
-    }
-    5b40:	f107 0708 	add.w	r7, r7, #8	; 0x8
-    5b44:	46bd      	mov	sp, r7
-    5b46:	bd80      	pop	{r7, pc}
-
-00005b48 <_ZN11BrasLateralC1EP5Timerhfffff>:
-BrasLateral* BrasLateral::left = 0;
-BrasLateral* BrasLateral::right = 0;
-
-#ifdef ROBOTHW
-
-    BrasLateral::BrasLateral(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
-    5b48:	b580      	push	{r7, lr}
-    5b4a:	b088      	sub	sp, #32
-    5b4c:	af02      	add	r7, sp, #8
-    5b4e:	6178      	str	r0, [r7, #20]
-    5b50:	6139      	str	r1, [r7, #16]
-    5b52:	60bb      	str	r3, [r7, #8]
-    5b54:	4613      	mov	r3, r2
-    5b56:	73fb      	strb	r3, [r7, #15]
-        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
-    5b58:	697a      	ldr	r2, [r7, #20]
-    5b5a:	6a7b      	ldr	r3, [r7, #36]
-    5b5c:	6053      	str	r3, [r2, #4]
-    5b5e:	697a      	ldr	r2, [r7, #20]
-    5b60:	6abb      	ldr	r3, [r7, #40]
-    5b62:	6093      	str	r3, [r2, #8]
-    5b64:	697a      	ldr	r2, [r7, #20]
-    5b66:	6afb      	ldr	r3, [r7, #44]
-    5b68:	60d3      	str	r3, [r2, #12]
-    {
-        servo = new Servo(timer, OCx, RC0degre, RC180degres);
-    5b6a:	f04f 0014 	mov.w	r0, #20	; 0x14
-    5b6e:	f008 ffbf 	bl	eaf0 <_Znwj>
-    5b72:	4603      	mov	r3, r0
-    5b74:	603b      	str	r3, [r7, #0]
-    5b76:	683a      	ldr	r2, [r7, #0]
-    5b78:	2a00      	cmp	r2, #0
-    5b7a:	d00a      	beq.n	5b92 <_ZN11BrasLateralC1EP5Timerhfffff+0x4a>
-    5b7c:	7bfa      	ldrb	r2, [r7, #15]
-    5b7e:	6a3b      	ldr	r3, [r7, #32]
-    5b80:	9300      	str	r3, [sp, #0]
-    5b82:	6838      	ldr	r0, [r7, #0]
-    5b84:	6939      	ldr	r1, [r7, #16]
-    5b86:	68bb      	ldr	r3, [r7, #8]
-    5b88:	f001 fdc2 	bl	7710 <_ZN5ServoC1EP5Timerhff>
-    5b8c:	683b      	ldr	r3, [r7, #0]
-    5b8e:	607b      	str	r3, [r7, #4]
-    5b90:	e001      	b.n	5b96 <_ZN11BrasLateralC1EP5Timerhfffff+0x4e>
-    5b92:	683a      	ldr	r2, [r7, #0]
-    5b94:	607a      	str	r2, [r7, #4]
-    5b96:	697b      	ldr	r3, [r7, #20]
-    5b98:	687a      	ldr	r2, [r7, #4]
-    5b9a:	601a      	str	r2, [r3, #0]
-    }
-    5b9c:	697b      	ldr	r3, [r7, #20]
-    5b9e:	4618      	mov	r0, r3
-    5ba0:	f107 0718 	add.w	r7, r7, #24	; 0x18
-    5ba4:	46bd      	mov	sp, r7
-    5ba6:	bd80      	pop	{r7, pc}
-
-00005ba8 <_ZN11BrasLateral16initBrasLaterauxEv>:
-    void BrasLateral::front()
-    {
-        servo->goToAngle(angleFront);
-    }
-
-    void BrasLateral::initBrasLateraux()
-    5ba8:	b580      	push	{r7, lr}
-    5baa:	b08c      	sub	sp, #48
-    5bac:	af04      	add	r7, sp, #16
-            TIM_CtrlPWMOutputs(TIM3, ENABLE);
-
-            left = new BrasLateral(timer, 1, 0.01f, 0.11f, 87.f, 51.f, 15.f);
-            right = new BrasLateral(timer, 3, 0.01f, 0.11f, 0.f, 40.f, 77.f);
-        #else // Krabi - STM32 H107
-            Timer* timer = new Timer(TIM1, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
-    5bae:	f04f 000c 	mov.w	r0, #12	; 0xc
-    5bb2:	f008 ff9d 	bl	eaf0 <_Znwj>
-    5bb6:	4603      	mov	r3, r0
-    5bb8:	603b      	str	r3, [r7, #0]
-    5bba:	683a      	ldr	r2, [r7, #0]
-    5bbc:	2a00      	cmp	r2, #0
-    5bbe:	d00d      	beq.n	5bdc <_ZN11BrasLateral16initBrasLaterauxEv+0x34>
-    5bc0:	f04f 0300 	mov.w	r3, #0	; 0x0
-    5bc4:	9300      	str	r3, [sp, #0]
-    5bc6:	6838      	ldr	r0, [r7, #0]
-    5bc8:	4930      	ldr	r1, [pc, #192]	(5c8c <_ZN11BrasLateral16initBrasLaterauxEv+0xe4>)
-    5bca:	f644 6220 	movw	r2, #20000	; 0x4e20
-    5bce:	f04f 0347 	mov.w	r3, #71	; 0x47
-    5bd2:	f007 ff01 	bl	d9d8 <_ZN5TimerC1EP11TIM_TypeDefttNS_11ClkDivisionE>
-    5bd6:	683b      	ldr	r3, [r7, #0]
-    5bd8:	607b      	str	r3, [r7, #4]
-    5bda:	e001      	b.n	5be0 <_ZN11BrasLateral16initBrasLaterauxEv+0x38>
-    5bdc:	683a      	ldr	r2, [r7, #0]
-    5bde:	607a      	str	r2, [r7, #4]
-    5be0:	687b      	ldr	r3, [r7, #4]
-    5be2:	61fb      	str	r3, [r7, #28]
-            TIM_CtrlPWMOutputs(TIM1, ENABLE);
-    5be4:	4829      	ldr	r0, [pc, #164]	(5c8c <_ZN11BrasLateral16initBrasLaterauxEv+0xe4>)
-    5be6:	f04f 0101 	mov.w	r1, #1	; 0x1
-    5bea:	f7fd fa43 	bl	3074 <TIM_CtrlPWMOutputs>
-
-            right = new BrasLateral(timer, 2, 0.01f, 0.11f, 20.f, 86.f, 84.f);
-    5bee:	f04f 0010 	mov.w	r0, #16	; 0x10
-    5bf2:	f008 ff7d 	bl	eaf0 <_Znwj>
-    5bf6:	4603      	mov	r3, r0
-    5bf8:	60bb      	str	r3, [r7, #8]
-    5bfa:	68ba      	ldr	r2, [r7, #8]
-    5bfc:	2a00      	cmp	r2, #0
-    5bfe:	d011      	beq.n	5c24 <_ZN11BrasLateral16initBrasLaterauxEv+0x7c>
-    5c00:	4b23      	ldr	r3, [pc, #140]	(5c90 <_ZN11BrasLateral16initBrasLaterauxEv+0xe8>)
-    5c02:	9300      	str	r3, [sp, #0]
-    5c04:	4b23      	ldr	r3, [pc, #140]	(5c94 <_ZN11BrasLateral16initBrasLaterauxEv+0xec>)
-    5c06:	9301      	str	r3, [sp, #4]
-    5c08:	4b23      	ldr	r3, [pc, #140]	(5c98 <_ZN11BrasLateral16initBrasLaterauxEv+0xf0>)
-    5c0a:	9302      	str	r3, [sp, #8]
-    5c0c:	4b23      	ldr	r3, [pc, #140]	(5c9c <_ZN11BrasLateral16initBrasLaterauxEv+0xf4>)
-    5c0e:	9303      	str	r3, [sp, #12]
-    5c10:	68b8      	ldr	r0, [r7, #8]
-    5c12:	69f9      	ldr	r1, [r7, #28]
-    5c14:	f04f 0202 	mov.w	r2, #2	; 0x2
-    5c18:	4b21      	ldr	r3, [pc, #132]	(5ca0 <_ZN11BrasLateral16initBrasLaterauxEv+0xf8>)
-    5c1a:	f7ff ff95 	bl	5b48 <_ZN11BrasLateralC1EP5Timerhfffff>
-    5c1e:	68bb      	ldr	r3, [r7, #8]
-    5c20:	60fb      	str	r3, [r7, #12]
-    5c22:	e001      	b.n	5c28 <_ZN11BrasLateral16initBrasLaterauxEv+0x80>
-    5c24:	68ba      	ldr	r2, [r7, #8]
-    5c26:	60fa      	str	r2, [r7, #12]
-    5c28:	4b1e      	ldr	r3, [pc, #120]	(5ca4 <_ZN11BrasLateral16initBrasLaterauxEv+0xfc>)
-    5c2a:	68fa      	ldr	r2, [r7, #12]
-    5c2c:	601a      	str	r2, [r3, #0]
-            left = new BrasLateral(timer, 3, 0.01f, 0.11f, 120.f, 36.f, 1.f);
-    5c2e:	f04f 0010 	mov.w	r0, #16	; 0x10
-    5c32:	f008 ff5d 	bl	eaf0 <_Znwj>
-    5c36:	4603      	mov	r3, r0
-    5c38:	613b      	str	r3, [r7, #16]
-    5c3a:	693b      	ldr	r3, [r7, #16]
-    5c3c:	2b00      	cmp	r3, #0
-    5c3e:	d011      	beq.n	5c64 <_ZN11BrasLateral16initBrasLaterauxEv+0xbc>
-    5c40:	4b13      	ldr	r3, [pc, #76]	(5c90 <_ZN11BrasLateral16initBrasLaterauxEv+0xe8>)
-    5c42:	9300      	str	r3, [sp, #0]
-    5c44:	4b18      	ldr	r3, [pc, #96]	(5ca8 <_ZN11BrasLateral16initBrasLaterauxEv+0x100>)
-    5c46:	9301      	str	r3, [sp, #4]
-    5c48:	4b18      	ldr	r3, [pc, #96]	(5cac <_ZN11BrasLateral16initBrasLaterauxEv+0x104>)
-    5c4a:	9302      	str	r3, [sp, #8]
-    5c4c:	4b18      	ldr	r3, [pc, #96]	(5cb0 <_ZN11BrasLateral16initBrasLaterauxEv+0x108>)
-    5c4e:	9303      	str	r3, [sp, #12]
-    5c50:	6938      	ldr	r0, [r7, #16]
-    5c52:	69f9      	ldr	r1, [r7, #28]
-    5c54:	f04f 0203 	mov.w	r2, #3	; 0x3
-    5c58:	4b11      	ldr	r3, [pc, #68]	(5ca0 <_ZN11BrasLateral16initBrasLaterauxEv+0xf8>)
-    5c5a:	f7ff ff75 	bl	5b48 <_ZN11BrasLateralC1EP5Timerhfffff>
-    5c5e:	693a      	ldr	r2, [r7, #16]
-    5c60:	617a      	str	r2, [r7, #20]
-    5c62:	e001      	b.n	5c68 <_ZN11BrasLateral16initBrasLaterauxEv+0xc0>
-    5c64:	693b      	ldr	r3, [r7, #16]
-    5c66:	617b      	str	r3, [r7, #20]
-    5c68:	4b12      	ldr	r3, [pc, #72]	(5cb4 <_ZN11BrasLateral16initBrasLaterauxEv+0x10c>)
-    5c6a:	697a      	ldr	r2, [r7, #20]
-    5c6c:	601a      	str	r2, [r3, #0]
-
-
-        #endif
-
-        left->collapse();
-    5c6e:	4b11      	ldr	r3, [pc, #68]	(5cb4 <_ZN11BrasLateral16initBrasLaterauxEv+0x10c>)
-    5c70:	681b      	ldr	r3, [r3, #0]
-    5c72:	4618      	mov	r0, r3
-    5c74:	f7ff ff48 	bl	5b08 <_ZN11BrasLateral8collapseEv>
-        right->collapse();
-    5c78:	4b0a      	ldr	r3, [pc, #40]	(5ca4 <_ZN11BrasLateral16initBrasLaterauxEv+0xfc>)
-    5c7a:	681b      	ldr	r3, [r3, #0]
-    5c7c:	4618      	mov	r0, r3
-    5c7e:	f7ff ff43 	bl	5b08 <_ZN11BrasLateral8collapseEv>
-    }
-    5c82:	f107 0720 	add.w	r7, r7, #32	; 0x20
-    5c86:	46bd      	mov	sp, r7
-    5c88:	bd80      	pop	{r7, pc}
-    5c8a:	46c0      	nop			(mov r8, r8)
-    5c8c:	40012c00 	.word	0x40012c00
-    5c90:	3de147ae 	.word	0x3de147ae
-    5c94:	41a00000 	.word	0x41a00000
-    5c98:	42ac0000 	.word	0x42ac0000
-    5c9c:	42a80000 	.word	0x42a80000
-    5ca0:	3c23d70a 	.word	0x3c23d70a
-    5ca4:	20000560 	.word	0x20000560
-    5ca8:	42f00000 	.word	0x42f00000
-    5cac:	42100000 	.word	0x42100000
-    5cb0:	3f800000 	.word	0x3f800000
-    5cb4:	2000055c 	.word	0x2000055c
-
-00005cb8 <_ZN11BrasLateral8getRightEv>:
-        initBrasLateraux();
-
-    return left;
-}
-
-BrasLateral* BrasLateral::getRight()
-    5cb8:	b580      	push	{r7, lr}
-    5cba:	af00      	add	r7, sp, #0
-{
-    if (right==0)
-    5cbc:	4b05      	ldr	r3, [pc, #20]	(5cd4 <_ZN11BrasLateral8getRightEv+0x1c>)
-    5cbe:	681b      	ldr	r3, [r3, #0]
-    5cc0:	2b00      	cmp	r3, #0
-    5cc2:	d101      	bne.n	5cc8 <_ZN11BrasLateral8getRightEv+0x10>
-        initBrasLateraux();
-    5cc4:	f7ff ff70 	bl	5ba8 <_ZN11BrasLateral16initBrasLaterauxEv>
-
-    return right;
-    5cc8:	4b02      	ldr	r3, [pc, #8]	(5cd4 <_ZN11BrasLateral8getRightEv+0x1c>)
-    5cca:	681b      	ldr	r3, [r3, #0]
-}
-    5ccc:	4618      	mov	r0, r3
-    5cce:	46bd      	mov	sp, r7
-    5cd0:	bd80      	pop	{r7, pc}
-    5cd2:	46c0      	nop			(mov r8, r8)
-    5cd4:	20000560 	.word	0x20000560
-
-00005cd8 <_ZN11BrasLateral7getLeftEv>:
-        right = new BrasLateral();
-    }
-
-#endif
-
-BrasLateral* BrasLateral::getLeft()
-    5cd8:	b580      	push	{r7, lr}
-    5cda:	af00      	add	r7, sp, #0
-{
-    if (left==0)
-    5cdc:	4b05      	ldr	r3, [pc, #20]	(5cf4 <_ZN11BrasLateral7getLeftEv+0x1c>)
-    5cde:	681b      	ldr	r3, [r3, #0]
-    5ce0:	2b00      	cmp	r3, #0
-    5ce2:	d101      	bne.n	5ce8 <_ZN11BrasLateral7getLeftEv+0x10>
-        initBrasLateraux();
-    5ce4:	f7ff ff60 	bl	5ba8 <_ZN11BrasLateral16initBrasLaterauxEv>
-
-    return left;
-    5ce8:	4b02      	ldr	r3, [pc, #8]	(5cf4 <_ZN11BrasLateral7getLeftEv+0x1c>)
-    5cea:	681b      	ldr	r3, [r3, #0]
-}
-    5cec:	4618      	mov	r0, r3
-    5cee:	46bd      	mov	sp, r7
-    5cf0:	bd80      	pop	{r7, pc}
-    5cf2:	46c0      	nop			(mov r8, r8)
-    5cf4:	2000055c 	.word	0x2000055c
-
-00005cf8 <_ZN11BrasLateralC2EP5Timerhfffff>:
-BrasLateral* BrasLateral::left = 0;
-BrasLateral* BrasLateral::right = 0;
-
-#ifdef ROBOTHW
-
-    BrasLateral::BrasLateral(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
-    5cf8:	b580      	push	{r7, lr}
-    5cfa:	b088      	sub	sp, #32
-    5cfc:	af02      	add	r7, sp, #8
-    5cfe:	6178      	str	r0, [r7, #20]
-    5d00:	6139      	str	r1, [r7, #16]
-    5d02:	60bb      	str	r3, [r7, #8]
-    5d04:	4613      	mov	r3, r2
-    5d06:	73fb      	strb	r3, [r7, #15]
-        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
-    5d08:	697a      	ldr	r2, [r7, #20]
-    5d0a:	6a7b      	ldr	r3, [r7, #36]
-    5d0c:	6053      	str	r3, [r2, #4]
-    5d0e:	697a      	ldr	r2, [r7, #20]
-    5d10:	6abb      	ldr	r3, [r7, #40]
-    5d12:	6093      	str	r3, [r2, #8]
-    5d14:	697a      	ldr	r2, [r7, #20]
-    5d16:	6afb      	ldr	r3, [r7, #44]
-    5d18:	60d3      	str	r3, [r2, #12]
-    {
-        servo = new Servo(timer, OCx, RC0degre, RC180degres);
-    5d1a:	f04f 0014 	mov.w	r0, #20	; 0x14
-    5d1e:	f008 fee7 	bl	eaf0 <_Znwj>
-    5d22:	4603      	mov	r3, r0
-    5d24:	603b      	str	r3, [r7, #0]
-    5d26:	683a      	ldr	r2, [r7, #0]
-    5d28:	2a00      	cmp	r2, #0
-    5d2a:	d00a      	beq.n	5d42 <_ZN11BrasLateralC2EP5Timerhfffff+0x4a>
-    5d2c:	7bfa      	ldrb	r2, [r7, #15]
-    5d2e:	6a3b      	ldr	r3, [r7, #32]
-    5d30:	9300      	str	r3, [sp, #0]
-    5d32:	6838      	ldr	r0, [r7, #0]
-    5d34:	6939      	ldr	r1, [r7, #16]
-    5d36:	68bb      	ldr	r3, [r7, #8]
-    5d38:	f001 fcea 	bl	7710 <_ZN5ServoC1EP5Timerhff>
-    5d3c:	683b      	ldr	r3, [r7, #0]
-    5d3e:	607b      	str	r3, [r7, #4]
-    5d40:	e001      	b.n	5d46 <_ZN11BrasLateralC2EP5Timerhfffff+0x4e>
-    5d42:	683a      	ldr	r2, [r7, #0]
-    5d44:	607a      	str	r2, [r7, #4]
-    5d46:	697b      	ldr	r3, [r7, #20]
-    5d48:	687a      	ldr	r2, [r7, #4]
-    5d4a:	601a      	str	r2, [r3, #0]
-    }
-    5d4c:	697b      	ldr	r3, [r7, #20]
-    5d4e:	4618      	mov	r0, r3
-    5d50:	f107 0718 	add.w	r7, r7, #24	; 0x18
-    5d54:	46bd      	mov	sp, r7
-    5d56:	bd80      	pop	{r7, pc}
+    5d46:	68fb      	ldr	r3, [r7, #12]
+    5d48:	4618      	mov	r0, r3
+    5d4a:	f107 0710 	add.w	r7, r7, #16	; 0x10
+    5d4e:	46bd      	mov	sp, r7
+    5d50:	bd80      	pop	{r7, pc}
+    5d52:	46c0      	nop			(mov r8, r8)
+    5d54:	00000000 	.word	0x00000000
 
 00005d58 <_ZN9Container5closeEv>:
 #else
@@ -26999,8 +26999,8 @@ void Debug::testContainer()
 {
     Container::getSingleton();
     ab7e:	f7fb f959 	bl	5e34 <_ZN9Container12getSingletonEv>
-    BrasLateral::initBrasLateraux();
-    ab82:	f7fb f811 	bl	5ba8 <_ZN11BrasLateral16initBrasLaterauxEv>
+    BrasLateraux::initBrasLateraux();
+    ab82:	f7fa fd85 	bl	5690 <_ZN12BrasLateraux16initBrasLaterauxEv>
 
     while(true)
     {
@@ -27009,16 +27009,16 @@ void Debug::testContainer()
     ab8a:	4603      	mov	r3, r0
     ab8c:	4618      	mov	r0, r3
     ab8e:	f7fb f8f3 	bl	5d78 <_ZN9Container4openEv>
-        BrasLateral::getLeft()->expand();
-    ab92:	f7fb f8a1 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+        BrasLateraux::getLeft()->expand();
+    ab92:	f7fa fe15 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     ab96:	4603      	mov	r3, r0
     ab98:	4618      	mov	r0, r3
-    ab9a:	f7fa ffc5 	bl	5b28 <_ZN11BrasLateral6expandEv>
-        BrasLateral::getRight()->expand();
-    ab9e:	f7fb f88b 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+    ab9a:	f7fa fd39 	bl	5610 <_ZN12BrasLateraux6expandEv>
+        BrasLateraux::getRight()->expand();
+    ab9e:	f7fa fdff 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     aba2:	4603      	mov	r3, r0
     aba4:	4618      	mov	r0, r3
-    aba6:	f7fa ffbf 	bl	5b28 <_ZN11BrasLateral6expandEv>
+    aba6:	f7fa fd33 	bl	5610 <_ZN12BrasLateraux6expandEv>
         Led::toggle(0);
     abaa:	f04f 0000 	mov.w	r0, #0	; 0x0
     abae:	f001 fd73 	bl	c698 <_ZN3Led6toggleEi>
@@ -27035,16 +27035,16 @@ void Debug::testContainer()
     abc6:	429a      	cmp	r2, r3
     abc8:	ddf7      	ble.n	abba <_ZN5Debug13testContainerEv+0x42>
 
-        BrasLateral::getLeft()->front();
-    abca:	f7fb f885 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+        BrasLateraux::getLeft()->front();
+    abca:	f7fa fdf9 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     abce:	4603      	mov	r3, r0
     abd0:	4618      	mov	r0, r3
-    abd2:	f7fa ff89 	bl	5ae8 <_ZN11BrasLateral5frontEv>
-        BrasLateral::getRight()->front();
-    abd6:	f7fb f86f 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+    abd2:	f7fa fcfd 	bl	55d0 <_ZN12BrasLateraux5frontEv>
+        BrasLateraux::getRight()->front();
+    abd6:	f7fa fde3 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     abda:	4603      	mov	r3, r0
     abdc:	4618      	mov	r0, r3
-    abde:	f7fa ff83 	bl	5ae8 <_ZN11BrasLateral5frontEv>
+    abde:	f7fa fcf7 	bl	55d0 <_ZN12BrasLateraux5frontEv>
         Led::toggle(0);
     abe2:	f04f 0000 	mov.w	r0, #0	; 0x0
     abe6:	f001 fd57 	bl	c698 <_ZN3Led6toggleEi>
@@ -27066,16 +27066,16 @@ void Debug::testContainer()
     ac06:	4603      	mov	r3, r0
     ac08:	4618      	mov	r0, r3
     ac0a:	f7fb f8a5 	bl	5d58 <_ZN9Container5closeEv>
-        BrasLateral::getLeft()->collapse();
-    ac0e:	f7fb f863 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+        BrasLateraux::getLeft()->collapse();
+    ac0e:	f7fa fdd7 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     ac12:	4603      	mov	r3, r0
     ac14:	4618      	mov	r0, r3
-    ac16:	f7fa ff77 	bl	5b08 <_ZN11BrasLateral8collapseEv>
-        BrasLateral::getRight()->collapse();
-    ac1a:	f7fb f84d 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+    ac16:	f7fa fceb 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
+        BrasLateraux::getRight()->collapse();
+    ac1a:	f7fa fdc1 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     ac1e:	4603      	mov	r3, r0
     ac20:	4618      	mov	r0, r3
-    ac22:	f7fa ff71 	bl	5b08 <_ZN11BrasLateral8collapseEv>
+    ac22:	f7fa fce5 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
         Led::toggle(0);
     ac26:	f04f 0000 	mov.w	r0, #0	; 0x0
     ac2a:	f001 fd35 	bl	c698 <_ZN3Led6toggleEi>
@@ -27110,21 +27110,21 @@ void Debug::testBrasLateraux()
         for (int i = 0; i < 10000000; i++);
     }*/
 
-    BrasLateral::initBrasLateraux();
-    ac56:	f7fa ffa7 	bl	5ba8 <_ZN11BrasLateral16initBrasLaterauxEv>
+    BrasLateraux::initBrasLateraux();
+    ac56:	f7fa fd1b 	bl	5690 <_ZN12BrasLateraux16initBrasLaterauxEv>
 
     while(true)
     {
-        BrasLateral::getLeft()->expand();
-    ac5a:	f7fb f83d 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+        BrasLateraux::getLeft()->expand();
+    ac5a:	f7fa fdb1 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     ac5e:	4603      	mov	r3, r0
     ac60:	4618      	mov	r0, r3
-    ac62:	f7fa ff61 	bl	5b28 <_ZN11BrasLateral6expandEv>
-        BrasLateral::getRight()->expand();
-    ac66:	f7fb f827 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+    ac62:	f7fa fcd5 	bl	5610 <_ZN12BrasLateraux6expandEv>
+        BrasLateraux::getRight()->expand();
+    ac66:	f7fa fd9b 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     ac6a:	4603      	mov	r3, r0
     ac6c:	4618      	mov	r0, r3
-    ac6e:	f7fa ff5b 	bl	5b28 <_ZN11BrasLateral6expandEv>
+    ac6e:	f7fa fccf 	bl	5610 <_ZN12BrasLateraux6expandEv>
         Led::toggle(0);
     ac72:	f04f 0000 	mov.w	r0, #0	; 0x0
     ac76:	f001 fd0f 	bl	c698 <_ZN3Led6toggleEi>
@@ -27145,16 +27145,16 @@ void Debug::testBrasLateraux()
 
         for(int i=0; i<10000000; i++);*/
 
-        BrasLateral::getLeft()->collapse();
-    ac92:	f7fb f821 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+        BrasLateraux::getLeft()->collapse();
+    ac92:	f7fa fd95 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     ac96:	4603      	mov	r3, r0
     ac98:	4618      	mov	r0, r3
-    ac9a:	f7fa ff35 	bl	5b08 <_ZN11BrasLateral8collapseEv>
-        BrasLateral::getRight()->collapse();
-    ac9e:	f7fb f80b 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+    ac9a:	f7fa fca9 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
+        BrasLateraux::getRight()->collapse();
+    ac9e:	f7fa fd7f 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     aca2:	4603      	mov	r3, r0
     aca4:	4618      	mov	r0, r3
-    aca6:	f7fa ff2f 	bl	5b08 <_ZN11BrasLateral8collapseEv>
+    aca6:	f7fa fca3 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
         Led::toggle(0);
     acaa:	f04f 0000 	mov.w	r0, #0	; 0x0
     acae:	f001 fcf3 	bl	c698 <_ZN3Led6toggleEi>
@@ -32907,7 +32907,7 @@ Remote::Remote()
 
 0000d228 <_ZN6Remote12getSingletonEv>:
 #include "brak.h"
-#include "braslateral.h"
+#include "brasLateraux.h"
 
 Remote* Remote::singleton = 0;
 
@@ -36623,11 +36623,11 @@ int main()
     e91a:	f7ff f94b 	bl	dbb4 <_ZN7TiretteC1EP12GPIO_TypeDeft>
     // Initialisation des actionneurs 1
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        BrasLateral::initBrasLateraux();
+        BrasLateraux::initBrasLateraux();
         Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateral::initBrasLateraux();
-    e91e:	f7f7 f943 	bl	5ba8 <_ZN11BrasLateral16initBrasLaterauxEv>
+        BrasLateraux::initBrasLateraux();
+    e91e:	f7f6 feb7 	bl	5690 <_ZN12BrasLateraux16initBrasLaterauxEv>
 #endif
 
 //    tirette.attendreRemise();
@@ -39123,18 +39123,18 @@ int Clap::update()
     f9d0:	78fb      	ldrb	r3, [r7, #3]
     f9d2:	2b00      	cmp	r3, #0
     f9d4:	d006      	beq.n	f9e4 <_ZN4Clap6updateEv+0x104>
-                BrasLateral::getRight()->expand();
-    f9d6:	f7f6 f96f 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+                BrasLateraux::getRight()->expand();
+    f9d6:	f7f5 fee3 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     f9da:	4603      	mov	r3, r0
     f9dc:	4618      	mov	r0, r3
-    f9de:	f7f6 f8a3 	bl	5b28 <_ZN11BrasLateral6expandEv>
+    f9de:	f7f5 fe17 	bl	5610 <_ZN12BrasLateraux6expandEv>
     f9e2:	e005      	b.n	f9f0 <_ZN4Clap6updateEv+0x110>
             else
-                BrasLateral::getLeft()->expand();
-    f9e4:	f7f6 f978 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+                BrasLateraux::getLeft()->expand();
+    f9e4:	f7f5 feec 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     f9e8:	4603      	mov	r3, r0
     f9ea:	4618      	mov	r0, r3
-    f9ec:	f7f6 f89c 	bl	5b28 <_ZN11BrasLateral6expandEv>
+    f9ec:	f7f5 fe10 	bl	5610 <_ZN12BrasLateraux6expandEv>
             status++;
     f9f0:	687b      	ldr	r3, [r7, #4]
     f9f2:	68db      	ldr	r3, [r3, #12]
@@ -39239,18 +39239,18 @@ int Clap::update()
     faae:	78bb      	ldrb	r3, [r7, #2]
     fab0:	2b00      	cmp	r3, #0
     fab2:	d006      	beq.n	fac2 <_ZN4Clap6updateEv+0x1e2>
-                BrasLateral::getLeft()->collapse();
-    fab4:	f7f6 f910 	bl	5cd8 <_ZN11BrasLateral7getLeftEv>
+                BrasLateraux::getLeft()->collapse();
+    fab4:	f7f5 fe84 	bl	57c0 <_ZN12BrasLateraux7getLeftEv>
     fab8:	4603      	mov	r3, r0
     faba:	4618      	mov	r0, r3
-    fabc:	f7f6 f824 	bl	5b08 <_ZN11BrasLateral8collapseEv>
+    fabc:	f7f5 fd98 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
     fac0:	e005      	b.n	face <_ZN4Clap6updateEv+0x1ee>
             else
-                BrasLateral::getRight()->collapse();
-    fac2:	f7f6 f8f9 	bl	5cb8 <_ZN11BrasLateral8getRightEv>
+                BrasLateraux::getRight()->collapse();
+    fac2:	f7f5 fe6d 	bl	57a0 <_ZN12BrasLateraux8getRightEv>
     fac6:	4603      	mov	r3, r0
     fac8:	4618      	mov	r0, r3
-    faca:	f7f6 f81d 	bl	5b08 <_ZN11BrasLateral8collapseEv>
+    faca:	f7f5 fd91 	bl	55f0 <_ZN12BrasLateraux8collapseEv>
             status++;
     face:	687b      	ldr	r3, [r7, #4]
     fad0:	68db      	ldr	r3, [r3, #12]
@@ -39391,7 +39391,7 @@ Clap::~Clap(){}
     fbd4:	000223d8 	.word	0x000223d8
 
 0000fbd8 <_ZN4ClapC1E8PositionS0_>:
-#include "braslateral.h"
+#include "brasLateraux.h"
 
 
 Clap::Clap(){}
@@ -39444,7 +39444,7 @@ Clap::Clap(Position positionDepart, Position positionArrivee):MediumLevelAction(
     fc48:	000223d8 	.word	0x000223d8
 
 0000fc4c <_ZN4ClapC2E8PositionS0_>:
-#include "braslateral.h"
+#include "brasLateraux.h"
 
 
 Clap::Clap(){}
@@ -39499,7 +39499,7 @@ Clap::Clap(Position positionDepart, Position positionArrivee):MediumLevelAction(
 0000fcc0 <_ZN4ClapC1Ev>:
 #include "command.h"
 #include "position.h"
-#include "braslateral.h"
+#include "brasLateraux.h"
 
 
 Clap::Clap(){}
@@ -70999,7 +70999,7 @@ class Tapis : public MediumLevelAction
 
 000220c8 <_ZTV17BrasLaterauxKrabi>:
 	...
-   220d0:	00005791 000056fd                       .W...V..
+   220d0:	00005a01 0000596d                       .Z..mY..
 
 000220d8 <_ZTV6Sensor>:
 	...

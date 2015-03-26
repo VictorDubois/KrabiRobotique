@@ -43,9 +43,15 @@ class BrasTapis
 {
     public:
 
-        static void initTapis();
+        static void initBrasTapis();
         static BrasTapis *brasTapisLeft;
         static BrasTapis *brasTapisRight;
+
+        /// @brief getLeft() renvoit le brasTapisGauche courant
+        static BrasTapis *getLeft();
+
+        /// @brief getLeft() renvoit le brasTapisDroit courant
+        static BrasTapis *getRight();
 
         void expand();
         void collapse();
@@ -54,12 +60,6 @@ class BrasTapis
     private :
         BrasTapis();
         ~BrasTapis();
-
-        /// @brief getLeft() renvoit le brasTapisGauche courant
-        static BrasTapis *getLeft();
-
-        /// @brief getLeft() renvoit le brasTapisDroit courant
-        static BrasTapis *getRight();
 
 };
 

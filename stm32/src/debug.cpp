@@ -329,12 +329,12 @@ void Debug::testBrasLateraux()
         for (int i = 0; i < 10000000; i++);
     }*/
 
-    BrasLateral::initBrasLateraux();
+    BrasLateraux::initBrasLateraux();
 
     while(true)
     {
-        BrasLateral::getLeft()->expand();
-        BrasLateral::getRight()->expand();
+        BrasLateraux::getLeft()->expand();
+        BrasLateraux::getRight()->expand();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
@@ -345,43 +345,43 @@ void Debug::testBrasLateraux()
 
         for(int i=0; i<10000000; i++);*/
 
-        BrasLateral::getLeft()->collapse();
-        BrasLateral::getRight()->collapse();
+        BrasLateraux::getLeft()->collapse();
+        BrasLateraux::getRight()->collapse();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
     }
 }
-
+/*
 void Debug::testContainer()
 {
     Container::getSingleton();
-    BrasLateral::initBrasLateraux();
+    BrasLateraux::initBrasLateraux();
 
     while(true)
     {
         Container::getSingleton()->open();
-        BrasLateral::getLeft()->expand();
-        BrasLateral::getRight()->expand();
+        BrasLateraux::getLeft()->expand();
+        BrasLateraux::getRight()->expand();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
 
-        BrasLateral::getLeft()->front();
-        BrasLateral::getRight()->front();
+        BrasLateraux::getLeft()->front();
+        BrasLateraux::getRight()->front();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
 
         Container::getSingleton()->close();
-        BrasLateral::getLeft()->collapse();
-        BrasLateral::getRight()->collapse();
+        BrasLateraux::getLeft()->collapse();
+        BrasLateraux::getRight()->collapse();
         Led::toggle(0);
 
         for(int i=0; i<20000000; i++);
     }
 
-    /*Container::getSingleton();
+    Container::getSingleton();
 
     while(true)
     {
@@ -394,8 +394,8 @@ void Debug::testContainer()
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
-    }*/
-}
+    }
+}*/
 
 void Debug::testTirette(Tirette* t)
 {

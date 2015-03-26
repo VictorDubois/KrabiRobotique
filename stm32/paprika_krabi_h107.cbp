@@ -72,12 +72,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/actionneurs/ascenseur.h" />
-		<Unit filename="include/actionneurs/bras.h" />
 		<Unit filename="include/actionneurs/brasKrabi.h" />
-		<Unit filename="include/actionneurs/brasLaterauxKrabi.h" />
+		<Unit filename="include/actionneurs/brasLateraux.h" />
 		<Unit filename="include/actionneurs/brasTapis.h" />
-		<Unit filename="include/actionneurs/braslateral.h" />
-		<Unit filename="include/actionneurs/container.h" />
 		<Unit filename="include/actionneurs/moteur.h" />
 		<Unit filename="include/actionneurs/roues.h" />
 		<Unit filename="include/actionneurs/sensor.h" />
@@ -124,14 +121,15 @@
 		<Unit filename="include/strategie/strategieV2.h" />
 		<Unit filename="include/strategie/tapis.h" />
 		<Unit filename="include/vector.h" />
+		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/brak (copie).cpp.victor" />
+		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/roues.cpp.victor" />
+		<Unit filename="src/actionneurs/anciens_fichiers/brak (copie).cpp.victor" />
+		<Unit filename="src/actionneurs/anciens_fichiers/roues.cpp.victor" />
 		<Unit filename="src/actionneurs/ascenseur.cpp" />
 		<Unit filename="src/actionneurs/brak (copie).cpp.victor" />
-		<Unit filename="src/actionneurs/bras.cpp" />
 		<Unit filename="src/actionneurs/brasKrabi.cpp" />
-		<Unit filename="src/actionneurs/brasLaterauxKrabi.cpp" />
+		<Unit filename="src/actionneurs/brasLateraux.cpp" />
 		<Unit filename="src/actionneurs/brasTapis.cpp" />
-		<Unit filename="src/actionneurs/braslateral.cpp" />
-		<Unit filename="src/actionneurs/container.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp.victor" />
@@ -170,6 +168,8 @@
 		<Unit filename="src/position.cpp" />
 		<Unit filename="src/positionPlusAngle.cpp" />
 		<Unit filename="src/strategie/actionGoTo.cpp" />
+		<Unit filename="src/strategie/anciens_fichiers/feuKrabi (copie).cpp.victor" />
+		<Unit filename="src/strategie/anciens_fichiers/feukrabilateral.cpp.limitVitesseVictor" />
 		<Unit filename="src/strategie/clap.cpp" />
 		<Unit filename="src/strategie/dijkstra.cpp" />
 		<Unit filename="src/strategie/etape.cpp" />
