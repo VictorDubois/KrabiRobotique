@@ -22,14 +22,12 @@ HEADERS += \
     ../../include/actionneurs/sensor.h \
     ../../include/actionneurs/roues.h \
     ../../include/actionneurs/moteur.h \
-	../../include/actionneurs/marteaux.h \
-    ../../include/actionneurs/bras.h \
     ../../include/asservissement/pidFilterDistance.h \
     ../../include/asservissement/pidFilterAngle.h \
-	../../include/asservissement/odometrie.h \
-	../../include/asservissement/commandAllerA.h \
+        ../../include/asservissement/odometrie.h \
+        ../../include/asservissement/commandAllerA.h \
     ../../include/asservissement/command.h \
-	../../include/asservissement/asservissement.h \
+        ../../include/asservissement/asservissement.h \
     ../../include/simul/XMLReader.h \
     ../../include/simul/TableGraphics.h \
     ../../include/simul/table.h \
@@ -49,51 +47,44 @@ HEADERS += \
     ../../include/hardware/limitSwitchSensor.h \
     ../../include/hardware/ligthBarrierSensor.h \
     ../../include/hardware/ax12api.h \
-	../../include/hardware/leds.h \
+        ../../include/hardware/leds.h \
     ../../include/hardware/analogSensor.h \
     ../../include/strategie/strategieV2.h \
     ../../include/strategie/recalibrerOdometrie.h \
-    ../../include/strategie/ramenerVerres.h \
-    ../../include/strategie/ramasserVerreV2.h \
-    ../../include/strategie/eteindreBougieV2.h \
-	../../include/strategie/mediumLevelAction.h \
-	../../include/strategie/actionGoTo.h \
-	../../include/strategie/ramasserVerres.h \
+        ../../include/strategie/mediumLevelAction.h \
+        ../../include/strategie/actionGoTo.h \
     ../../include/simul/userdata.h \
     ../../include/simul/contactlistener.h \
     ../../include/strategie/strategiev3.h \
     ../../include/strategie/etape.h \
     ../../include/strategie/dijkstra.h \
     ../../include/hardware/tourelle.h \
-    ../../include/strategie/feuCote.h \
-    ../../include/strategie/tireLances.h \
-    ../../include/strategie/fresque.h \
     ../../include/actionneurs/container.h \
-    ../../include/actionneurs/braslateral.h \
     ../../include/strategie/krabi2014.h \
     ../../src/strategie/clap.h \
     ../../include/strategie/krabi2015.h \
-    ../../src/strategie/ClapV2.h \
     ../../include/strategie/clap.h \
     ../../include/strategie/gobelet.h \
-    ../../include/strategie/krabijunior2015.h
+    ../../include/strategie/krabijunior2015.h \
+    ../../include/strategie/tapis.h \
+    ../../include/actionneurs/brasTapis.h \
+    ../../include/actionneurs/brasKrabi.h \
+    ../../include/actionneurs/brasLateraux.h
 
 
 SOURCES += \
     ../../src/asservissement/pidFilterDistance.cpp \
-	../../src/asservissement/pidFilterAngle.cpp \
-	../../src/asservissement/commandAllerA.cpp \
+        ../../src/asservissement/pidFilterAngle.cpp \
+        ../../src/asservissement/commandAllerA.cpp \
     ../../src/asservissement/command.cpp \
-	../../src/asservissement/asservissement.cpp \
+        ../../src/asservissement/asservissement.cpp \
     ../../src/actionneurs/servo.cpp \
     ../../src/actionneurs/sensors.cpp \
     ../../src/actionneurs/sensor.cpp \
-	../../src/actionneurs/bras.cpp \
-	../../src/actionneurs/marteaux.cpp \
     ../../src/position.cpp \
     ../../src/distance.cpp \
     ../../src/angle.cpp \
-	../../src/positionPlusAngle.cpp \
+        ../../src/positionPlusAngle.cpp \
     ../../src/simul/XMLReader.cpp \
     ../../src/simul/TableGraphics.cpp \
     ../../src/simul/table.cpp \
@@ -110,38 +101,27 @@ SOURCES += \
     ../../src/hardware/limitSwitchSensor.cpp \
     ../../src/hardware/ligthBarrierSensor.cpp \
     ../../src/hardware/ax12api.cpp \
-	../../src/hardware/leds.cpp \
+        ../../src/hardware/leds.cpp \
     ../../src/hardware/analogSensor.cpp \
     ../../src/strategie/strategieV2.cpp \
     ../../src/strategie/recalibrerOdometrie.cpp \
-    ../../src/strategie/ramasserVerreV2.cpp \
     ../../src/strategie/mediumLevelAction.cpp \
-    ../../src/strategie/eteindreBougieV2.cpp \
-	../../src/strategie/actionGoTo.cpp \
-	../../src/strategie/eteindreBougies.cpp \
-	../../src/strategie/ramasserVerres.cpp \
+        ../../src/strategie/actionGoTo.cpp \
     ../../src/simul/userdata.cpp \
     ../../src/simul/contactlistener.cpp \
     ../../src/strategie/strategiev3.cpp \
     ../../src/strategie/etape.cpp \
     ../../src/strategie/dijkstra.cpp \
     ../../src/hardware/tourelle.cpp \
-    ../../src/strategie/feuCote.cpp \
-    ../../src/strategie/tireLances.cpp \
-    ../../src/strategie/fresque.cpp \
     ../../src/actionneurs/container.cpp \
-    ../../src/actionneurs/braslateral.cpp \
     ../../src/actionneurs/canonLances.cpp \
     ../../src/actionneurs/canonFilet.cpp \
-    ../../src/actionneurs/brak.cpp \
-    ../../src/strategie/feukrabilateral.cpp \
-    ../../src/strategie/feuKrabi.cpp \
-    ../../src/strategie/feuCoteKrabi.cpp \
-    ../../src/strategie/torchemobile.cpp \
-    ../../src/strategie/tireFilet.cpp \
-    ../../src/strategie/krabi2014.cpp \
     ../../src/strategie/krabi2015.cpp \
     ../../src/strategie/clap.cpp \
     ../../src/strategie/gobelet.cpp \
-    ../../src/strategie/krabijunior2015.cpp
+    ../../src/strategie/krabijunior2015.cpp \
+    ../../src/strategie/tapis.cpp \
+    ../../src/actionneurs/brasTapis.cpp \
+    ../../src/actionneurs/brasLateraux.cpp \
+    ../../src/actionneurs/brasKrabi.cpp
 

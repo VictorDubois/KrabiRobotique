@@ -35,9 +35,10 @@ class BrasLaterauxKrabi
         void replierBrasDroit();
 
         /// @brief getBrasLaterauxKrabi() Renvoit le pointeur de l'objet brasLaterauxKrabi (pour la stratégie)
-        static BrasLaterauxKrabi* brasLaterauxKrabi();
+        static BrasLaterauxKrabi* getBrasLaterauxKrabi();
 
     private:
+        static BrasLaterauxKrabi *brasLaterauxKrabi;
 
     #ifdef ROBOTHW
         /// @brief brasGauche Servomoteur pouvant faire se déployer ou se replier le bras gauche
@@ -46,9 +47,6 @@ class BrasLaterauxKrabi
         /// @brief brasDroit Servomoteur pouvant faire se déployer ou se replier le bras droit
         Servo* brasDroit;
 
-
-        /// @brief brasLaterauxKrabi Adresse de l'objet brasLaterauxKrabi pour le retrouver dans la stratégie.
-        static BrasLaterauxKrabi* brasLaterauxKrabi;
     #endif
 
 };

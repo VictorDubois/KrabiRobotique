@@ -21,7 +21,6 @@
 #include "asservissement.h"
 #include "sensors.h"
 #include "quadratureCoderHandler.h"
-#include "bras.h"
 #include "roues.h"
 #include "roue.h"
 #include "strategieV2.h"
@@ -31,11 +30,10 @@
 #include "capteurCouleur.h"
 #include "tirette.h"
 #include "leds.h"
-#include "marteaux.h"
 #include "etape.h"
 #include "dijkstra.h"
-#include "braslateral.h"
-#include "container.h"
+#include "brasLateraux.h"
+//#include "container.h"
 #include "remote.h"
 
 class Debug

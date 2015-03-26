@@ -1,10 +1,10 @@
 #include "remote.h"
 
 #include "leds.h"
-#include "canonLances.h"
-#include "canonFilet.h"
-#include "brak.h"
-#include "braslateral.h"
+//#include "canonLances.h"
+//#include "canonFilet.h"
+//#include "brak.h"
+#include "brasLateraux.h"
 
 Remote* Remote::singleton = 0;
 
