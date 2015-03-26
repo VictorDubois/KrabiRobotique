@@ -59,7 +59,6 @@ HEADERS += \
     ../../include/strategie/etape.h \
     ../../include/strategie/dijkstra.h \
     ../../include/hardware/tourelle.h \
-    ../../include/actionneurs/container.h \
     ../../include/strategie/krabi2014.h \
     ../../src/strategie/clap.h \
     ../../include/strategie/krabi2015.h \
@@ -113,9 +112,6 @@ SOURCES += \
     ../../src/strategie/etape.cpp \
     ../../src/strategie/dijkstra.cpp \
     ../../src/hardware/tourelle.cpp \
-    ../../src/actionneurs/container.cpp \
-    ../../src/actionneurs/canonLances.cpp \
-    ../../src/actionneurs/canonFilet.cpp \
     ../../src/strategie/krabi2015.cpp \
     ../../src/strategie/clap.cpp \
     ../../src/strategie/gobelet.cpp \
