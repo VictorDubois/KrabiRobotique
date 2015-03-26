@@ -3,7 +3,8 @@
 #include "leds.h"
 #include "canonLances.h"
 #include "canonFilet.h"
-#include "brasLateraux.h"
+#include "brak.h"
+#include "braslateral.h"
 
 Remote* Remote::singleton = 0;
 

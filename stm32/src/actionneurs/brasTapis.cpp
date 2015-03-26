@@ -1,10 +1,9 @@
 #include "brasTapis.h"
 
-
+#ifdef ROBOTHW
 BrasTapis* BrasTapis::brasTapisLeft = 0;
 BrasTapis* BrasTapis::brasTapisRight = 0;
 
-#ifdef ROBOTHW
 BrasTapis::BrasTapis(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded):BrasKrabi(timer, OCx, RC0degre, RC180degres, angleCollapsed, angleExpanded, 0.f)
 {}
 
@@ -73,21 +72,5 @@ BrasTapis *BrasTapis::getLeft()
     qDebug() << "Bras devant rentrés";
 #endif
     }
-
-void BrasTapis::initBrasTapis(){}
-
-BrasTapis *BrasTapis::getRight()
-{
-    if (brasTapisRight == 0)
-        initBrasTapis();
-    return brasTapisRight;
-}
-
-BrasTapis *BrasTapis::getLeft()
-{
-    if (brasTapisLeft == 0)
-        initBrasTapis();
-    return brasTapisLeft;
-}
 
 #endif

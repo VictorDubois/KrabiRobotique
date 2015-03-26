@@ -4,7 +4,7 @@
 #include "position.h"
 #include "mediumLevelAction.h"
 #include "command.h"
-#include "brasLateraux.h"
+#include "braslateral.h"
 
 /** @class clap : le robot doit fermer 3 claps du bord de la table
 */

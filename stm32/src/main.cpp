@@ -18,6 +18,8 @@
 #include "asservissement.h"
 #include "sensors.h"
 #include "quadratureCoderHandler.h"
+#include "bras.h"
+#include "brak.h"
 #include "roues.h"
 #include "roue.h"
 #include "strategieV2.h"
@@ -154,10 +156,10 @@ int main()
 
     // Initialisation des actionneurs 1
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        BrasLateraux::initBrasLateraux();
+        BrasLateral::initBrasLateraux();
         Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateraux::initBrasLateraux();
+        BrasLateral::initBrasLateraux();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 

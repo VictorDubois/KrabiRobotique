@@ -26,7 +26,7 @@ StrategieV3::StrategieV3(bool isBlue) : MediumLevelAction()
     colorEtapeGoal = QColor("red");
     colorEtapesIntermediaires = QColor("yellow");
     colorEtapes = QColor("orange");
-    colorTexteEtapes = QColor("black");
+    colorTexteEtapes = QColor("green");
     colorEtapesRobotVu = QColor("black");
 #endif
      ///KRABI !!!

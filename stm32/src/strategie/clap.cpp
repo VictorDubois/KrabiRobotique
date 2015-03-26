@@ -3,7 +3,7 @@
 #include "mediumLevelAction.h"
 #include "command.h"
 #include "position.h"
-#include "brasLateraux.h"
+#include "braslateral.h"
 
 
 Clap::Clap(){}
@@ -52,9 +52,9 @@ int Clap::update()
             qDebug() << "On ouvre le bras";
             #endif
             if ((goalPosition.getX()-positionArrivee.getX())>0)
-                BrasLateraux::getRight()->expand();
+                BrasLateral::getRight()->expand();
             else
-                BrasLateraux::getLeft()->expand();
+                BrasLateral::getLeft()->expand();
             status++;
         }
     }
@@ -79,9 +79,9 @@ int Clap::update()
             qDebug() << "On ferme le bras";
             #endif
             if ((goalPosition.getX()-positionArrivee.getX())>0)
-                BrasLateraux::getLeft()->collapse();
+                BrasLateral::getLeft()->collapse();
             else
-                BrasLateraux::getRight()->collapse();
+                BrasLateral::getRight()->collapse();
             status++;
         }
     }
