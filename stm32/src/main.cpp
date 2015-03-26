@@ -156,10 +156,10 @@ int main()
 
     // Initialisation des actionneurs 1
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        BrasLateral::initBrasLateraux();
+        BrasLateraux::initBrasLateraux();
         Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateral::initBrasLateraux();
+        BrasLateraux::initBrasLateraux();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 

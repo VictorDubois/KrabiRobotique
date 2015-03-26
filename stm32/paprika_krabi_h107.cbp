@@ -74,9 +74,9 @@
 		<Unit filename="include/actionneurs/ascenseur.h" />
 		<Unit filename="include/actionneurs/bras.h" />
 		<Unit filename="include/actionneurs/brasKrabi.h" />
+		<Unit filename="include/actionneurs/brasLateraux.h" />
 		<Unit filename="include/actionneurs/brasLaterauxKrabi.h" />
 		<Unit filename="include/actionneurs/brasTapis.h" />
-		<Unit filename="include/actionneurs/braslateral.h" />
 		<Unit filename="include/actionneurs/container.h" />
 		<Unit filename="include/actionneurs/moteur.h" />
 		<Unit filename="include/actionneurs/roues.h" />
@@ -128,9 +128,9 @@
 		<Unit filename="src/actionneurs/brak (copie).cpp.victor" />
 		<Unit filename="src/actionneurs/bras.cpp" />
 		<Unit filename="src/actionneurs/brasKrabi.cpp" />
+		<Unit filename="src/actionneurs/brasLateraux.cpp" />
 		<Unit filename="src/actionneurs/brasLaterauxKrabi.cpp" />
 		<Unit filename="src/actionneurs/brasTapis.cpp" />
-		<Unit filename="src/actionneurs/braslateral.cpp" />
 		<Unit filename="src/actionneurs/container.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />

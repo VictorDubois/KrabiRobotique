@@ -4,7 +4,7 @@
 #include "canonLances.h"
 #include "canonFilet.h"
 #include "brak.h"
-#include "braslateral.h"
+#include "brasLateraux.h"
 
 Remote* Remote::singleton = 0;
 
