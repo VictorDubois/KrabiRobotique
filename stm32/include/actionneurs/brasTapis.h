@@ -1,6 +1,8 @@
 #ifndef BRASTAPIS_H
 #define BRASTAPIS_H
 
+#include<string>
+
 #include "interfaceServosNumeriques.h"
 
 #ifdef ROBOTHW
@@ -13,7 +15,7 @@ class BrasTapis
 {
     public:
 
-        static BrasTapis* getSingleton(bool cote);
+    static BrasTapis* getSingleton(std::string cote); //cote est "droit" on cree le bras droit, sinon on cree le bras gauche
 
         /// @brief ouvreBras() ouvre le bras
         void ouvrirBras();
@@ -34,7 +36,7 @@ class BrasTapis
         /** @brief Constructeur
           * @fn BrasTapis(char cote)
         */
-        BrasTapis(bool cote);
+        BrasTapis(std::string cote);
 
         static BrasTapis *singleton;
 
@@ -53,7 +55,7 @@ class BrasTapis
 {
     public:
 
-    static BrasTapis* getSingleton();
+    static BrasTapis* getSingleton(std::string cote);
 
     /// @brief ouvreBras() ouvre le bras
     void ouvrirBras();
