@@ -3,6 +3,9 @@
 #include "mediumLevelAction.h"
 #include "command.h"
 
+#ifndef ROBOTHW
+#include <QDebug>
+#endif
 
 Gobelet::Gobelet(){}
 
@@ -14,9 +17,9 @@ int Gobelet::update()
 {
     if (status == 0)
     {
-        #ifndef ROBOTHW
-            qDebug() << "gobelet";
-        #endif
+#ifndef ROBOTHW
+        qDebug() << "gobelet";
+#endif
         status++;
     }
 
@@ -40,9 +43,9 @@ int Gobelet::update()
         if (Command::isLookingAt(goalPosition))
         {
             //recuperer le gobelet
-            #ifndef ROBOTHW
+#ifndef ROBOTHW
             qDebug() << "On recupere le gobelet";
-            #endif
+#endif
             status++;
         }
     }

@@ -5,6 +5,9 @@
 #include "position.h"
 #include "brasLateraux.h"
 
+#ifndef ROBOTHW
+#include <QDebug>
+#endif
 
 Clap::Clap(){}
 
@@ -22,9 +25,9 @@ int Clap::update()
 
     if (status == 0)
     {
-        #ifndef ROBOTHW
-                qDebug() << "clap";
-        #endif
+#ifndef ROBOTHW
+        qDebug() << "clap";
+#endif
         status++;
     }
 
@@ -48,9 +51,9 @@ int Clap::update()
         if (Command::isLookingAt(positionArrivee))
         {
             //ouvrir le bras
-            #ifndef ROBOTHW
+#ifndef ROBOTHW
             qDebug() << "On ouvre le bras";
-            #endif
+#endif
             if ((goalPosition.getX()-positionArrivee.getX())>0)
                 BrasLateraux::getRight()->expand();
             else
@@ -75,9 +78,9 @@ int Clap::update()
         if (Command::isNear(positionArrivee))
         {
             //fermer bras
-            #ifndef ROBOTHW
+#ifndef ROBOTHW
             qDebug() << "On ferme le bras";
-            #endif
+#endif
             if ((goalPosition.getX()-positionArrivee.getX())>0)
                 BrasLateraux::getLeft()->collapse();
             else

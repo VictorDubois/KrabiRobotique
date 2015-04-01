@@ -5,6 +5,9 @@
 #include "position.h"
 //#include "brasdevant.h"
 
+#ifndef ROBOTHW
+#include <QDebug>
+#endif
 
 Tapis::Tapis(){}
 
@@ -30,9 +33,9 @@ int Tapis::update()
 
     if (status == 0)
     {
-        #ifndef ROBOTHW
+#ifndef ROBOTHW
                 qDebug() << "tapis";
-        #endif
+#endif
         status++;
     }
 
@@ -56,9 +59,9 @@ int Tapis::update()
         if (Command::isLookingAt(positionLookAt))
         {
             //ouvrir le bras
-            #ifndef ROBOTHW
+#ifndef ROBOTHW
             qDebug() << "On ouvre le brasdevant";
-            #endif
+#endif
 
             BrasTapis::getSingleton(cote)->ouvrirBras();
             status++;
@@ -73,9 +76,9 @@ int Tapis::update()
     else if (status == 54)
     {
         //lacher les tapis
-        #ifndef ROBOTHW
+#ifndef ROBOTHW
         qDebug() << "On ouvre la pince pour lacher les tapis";
-        #endif
+#endif
         BrasTapis::getSingleton(cote)->ouvrirPince();
         status++;
     }
@@ -88,9 +91,9 @@ int Tapis::update()
     else if (status == 105)
     {
         //fermer bras
-        #ifndef ROBOTHW
+#ifndef ROBOTHW
         qDebug() << "On ferme le bras";
-        #endif
+#endif
         BrasTapis::getSingleton(cote)->fermerPince();
         status++;
     }
@@ -103,9 +106,9 @@ int Tapis::update()
     else if (status == 156)
     {
         //fermer bras
-        #ifndef ROBOTHW
+#ifndef ROBOTHW
         qDebug() << "On ferme le bras";
-        #endif
+#endif
         BrasTapis::getSingleton(cote)->fermerBras();
         status++;
     }
