@@ -1,5 +1,4 @@
 #include "strategieV2.h"
-//#include "krabi2014.h"
 #include "krabi2015.h"
 //#include "krabijunior2015.h"
 #include "leds.h"
@@ -128,7 +127,7 @@ StrategieV2::StrategieV2(bool blue)
 
     for(int i = 0 ; i < 100000 ; i++)
     {
-        if(i%20==0)
+        if(i%ROBOT_VU_ICI==0)
         {
             strategieV3.resetEverything();
         }

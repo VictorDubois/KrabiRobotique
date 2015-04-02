@@ -74,8 +74,6 @@ void BrasTapis::fermerPince(){}
 
 BrasTapis *BrasTapis::getSingleton(std::string cote)
 {
-    if (singleton == 0)
-        singleton = new BrasTapis();
     return singleton;
 }
 
