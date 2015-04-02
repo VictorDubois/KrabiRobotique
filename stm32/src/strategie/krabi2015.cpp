@@ -197,19 +197,19 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
             break;
         case Etape::CLAP :
-            return 50;
+            return 0;
             break;
         case Etape::GOBELET :
-            return 0;//ce devrait être 40
+            return 50;//ce devrait être 40
             break;
         case Etape::AMPOULE :
             return 10;
             break;
         case Etape::PIED :
-            return 0;//ce devrait être 20
+            return 50;//ce devrait être 20
             break;
         case Etape::TAPIS :
-            return 100;
+            return 0;
             break;
         case Etape::POINT_PASSAGE :
             return 0;

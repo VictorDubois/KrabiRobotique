@@ -67,12 +67,12 @@ int Tapis::update()
         }
     }
 
-    else if ((status <= 53) && (status > -1 ))    //On attend que les bras du robot s'ouvrent : 50ms par incrémentation du status
+    else if ((status <= 23) && (status > -1 ))    //On attend que les bras du robot s'ouvrent : 50ms par incrémentation du status
     {
         status++;
     }
 
-    else if (status == 54)
+    else if (status == 24)
     {
         //lacher les tapis
 #ifndef ROBOTHW
@@ -82,12 +82,12 @@ int Tapis::update()
         status++;
     }
 
-    else if ((status <= 104) && (status > -1 ))    //On attend que la pince s'ouvre
+    else if ((status <= 44) && (status > -1 ))    //On attend que la pince s'ouvre
     {
         status++;
     }
 
-    else if (status == 105)
+    else if (status == 45)
     {
         //fermer bras
 #ifndef ROBOTHW
@@ -97,12 +97,12 @@ int Tapis::update()
         status++;
     }
 
-    else if ((status <= 155) && (status > -1 ))    //On attend que la pince se ferme
+    else if ((status <= 65) && (status > -1 ))    //On attend que la pince se ferme
     {
         status++;
     }
 
-    else if (status == 156)
+    else if (status == 66)
     {
         //fermer bras
 #ifndef ROBOTHW
@@ -112,12 +112,12 @@ int Tapis::update()
         status++;
     }
 
-    else if ((status <= 206) && (status > -1))    //On attend que les bras se ferment.
+    else if ((status <= 87) && (status > -1))    //On attend que les bras se ferment.
     {
         status++;
     }
 
-    else if (status == 257)
+    else if (status == 88)
     {
 #ifndef ROBOTHW
         qDebug() << "Etape tapis finie";

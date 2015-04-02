@@ -1,4 +1,4 @@
-#include "gobelet.h"
+#include "pied.h"
 #include "ascenseur.h"
 #include "strategieV2.h"
 #include "mediumLevelAction.h"
@@ -8,18 +8,18 @@
 #include <QDebug>
 #endif
 
-Gobelet::Gobelet(){}
+Pied::Pied(){}
 
-Gobelet::Gobelet(Position goalposition):MediumLevelAction(goalposition){}
+Pied::Pied(Position goalposition):MediumLevelAction(goalposition){}
 
-Gobelet::~Gobelet(){}
+Pied::~Pied(){}
 
-int Gobelet::update()
+int Pied::update()
 {
     if (status == 0)
     {
 #ifndef ROBOTHW
-        qDebug() << "gobelet";
+        qDebug() << "action pied";
 #endif
         status++;
     }
@@ -44,14 +44,14 @@ int Gobelet::update()
         if (Command::isLookingAt(goalPosition))
         {
 #ifndef ROBOTHW
-            qDebug() << "On baisse l'ascenseur";
+            qDebug() << "On ouvre les pinces";
 #endif
-            Ascenseur::getSingleton("gobelet")->baisserAscenseur();
-        status++;
+            Ascenseur::getSingleton("pied")->ouvrirPincesAscenseurs();
+            status++;
         }
     }
 
-    else if ((status <23) && (status > 0))  //On attend que l'ascenseur se baisse
+    else if ((status <23) && (status > 0))  //On attend que l'ascenseur ouvre ses pinces
     {
         status++;
     }
@@ -59,13 +59,13 @@ int Gobelet::update()
     else if (status == 23)
     {
 #ifndef ROBOTHW
-            qDebug() << "On ouvre les pinces";
+            qDebug() << "On baisse l'ascenseur";
 #endif
-            Ascenseur::getSingleton("gobelet")->ouvrirPincesAscenseurs();
-            status++;
+            Ascenseur::getSingleton("pied")->baisserAscenseur();
+        status++;
     }
 
-    else if ((status <43) && (status > 0))  //On attend que l'ascenseur ouvre les pinces
+    else if ((status <43) && (status > 0))  //On attend que l'ascenseur se baisse
     {
         status++;
     }
@@ -75,7 +75,7 @@ int Gobelet::update()
 #ifndef ROBOTHW
             qDebug() << "On ferme les pinces";
 #endif
-            Ascenseur::getSingleton("gobelet")->fermerPincesAscenseur();
+            Ascenseur::getSingleton("pied")->fermerPincesAscenseur();
         status++;
     }
 
@@ -87,13 +87,29 @@ int Gobelet::update()
     else if (status == 63)
     {
 #ifndef ROBOTHW
-        qDebug() << "Etape gobelet finie";
+            qDebug() << "On leve l'ascenseur";
 #endif
-        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
+            Ascenseur::getSingleton("pied")->leverAscenseur();
         status++;
     }
 
-    else if (status == 64)
+    else if ((status <83) && (status > 0))  //On attend que l'ascenseur se leve
+    {
+        status++;
+    }
+
+    else if (status == 83)
+    {
+#ifndef ROBOTHW
+        qDebug() << "Etape pied finie";
+#endif
+        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
+        status++;
+        int nouveauNbrPiedsStockes = Ascenseur::getSingleton("pied")->getNbrPiedsStockes() + 1;
+        Ascenseur::getSingleton("pied")->setNbrPiedsStockes(nouveauNbrPiedsStockes);
+    }
+
+    else if (status == 84)
     {
         if (Command::isNear(goalPosition))
         {
@@ -102,7 +118,7 @@ int Gobelet::update()
         }
     }
 
-    else if (status == 65)
+    else if (status == 85)
     {
         status = -1;
     }
