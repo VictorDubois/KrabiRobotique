@@ -2,6 +2,7 @@
 #define ASCENSEUR_H
 
 #include "interfaceServosNumeriques.h"
+#include <string>
 
 #ifdef ROBOTHW
     #include "servo.h"
@@ -14,7 +15,7 @@ class Ascenseur
 
     public:
 
-    static Ascenseur* getSingleton();
+    static Ascenseur* getSingleton(std::string objetAttrape);
 
         /// @brief baisserAscenseur() on baisse l'ascenseur
         void baisserAscenseur();
@@ -28,6 +29,16 @@ class Ascenseur
         /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
         void fermerPincesAscenseur();
 
+        int getNbrPiedsStockes();
+        int setNbrPiedsStockes(int NbrPiedsStockes);
+
+        int positionAscenseurLeve;
+        int positionAscenseurBaisse;
+        int positionPincesAscenseurOuvertes;
+        int positionPincesAscenseurFermees;
+        int moteurAscenseur;
+        int moteurPinceGauche;
+        int moteurPinceDroite;
 
 
     private:
@@ -39,13 +50,7 @@ class Ascenseur
 
         static Ascenseur *singleton;
 
-        int positionAscenseurLeve;
-        int positionAscenseurBaisse;
-        int positionPincesAscenseurOuvertes;
-        int positionPincesAscenseurFermees;
-        int moteurAscenseur;
-        int moteurPinceGauche;
-        int moteurPinceDroite;
+        int nbrPiedsStockes;
 
 };
 
@@ -55,7 +60,7 @@ class Ascenseur
 {
     public:
 
-    static Ascenseur* getSingleton();
+    static Ascenseur* getSingleton(std::string objetAttrape);
 
     /// @brief baisserAscenseur() on baisse l'ascenseur
     void baisserAscenseur();
@@ -69,6 +74,9 @@ class Ascenseur
     /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
     void fermerPincesAscenseur();
 
+    int getNbrPiedsStockes();
+    int setNbrPiedsStockes(int NbrPiedsStockes);
+
 
     private :
 
@@ -78,6 +86,8 @@ class Ascenseur
         Ascenseur();
 
         static Ascenseur *singleton;
+
+        int nbrPiedsStockes;
 
         int positionAscenseurLeve;
         int positionAscenseurBaisse;
