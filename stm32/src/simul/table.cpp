@@ -6,6 +6,10 @@
 #include "time.h"
 #include "strategieV2.h"
 
+#ifndef ROBOTHW
+#include <QDebug>
+#endif
+
 #define PI 3.14159265358979323846264338327950
 //#include <iostream>
 #include <QPainter>

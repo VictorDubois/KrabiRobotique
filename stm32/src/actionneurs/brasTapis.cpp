@@ -61,38 +61,16 @@ void BrasTapis::fermerPince()
 
 #else
 
-#include <QDebug>
 
-    BrasTapis::BrasTapis()
-    {}
+BrasTapis::BrasTapis(){}
 
-    void BrasTapis::ouvrirBras()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras devant sortis";
-#endif
-    }
+void BrasTapis::ouvrirBras(){}
 
-    void BrasTapis::fermerBras()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras devant rentrés";
-#endif
-    }
+void BrasTapis::fermerBras(){}
 
-    void BrasTapis::ouvrirPince()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Pince ouverte";
-#endif
-    }
+void BrasTapis::ouvrirPince(){}
 
-void BrasTapis::fermerPince()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Pince fermee";
-#endif
-    }
+void BrasTapis::fermerPince(){}
 
 BrasTapis *BrasTapis::getSingleton(std::string cote)
 {
