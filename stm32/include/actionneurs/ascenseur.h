@@ -16,16 +16,16 @@ class Ascenseur
 
     static Ascenseur* getSingleton();
 
-        /// @brief ouvreBras() ouvre le bras
+        /// @brief baisserAscenseur() on baisse l'ascenseur
         void baisserAscenseur();
 
-        /// @brief fermeBras() ferme le bras
+        /// @brief leverAscenseur() on leve l'ascenseur
         void leverAscenseur();
 
-        /// @brief ouvrirPince() ouvre la pince
+        /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
         void ouvrirPincesAscenseurs();
 
-        /// @brief fermePince() ferme la pince
+        /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
         void fermerPincesAscenseur();
 
 
@@ -33,7 +33,7 @@ class Ascenseur
     private:
 
         /** @brief Constructeur
-          * @fn BrasTapis(char cote)
+          * @fn BrasTapis()
         */
         Ascenseur();
 
@@ -57,16 +57,16 @@ class Ascenseur
 
     static Ascenseur* getSingleton();
 
-    /// @brief ouvreBras() ouvre le bras
+    /// @brief baisserAscenseur() on baisse l'ascenseur
     void baisserAscenseur();
 
-    /// @brief fermeBras() ferme le bras
+    /// @brief leverAscenseur() on leve l'ascenseur
     void leverAscenseur();
 
-    /// @brief ouvrirPince() ouvre la pince
+    /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
     void ouvrirPincesAscenseurs();
 
-    /// @brief fermePince() ferme la pince
+    /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
     void fermerPincesAscenseur();
 
 

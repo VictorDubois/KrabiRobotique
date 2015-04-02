@@ -84,10 +84,10 @@ int KrabiJunior2015::getScoreEtape(int i){
     */
     switch (this->tableauEtapesTotal[i]->getEtapeType()){
             case Etape::DEPART :
-                return 0;
+                return 10;
                 break;
             case Etape::TAPIS :
-                return 0;
+                return 10;
                 break;
             default :
                 return 0;

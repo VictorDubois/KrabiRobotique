@@ -38,7 +38,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape* etape20 = new Etape(Position(1300, 1400, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::PIED, -1, 0);
     Etape* etape21 = new Etape(Position(1250, 1800, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::AMPOULE, -1, 0);
     Etape* etape22 = new Etape(Position(1750, 1800, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::AMPOULE, -1, 0);
-    Etape* etape23 = new Etape(Position(1230, 760, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::TAPIS, -1, 0);
+    Etape* etape23 = new Etape(Position(1500, 850, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape24 = new Etape(Position(2300, 1500, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape25 = new Etape(Position(2710, 1500, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape26 = new Etape(Position(2630, 460, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
@@ -53,6 +53,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape* etape35 = new Etape(Position(1850, 1160, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape36 = new Etape(Position(1950, 1530, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape37 = new Etape(Position(1890, 1365, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
+    Etape* etape38 = new Etape(Position(1000, 750, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::TAPIS, -1, 0);
+    Etape* etape39 = new Etape(Position(1450, 750, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::TAPIS, -1, 0);
     //J ai modifié NOMBRE_ETAPES dans krabi2015.h et le etape.h
 
 
@@ -84,8 +86,10 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     actionEtape[11] = &actionGobelet[3];
     actionGobelet[4] = Gobelet(Position(2750, 1750, isYellow));
     actionEtape[12] = &actionGobelet[4];
-    actionTapis[0] = Tapis(Position(1220, 760, isYellow));
-    actionEtape[23] = &actionTapis[0];
+    actionTapis[0] = Tapis(Position(1000, 750, isYellow));
+    actionEtape[38] = &actionTapis[0];
+    actionTapis[1] = Tapis(Position(1450, 750, isYellow));
+    actionEtape[39] = &actionTapis[1];
 
 
     etape0->addVoisin(etape1);
@@ -162,6 +166,12 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape23->addVoisin(etape35);
     etape11->addVoisin(etape33);
     etape11->addVoisin(etape34);
+    etape23->addVoisin(etape38);
+    etape23->addVoisin(etape39);
+    etape9->addVoisin(etape38);
+    etape38->addVoisin(etape39);
+    etape39->addVoisin(etape11);
+    etape5->addVoisin(etape29);
 
     // Lancer Dijkstra
     startDijkstra();

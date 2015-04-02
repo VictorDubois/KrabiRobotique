@@ -88,7 +88,7 @@ void Etape::robotVu()
 {
     if(!aEviter())
     {
-        this->type = (EtapeType)(this->type + 20);
+        this->type = (EtapeType)(this->type + ROBOT_VU_ICI);
     }
 }
 
@@ -99,7 +99,7 @@ int Etape::getNumero()
 
 bool Etape::aEviter()
 {
-    if(((int) this->getEtapeType()) > 19)
+    if(((int) this->getEtapeType()) > ROBOT_VU_ICI-1)
     {
         return true;
     }
@@ -114,7 +114,7 @@ void Etape::oublieRobotVu()
     if(this->aEviter())
     {
         //On oublie qu'on a vu un robot
-        this->setEtapeType((EtapeType) ((int)this->getEtapeType() - 20));
+        this->setEtapeType((EtapeType) ((int)this->getEtapeType() - ROBOT_VU_ICI));
     }
 }
 

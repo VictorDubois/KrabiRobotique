@@ -3,7 +3,6 @@
 #include "mediumLevelAction.h"
 #include "command.h"
 #include "position.h"
-//#include "brasdevant.h"
 
 #ifndef ROBOTHW
 #include <QDebug>
@@ -13,14 +12,14 @@ Tapis::Tapis(){}
 
 Tapis::Tapis(Position position):MediumLevelAction(position)  //si cote est true on veut poser le tapis droit, si non c'est le tapis gauche
 {
-    if (position == Position(1950, 700))
-    {
-        this->positionLookAt = Position(3000, 400);
-        this->cote = "droit";
-    };
-    if (position == Position(1550, 700))
+    if (position == Position(1000, 750))
     {
         this->positionLookAt = Position(0, 300);
+        this->cote = "droit";
+    };
+    if (position == Position(1450, 750))
+    {
+        this->positionLookAt = Position(3000, 200);
         this->cote = "gauche";
     };
 }
@@ -60,7 +59,7 @@ int Tapis::update()
         {
             //ouvrir le bras
 #ifndef ROBOTHW
-            qDebug() << "On ouvre le brasdevant";
+            qDebug() << "On ouvre le bras";
 #endif
 
             BrasTapis::getSingleton(cote)->ouvrirBras();
@@ -77,7 +76,7 @@ int Tapis::update()
     {
         //lacher les tapis
 #ifndef ROBOTHW
-        qDebug() << "On ouvre la pince pour lacher les tapis";
+        qDebug() << "On ouvre les pinces pour lacher les tapis";
 #endif
         BrasTapis::getSingleton(cote)->ouvrirPince();
         status++;
@@ -92,7 +91,7 @@ int Tapis::update()
     {
         //fermer bras
 #ifndef ROBOTHW
-        qDebug() << "On ferme le bras";
+        qDebug() << "On ferme les Pinces";
 #endif
         BrasTapis::getSingleton(cote)->fermerPince();
         status++;
@@ -120,10 +119,10 @@ int Tapis::update()
 
     else if (status == 257)
     {
-        status = -1;
 #ifndef ROBOTHW
         qDebug() << "Etape tapis finie";
 #endif
+        status = -1;
     }
 
     return status;
