@@ -8,10 +8,18 @@
 
 Tapis::Tapis(){}
 
-Tapis::Tapis(Position position):MediumLevelAction(position)
+Tapis::Tapis(Position position):MediumLevelAction(position)  //si cote est true on veut poser le tapis droit, si non c'est le tapis gauche
 {
-    this->goBack = false;
-    this->positionMarches = Position(1230,150);
+    if (position == Position(1950, 700))
+    {
+        this->positionLookAt = Position(3000, 400);
+        this->cote = "droit";
+    };
+    if (position == Position(1550, 700))
+    {
+        this->positionLookAt = Position(0, 300);
+        this->cote = "gauche";
+    };
 }
 
 
@@ -38,20 +46,21 @@ int Tapis::update()
     {
         if (Command::isNear(goalPosition))
         {
-            StrategieV2::lookAt(positionMarches);
+            StrategieV2::lookAt(positionLookAt);
             status++;
         }
     }
 
     else if (status == 3)
     {
-        if (Command::isLookingAt(positionMarches))
+        if (Command::isLookingAt(positionLookAt))
         {
             //ouvrir le bras
             #ifndef ROBOTHW
             qDebug() << "On ouvre le brasdevant";
             #endif
-           // BrasDevant::getBras()->expand();
+
+            BrasTapis::getSingleton(cote)->ouvrirBras();
             status++;
         }
     }
@@ -67,7 +76,7 @@ int Tapis::update()
         #ifndef ROBOTHW
         qDebug() << "On ouvre la pince pour lacher les tapis";
         #endif
-      //  Pince::getPince()->open();
+        BrasTapis::getSingleton(cote)->ouvrirPince();
         status++;
     }
 
@@ -82,16 +91,31 @@ int Tapis::update()
         #ifndef ROBOTHW
         qDebug() << "On ferme le bras";
         #endif
-      //  BrasDevant::getBras()->collapse();
+        BrasTapis::getSingleton(cote)->fermerPince();
         status++;
     }
 
-    else if ((status <= 155) && (status > -1))    //On attend que les bras se ferment.
+    else if ((status <= 155) && (status > -1 ))    //On attend que la pince se ferme
     {
         status++;
     }
 
     else if (status == 156)
+    {
+        //fermer bras
+        #ifndef ROBOTHW
+        qDebug() << "On ferme le bras";
+        #endif
+        BrasTapis::getSingleton(cote)->fermerBras();
+        status++;
+    }
+
+    else if ((status <= 206) && (status > -1))    //On attend que les bras se ferment.
+    {
+        status++;
+    }
+
+    else if (status == 257)
     {
         status = -1;
 #ifndef ROBOTHW

@@ -1,10 +1,12 @@
 #ifndef TAPIS_H
 #define TAPIS_H
 
+#include <string>
+
 #include "position.h"
 #include "mediumLevelAction.h"
 #include "command.h"
-//#include "brasdevant.h"
+#include "brasTapis.h"
 
 /** @class Tapis : le robot doit poser 2 tapis sur les marches.
 */
@@ -36,8 +38,8 @@ class Tapis : public MediumLevelAction
 
     protected :
         Position position;
-        Position positionMarches;
-
+        Position positionLookAt;
+        std::string cote;
 };
 
 
