@@ -2,7 +2,6 @@
 #define ASCENSEUR_H
 
 #include "interfaceServosNumeriques.h"
-#include <string>
 
 #ifdef ROBOTHW
     #include "servo.h"
@@ -15,7 +14,7 @@ class Ascenseur
 
     public:
 
-    static Ascenseur* getSingleton(std::string objetAttrape);
+    static Ascenseur* getSingleton();
 
         /// @brief baisserAscenseur() on baisse l'ascenseur
         void baisserAscenseur();
@@ -60,7 +59,7 @@ class Ascenseur
 {
     public:
 
-    static Ascenseur* getSingleton(std::string objetAttrape);
+    static Ascenseur* getSingleton();
 
     /// @brief baisserAscenseur() on baisse l'ascenseur
     void baisserAscenseur();

@@ -10,6 +10,7 @@
 #include "clap.h"
 #include "gobelet.h"
 #include "tapis.h"
+#include "deposerGobelet.h"
 
 class Krabi2015 : public StrategieV3
 {
@@ -22,6 +23,7 @@ public:
     Clap actionClap[3];
     Gobelet actionGobelet[5];
     Tapis actionTapis[2];
+    DeposerGobelet actionDeposerGobelet[3];
 
 
 private:

@@ -1,5 +1,4 @@
 #include "ascenseur.h"
-#include <string>
 
 Ascenseur* Ascenseur::singleton = 0;
 
@@ -18,18 +17,14 @@ Ascenseur::Ascenseur()
     this->baisserAscenseur();
 }
 
-Ascenseur* Ascenseur::getSingleton(std::string objetAttrape)
+Ascenseur* Ascenseur::getSingleton()
 {
     //TO DO  : decommenter le bout de code suivant et le debugger
 
-  /*  if (singleton==0)
+    if (singleton==0)
         singleton = new Ascenseur();
-    if (objetAttrape == "gobelet")
-        singleton->positionPincesAscenseurFermees = 0x00;
-    if (objetAttrape == "pied")
-        singleton->positionPincesAscenseurFermees = 0x00;
 
-    if (singleton->getNbrPiedsStockes==0)
+/*    if (singleton->getNbrPiedsStockes==0)
         singleton->positionAscenseurLeve = 0x00;
     if (singleton->getNbrPiedsStockes==1)
         singleton->positionAscenseurLeve = 0x00;
@@ -73,7 +68,7 @@ void Ascenseur::ouvrirPincesAscenseur(){}
 
 void Ascenseur::fermerPincesAscenseur(){}
 
-Ascenseur *Ascenseur::getSingleton(std::string objetAttrape)
+Ascenseur *Ascenseur::getSingleton()
 {
     if (singleton == 0)
         singleton = new Ascenseur();
