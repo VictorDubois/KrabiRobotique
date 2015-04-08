@@ -61,7 +61,7 @@ int Gobelet::update()
 #ifndef ROBOTHW
             qDebug() << "On ouvre les pinces";
 #endif
-            Ascenseur::getSingleton("gobelet")->ouvrirPincesAscenseurs();
+            Ascenseur::getSingleton("gobelet")->ouvrirPincesAscenseur();
             status++;
     }
 

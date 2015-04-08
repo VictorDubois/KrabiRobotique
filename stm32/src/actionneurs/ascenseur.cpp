@@ -9,10 +9,10 @@ Ascenseur::Ascenseur()
     this->positionAscenseurLeve = 0x00;
     this->positionAscenseurBaisse = 0x00;
     this->positionPincesAscenseurOuvertes = 0x00;
-    this->positionPincesAscenseurFermees = 0x00;
+    this->positionPincesAscenseurFermees = 0x0227;
     this->moteurAscenseur = 0;
-    this->moteurPinceGauche = 0;
-    this->moteurPinceDroite = 0;
+    this->moteurPinceGauche = 15;
+    this->moteurPinceDroite = 16;
 
     this->fermerPincesAscenseur();
     this->baisserAscenseur();
@@ -49,7 +49,7 @@ void Ascenseur::baisserAscenseur()
     ServosNumeriques::moveTo(positionAscenseurBaisse, moteurAscenseur);
 }
 
-void Ascenseur::ouvrirPincesAscenseurs()
+void Ascenseur::ouvrirPincesAscenseur()
 {
     ServosNumeriques::moveTo(positionPincesAscenseurOuvertes, moteurPinceDroite);
     ServosNumeriques::moveTo(positionPincesAscenseurOuvertes, moteurPinceGauche);
@@ -69,7 +69,7 @@ void Ascenseur::leverAscenseur(){}
 
 void Ascenseur::baisserAscenseur(){}
 
-void Ascenseur::ouvrirPincesAscenseurs(){}
+void Ascenseur::ouvrirPincesAscenseur(){}
 
 void Ascenseur::fermerPincesAscenseur(){}
 
