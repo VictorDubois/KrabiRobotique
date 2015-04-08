@@ -24,7 +24,7 @@ class Ascenseur
         void leverAscenseur();
 
         /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
-        void ouvrirPincesAscenseurs();
+        void ouvrirPincesAscenseur();
 
         /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
         void fermerPincesAscenseur();
@@ -69,7 +69,7 @@ class Ascenseur
     void leverAscenseur();
 
     /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
-    void ouvrirPincesAscenseurs();
+    void ouvrirPincesAscenseur();
 
     /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
     void fermerPincesAscenseur();

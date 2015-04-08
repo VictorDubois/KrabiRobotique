@@ -20,6 +20,7 @@
 #include "quadratureCoderHandler.h"
 //#include "bras.h"
 //#include "brak.h"
+#include "ascenseur.h"
 #include "roues.h"
 #include "roue.h"
 #include "strategieV2.h"
@@ -139,6 +140,9 @@ int main()
     ServosNumeriques::initClocksAndPortsGPIO();
     ServosNumeriques::initUART(19231);
     ServosNumeriques::sendMode();
+
+    Ascenseur::getSingleton("pied")->Ascenseur::fermerPincesAscenseur();
+//    Ascenseur::getSingleton("pied")->Ascenseur::ouvrirPincesAscenseur();
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
