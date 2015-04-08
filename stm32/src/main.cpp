@@ -141,7 +141,7 @@ int main()
     ServosNumeriques::initUART(19231);
     ServosNumeriques::sendMode();
 
-    Ascenseur::getSingleton("pied")->Ascenseur::fermerPincesAscenseur();
+//    Ascenseur::getSingleton()->Ascenseur::fermerPincesAscenseur();
 //    Ascenseur::getSingleton("pied")->Ascenseur::ouvrirPincesAscenseur();
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :

@@ -46,7 +46,7 @@ int Pied::update()
 #ifndef ROBOTHW
             qDebug() << "On ouvre les pinces";
 #endif
-            Ascenseur::getSingleton("pied")->ouvrirPincesAscenseurs();
+            Ascenseur::getSingleton()->ouvrirPincesAscenseur();
             status++;
         }
     }
@@ -61,7 +61,7 @@ int Pied::update()
 #ifndef ROBOTHW
             qDebug() << "On baisse l'ascenseur";
 #endif
-            Ascenseur::getSingleton("pied")->baisserAscenseur();
+            Ascenseur::getSingleton()->baisserAscenseur();
         status++;
     }
 
@@ -75,7 +75,7 @@ int Pied::update()
 #ifndef ROBOTHW
             qDebug() << "On ferme les pinces";
 #endif
-            Ascenseur::getSingleton("pied")->fermerPincesAscenseur();
+            Ascenseur::getSingleton()->fermerPincesAscenseur();
         status++;
     }
 
@@ -89,7 +89,7 @@ int Pied::update()
 #ifndef ROBOTHW
             qDebug() << "On leve l'ascenseur";
 #endif
-            Ascenseur::getSingleton("pied")->leverAscenseur();
+            Ascenseur::getSingleton()->leverAscenseur();
         status++;
     }
 
@@ -105,8 +105,8 @@ int Pied::update()
 #endif
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
         status++;
-        int nouveauNbrPiedsStockes = Ascenseur::getSingleton("pied")->getNbrPiedsStockes() + 1;
-        Ascenseur::getSingleton("pied")->setNbrPiedsStockes(nouveauNbrPiedsStockes);
+        int nouveauNbrPiedsStockes = Ascenseur::getSingleton()->getNbrPiedsStockes() + 1;
+        Ascenseur::getSingleton()->setNbrPiedsStockes(nouveauNbrPiedsStockes);
     }
 
     else if (status == 84)

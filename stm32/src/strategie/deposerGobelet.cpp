@@ -46,7 +46,7 @@ int DeposerGobelet::update()
 #ifndef ROBOTHW
             qDebug() << "On lache le gobelet";
 #endif
-            Ascenseur::getSingleton("gobelet")->ouvrirPincesAscenseur();
+            Ascenseur::getSingleton()->ouvrirPincesAscenseur();
         status++;
         }
     }
@@ -61,7 +61,7 @@ int DeposerGobelet::update()
 #ifndef ROBOTHW
             qDebug() << "On referme les pinces";
 #endif
-            Ascenseur::getSingleton("gobelet")->fermerPincesAscenseur();
+            Ascenseur::getSingleton()->fermerPincesAscenseur();
             status++;
     }
 

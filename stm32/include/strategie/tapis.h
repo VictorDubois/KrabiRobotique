@@ -1,8 +1,6 @@
 #ifndef TAPIS_H
 #define TAPIS_H
 
-#include <string>
-
 #include "position.h"
 #include "mediumLevelAction.h"
 #include "command.h"
@@ -39,7 +37,7 @@ class Tapis : public MediumLevelAction
     protected :
         Position position;
         Position positionLookAt;
-        std::string cote;
+        bool cote;  //si cote est le coté droit on le met égal à 0 si le cote est le cote gauche on le met égal à 1
 };
 
 
