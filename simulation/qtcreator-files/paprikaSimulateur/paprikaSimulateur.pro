@@ -22,6 +22,7 @@ HEADERS += \
     ../../include/actionneurs/sensor.h \
     ../../include/actionneurs/roues.h \
     ../../include/actionneurs/moteur.h \
+    ../../include/actionneurs/ascenseur.h \
     ../../include/asservissement/pidFilterDistance.h \
     ../../include/asservissement/pidFilterAngle.h \
         ../../include/asservissement/odometrie.h \
@@ -119,5 +120,6 @@ SOURCES += \
     ../../src/strategie/tapis.cpp \
     ../../src/actionneurs/brasTapis.cpp \
     ../../src/actionneurs/brasLateraux.cpp \
-    ../../src/actionneurs/brasKrabi.cpp
+    ../../src/actionneurs/brasKrabi.cpp \
+    ../../src/actionneurs/ascenseur.cpp
 
