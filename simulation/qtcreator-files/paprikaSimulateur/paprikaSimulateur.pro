@@ -71,7 +71,8 @@ HEADERS += \
     ../../include/actionneurs/brasKrabi.h \
     ../../include/actionneurs/brasLateraux.h \
     ../../include/strategie/deposerGobelet.h \
-    ../../include/strategie/pied.h
+    ../../include/strategie/pied.h \
+    ../../include/actionneurs/pinces.h
 
 
 SOURCES += \
@@ -125,5 +126,6 @@ SOURCES += \
     ../../src/actionneurs/brasKrabi.cpp \
     ../../src/actionneurs/ascenseur.cpp \
     ../../src/strategie/deposerGobelet.cpp \
-    ../../src/strategie/pied.cpp
+    ../../src/strategie/pied.cpp \
+    ../../src/actionneurs/pinces.cpp
 

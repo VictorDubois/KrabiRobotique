@@ -29,7 +29,20 @@ class Ascenseur
         void fermerPincesAscenseur();
 
         int getNbrPiedsStockes();
-        int setNbrPiedsStockes(int NbrPiedsStockes);
+        void setNbrPiedsStockes(int NbrPiedsStockes);
+
+
+
+    private:
+
+        /** @brief Constructeur
+          * @fn Ascenseur()
+        */
+        Ascenseur();
+
+        static Ascenseur *singleton;
+
+        int nbrPiedsStockes;
 
         int positionAscenseurLeve;
         int positionAscenseurBaisse;
@@ -38,18 +51,6 @@ class Ascenseur
         int moteurAscenseur;
         int moteurPinceGauche;
         int moteurPinceDroite;
-
-
-    private:
-
-        /** @brief Constructeur
-          * @fn BrasTapis()
-        */
-        Ascenseur();
-
-        static Ascenseur *singleton;
-
-        int nbrPiedsStockes;
 
 };
 
