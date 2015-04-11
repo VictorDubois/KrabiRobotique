@@ -82,7 +82,7 @@ int Ascenseur::getNbrPiedsStockes()
     return nbrPiedsStockes;
 }
 
-int Ascenseur::setNbrPiedsStockes(int nbrPiedsStockes)
+void Ascenseur::setNbrPiedsStockes(int nbrPiedsStockes)
 {
     this->nbrPiedsStockes = nbrPiedsStockes;
 }
