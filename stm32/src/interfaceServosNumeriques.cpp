@@ -266,5 +266,26 @@ void setMaxTorque(uint16_t torque, uint8_t servo) // EEPROM, automatiquement mis
     }
 }
 
+uint16_t getPosition(uint8_t servo)
+{
+    int packet[16];
+    int packetLength = AX12::receivePositionInformation(packet, servo);
+    for (int i = 0; i < packetLength; i++)
+    {
+        sendData(packet[i]);
+    }
+    int packetReceived[16];
+    receiveStatusPacket(packetReceived);
+    uint16_t position;
 
+    if(packetReceived[0] == servo)
+    {
+        for (int i = 0; i < packetReceived[1]; i++)
+        {
+            position += packetReceived[i+2];
+            position = position << 8;
+        }
+    }
+    return position;
+}
 }
