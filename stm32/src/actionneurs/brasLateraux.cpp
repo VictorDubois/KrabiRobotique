@@ -49,31 +49,14 @@ BrasLateraux* BrasLateraux::right = 0;
     }
 #else
 
-#include <QDebug>
 
-    BrasLateraux::BrasLateraux()
-    {}
+    BrasLateraux::BrasLateraux(){}
 
-    void BrasLateraux::expand()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras lateraux sorti";
-#endif
-    }
+    void BrasLateraux::expand(){} //sort les bras
 
-    void BrasLateraux::collapse()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras Lateraux rentré";
-#endif
-    }
+    void BrasLateraux::collapse(){} //ferme les bras
 
-    void BrasLateraux::front()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras Lateraux sorti à 180°";
-#endif
-    }
+    void BrasLateraux::front(){} //sort les bras a 80°
 
     void BrasLateraux::initBrasLateraux()
     {

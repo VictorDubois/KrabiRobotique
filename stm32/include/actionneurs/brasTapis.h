@@ -1,7 +1,7 @@
 #ifndef BRASTAPIS_H
 #define BRASTAPIS_H
 
-#include "brasKrabi.h"
+#include "interfaceServosNumeriques.h"
 
 #ifdef ROBOTHW
     #include "servo.h"
@@ -9,33 +9,43 @@
 
 /** @class BrasTapis La classe BrasTapis permet de controler les bras sur l'avant de Krabi
 */
-class BrasTapis : public BrasKrabi
+class BrasTapis
 {
     public:
-        /** @brief Constructeur
-          * @fn BrasTapis()
-        */
-        BrasTapis(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded);
 
-        /** @brief Destructeur
-        */
-        ~BrasTapis();
+    static BrasTapis* getSingleton(int cote); //cote est "droit" on cree le bras droit, sinon on cree le bras gauche
 
-        static void initBrasTapis();
+        /// @brief ouvreBras() ouvre le bras
+        void ouvrirBras();
 
-        /// @brief getLeft() renvoit le BrasTapisGauche courant
-        BrasTapis *getLeft();
+        /// @brief fermeBras() ferme le bras
+        void fermerBras();
 
-        /// @brief getLeft() renvoit le BrasTapisDroit courant
-        BrasTapis *getRight();
+        /// @brief ouvrirPince() ouvre la pince
+        void ouvrirPince();
 
-        void expand();
-        void collapse();
-        void front();
+        /// @brief fermePince() ferme la pince
+        void fermerPince();
+
+
 
     private:
-        static BrasTapis *brasTapisLeft;
-        static BrasTapis *brasTapisRight;
+
+        /** @brief Constructeur
+          * @fn BrasTapis(char cote)
+        */
+        BrasTapis(int cote);
+
+        static BrasTapis *singleton;
+
+        int positionBrasOuvert;
+        int positionBrasFerme;
+        int positionPinceOuverte;
+        int positionPinceFermee;
+        int moteurBras;
+        int moteurPinceHaut;
+        int moteurPinceBas;
+
 };
 #else
 
@@ -43,24 +53,37 @@ class BrasTapis
 {
     public:
 
-        static void initBrasTapis();
-        static BrasTapis *brasTapisLeft;
-        static BrasTapis *brasTapisRight;
+    static BrasTapis* getSingleton(int cote);
 
-        /// @brief getLeft() renvoit le brasTapisGauche courant
-        static BrasTapis *getLeft();
+    /// @brief ouvreBras() ouvre le bras
+    void ouvrirBras();
 
-        /// @brief getLeft() renvoit le brasTapisDroit courant
-        static BrasTapis *getRight();
+    /// @brief fermeBras() ferme le bras
+    void fermerBras();
 
-        void expand();
-        void collapse();
-        void front();
+    /// @brief ouvrirPince() ouvre la pince
+    void ouvrirPince();
+
+    /// @brief fermePince() ferme la pince
+    void fermerPince();
+
 
     private :
-        BrasTapis();
-        ~BrasTapis();
 
+        /** @brief Constructeur
+          * @fn BrasTapis()
+        */
+        BrasTapis();
+
+        static BrasTapis *singleton;
+
+        int positionBrasOuvert;
+        int positionBrasFerme;
+        int positionPinceOuverte;
+        int positionPinceFermee;
+        int moteurBras;
+        int moteurPinceHaut;
+        int moteurPinceBas;
 };
 
 #endif

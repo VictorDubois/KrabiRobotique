@@ -1,85 +1,88 @@
 #include "ascenseur.h"
 
-Ascenseur* Ascenseur::m_ascenseur = NULL;
+Ascenseur* Ascenseur::singleton = 0;
 
-// Constructeur
-Ascenseur::Ascenseur(Roue* vis, LimitSwitchSensor* fdcHaut, LimitSwitchSensor* fdcBas)
-    : m_tourne(false), m_vaEnHaut(true), m_vis(vis), m_fdcHaut(fdcHaut), m_fdcBas(fdcBas)
+#ifdef ROBOTHW
+Ascenseur::Ascenseur()
 {
-    vis->tourne(0.0f);
-    m_ascenseur = this;
+    this->positionAscenseurLeve = 0x00;
+    this->positionAscenseurBaisse = 0x00;
+    this->positionPincesAscenseurOuvertes = 0x00;
+    this->positionPincesAscenseurFermees = 0x0227;
+    this->moteurAscenseur = 0;
+    this->moteurPinceGauche = 15;
+    this->moteurPinceDroite = 16;
+
+    this->fermerPincesAscenseur();
+    this->baisserAscenseur();
 }
 
-// destructeur
-Ascenseur::~Ascenseur()
+Ascenseur* Ascenseur::getSingleton()
 {
-    if (m_ascenseur == this)
-        m_ascenseur = NULL;
+    //TO DO  : decommenter le bout de code suivant et le debugger
+
+    if (singleton==0)
+        singleton = new Ascenseur();
+
+/*    if (singleton->getNbrPiedsStockes==0)
+        singleton->positionAscenseurLeve = 0x00;
+    if (singleton->getNbrPiedsStockes==1)
+        singleton->positionAscenseurLeve = 0x00;
+    if (singleton->getNbrPiedsStockes==2)
+        singleton->positionAscenseurLeve = 0x00;  */
+
+    return singleton;
 }
 
-// l'ascenseur monte tout en haut
-void Ascenseur::monter()
+void Ascenseur::leverAscenseur()
 {
-    m_vaEnHaut = true;
-
-    if (!toutEnHaut())
-    {
-        m_tourne = true;
-        m_vis->tourne(0.5f);
-    }
+    ServosNumeriques::moveTo(positionAscenseurLeve, moteurAscenseur);
 }
 
-// l'ascenseur descend tout en bas
-void Ascenseur::descendre()
+void Ascenseur::baisserAscenseur()
 {
-    m_vaEnHaut = false;
-
-    if (!toutEnHaut())
-    {
-        m_tourne = true;
-        m_vis->tourne(-0.5f);
-    }
+    ServosNumeriques::moveTo(positionAscenseurBaisse, moteurAscenseur);
 }
 
-// met à jour l'état de l'ascenseur pour l'arreter si il est arrivé à son but
-void Ascenseur::update()
+void Ascenseur::ouvrirPincesAscenseur()
 {
-    if (m_tourne)
-    {
-        if (m_vaEnHaut ? toutEnHaut() : toutEnBas())
-        {
-            m_tourne = false;
-            m_vis->tourne(0.0f);
-        }
-    }
+    ServosNumeriques::moveTo(positionPincesAscenseurOuvertes, moteurPinceDroite);
+    ServosNumeriques::moveTo(positionPincesAscenseurOuvertes, moteurPinceGauche);
 }
 
-// est ce que l'ascenseur a fini sa montée/descente
-bool Ascenseur::aFini() const
+void Ascenseur::fermerPincesAscenseur()
 {
-    return !m_tourne;
+    ServosNumeriques::moveTo(positionPincesAscenseurFermees, moteurPinceDroite);
+    ServosNumeriques::moveTo(positionPincesAscenseurFermees, moteurPinceGauche);
 }
 
-// est ce que l'ascenseur va/est en haut ?
-bool Ascenseur::vaEnHaut() const
+#else
+
+Ascenseur::Ascenseur(){}
+
+void Ascenseur::leverAscenseur(){}
+
+void Ascenseur::baisserAscenseur(){}
+
+void Ascenseur::ouvrirPincesAscenseur(){}
+
+void Ascenseur::fermerPincesAscenseur(){}
+
+Ascenseur *Ascenseur::getSingleton()
 {
-    return m_vaEnHaut;
+    if (singleton == 0)
+        singleton = new Ascenseur();
+    return singleton;
 }
 
-// est ce que les fdc sont activés ?
-bool Ascenseur::toutEnHaut() const
+#endif
+
+int Ascenseur::getNbrPiedsStockes()
 {
-    return m_fdcHaut->getValue().b;
+    return nbrPiedsStockes;
 }
 
-bool Ascenseur::toutEnBas() const
+int Ascenseur::setNbrPiedsStockes(int nbrPiedsStockes)
 {
-    return m_fdcBas->getValue().b;
+    this->nbrPiedsStockes = nbrPiedsStockes;
 }
-
-// renvoit l'ascenseur
-Ascenseur* Ascenseur::get()
-{
-    return m_ascenseur;
-}
-

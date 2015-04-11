@@ -25,30 +25,13 @@
 
 #else
 
-#include <QDebug>
 
-    BrasKrabi::BrasKrabi()
-    {}
+    BrasKrabi::BrasKrabi(){}
 
-    void BrasKrabi::expand()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras lateral sorti";
-#endif
-    }
+    void BrasKrabi::expand(){}
 
-    void BrasKrabi::collapse()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras Lateral rentré";
-#endif
-    }
+    void BrasKrabi::collapse(){}
 
-    void BrasKrabi::front()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras Lateral sorti à 180°";
-#endif
-    }
+    void BrasKrabi::front(){}
 
 #endif

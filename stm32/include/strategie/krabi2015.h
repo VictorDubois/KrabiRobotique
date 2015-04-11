@@ -2,7 +2,7 @@
 #define KRABI2015_H
 
 #define ETAPE_GARAGE 1
-#define NOMBRE_ETAPES 38
+#define NOMBRE_ETAPES 40
 
 
 #include "strategiev3.h"
@@ -10,6 +10,7 @@
 #include "clap.h"
 #include "gobelet.h"
 #include "tapis.h"
+#include "deposerGobelet.h"
 
 class Krabi2015 : public StrategieV3
 {
@@ -21,7 +22,8 @@ public:
     /** @brief Actions de Krabi */
     Clap actionClap[3];
     Gobelet actionGobelet[5];
-    Tapis actionTapis[1];
+    Tapis actionTapis[2];
+    DeposerGobelet actionDeposerGobelet[3];
 
 
 private:

@@ -22,6 +22,7 @@ HEADERS += \
     ../../include/actionneurs/sensor.h \
     ../../include/actionneurs/roues.h \
     ../../include/actionneurs/moteur.h \
+    ../../include/actionneurs/ascenseur.h \
     ../../include/asservissement/pidFilterDistance.h \
     ../../include/asservissement/pidFilterAngle.h \
         ../../include/asservissement/odometrie.h \
@@ -59,7 +60,6 @@ HEADERS += \
     ../../include/strategie/etape.h \
     ../../include/strategie/dijkstra.h \
     ../../include/hardware/tourelle.h \
-    ../../include/actionneurs/container.h \
     ../../include/strategie/krabi2014.h \
     ../../src/strategie/clap.h \
     ../../include/strategie/krabi2015.h \
@@ -69,7 +69,9 @@ HEADERS += \
     ../../include/strategie/tapis.h \
     ../../include/actionneurs/brasTapis.h \
     ../../include/actionneurs/brasKrabi.h \
-    ../../include/actionneurs/brasLateraux.h
+    ../../include/actionneurs/brasLateraux.h \
+    ../../include/strategie/deposerGobelet.h \
+    ../../include/strategie/pied.h
 
 
 SOURCES += \
@@ -113,9 +115,6 @@ SOURCES += \
     ../../src/strategie/etape.cpp \
     ../../src/strategie/dijkstra.cpp \
     ../../src/hardware/tourelle.cpp \
-    ../../src/actionneurs/container.cpp \
-    ../../src/actionneurs/canonLances.cpp \
-    ../../src/actionneurs/canonFilet.cpp \
     ../../src/strategie/krabi2015.cpp \
     ../../src/strategie/clap.cpp \
     ../../src/strategie/gobelet.cpp \
@@ -123,5 +122,8 @@ SOURCES += \
     ../../src/strategie/tapis.cpp \
     ../../src/actionneurs/brasTapis.cpp \
     ../../src/actionneurs/brasLateraux.cpp \
-    ../../src/actionneurs/brasKrabi.cpp
+    ../../src/actionneurs/brasKrabi.cpp \
+    ../../src/actionneurs/ascenseur.cpp \
+    ../../src/strategie/deposerGobelet.cpp \
+    ../../src/strategie/pied.cpp
 

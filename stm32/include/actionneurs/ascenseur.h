@@ -1,54 +1,106 @@
-#ifndef DEF_ASCENSEUR
-#define DEF_ASCENSEUR
+#ifndef ASCENSEUR_H
+#define ASCENSEUR_H
+
+#include "interfaceServosNumeriques.h"
 
 #ifdef ROBOTHW
-#include "limitSwitchSensor.h"
-#include "roue.h"
+    #include "servo.h"
+
+
+/** @class Ascenseur La classe Ascenseur permet de controler les bras sur l'avant de Krabi
+*/
+class Ascenseur
+{
+
+    public:
+
+    static Ascenseur* getSingleton();
+
+        /// @brief baisserAscenseur() on baisse l'ascenseur
+        void baisserAscenseur();
+
+        /// @brief leverAscenseur() on leve l'ascenseur
+        void leverAscenseur();
+
+        /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
+        void ouvrirPincesAscenseur();
+
+        /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
+        void fermerPincesAscenseur();
+
+        int getNbrPiedsStockes();
+        int setNbrPiedsStockes(int NbrPiedsStockes);
+
+        int positionAscenseurLeve;
+        int positionAscenseurBaisse;
+        int positionPincesAscenseurOuvertes;
+        int positionPincesAscenseurFermees;
+        int moteurAscenseur;
+        int moteurPinceGauche;
+        int moteurPinceDroite;
+
+
+    private:
+
+        /** @brief Constructeur
+          * @fn BrasTapis()
+        */
+        Ascenseur();
+
+        static Ascenseur *singleton;
+
+        int nbrPiedsStockes;
+
+};
+
+#else
 
 class Ascenseur
 {
     public:
 
-        // Constructeur
-        Ascenseur(Roue* vis, LimitSwitchSensor* fdcHaut, LimitSwitchSensor* fdcBas);
+    static Ascenseur* getSingleton();
 
-        // destructeur
-        ~Ascenseur();
+    /// @brief baisserAscenseur() on baisse l'ascenseur
+    void baisserAscenseur();
 
-        // l'ascenseur monte tout en haut
-        void monter();
+    /// @brief leverAscenseur() on leve l'ascenseur
+    void leverAscenseur();
 
-        // l'ascenseur descend tout en bas
-        void descendre();
+    /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
+    void ouvrirPincesAscenseur();
 
-        // met à jour l'état de l'ascenseur pour l'arreter si il est arrivé à son but
-        void update();
+    /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
+    void fermerPincesAscenseur();
 
-        // est ce que l'ascenseur a fini sa montée/descente
-        bool aFini() const;
+    int getNbrPiedsStockes();
+    int setNbrPiedsStockes(int NbrPiedsStockes);
 
-        // est ce que l'ascenseur va/est en haut ?
-        bool vaEnHaut() const;
 
-        // renvoit l'ascenseur
-        static Ascenseur* get();
+    private :
 
-        // est ce que les fdc sont activés ?
-        bool toutEnHaut() const;
-        bool toutEnBas() const;
+        /** @brief Constructeur
+          * @fn Ascenseur()
+        */
+        Ascenseur();
 
-    protected:
+        static Ascenseur *singleton;
 
-        bool m_tourne;
-        bool m_vaEnHaut;
+        int nbrPiedsStockes;
 
-        Roue* m_vis;
-        LimitSwitchSensor* m_fdcHaut;
-        LimitSwitchSensor* m_fdcBas;
-
-        static Ascenseur* m_ascenseur;
+        int positionAscenseurLeve;
+        int positionAscenseurBaisse;
+        int positionPincesAscenseurOuvertes;
+        int positionPincesAscenseurFermees;
+        int moteurAscenseur;
+        int moteurPinceGauche;
+        int moteurPinceDroite;
 
 };
 
 #endif
-#endif
+
+#endif // ASCENSEUR_H
+
+
+

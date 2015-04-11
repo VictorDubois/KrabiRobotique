@@ -4,7 +4,7 @@
 #include "position.h"
 #include "mediumLevelAction.h"
 #include "command.h"
-//#include "brasdevant.h"
+#include "brasTapis.h"
 
 /** @class Tapis : le robot doit poser 2 tapis sur les marches.
 */
@@ -36,8 +36,8 @@ class Tapis : public MediumLevelAction
 
     protected :
         Position position;
-        Position positionMarches;
-
+        Position positionLookAt;
+        bool cote;  //si cote est le coté droit on le met égal à 0 si le cote est le cote gauche on le met égal à 1
 };
 
 

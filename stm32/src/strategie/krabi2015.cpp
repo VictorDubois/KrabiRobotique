@@ -16,7 +16,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     // Création des étapes
     // Arguments : Position, numéro étape, tableau des étapes, type d'étape, état de l'étape, nombre étapes liées
     Etape* etape0 = new Etape(Position(250, 1000, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::DEPART, -1, 0); //départ au fond de la zone de départ
-    Etape* etape1 = new Etape(Position(700, 1000, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
+    Etape* etape1 = new Etape(Position(700, 1000, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::DEPOSE_GOBELET, -1, 0);
     Etape* etape2 = new Etape(Position(836, 1780, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::CLAP, -1, 0);
     Etape* etape3 = new Etape(Position(1000, 1780, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape4 = new Etape(Position(236, 1780, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::CLAP, -1, 0);
@@ -38,10 +38,10 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape* etape20 = new Etape(Position(1300, 1400, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::PIED, -1, 0);
     Etape* etape21 = new Etape(Position(1250, 1800, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::AMPOULE, -1, 0);
     Etape* etape22 = new Etape(Position(1750, 1800, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::AMPOULE, -1, 0);
-    Etape* etape23 = new Etape(Position(1230, 760, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::TAPIS, -1, 0);
+    Etape* etape23 = new Etape(Position(1500, 850, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape24 = new Etape(Position(2300, 1500, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
-    Etape* etape25 = new Etape(Position(2710, 1500, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
-    Etape* etape26 = new Etape(Position(2630, 460, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
+    Etape* etape25 = new Etape(Position(2710, 1500, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::DEPOSE_GOBELET, -1, 0);
+    Etape* etape26 = new Etape(Position(2630, 460, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::DEPOSE_GOBELET, -1, 0);
     Etape* etape27 = new Etape(Position(1100, 1650, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape28 = new Etape(Position(560, 1290, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape29 = new Etape(Position(720, 1600, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
@@ -53,6 +53,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape* etape35 = new Etape(Position(1850, 1160, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape36 = new Etape(Position(1950, 1530, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
     Etape* etape37 = new Etape(Position(1890, 1365, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::POINT_PASSAGE, -1, 0);
+    Etape* etape38 = new Etape(Position(1000, 750, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::TAPIS, -1, 0);
+    Etape* etape39 = new Etape(Position(1450, 750, isYellow),   numeroEtape++, tableauEtapesTotal, Etape::TAPIS, -1, 0);
     //J ai modifié NOMBRE_ETAPES dans krabi2015.h et le etape.h
 
 
@@ -84,8 +86,16 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     actionEtape[11] = &actionGobelet[3];
     actionGobelet[4] = Gobelet(Position(2750, 1750, isYellow));
     actionEtape[12] = &actionGobelet[4];
-    actionTapis[0] = Tapis(Position(1220, 760, isYellow));
-    actionEtape[23] = &actionTapis[0];
+    actionTapis[0] = Tapis(Position(1000, 750, isYellow));
+    actionEtape[38] = &actionTapis[0];
+    actionTapis[1] = Tapis(Position(1450, 750, isYellow));
+    actionEtape[39] = &actionTapis[1];
+    actionDeposerGobelet[0] = DeposerGobelet(Position(700, 1000, isYellow));
+    actionEtape[1] = &actionDeposerGobelet[0];
+    actionDeposerGobelet[1] = DeposerGobelet(Position(2710, 1500, isYellow));
+    actionEtape[25] = &actionDeposerGobelet[1];
+    actionDeposerGobelet[2] = DeposerGobelet(Position(2630, 460, isYellow));
+    actionEtape[26] = &actionDeposerGobelet[2];
 
 
     etape0->addVoisin(etape1);
@@ -130,7 +140,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape11->addVoisin(etape20);
     etape10->addVoisin(etape11);
     etape9->addVoisin(etape11);
-    etape11->addVoisin(etape26);
+ //   etape11->addVoisin(etape26);
     etape9->addVoisin(etape32);
     etape32->addVoisin(etape15);
     etape9->addVoisin(etape17);
@@ -162,6 +172,12 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape23->addVoisin(etape35);
     etape11->addVoisin(etape33);
     etape11->addVoisin(etape34);
+    etape23->addVoisin(etape38);
+    etape23->addVoisin(etape39);
+    etape9->addVoisin(etape38);
+    etape38->addVoisin(etape39);
+    etape39->addVoisin(etape11);
+    etape5->addVoisin(etape29);
 
     // Lancer Dijkstra
     startDijkstra();
@@ -187,19 +203,22 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
             break;
         case Etape::CLAP :
-            return 50;
+            return 100;
             break;
         case Etape::GOBELET :
             return 0;//ce devrait être 40
             break;
         case Etape::AMPOULE :
-            return 10;
+            return 0;
             break;
         case Etape::PIED :
             return 0;//ce devrait être 20
             break;
         case Etape::TAPIS :
-            return 100;
+            return 0;
+            break;
+        case Etape::DEPOSE_GOBELET :
+            return 0;
             break;
         case Etape::POINT_PASSAGE :
             return 0;

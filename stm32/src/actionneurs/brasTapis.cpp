@@ -1,93 +1,83 @@
 #include "brasTapis.h"
 
 
-BrasTapis* BrasTapis::brasTapisLeft = 0;
-BrasTapis* BrasTapis::brasTapisRight = 0;
+BrasTapis* BrasTapis::singleton = 0;
 
 #ifdef ROBOTHW
-BrasTapis::BrasTapis(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded):BrasKrabi(timer, OCx, RC0degre, RC180degres, angleCollapsed, angleExpanded, 0.f)
-{}
-
-void BrasTapis::initBrasTapis()
+BrasTapis::BrasTapis(int cote)
 {
-//    #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // Krabi Jr - STM32 H405 / STM32 H103
-//        Timer* timer = new Timer(TIM3, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
-//        TIM_CtrlPWMOutputs(TIM3, ENABLE);
-//        this->brasTapisLeft = new BrasTapis(timer, 1, 0.01f, 0.11f, 87.f, 51.f);
-//        this->brasTapisRight = new BrasTapis(2timer, 3, 0.01f, 0.11f, 0.f, 40.f);
+    if (cote == 0){   //si cote est 0 on cree le bras droit, sinon on cree le bras gauche
+        this->positionBrasOuvert = 0x00;
+        this->positionBrasFerme = 0x00;
+        this->positionPinceOuverte = 0x00;
+        this->positionPinceFermee = 0x00;
+        this->moteurBras = 0;
+        this->moteurPinceHaut = 0;
+        this->moteurPinceBas = 0;
+    }
 
-//    #else // Krabi - STM32 H107
-        Timer* timer = new Timer(TIM1, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
-        TIM_CtrlPWMOutputs(TIM1, ENABLE);
-        brasTapisLeft = new BrasTapis(timer, 2, 0.01f, 0.11f, 20.f, 86.f);
-        brasTapisRight = new BrasTapis(timer, 3, 0.01f, 0.11f, 120.f, 36.f);
-
- //   #endif
-    brasTapisLeft->collapse();
-    brasTapisRight->collapse();
+    else if (cote == 1)
+    {
+        this->positionBrasOuvert = 0x00;
+        this->positionBrasFerme = 0x00;
+        this->positionPinceOuverte = 0x00;
+        this->positionPinceFermee = 0x00;
+        this->moteurBras = 0;
+        this->moteurPinceHaut = 0;
+        this->moteurPinceBas = 0;
+    }
+    this->fermerBras();
 }
 
-void BrasTapis::expand()
+//TODO trouver une solution : comment discerner dans le singleton que l'on veut le bras droit ou le bras gauche? (2 getSingleton?)
+
+BrasTapis* BrasTapis::getSingleton(int cote)
 {
-    brasTapisRight->expand();
-    brasTapisLeft->expand();
+    singleton = new BrasTapis(cote);
+    return singleton;
 }
 
-void BrasTapis::collapse()
+
+void BrasTapis::ouvrirBras()
 {
-    brasTapisRight->collapse();
-    brasTapisLeft->collapse();
+    ServosNumeriques::moveTo(positionBrasOuvert, moteurBras);
 }
 
-BrasTapis *BrasTapis::getRight()
+void BrasTapis::fermerBras()
 {
-    if (brasTapisRight == 0)
-        initBrasTapis();
-    return brasTapisRight;
+    ServosNumeriques::moveTo(positionBrasFerme, moteurBras);
 }
 
-BrasTapis *BrasTapis::getLeft()
+void BrasTapis::ouvrirPince()
 {
-    if (brasTapisLeft == 0)
-        initBrasTapis();
-    return brasTapisLeft;
+    ServosNumeriques::moveTo(positionPinceOuverte, moteurPinceHaut);
+    ServosNumeriques::moveTo(positionPinceOuverte, moteurPinceBas);
 }
+
+void BrasTapis::fermerPince()
+{
+    ServosNumeriques::moveTo(positionPinceFermee, moteurPinceHaut);
+    ServosNumeriques::moveTo(positionPinceFermee, moteurPinceBas);
+}
+
 
 #else
 
-#include <QDebug>
 
-    BrasTapis::BrasTapis()
-    {}
+BrasTapis::BrasTapis(){}
 
-    void BrasTapis::expand()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras devant sortis";
-#endif
-    }
+void BrasTapis::ouvrirBras(){}
 
-    void BrasTapis::collapse()
-    {
-#ifndef ROBOTHW
-    qDebug() << "Bras devant rentrés";
-#endif
-    }
+void BrasTapis::fermerBras(){}
 
-void BrasTapis::initBrasTapis(){}
+void BrasTapis::ouvrirPince(){}
 
-BrasTapis *BrasTapis::getRight()
+void BrasTapis::fermerPince(){}
+
+BrasTapis *BrasTapis::getSingleton(int cote)
 {
-    if (brasTapisRight == 0)
-        initBrasTapis();
-    return brasTapisRight;
+    return singleton;
 }
 
-BrasTapis *BrasTapis::getLeft()
-{
-    if (brasTapisLeft == 0)
-        initBrasTapis();
-    return brasTapisLeft;
-}
 
 #endif
