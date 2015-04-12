@@ -43,7 +43,9 @@ void setBaudRate(uint8_t baudRate, uint8_t servo);
 void setTorqueLimite(uint16_t torque, uint8_t servo); // dans la RAM
 void setMaxTorque(uint16_t torque, uint8_t servo); // EEPROM, automatiquement mis dans la RAM au démarrage
 
-uint16_t getPosition(uint8_t servo);
+void changeContinuousRotationMode(uint8_t servo, bool continuous = true, uint8_t step = 0);//Rotation continue/angle précis. step sert à n'envoyer qu'un packet à la fois
+
+int getPosition(uint8_t servo);
 
 
 }
