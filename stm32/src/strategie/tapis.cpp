@@ -15,12 +15,12 @@ Tapis::Tapis(Position position):MediumLevelAction(position)  //si cote est true 
     if (position == Position(1000, 750))
     {
         this->positionLookAt = Position(0, 300);
-        this->cote = 0;
+        this->cote = BrasTapis::DROIT;
     };
     if (position == Position(1450, 750))
     {
         this->positionLookAt = Position(3000, 200);
-        this->cote = 1;
+        this->cote = BrasTapis::GAUCHE;
     };
 }
 

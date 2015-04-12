@@ -37,7 +37,7 @@ class Tapis : public MediumLevelAction
     protected :
         Position position;
         Position positionLookAt;
-        bool cote;  //si cote est le coté droit on le met égal à 0 si le cote est le cote gauche on le met égal à 1
+        BrasTapis::COTE cote;
 };
 
 
