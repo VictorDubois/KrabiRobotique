@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
+	<File name="include/actionneurs/brasTapis.h" open="1" top="0" tabpos="1">
+		<Cursor position="707" topLine="27" />
+	</File>
+	<File name="include/hardware/ax12api.h" open="1" top="0" tabpos="4">
+		<Cursor position="2921" topLine="99" />
+	</File>
+	<File name="src/actionneurs/brasTapis.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="78" topLine="0" />
+	</File>
+	<File name="src/hardware/ax12api.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="2289" topLine="36" />
+	</File>
+	<File name="src/interfaceServosNumeriques.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="9297" topLine="263" />
+	</File>
 </CodeBlocks_layout_file>

@@ -13,7 +13,9 @@ class BrasTapis
 {
     public:
 
-    static BrasTapis* getSingleton(int cote); //cote est "droit" on cree le bras droit, sinon on cree le bras gauche
+        enum COTE { DROIT, GAUCHE };
+
+        static BrasTapis* getSingleton(COTE cote);
 
         /// @brief ouvreBras() ouvre le bras
         void ouvrirBras();
@@ -34,7 +36,7 @@ class BrasTapis
         /** @brief Constructeur
           * @fn BrasTapis(char cote)
         */
-        BrasTapis(int cote);
+        BrasTapis(COTE cote);
 
         static BrasTapis *singleton;
 
@@ -53,7 +55,9 @@ class BrasTapis
 {
     public:
 
-    static BrasTapis* getSingleton(int cote);
+    enum COTE { DROIT, GAUCHE };
+
+    static BrasTapis* getSingleton(COTE cote);
 
     /// @brief ouvreBras() ouvre le bras
     void ouvrirBras();

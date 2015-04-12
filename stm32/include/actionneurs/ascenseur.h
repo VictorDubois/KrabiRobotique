@@ -75,7 +75,7 @@ class Ascenseur
     void fermerPincesAscenseur();
 
     int getNbrPiedsStockes();
-    int setNbrPiedsStockes(int NbrPiedsStockes);
+    void setNbrPiedsStockes(int NbrPiedsStockes);
 
 
     private :

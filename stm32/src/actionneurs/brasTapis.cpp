@@ -4,9 +4,10 @@
 BrasTapis* BrasTapis::singleton = 0;
 
 #ifdef ROBOTHW
-BrasTapis::BrasTapis(int cote)
+BrasTapis::BrasTapis(COTE cote)
 {
-    if (cote == 0){   //si cote est 0 on cree le bras droit, sinon on cree le bras gauche
+    if (cote == DROIT)
+    {
         this->positionBrasOuvert = 0x00;
         this->positionBrasFerme = 0x00;
         this->positionPinceOuverte = 0x00;
@@ -16,7 +17,7 @@ BrasTapis::BrasTapis(int cote)
         this->moteurPinceBas = 0;
     }
 
-    else if (cote == 1)
+    else if (cote == GAUCHE)
     {
         this->positionBrasOuvert = 0x00;
         this->positionBrasFerme = 0x00;
@@ -31,7 +32,7 @@ BrasTapis::BrasTapis(int cote)
 
 //TODO trouver une solution : comment discerner dans le singleton que l'on veut le bras droit ou le bras gauche? (2 getSingleton?)
 
-BrasTapis* BrasTapis::getSingleton(int cote)
+BrasTapis* BrasTapis::getSingleton(COTE cote)
 {
     singleton = new BrasTapis(cote);
     return singleton;
@@ -74,7 +75,7 @@ void BrasTapis::ouvrirPince(){}
 
 void BrasTapis::fermerPince(){}
 
-BrasTapis *BrasTapis::getSingleton(int cote)
+BrasTapis *BrasTapis::getSingleton(COTE cote)
 {
     return singleton;
 }
