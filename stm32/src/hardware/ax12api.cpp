@@ -90,7 +90,14 @@ int AX12::getBaudRateInstruction(int* retour, uint8_t baudRate, int servo)
     return 8;
 }
 
-
+int AX12::receivePositionInformation(int* retour, uint8_t servo)
+{
+    createReadHeader(retour, servo, 0);
+    retour[5] = AX12_PRESENT_POSITION_L;
+    retour[6] = 2;
+    retour[7] = ax12Checksum(retour[3], &retour[2]);
+    return 8;
+}
 
 void AX12::createWriteHeader(int* retour, int servo, int nombreParamsAjoutes)
 {
@@ -99,4 +106,13 @@ void AX12::createWriteHeader(int* retour, int servo, int nombreParamsAjoutes)
     retour[2] = servo;
     retour[3] = AX12_WRITE_DATA_PARAMS+2+nombreParamsAjoutes;
     retour[4] = AX12_WRITE_DATA;
+}
+
+void AX12::createReadHeader(int* retour, int servo, int nombreParamsAjoutes)
+{
+    retour[0] = 0xff;
+    retour[1] = 0xff;
+    retour[2] = servo;
+    retour[3] = AX12_READ_DATA_PARAMS+2+nombreParamsAjoutes;
+    retour[4] = AX12_READ_DATA;
 }

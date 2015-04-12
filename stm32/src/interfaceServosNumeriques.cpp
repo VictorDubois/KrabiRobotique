@@ -266,26 +266,82 @@ void setMaxTorque(uint16_t torque, uint8_t servo) // EEPROM, automatiquement mis
     }
 }
 
-uint16_t getPosition(uint8_t servo)
+void changeContinuousRotationMode(uint8_t servo, bool continuous, uint8_t step)
+{
+    if(continuous)
+    {
+        //On set les angles min et max à 0, et la position goal à 0
+        switch(step)
+        {
+            case 1:
+                setMinimumAngle(0, servo);
+                break;
+
+            case 2:
+                setMaximumAngle(0, servo);
+                break;
+
+            case 3:
+                moveTo(0, servo);
+                break;
+
+            default:
+                setMinimumAngle(0, servo);
+                for(int i = 0 ; i < 100000 ; i++){}//@TODO : trouver le temps minimum qui marche encore à coup sûr
+                setMaximumAngle(0, servo);
+                for(int i = 0 ; i < 100000 ; i++){}
+                moveTo(0, servo);
+                for(int i = 0 ; i < 100000 ; i++){}
+        }
+    }
+    else
+    {
+        //On remet les valeurs par défaut
+        switch(step)
+        {
+            case 1:
+                setMinimumAngle(0, servo);
+                break;
+
+            case 2:
+                setMaximumAngle(0, servo);
+                break;
+
+            case 3:
+                moveTo(0, servo);
+                break;
+
+            default:
+                setMinimumAngle(0, servo);
+                for(int i = 0 ; i < 100000 ; i++){}
+                setMaximumAngle(1023, servo);
+                for(int i = 0 ; i < 100000 ; i++){}
+                moveAtSpeed(0, servo);
+                for(int i = 0 ; i < 100000 ; i++){}
+        }
+    }
+}
+
+int getPosition(uint8_t servo)
 {
     int packet[16];
-    int packetLength = AX12::receivePositionInformation(packet, servo);
+    int packetLength = 8;
+    AX12::receivePositionInformation(packet, servo);
     for (int i = 0; i < packetLength; i++)
     {
         sendData(packet[i]);
     }
+
+    ServosNumeriques::receiveMode();
     int packetReceived[16];
     receiveStatusPacket(packetReceived);
-    uint16_t position;
+    ServosNumeriques::sendMode();
+    uint16_t position = 0;
 
     if(packetReceived[0] == servo)
     {
-        for (int i = 0; i < packetReceived[1]; i++)
-        {
-            position += packetReceived[i+2];
-            position = position << 8;
-        }
+        position = packetReceived[3] + (packetReceived[4] << 8);
     }
-    return position;
+    return (int) position;
 }
 }
