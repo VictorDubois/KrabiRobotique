@@ -110,9 +110,12 @@ class AX12
     static int getLedInstruction(int* retour, uint8_t ledOn, int servo);
     static int getBaudRateInstruction(int* retour, uint8_t baudRate, int servo);
 
+    static int receivePositionInformation(int* retour, uint8_t servo);
+
     private:
 
     static void createWriteHeader(int* retour, int servo = 0xfe, int nombreParamsAjoutes = 0);
+    static void createReadHeader(int* retour, int servo, int nombreParamsAjoutes = 0);
 
 };
 
