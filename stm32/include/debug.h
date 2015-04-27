@@ -34,7 +34,9 @@
 #include "dijkstra.h"
 #include "brasLateraux.h"
 //#include "container.h"
-#include "remote.h"
+#ifdef REMOTE_ON
+    #include "remote.h"
+#endif
 
 class Debug
 {

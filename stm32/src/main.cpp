@@ -10,6 +10,10 @@
     #include "stm32f4xx_gpio.h"
 #endif
 
+#ifdef STM32F10X_CL//H107
+    #define REMOTE_ON
+#endif
+
 #include "initialisation.h"
 #include "actionneurs/servo.h"
 #include "memory.h"
@@ -100,7 +104,7 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
-    Remote::log("Init");
+    //Remote::log("Init");
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
@@ -158,8 +162,8 @@ int main()
 
     // Initialisation des actionneurs 1
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        BrasLateraux::initBrasLateraux();
-        Container::getSingleton();
+        //BrasLateraux::initBrasLateraux();
+        //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
         BrasLateraux::initBrasLateraux();
 //        CanonLances* canon = CanonLances::getSingleton();
@@ -172,7 +176,9 @@ int main()
 //    tirette.attendreRemise();
 //    tirette.attendreEnlevee();
 
-    Remote::getSingleton();
+    #if defined(STM32F10X_CL)
+        Remote::getSingleton();
+    #endif
 
     // Initialisation des actionneurs 2
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405

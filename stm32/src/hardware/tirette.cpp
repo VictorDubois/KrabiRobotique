@@ -1,6 +1,7 @@
 #include "tirette.h"
-
-#include "remote.h"
+#ifdef REMOTE_ON
+    #include "remote.h"
+#endif
 #include "leds.h"
 
 
@@ -25,15 +26,18 @@ Tirette::Tirette(GPIO_TypeDef* GPIOx_tirette, uint16_t GPIO_Pin_x_tirette)
 // attends jusqu'à ce que la tirette soit enlevée
 void Tirette::attendreEnlevee() const
 {
-    Remote::log("Waiting for 'tirette enleve'");
-
+    #ifdef REMOTE_ON
+        Remote::log("Waiting for 'tirette enleve'");
+    #endif
     int buffer = 0xffffffff;
     //int waiting = 0;
     while (buffer)
     {
+        #ifdef REMOTE_ON
         Remote::getSingleton()->update(true);
         if (Remote::getSingleton()->isRemoteMode())
             break;
+        #endif
 
         buffer <<= 1;
         buffer |= !enlevee();
@@ -43,14 +47,17 @@ void Tirette::attendreEnlevee() const
 // attends jusqu'à ce que la tirette soit remise
 void Tirette::attendreRemise() const
 {
-    Remote::log("Waiting for 'tirette remise'");
-
+    #ifdef REMOTE_ON
+        Remote::log("Waiting for 'tirette remise'");
+    #endif
     int buffer = 0xffffffff;
     while (buffer)
     {
+        #ifdef REMOTE_ON
         Remote::getSingleton()->update(true);
         if (Remote::getSingleton()->isRemoteMode())
             break;
+        #endif
 
         buffer <<= 1;
         buffer |= enlevee();
