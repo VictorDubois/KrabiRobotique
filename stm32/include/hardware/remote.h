@@ -14,8 +14,8 @@
 #endif
 
 #ifdef KRABI_JR
-    #include "container.h"
-    #include "braslateral.h"
+    //#include "container.h"
+    //#include "braslateral.h"
 #endif
 
 //#include "krabipacket.h"

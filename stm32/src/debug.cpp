@@ -408,11 +408,12 @@ void Debug::testTirette(Tirette* t)
     }
 }
 
+#ifdef REMOTE_ON
 void Debug::testRemote()
 {
     Remote::getSingleton();
 
-    //KrabiPacket packet;
+//KrabiPacket packet;
 //    packet.add("Bonjour");
 //    packet.add(2);
 //    packet.add(6);
@@ -438,7 +439,7 @@ void Debug::testRemote()
             timer = 0;
     }
 }
-
+    #endif
 /*void Debug::testPWM(QuadratureCoderHandler* rcg, QuadratureCoderHandler* rcd)
 {
     long r = 0, l = 0;

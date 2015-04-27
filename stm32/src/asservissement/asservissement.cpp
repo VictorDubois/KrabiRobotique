@@ -5,7 +5,9 @@
 #include "misc.h"
 #include "capteurCouleur.h"
 
-#include "remote.h"
+#ifdef REMOTE_ON
+    #include "remote.h"
+#endif
 
 #define DEBUG_ODOMEDTRIE 1
 
