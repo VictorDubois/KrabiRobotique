@@ -6,6 +6,8 @@
 #include "time.h"
 #include "strategieV2.h"
 
+#define COUPE_2015
+
 #ifndef ROBOTHW
 #include <QDebug>
 #endif
