@@ -18,16 +18,19 @@ void initClocksAndPortsGPIO()
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 
     // on remap l'usart3 pour que le stm soit bien configuré sur les ports 10 et 11 du GPIOC, et le sens sur le par 5 du GPIOB
-    GPIO_PinAFConfig(GPIOC, GPIO_Pin_10, GPIO_AF_USART3);
-    GPIO_PinAFConfig(GPIOC, GPIO_Pin_11, GPIO_AF_USART3);
+//    GPIO_PinAFConfig(GPIOC, GPIO_Pin_10, GPIO_AF_USART3);
+//    GPIO_PinAFConfig(GPIOC, GPIO_Pin_11, GPIO_AF_USART3);
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_USART3);
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_USART3);
     //GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStructure;
  	// port C pin 10 TX : un servo numérique en Ecriture
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
     #ifdef STM32F40_41xxx
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;// the pins are configured as alternate function so the USART peripheral has access to them
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;// this defines the output type as push pull mode (as opposed to open drain)
+        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;// this activates the pullup resistors on the IO pins
     #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     #endif
