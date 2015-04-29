@@ -44,29 +44,62 @@ void Remote::initClocksAndPortsGPIO()
 #ifdef ROBOTHW
 
 #ifdef STM32F40_41xxx // Pin pour le stm32 h405
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+
+//CF tuto : http://eliaselectronics.com/stm32f4-discovery-usart-example/
+
+/* enable peripheral clock for USART2 */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+/* GPIOA clock enable */
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
 
     GPIO_InitTypeDef GPIO_InitStructure;
-
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//GPIO_PuPd_NOPULL;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-
+ 	// port A pin 2 TX : du stm vers l'extérieur
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//GPIO_PuPd_NOPULL;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOD, &GPIO_InitStructure);
+    #ifdef STM32F40_41xxx
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;// the pins are configured as alternate function so the USART peripheral has access to them
+        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;// this defines the output type as push pull mode (as opposed to open drain)
+        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;// this activates the pullup resistors on the IO pins
+    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    #endif
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port (// this defines the IO speed and has nothing to do with the baudrate!)
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    /* Connect USART pins to AF */
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource12, GPIO_AF_UART5);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource2, GPIO_AF_UART5);
+ 	// port A pin 3 RX : vers le stm
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    #ifdef STM32F40_41xxx
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
+        GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
+    #endif
+//    RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);//Ne pas utiliser l'UART 5 TX : c'est la led de debug
+//    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+//    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+//
+//    GPIO_InitTypeDef GPIO_InitStructure;
+//
+//    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+//    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+//    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//GPIO_PuPd_NOPULL;
+//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//    GPIO_Init(GPIOC, &GPIO_InitStructure);
+//
+//    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+//    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+//    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//GPIO_PuPd_NOPULL;
+//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//    GPIO_Init(GPIOD, &GPIO_InitStructure);
+//
+//    /* Connect USART pins to AF */
+//    GPIO_PinAFConfig(GPIOC, GPIO_PinSource12, GPIO_AF_UART5);
+//    GPIO_PinAFConfig(GPIOD, GPIO_PinSource2, GPIO_AF_UART5);
 
     //USART6, fonctionne
 //    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6, ENABLE);

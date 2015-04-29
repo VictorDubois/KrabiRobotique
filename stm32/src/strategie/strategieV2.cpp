@@ -12,7 +12,10 @@
 #include "commandAllerA.h"
 
 #include "sensors.h"
-#include "remote.h"
+
+#ifdef REMOTE_ON
+    #include "remote.h"
+#endif
 
 #ifdef ROBOTHW
 #include "tourelle.h"

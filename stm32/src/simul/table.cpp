@@ -6,6 +6,8 @@
 #include "time.h"
 #include "strategieV2.h"
 
+#define COUPE_2015
+
 #ifndef ROBOTHW
 #include <QDebug>
 #endif
@@ -52,9 +54,9 @@ Table::Table(QWidget* parent, bool isBlue) :
 
     // ####### création des robots ######
     //Robot adversaire
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(2700,1000, isBlue), M_PI), true, !isBlue));
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(2700,1000, isBlue), 2*M_PI/2), true, !isBlue));
     //Robot à nous
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(300,1000, isBlue), 3*M_PI/2), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(300,1000, isBlue), 0), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
     //195,1760
 
     // ################################ Coupe 2014 ################################

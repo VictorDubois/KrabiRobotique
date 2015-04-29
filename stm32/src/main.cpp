@@ -10,6 +10,8 @@
     #include "stm32f4xx_gpio.h"
 #endif
 
+#define REMOTE_ON
+
 #include "initialisation.h"
 #include "actionneurs/servo.h"
 #include "memory.h"
@@ -98,7 +100,6 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
-    Remote::log("Init");
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
@@ -109,27 +110,8 @@ int main()
 #endif
 
 
+    Remote::log("Init");
 
-//    UartDebug::initClocksAndPortsGPIO();
-//    UartDebug::init(19200);
-//    UartDebug::sendData(0);
-//    UartDebug::sendData(1);
-//    UartDebug::sendData(2);
-//    UartDebug::sendData(10);
-//    UartDebug::sendData(11);
-//    UartDebug::sendData(12);
-//    UartDebug::sendData(20);
-//    UartDebug::sendData(21);
-//    UartDebug::sendData(22);
-//    UartDebug::sendData(30);
-//    UartDebug::sendData(31);
-//    UartDebug::sendData(32);
-//    UartDebug::sendData(40);
-//    UartDebug::sendData(41);
-//    UartDebug::sendData(42);
-//    UartDebug::sendData(50);
-//    UartDebug::sendData(51);
-//    UartDebug::sendData(52);
 
     ServosNumeriques::initClocksAndPortsGPIO();
     ServosNumeriques::initUART(19231);
@@ -177,8 +159,8 @@ for(int i=0; i<2000; i++)
 
     // Initialisation des actionneurs 1
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        BrasLateraux::initBrasLateraux();
-        Container::getSingleton();
+        //BrasLateraux::initBrasLateraux();
+        //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
         BrasLateraux::initBrasLateraux();
 //        CanonLances* canon = CanonLances::getSingleton();
@@ -191,7 +173,9 @@ for(int i=0; i<2000; i++)
 //    tirette.attendreRemise();
 //    tirette.attendreEnlevee();
 
-    Remote::getSingleton();
+    #if defined(STM32F10X_CL)
+        Remote::getSingleton();
+    #endif
 
     // Initialisation des actionneurs 2
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
