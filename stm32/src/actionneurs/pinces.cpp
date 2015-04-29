@@ -5,10 +5,10 @@ Pinces* Pinces::singleton = 0;
 #ifdef ROBOTHW
 Pinces::Pinces()
 {
-    this->positionPincesOuvertes = 0x00;
-    this->positionPincesFermees = 0x0227;
-    this->moteurPinceGauche = 15;
-    this->moteurPinceDroite = 16;
+    this->positionPincesOuvertes = 0x01D0;
+    this->positionPincesFermees = 0x0327;
+    this->moteurPinceGauche = 10;
+    this->moteurPinceDroite = 11;
 
     this->fermerPinces();
 }
