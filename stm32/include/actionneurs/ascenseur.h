@@ -3,7 +3,9 @@
 
 #include "interfaceServosNumeriques.h"
 
-#include "servo.h"
+#ifdef ROBOTHW
+    #include "servo.h"
+#endif
 
 
 /** @class Ascenseur La classe Ascenseur permet de controler les bras sur l'avant de Krabi
@@ -21,13 +23,13 @@ class Ascenseur
         /// @brief leverAscenseur() on leve l'ascenseur
         void leverAscenseur();
 
-        /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur
+        /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur pour attraper un nouveau pied
         void ouvrirPincesAscenseur();
 
         /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
         void fermerPincesAscenseur();
 
-        /// @brief ouvrirPincesAscenseurDepot() on ferme la pince de l'ascenseur
+        /// @brief ouvrirPincesAscenseurDepot() on ouvre la pince de l'ascenseur pour lacher les pieds
         void ouvrirPincesAscenseurDepot();
 
         int getNbrPiedsStockes();
