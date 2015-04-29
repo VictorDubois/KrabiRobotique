@@ -20,16 +20,14 @@
 #include "asservissement.h"
 #include "sensors.h"
 #include "quadratureCoderHandler.h"
-//#include "bras.h"
-//#include "brak.h"
 #include "ascenseur.h"
+#include "pinces.h"
 #include "roues.h"
 #include "roue.h"
 #include "strategieV2.h"
 #include "sharpSensor.h"
 #include "ax12api.h"
 #include "interfaceServosNumeriques.h"
-//#include "canonLances.h"
 #include "capteurCouleur.h"
 #include "tirette.h"
 #include "leds.h"
@@ -110,11 +108,7 @@ int main()
     //Debug::testADC_DMASampleF4();
     //Debug::testSharps();
 #endif
-    allumerLED();
-    eteindreLED();
-    allumerLED2();
-    eteindreLED2();
-    allumerLED();
+
 
     Remote::log("Init");
 
@@ -123,6 +117,31 @@ int main()
     ServosNumeriques::initUART(19231);
     ServosNumeriques::sendMode();
 
+for(int i=0; i<2000; i++)
+    {
+
+        Pinces::getSingleton()->fermerPinces();
+
+        for(int j=0; j<15000000; j++);
+
+
+        Pinces::getSingleton()->ouvrirPinces();
+
+        for(int j=0; j<15000000; j++);
+    }
+
+for(int i=0; i<2000; i++)
+    {
+
+        allumerLED();
+
+        for(int j=0; j<1000000; j++);
+
+
+        eteindreLED();
+
+        for(int j=0; j<1000000; j++);
+    }
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
