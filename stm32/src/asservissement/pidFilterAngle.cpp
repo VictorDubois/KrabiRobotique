@@ -20,3 +20,8 @@ float PIDFilterAngle::getFilteredValue(Angle erreur){
          + integrale*Ki
          + derivee*Kd;
 }
+
+void PIDFilterAngle::resetErrors(){
+    sommeErreurs = 0;
+    erreurPrecedente = 0;
+}

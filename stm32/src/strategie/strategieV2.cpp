@@ -493,6 +493,7 @@ void StrategieV2::update()
 
             }
             Asservissement::asservissement->setCommandSpeeds(NULL);
+            Asservissement::asservissement->resetAsserv();
             //Asservissement::asservissement->setCommandSpeeds(currentCommand);
 
             /*
@@ -588,6 +589,7 @@ void StrategieV2::update()
         {
             // on recule de 20 cm
             Asservissement::asservissement->setCommandSpeeds(NULL);
+            Asservissement::asservissement->resetAsserv();
             currentCommand = NULL;
             actionsCount = 2;
             bool mustGoBack = true;
@@ -628,6 +630,7 @@ void StrategieV2::update()
         {
             currentCommand = NULL;
             Asservissement::asservissement->setCommandSpeeds(NULL);
+            Asservissement::asservissement->resetAsserv();
             updateCount = 170000;//17000;
             return;
         }
@@ -724,6 +727,7 @@ bool StrategieV2::willCollide()
 {
     somethingDetected = true;
     Asservissement::asservissement->setCommandSpeeds(NULL); // stoppe le robot
+    Asservissement::asservissement->resetAsserv();
 }
 
 void StrategieV2::setIsBlue(bool blue)
