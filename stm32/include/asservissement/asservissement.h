@@ -41,6 +41,8 @@
 #define FIXED_LINEAR_DUTY_MAX 0.2
 #define FIXED_ANGULAR_DUTY_MAX 0.2
 
+#define NB_VERIFICATION_BLOQUAGE_PAR_SECONDE 10
+
 /**@brief classe permettant de vérifier que le robot fait bien ce qu'on lui dit et de corriger les erreurs */
 class Asservissement
 {
@@ -68,11 +70,42 @@ class Asservissement
         Sensors* sensors;
 #endif //capteurs_old
 
-        /**@brief différence d'accélération à partir de laquel on concidére qu'il y a collision */
-        float seuil_collision;
+//Vieille tentative, jemais codée
+//        /**@brief différence d'accélération à partir de laquel on concidére qu'il y a collision */
+//        float seuil_collision;
+//
+//        /**@brief Pour savoir s'il y a eu un grand nombre de collision succéssive */
+//        unsigned int buffer_collision;
 
-        /**@brief Pour savoir s'il y a eu un grand nombre de collision succéssive */
-        unsigned int buffer_collision;
+        /*############## Section détection de bloquage ##############*/
+        /**@brief Position précédente, pour détecter si on bouge ou pas */
+        float positionPlusAnglePrecedenteX;
+        float positionPlusAnglePrecedenteY;
+        float positionPlusAnglePrecedenteAngle;
+
+        /**@brief Compteur jusqu'à 1/10 de seconde */
+        uint16_t compteurRemplissageQuatum;
+
+        uint16_t nombreQuatumParDixiemeDeSeconde;
+
+        /**@brief Tableau des quantum de déplacement linéaire sur la dernière seconde : chaque case correspond à la somme des variations absolues d'un 10ème de seconde */
+        float deplacementLineaires[NB_VERIFICATION_BLOQUAGE_PAR_SECONDE];//NB_VERIFICATION_BLOQUAGE_PAR_SECONDE = 10 pour l'instant, une vérification tous les dixièmes
+
+        /**@brief Tableau des quantum de déplacement angulaire sur la dernière seconde : chaque case correspond à la somme des variations absolues d'un 10ème de seconde */
+        float deplacementAngulaire[NB_VERIFICATION_BLOQUAGE_PAR_SECONDE];
+
+        /**@brief Tableau des quantum de d'accélération linéaire sur la dernière seconde : chaque case correspond à la somme des valeurs sur 10ème de seconde */
+        float accelerationLineaires[NB_VERIFICATION_BLOQUAGE_PAR_SECONDE];
+
+        /**@brief Tableau des quantum de d'accélération angulaire sur la dernière seconde : chaque case correspond à la somme des valeurs sur 10ème de seconde */
+        float accelerationAngulaires[NB_VERIFICATION_BLOQUAGE_PAR_SECONDE];
+
+        /**@brief booleun vrai si il faut s'arrêter à cause d'un bloquage detecte */
+        bool obstacleDetecte;
+
+        /**@brief compteur du nombre d'update depuis qu'il faut s'arrêter à cause d'un bloquage detecte*/
+        uint32_t nbUpdateDepuisObstacleDetecte;
+        /*############ Fin Section détection de bloquage ############*/
 
         /**@brief Pour connaitre la position exacte du robot */
         Odometrie* odometrie;
@@ -129,6 +162,11 @@ class Asservissement
 
         static bool matchFini;
 
+        /**@brief detecteur de robot bloqué contre un obstacle (adversaire, mur...). Sert à arrêter le robot pour ne pas abîmer les moteurs, le décor, l'adversaire... */
+        void computeObstacleDetecte(float linearDutySent, float angularDutySent, PositionPlusAngle* positionPlusAngleActuelle);
+
+        /**@brief Reset les erreurs, pour repartir doucement après un arrêt*/
+        void resetAsserv();
 };
 
 static long systick_count = 0;

@@ -21,3 +21,8 @@ float PIDFilterDistance::getFilteredValue(Distance erreur){
          + integrale*Ki
          + derivee*Kd;
 }
+
+void PIDFilterDistance::resetErrors(){
+    sommeErreurs = 0;
+    erreurPrecedente = 0;
+}

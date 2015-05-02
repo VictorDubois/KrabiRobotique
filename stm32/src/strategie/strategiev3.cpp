@@ -498,7 +498,7 @@ int StrategieV3::update()
             if(!(enTrainEviterReculant || enTrainEviterAvancant))
             {
                 //L'objectif qu'on vient de remplir est maintenant un simple point de passage
-                this->tableauEtapes[this->etapeEnCours]->finir();
+                //this->tableauEtapes[this->etapeEnCours]->finir();//Vieux, on utilise maintenant updateStock dans la strat de l'année en cours
                 //Idem pour les autres étapes correspondant au même objectif
                 for(int etapeLiee = 0 ; etapeLiee < this->tableauEtapes[this->etapeEnCours]->getNombreEtapesLieesParFinirEtape() ; etapeLiee++)
                 {
@@ -506,10 +506,11 @@ int StrategieV3::update()
                     this->tableauEtapes[numeroEtapeLiee]->finir();
                 }
 
-                //Mise à jour du stock
-
+                //Mise à jour du stock et l'objectif qu'on vient de remplir est maintenant un simple point de passage
                 this->updateStock();
 
+                //On est maintenant arrivé à l'étape de fin de l'action (en général c'est la même étape, mais pas toujours, ex : les claps de 2015)
+                this->etapeEnCours = this->tableauEtapes[this->etapeEnCours]->getNumeroEtapeFinAction();
             }
 
 

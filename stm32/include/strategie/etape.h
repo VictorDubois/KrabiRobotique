@@ -148,6 +148,12 @@ public:
     /** @brief Ajoute un voisinau tableau de voisins */
     Etape* addVoisin(Etape* newVoisin, bool autreSens=true);
 
+    /** @brief Setter de l'étape à laquelle on fini l'action de l'étape */
+    void setNumeroEtapeFinAction(int newNumeroEtapeFinAction);
+
+    /** @brief Getter de l'étape à laquelle on fini l'action de l'étape */
+    int getNumeroEtapeFinAction();
+
 private:
     /** @brief Tableau des étapes attachées à celle-ci */
     Etape** children;
@@ -184,6 +190,9 @@ private:
 
     /** @brief Score de l'étape, correspondant à si on veut que le robot la réalise ou pas*/
     int score;
+
+    /** @brief Etape à laquelle on fini l'action de l'étape */
+    int numeroEtapeFinAction;
 };
 
 #endif // ETAPE_H

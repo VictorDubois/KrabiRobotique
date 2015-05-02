@@ -98,7 +98,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     actionEtape[26] = &actionDeposerGobelet[2];
 
 
-    etape0->addVoisin(etape1);
+    etape0->addVoisin(etape1, false);
     etape1->addVoisin(etape2);
     etape1->addVoisin(etape9);
     etape1->addVoisin(etape33);
@@ -179,6 +179,10 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape39->addVoisin(etape11);
     etape5->addVoisin(etape29);
 
+    //Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
+    etape2->setNumeroEtapeFinAction(3);//Clapet notre côté vers milieu
+    etape4->setNumeroEtapeFinAction(5);//Clapet notre côté vers notre bord
+    etape6->setNumeroEtapeFinAction(7);//Clapet côté adverse
     // Lancer Dijkstra
     startDijkstra();
 }

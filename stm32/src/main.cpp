@@ -35,6 +35,7 @@
 #include "commandAllerA.h"
 #include "etape.h"
 #include "dijkstra.h"
+#include "microSwitch.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -109,6 +110,11 @@ int main()
     //Debug::testSharps();
 #endif
 
+    allumerLED();
+    eteindreLED();
+    allumerLED2();
+    eteindreLED2();
+    allumerLED();
 
     Remote::log("Init");
 
@@ -116,7 +122,7 @@ int main()
     ServosNumeriques::initClocksAndPortsGPIO();
     ServosNumeriques::initUART(19231);
     ServosNumeriques::sendMode();
-
+/*
 for(int i=0; i<2000; i++)
     {
 
@@ -141,7 +147,32 @@ for(int i=0; i<2000; i++)
         eteindreLED();
 
         for(int j=0; j<1000000; j++);
-    }
+    }*/
+//    #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
+//        //MicroSwitch microSwitchBas(GPIOA, GPIO_Pin_10);//Exemple, il n'y a pas de microswitch pour KJ...
+//        //MicroSwitch microSwitchHaut(GPIOA, GPIO_Pin_10);
+//    #endif
+//    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
+//        //MicroSwitch microSwitchBas(GPIOA, GPIO_Pin_10);
+//        //MicroSwitch microSwitchHaut(GPIOA, GPIO_Pin_10);
+//    #endif
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        MicroSwitch microSwitchBas(GPIOE, GPIO_Pin_3);
+        MicroSwitch microSwitchHaut(GPIOE, GPIO_Pin_2);
+    #endif
+
+    //Test MicroSwitch
+//    while(1){
+//        if(microSwitchBas.ferme()||microSwitchHaut->ferme())
+//        {
+//            allumerLED();
+//        }
+//        else
+//        {
+//            eteindreLED();
+//        }
+//    }
+
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
@@ -152,6 +183,8 @@ for(int i=0; i<2000; i++)
     #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
         Tirette tirette(GPIOE, GPIO_Pin_5);
     #endif
+
+
 
 #ifdef ALLOW_DEBUG
     //Debug::testTirette(&tirette);
