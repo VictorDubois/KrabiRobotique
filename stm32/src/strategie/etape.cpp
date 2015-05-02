@@ -16,6 +16,7 @@ Etape::Etape(Position position, /*int nbChildren, */int numero, Etape** tableauE
     this->numero = numero;
     this->nombreEtapesLieesParFinirEtape = nombreEtapesLieesParFinirEtape;
     this->score = 0;
+    this->numeroEtapeFinAction = numero;//Par défaut, on fini à l'endroit de l'étape
 
     //Initialisation du tableau de voisins à vide
     for(int i = 0 ; i < nbChildren ; i++)
@@ -215,4 +216,14 @@ Etape* Etape::addVoisin(Etape* newVoisin, bool autreSens)
     {
         newVoisin->addVoisin(this, false);
     }
+}
+
+void Etape::setNumeroEtapeFinAction(int newNumeroEtapeFinAction)
+{
+    this->numeroEtapeFinAction = newNumeroEtapeFinAction;
+}
+
+int Etape::getNumeroEtapeFinAction()
+{
+    return this->numeroEtapeFinAction;
 }
