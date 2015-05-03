@@ -25,6 +25,9 @@ class PIDFilterDistance
 
         /**@brief Retourne la vitesse linéaire correcte à appliquer pour corrigé l'erreur de distance */
         float getFilteredValue(Distance erreur);
+
+        /**@brief Reset les erreurs, pour repartir doucement après un arrêt*/
+        void resetErrors();
 };
 
 #endif // PIDFILTERDISTANCE_H

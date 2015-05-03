@@ -164,9 +164,10 @@ int Dijkstra::trouverMin(int classementEtapeMinimale)
         }
     }
     /*TODO: WHAT THE HELL IS THAT ???*/
+    //Du debug
 
 
-    Etape* etape1 = this->tableauEtapes[0];
+    /*Etape* etape1 = this->tableauEtapes[0];
     Etape* etape2 = this->tableauEtapes[1];
     Etape* etape3 = this->tableauEtapes[2];
     Etape* etape4 = this->tableauEtapes[3];
@@ -204,7 +205,7 @@ int Dijkstra::trouverMin(int classementEtapeMinimale)
     Etape* etape36= this->tableauEtapes[35];
     Etape* etape37= this->tableauEtapes[36];
     Etape* etape38= this->tableauEtapes[37];
-    Etape* etape39= this->tableauEtapes[38];
+    Etape* etape39= this->tableauEtapes[38];*/
     //Si on ne trouve pas d'étape la plus proche, alors c'est qu'on est coincé par les autres robots.
     //Il faut donc faire des allers-retours entre les différentes étapes possibles.
     //Pour cela, on change le status des étapes "robot vu" à "point de passage", puis relancer une passe de Dijkstra (récursion powa!!!).

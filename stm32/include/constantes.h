@@ -101,23 +101,29 @@ static const int PERIOD_TIMER_MOTEUR = (FREQUENCE_COEUR/(FREQUENCE_MOTEURS*(PRES
     #define ACCELERATION_ANGULAIRE_MAX 0.00025
 
     // ODOMETRIE
-    #define TAILLE_ENTRAXE 200.00
-    #define RAYON_ROUE 62.00/2.0
+    #define TAILLE_ENTRAXE 205.00
+    #define RAYON_ROUE 65.00/2.0
     #define NBR_TICK_PAR_TOUR 848
 
     // ASSERVISSEMENT
     // PIDFILTERANGLE
     #define FILTER_ANGLE_KP 20
-    #define FILTER_ANGLE_KI 0
+    #define FILTER_ANGLE_KI 2
     #define FILTER_ANGLE_KD 0
     #define FILTER_ANGLE_COEF 1.0
 
 
     // PIDFILTERLINEAIRE
     #define FILTER_LINEAIRE_KP 1//0.12
-    #define FILTER_LINEAIRE_KI 0.00
+    #define FILTER_LINEAIRE_KI 0.12
     #define FILTER_LINEAIRE_KD 0.0
     #define FILTER_LINEAIRE_COEF 1.0
+
+    // Detection Bloquage
+    #define ACCELER_LIN_MINIMALE_DETECTION_BLOQUAGE 0.45//Max : 1
+    #define ACCELER_ANG_MINIMALE_DETECTION_BLOQUAGE 0.45//Max : 1
+    #define DISTANCE_MINIMALE_DETECTION_BLOQUAGE 5//Nombre de mm parcouru en 1 seconde
+    #define ANGLE_MINIMAL_DETECTION_BLOQUAGE 2// Angle en ° parcouru en 1 seconde
 #elif defined(STM32F40_41xxx) || defined(STM32F10X_MD) // Krabi Jr - STM32 H405 / STM32 H103
     #define VITESSE_LINEAIRE_MAX 1.0
     #define VITESSE_ANGULAIRE_MAX 0.010
@@ -143,6 +149,13 @@ static const int PERIOD_TIMER_MOTEUR = (FREQUENCE_COEUR/(FREQUENCE_MOTEURS*(PRES
     #define FILTER_LINEAIRE_KI 0.0055
     #define FILTER_LINEAIRE_KD 0.3
     #define FILTER_LINEAIRE_COEF 1.0
+
+    // Detection Bloquage
+    #define ACCELER_LIN_MINIMALE_DETECTION_BLOQUAGE 0.9//Max : 1
+    #define ACCELER_ANG_MINIMALE_DETECTION_BLOQUAGE 0.9//Max : 1
+    #define DISTANCE_MINIMALE_DETECTION_BLOQUAGE 5//Nombre de mm parcouru en 1 seconde
+    #define ANGLE_MINIMAL_DETECTION_BLOQUAGE 2// Angle en ° parcouru en 1 seconde
+
 #else // Krabi - STM32 H107
     #define VITESSE_LINEAIRE_MAX 3.0 //4.0
     #define VITESSE_ANGULAIRE_MAX 0.030 //0.025//0.05//0.025
@@ -167,6 +180,12 @@ static const int PERIOD_TIMER_MOTEUR = (FREQUENCE_COEUR/(FREQUENCE_MOTEURS*(PRES
     #define FILTER_LINEAIRE_KI 0.005//0.005//0.005
     #define FILTER_LINEAIRE_KD 0.7//0.7
     #define FILTER_LINEAIRE_COEF 1.0//0.89
+
+    // Detection Bloquage
+    #define ACCELER_LIN_MINIMALE_DETECTION_BLOQUAGE 0.9//Max : 1
+    #define ACCELER_ANG_MINIMALE_DETECTION_BLOQUAGE 0.9//Max : 1
+    #define DISTANCE_MINIMALE_DETECTION_BLOQUAGE 5//Nombre de mm parcouru en 1 seconde
+    #define ANGLE_MINIMAL_DETECTION_BLOQUAGE 2// Angle en ° parcouru en 1 seconde
 #endif
 
 
