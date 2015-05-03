@@ -23,19 +23,23 @@ class Ascenseur
         /// @brief leverAscenseur() on leve l'ascenseur
         void leverAscenseur();
 
-        /// @brief ouvrirPincesAscenseurs() on ouvre la pince de l'ascenseur pour attraper un nouveau pied
-        void ouvrirPincesAscenseur();
+        /// @brief ouvrirAscenseur() on ouvre la pince de l'ascenseur pour attraper un nouveau pied
+        void ouvrirAscenseur();
 
-        /// @brief fermerPincesAscenseur() on ferme la pince de l'ascenseur
-        void fermerPincesAscenseur();
+        /// @brief fermerAscenseur() on ferme la pince de l'ascenseur
+        void fermerAscenseur();
 
-        /// @brief ouvrirPincesAscenseurDepot() on ouvre la pince de l'ascenseur pour lacher les pieds
-        void ouvrirPincesAscenseurDepot();
+        ///// @brief ouvrirPincesAscenseurDepot() on ouvre la pince de l'ascenseur pour lacher les pieds
+        //void ouvrirAscenseurDepot();
+
+        bool estLeve();
+        bool estOuvert();
 
         int getNbrPiedsStockes();
         void setNbrPiedsStockes(int NbrPiedsStockes);
 
-
+        void addPied();
+        void resetNbrPiedsStockes();
 
     private:
 
@@ -46,16 +50,9 @@ class Ascenseur
 
         static Ascenseur *singleton;
 
+        bool leve;
+        bool ouvert;
         int nbrPiedsStockes;
-
-        int positionAscenseurLeve;
-        int positionAscenseurBaisse;
-        int positionPincesAscenseurFermees;
-        int positionPincesAscenseurOuvertes;
-        int positionPincesAscenseurOuvertesDepot;
-        int moteurAscenseur;
-        int moteurPinceGauche;
-        int moteurPinceDroite;
 
 };
 

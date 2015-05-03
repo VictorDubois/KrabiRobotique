@@ -5,16 +5,17 @@
 #include "mediumLevelAction.h"
 #include "command.h"
 
-class Pied : public MediumLevelAction
+class RamasserPied : public MediumLevelAction
 {
     public :
-        Pied();
-        Pied(Position position);
-        ~Pied();
+        RamasserPied();
+        RamasserPied(Position position);
+        ~RamasserPied();
         int update();
 
     protected :
         Position position;
+        bool coin;
 };
 
 #endif // PIED_H
