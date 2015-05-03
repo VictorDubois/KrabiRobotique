@@ -1,36 +1,53 @@
-#include "pied.h"
+#include "ramasserPied.h"
 #include "ascenseur.h"
 #include "strategieV2.h"
 #include "mediumLevelAction.h"
 #include "command.h"
 
+//MLA : Medium Level Action
+#define MLA_RAMASSER_PIED_APPROCHE 1
+#define MLA_RAMASSER_PIED_REGARDE 1
+#define MLA_RAMASSER_PIED_LEVE 50
+#define MLA_RAMASSER_PIED_APPROCHE_PLUS 50
+#define MLA_RAMASSER_PIED_OUVRE 50
+#define MLA_RAMASSER_PIED_BAISSE 50
+#define MLA_RAMASSER_PIED_FERME 50
+#define MLA_RAMASSER_PIED_PART 1
+
+
 #ifndef ROBOTHW
 #include <QDebug>
 #endif
 
-Pied::Pied(){}
+RamasserPied::RamasserPied(){}
 
-Pied::Pied(Position goalposition):MediumLevelAction(goalposition){}
+RamasserPied::RamasserPied(Position goalposition): MediumLevelAction(goalposition){}
 
-Pied::~Pied(){}
+RamasserPied::~RamasserPied(){}
 
-int Pied::update()
+int RamasserPied::update()
 {
+
     if (status == 0)
     {
-#ifndef ROBOTHW
-        qDebug() << "action pied";
-#endif
-        status++;
-    }
-
-    else if (status == 1)
-    {
+    #ifndef ROBOTHW
+            qDebug() << "action pied";
+    #endif
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
+        Ascenseur::getSingleton()->leverAscenseur();
         status++;
     }
 
-    else if (status == 2)
+    else if (status == MLA_RAMASSER_PIED_APPROCHE)
+    {
+        if (Command::isNear(goalPosition, 200.0f))
+        {
+            StrategieV2::lookAt(goalPosition);
+            status++;
+        }
+    }
+
+    else if (status == MLA_RAMASSER_PIED_APPROCHE)
     {
         if (Command::isNear(goalPosition, 175.0f))
         {
@@ -39,66 +56,32 @@ int Pied::update()
         }
     }
 
-    else if (status == 3)
+    else if (status == MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
         if (Command::isLookingAt(goalPosition))
         {
-#ifndef ROBOTHW
-            qDebug() << "On ouvre les pinces";
-#endif
-            Ascenseur::getSingleton()->ouvrirPincesAscenseur();
+            Ascenseur::getSingleton()->ouvrirAscenseur();
             status++;
         }
     }
 
-    else if ((status <23) && (status > 0))  //On attend que l'ascenseur ouvre ses pinces
+    else if (status == MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
+        Ascenseur::getSingleton()->baisserAscenseur();
         status++;
     }
 
-    else if (status == 23)
+    else if (status == MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
-#ifndef ROBOTHW
-            qDebug() << "On baisse l'ascenseur";
-#endif
-            Ascenseur::getSingleton()->baisserAscenseur();
-        status++;
+        Ascenseur::getSingleton()->fermerAscenseur();
     }
 
-    else if ((status <43) && (status > 0))  //On attend que l'ascenseur se baisse
+    else if (status == MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
-        status++;
+        Ascenseur::getSingleton()->leverAscenseur();
     }
 
-    else if (status == 43)
-    {
-#ifndef ROBOTHW
-            qDebug() << "On ferme les pinces";
-#endif
-            Ascenseur::getSingleton()->fermerPincesAscenseur();
-        status++;
-    }
-
-    else if ((status <63) && (status > 0))  //On attend que l'ascenseur ferme ses pinces
-    {
-        status++;
-    }
-
-    else if (status == 63)
-    {
-#ifndef ROBOTHW
-            qDebug() << "On leve l'ascenseur";
-#endif
-            Ascenseur::getSingleton()->leverAscenseur();
-        status++;
-    }
-
-    else if ((status <83) && (status > 0))  //On attend que l'ascenseur se leve
-    {
-        status++;
-    }
-
-    else if (status == 83)
+    else if (status == MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
 #ifndef ROBOTHW
         qDebug() << "Etape pied finie";
@@ -121,6 +104,10 @@ int Pied::update()
     else if (status == 85)
     {
         status = -1;
+    }
+    else
+    {
+        status++;
     }
 
     return status;
