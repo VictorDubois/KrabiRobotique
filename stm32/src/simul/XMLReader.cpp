@@ -91,7 +91,7 @@ QString XMLTag::readSelf(QString input)
 	else // no lonely tag
 		partial = partial.left(posEnd);
 
-    QString searchSolid = "solid=\"0\"";//"solid=\"1\"";
+    QString searchSolid = "solid=\"1\"";//Pour activer les collision avec le décors : "solid=\"1\"", sinon "solid=\"0\"";
     bool isSolid = partial.mid(posEnd - searchSolid.length(), searchSolid.length()) == searchSolid;
     if(isSolid)
         setSolid(true);
