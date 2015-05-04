@@ -117,7 +117,7 @@ int main()
     ServosNumeriques::initUART(19231);
     ServosNumeriques::sendMode();
 
-for(int i=0; i<2000; i++)
+/*for(int i=0; i<2000; i++)
     {
 
         Pinces::getSingleton()->fermerPinces();
@@ -141,7 +141,7 @@ for(int i=0; i<2000; i++)
         eteindreLED();
 
         for(int j=0; j<1000000; j++);
-    }
+    }*/
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
@@ -170,8 +170,8 @@ for(int i=0; i<2000; i++)
     //Debug::testBrasLateraux();
 #endif
 
-//    tirette.attendreRemise();
-//    tirette.attendreEnlevee();
+    tirette.attendreRemise();
+    tirette.attendreEnlevee();
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();
@@ -211,10 +211,10 @@ for(int i=0; i<2000; i++)
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
-    Position pos(200,1850, isBlue());//1500, isBlue());
-    PositionPlusAngle posPlusAngle(pos,-M_PI/2);
+    Position pos(250,1000, isBlue());//1500, isBlue());
+    PositionPlusAngle posPlusAngle(pos,-M_PI/4);
     if (!isBlue())
-        posPlusAngle = PositionPlusAngle(pos,-M_PI/2);
+        posPlusAngle = PositionPlusAngle(pos,-M_PI/4);
     odometrie->setPos(posPlusAngle);
 
     StrategieV2* strat = new StrategieV2(isBlue());

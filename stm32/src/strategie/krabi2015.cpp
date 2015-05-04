@@ -203,7 +203,7 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
             break;
         case Etape::CLAP :
-            return 100;
+            return 0;
             break;
         case Etape::GOBELET :
             return 0;//ce devrait être 40
