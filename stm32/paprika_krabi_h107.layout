@@ -7,10 +7,13 @@
 	<File name="include/hardware/ax12api.h" open="1" top="0" tabpos="4">
 		<Cursor position="2921" topLine="99" />
 	</File>
+	<File name="src/actionneurs/ascenseur.cpp" open="1" top="1" tabpos="6">
+		<Cursor position="564" topLine="20" />
+	</File>
 	<File name="src/actionneurs/brasTapis.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="78" topLine="0" />
 	</File>
-	<File name="src/hardware/ax12api.cpp" open="1" top="1" tabpos="5">
+	<File name="src/hardware/ax12api.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="2289" topLine="36" />
 	</File>
 	<File name="src/interfaceServosNumeriques.cpp" open="1" top="0" tabpos="3">
