@@ -25,6 +25,9 @@ class PIDFilterAngle
 
         /**@brief Retourne la vitesse angulaire correcte à appliquer pour corriger l'erreur d'angle */
         float getFilteredValue(Angle erreur);
+
+        /**@brief Reset les erreurs, pour repartir doucement après un arrêt*/
+        void resetErrors();
 };
 
 #endif // PID_FILTER_ANGLE_H

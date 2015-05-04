@@ -23,10 +23,11 @@ public:
         CENTRE_TABLE = 16,
         CLAP = 17,
         GOBELET = 18,
-        PIED = 19,
+        RAMASSER_PIED = 19,
         AMPOULE = 20,
         TAPIS = 21,
         DEPOSE_GOBELET = 22,
+        DEPOSE_PIED = 23,
         ROBOT_POINT_PASSAGE = POINT_PASSAGE + ROBOT_VU_ICI,
         ROBOT_COLLECT =       COLLECT + ROBOT_VU_ICI,
         ROBOT_FRUIT =         FRUIT + ROBOT_VU_ICI,
@@ -40,10 +41,11 @@ public:
         ROBOT_CENTRE_TABLE = CENTRE_TABLE + ROBOT_VU_ICI,
         ROBOT_CLAP = CLAP + ROBOT_VU_ICI,
         ROBOT_GOBELET = GOBELET + ROBOT_VU_ICI,
-        ROBOT_PIED = PIED + ROBOT_VU_ICI,
+        ROBOT_PIED = RAMASSER_PIED + ROBOT_VU_ICI,
         ROBOT_AMPOULE = AMPOULE + ROBOT_VU_ICI,
         ROBOT_TAPIS = TAPIS + ROBOT_VU_ICI,
-        ROBOT_DEPOSE_GOBELET = DEPOSE_GOBELET + ROBOT_VU_ICI
+        ROBOT_DEPOSE_GOBELET = DEPOSE_GOBELET + ROBOT_VU_ICI,
+        ROBOT_DEPOSE_PIED = DEPOSE_PIED + ROBOT_VU_ICI
 
     };
 
@@ -148,6 +150,12 @@ public:
     /** @brief Ajoute un voisinau tableau de voisins */
     Etape* addVoisin(Etape* newVoisin, bool autreSens=true);
 
+    /** @brief Setter de l'étape à laquelle on fini l'action de l'étape */
+    void setNumeroEtapeFinAction(int newNumeroEtapeFinAction);
+
+    /** @brief Getter de l'étape à laquelle on fini l'action de l'étape */
+    int getNumeroEtapeFinAction();
+
 private:
     /** @brief Tableau des étapes attachées à celle-ci */
     Etape** children;
@@ -184,6 +192,9 @@ private:
 
     /** @brief Score de l'étape, correspondant à si on veut que le robot la réalise ou pas*/
     int score;
+
+    /** @brief Etape à laquelle on fini l'action de l'étape */
+    int numeroEtapeFinAction;
 };
 
 #endif // ETAPE_H

@@ -39,9 +39,9 @@ Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables
 bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 
-Asservissement::Asservissement(Odometrie* _odometrie) :
+Asservissement::Asservissement(Odometrie* _odometrie) /*:
     seuil_collision(SEUIL_COLISION),
-    buffer_collision(0xffffffff)
+    buffer_collision(0xffffffff)*/
 {
     vitesseLineaire = 0;
     vitesseAngulaire = 0;
@@ -56,6 +56,22 @@ Asservissement::Asservissement(Odometrie* _odometrie) :
     angularDutySent = 0;
     Asservissement::asservissement = this;
     asserCount = 0;
+
+    nombreQuatumParDixiemeDeSeconde = 1000/(NB_VERIFICATION_BLOQUAGE_PAR_SECONDE*MS_BETWEEN_UPDATE);
+    obstacleDetecte = false;
+    nbUpdateDepuisObstacleDetecte = 0;
+    positionPlusAnglePrecedenteX = 0;
+    positionPlusAnglePrecedenteY = 0;
+    positionPlusAnglePrecedenteAngle = 0;
+
+    for(int initTableaux = 0 ; initTableaux < NB_VERIFICATION_BLOQUAGE_PAR_SECONDE ; initTableaux++)
+    {
+        deplacementLineaires[initTableaux] = 0;
+        deplacementAngulaire[initTableaux] = 0;
+        accelerationLineaires[initTableaux] = 0;
+        accelerationAngulaires[initTableaux] = 0;
+    }
+
 #ifdef CAPTEURS
     sensors = Sensors::getSensors();
 #endif
@@ -162,9 +178,23 @@ void Asservissement::update(void)
         angularDutySent = activePIDAngle ? pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte) : fixedAngularDuty;
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
-        float limit = 1.0f;
+        float limit = 0.5f;
+
+        #ifdef RRD2
+            limit = 0.5f;
+        #endif
+
+
         linearDutySent =  MIN(MAX(linearDutySent, -limit),limit);
         angularDutySent = MIN(MAX(angularDutySent, -limit),limit);
+
+        computeObstacleDetecte(linearDutySent, angularDutySent, &positionPlusAngleActuelle);
+
+        if(obstacleDetecte)
+        {
+            linearDutySent = 0;
+            angularDutySent = 0;
+        }
 
         //On évite que le robot fasse du bruit quand il est à l'arrêt
  //       linearDutySent = fabs(linearDutySent) > 0.05 || vitesse_lineaire_a_atteindre > 0.01 ? linearDutySent : 0;
@@ -299,4 +329,138 @@ void Asservissement::resetFixedDuty()
 {
     fixedLinearDuty = 0.;
     fixedAngularDuty = 0.;
+}
+
+void Asservissement::computeObstacleDetecte(float linearDutySentArgument, float angularDutySentArgument, PositionPlusAngle* positionPlusAngleActuelleArgument)
+{
+    //Si on a vu un obstacle recemment
+    if(this->obstacleDetecte)
+    {
+        nbUpdateDepuisObstacleDetecte++;
+
+        //Si ça fait longtemps
+        if(nbUpdateDepuisObstacleDetecte > (1000/MS_BETWEEN_UPDATE * 5))//5 secondes
+        {
+            this->obstacleDetecte = false;
+            nbUpdateDepuisObstacleDetecte = 0;
+            Asservissement::asservissement->resetAsserv();
+        }
+    }
+    else
+    {
+
+        //On ajoute les déplacements élémentaires depuis la dernière boucle
+        float variationLineaireX = positionPlusAngleActuelleArgument->position.getX()-positionPlusAnglePrecedenteX;
+        float variationLineaireY = positionPlusAngleActuelleArgument->position.getY()-positionPlusAnglePrecedenteY;
+        float variationAngulaire = positionPlusAngleActuelleArgument->position.getAngle()-positionPlusAnglePrecedenteAngle;
+
+        //En valeur absolue
+        if(variationLineaireX < 0)
+        {
+            variationLineaireX = -variationLineaireX;
+        }
+        if(variationLineaireY < 0)
+        {
+            variationLineaireY = -variationLineaireY;
+        }
+        if(variationAngulaire < 0)
+        {
+            variationAngulaire = -variationAngulaire;
+        }
+
+        deplacementLineaires[0] += variationLineaireX + variationLineaireY;
+        deplacementAngulaire[0] += variationAngulaire;
+
+        positionPlusAnglePrecedenteX = positionPlusAngleActuelleArgument->position.getX();
+        positionPlusAnglePrecedenteY = positionPlusAngleActuelleArgument->position.getY();
+        positionPlusAnglePrecedenteAngle = positionPlusAngleActuelleArgument->position.getAngle();
+
+        //On ajoute les accélérations élémentaires depuis la dernière boucle
+        accelerationLineaires[0]+=linearDutySentArgument;
+
+        accelerationAngulaires[0]+=angularDutySentArgument;
+
+        compteurRemplissageQuatum++;
+
+        //Si ça fait un dixième de seconde, on vérifie qu'on n'est pas bloqué
+        if(compteurRemplissageQuatum > nombreQuatumParDixiemeDeSeconde)
+        {
+            compteurRemplissageQuatum = 0;
+            float sommageDeplacementLineaires = 0;
+            float sommageDeplacementAngulaire = 0;
+            float sommageAccelerationLineaires = 0;
+            float sommageAccelerationAngulaires = 0;
+
+            //Sommage des 10 derniers 10èmes
+            for(int sommage = 0 ; sommage < NB_VERIFICATION_BLOQUAGE_PAR_SECONDE ; sommage++)
+            {
+                sommageDeplacementLineaires+=deplacementLineaires[sommage];
+                sommageDeplacementAngulaire+=deplacementAngulaire[sommage];
+                sommageAccelerationLineaires+=accelerationLineaires[sommage];
+                sommageAccelerationAngulaires+=accelerationAngulaires[sommage];
+            }
+
+            float accelerationLineaireLimite = ACCELER_LIN_MINIMALE_DETECTION_BLOQUAGE * NB_VERIFICATION_BLOQUAGE_PAR_SECONDE * nombreQuatumParDixiemeDeSeconde;
+            float accelerationAngulaireLimite = ACCELER_ANG_MINIMALE_DETECTION_BLOQUAGE * NB_VERIFICATION_BLOQUAGE_PAR_SECONDE * nombreQuatumParDixiemeDeSeconde;
+
+            //Si on accélère à fond en ne bougeant pas plus d'un centimètre en une seconde
+//            if(((sommageAccelerationLineaires > accelerationLineaireLimite) && (abs(sommageDeplacementLineaires) < 10)) ||
+//               ((sommageAccelerationAngulaires > accelerationAngulaireLimite) && (abs(sommageDeplacementAngulaire) < 3)))
+
+            bool stop = false;
+
+            if(sommageAccelerationLineaires > accelerationLineaireLimite)
+            {
+                if(sommageDeplacementLineaires < DISTANCE_MINIMALE_DETECTION_BLOQUAGE)
+                {
+                    stop = true;
+                }
+            }
+            else if(sommageAccelerationAngulaires > accelerationAngulaireLimite)
+            {
+                if(sommageDeplacementAngulaire < ANGLE_MINIMAL_DETECTION_BLOQUAGE)
+                {
+                    stop = true;
+                }
+            }
+
+            if(stop)
+            {
+                obstacleDetecte = true;
+                nbUpdateDepuisObstacleDetecte = 0;
+
+//                //Remise à 0 du tableau
+                for(int initTableaux = 0 ; initTableaux < NB_VERIFICATION_BLOQUAGE_PAR_SECONDE ; initTableaux++)
+                {
+                    deplacementLineaires[initTableaux] = 0;
+                    deplacementAngulaire[initTableaux] = 0;
+                    accelerationLineaires[initTableaux] = 0;
+                    accelerationAngulaires[initTableaux] = 0;
+                }
+                return;
+            }
+
+            //Shift du tableau, les valeurs sont plus vieilles
+            for(int raz = NB_VERIFICATION_BLOQUAGE_PAR_SECONDE-1 ; raz > 0 ; raz--)
+            {
+                deplacementLineaires[raz]=deplacementLineaires[raz-1];
+                deplacementAngulaire[raz]=deplacementAngulaire[raz-1];
+                accelerationLineaires[raz]=accelerationLineaires[raz-1];
+                accelerationAngulaires[raz]=accelerationAngulaires[raz-1];
+            }
+
+            //Remise à 0 de la case 1
+            deplacementLineaires[0] = 0;
+            deplacementAngulaire[0] = 0;
+            accelerationLineaires[0] = 0;
+            accelerationAngulaires[0] = 0;
+        }
+    }
+    return;
+}
+
+void Asservissement::resetAsserv()
+{
+    pid_filter_distance.resetErrors();
+    pid_filter_angle.resetErrors();
 }
