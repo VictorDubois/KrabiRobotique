@@ -1,7 +1,5 @@
 #include "ascenseur.h"
 
-#include <QDebug>
-
 #define POS_ASC_LEVE 0x00
 #define POS_ASC_BAISSE 0x00
 #define POS_ASC_OUVERT 0x0210
@@ -23,25 +21,8 @@ Ascenseur *Ascenseur::getSingleton()
 #ifdef ROBOTHW
 Ascenseur::Ascenseur()
 {
-    this->fermerPincesAscenseur();
+    //this->fermerPincesAscenseur();
     this->baisserAscenseur();
-}
-
-Ascenseur* Ascenseur::getSingleton()
-{
-    //TO DO  : decommenter le bout de code suivant et le debugger
-
-    if (singleton==0)
-        singleton = new Ascenseur();
-
-/*    if (singleton->getNbrPiedsStockes==0)
-        singleton->POS_ASC_LEVE = 0x00;
-    if (singleton->getNbrPiedsStockes==1)
-        singleton->POS_ASC_LEVE = 0x00;
-    if (singleton->getNbrPiedsStockes==2)
-        singleton->POS_ASC_LEVE = 0x00;  */
-
-    return singleton;
 }
 
 void Ascenseur::leverAscenseur()
@@ -71,6 +52,8 @@ void Ascenseur::fermerAscenseur()
 }
 
 #else
+
+#include <QDebug>
 
 Ascenseur::Ascenseur(){}
 
