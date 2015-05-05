@@ -114,6 +114,7 @@
 		<Unit filename="include/strategie/actionGoTo.h" />
 		<Unit filename="include/strategie/clap.h" />
 		<Unit filename="include/strategie/deposerGobelet.h" />
+		<Unit filename="include/strategie/deposerPied.h" />
 		<Unit filename="include/strategie/etape.h" />
 		<Unit filename="include/strategie/evitement.h" />
 		<Unit filename="include/strategie/gobelet.h" />
@@ -177,6 +178,7 @@
 		<Unit filename="src/strategie/anciens_fichiers/feukrabilateral.cpp.limitVitesseVictor" />
 		<Unit filename="src/strategie/clap.cpp" />
 		<Unit filename="src/strategie/deposerGobelet.cpp" />
+		<Unit filename="src/strategie/deposerPied.cpp" />
 		<Unit filename="src/strategie/dijkstra.cpp" />
 		<Unit filename="src/strategie/etape.cpp" />
 		<Unit filename="src/strategie/gobelet.cpp" />
