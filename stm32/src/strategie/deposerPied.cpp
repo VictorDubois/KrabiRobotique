@@ -59,7 +59,7 @@ int DeposerPied::update()
 
     else if ((status =23) && (status > 0))  //On attend que les pinces soient ouvertes
     {
-        Ascenseur::baisserAscenseur();
+        Ascenseur::getSingleton()->baisserAscenseur();
         status++;
     }
 
@@ -70,7 +70,7 @@ int DeposerPied::update()
 
     else if ((status =43) && (status > 0))  //On attend que les pinces soient ouvertes
     {
-        Ascenseur::ouvrirAscenseur();
+        Ascenseur::getSingleton()->ouvrirAscenseur();
         status++;
     }
 
@@ -93,7 +93,7 @@ int DeposerPied::update()
 
     else if ((status =74) && (status > 0))  //On attend que les pinces soient ouvertes
     {
-        Ascenseur::fermerAscenseur();
+        Ascenseur::getSingleton()->fermerAscenseur();
         status++;
     }
 
@@ -104,7 +104,7 @@ int DeposerPied::update()
 
     else if ((status =84) && (status > 0))  //On attend que les pinces soient ouvertes
     {
-        Pinces::fermerPinces();
+        Pinces::getSingleton()->fermerPinces();
         status++;
     }
 
