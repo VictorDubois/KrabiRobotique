@@ -2,6 +2,7 @@
 #define ASCENSEUR_H
 
 #include "interfaceServosNumeriques.h"
+#include "microSwitch.h"
 
 #ifdef ROBOTHW
     #include "servo.h"
@@ -29,10 +30,14 @@ class Ascenseur
         /// @brief fermerAscenseur() on ferme la pince de l'ascenseur
         void fermerAscenseur();
 
+        /// @brief arreterAscenseur() on stoppe l'ascenseur
+        void arreterAscenseur();
+
         ///// @brief ouvrirPincesAscenseurDepot() on ouvre la pince de l'ascenseur pour lacher les pieds
         //void ouvrirAscenseurDepot();
 
-        bool estLeve();
+        bool estEnHaut();
+        bool estEnBas();
         bool estOuvert();
 
         int getNbrPiedsStockes();
@@ -50,9 +55,10 @@ class Ascenseur
 
         static Ascenseur *singleton;
 
-        bool leve;
         bool ouvert;
         int nbrPiedsStockes;
+        MicroSwitch microSwitchBas;
+        MicroSwitch microSwitchHaut;
 
 };
 
