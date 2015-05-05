@@ -17,13 +17,13 @@ Ascenseur *Ascenseur::getSingleton()
 }
 
 #ifdef ROBOTHW
-Ascenseur::Ascenseur()
-{
-    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
-        this->microSwitchBas = MicroSwitch(GPIOE, GPIO_Pin_3);
-        this->microSwitchHaut = MicroSwitch(GPIOE, GPIO_Pin_2);
-    #endif
 
+#ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+    Ascenseur::Ascenseur() : microSwitchBas(MicroSwitch(GPIOE, GPIO_Pin_3)), microSwitchHaut(MicroSwitch(GPIOE, GPIO_Pin_2))
+#else
+    #error Should not be used with KJ
+#endif
+{
 //    this->fermerAscenseur();
 //    this->baisserAscenseur();
     ServosNumeriques::changeContinuousRotationMode(INDEX_SERVO_ASC, true);
@@ -66,22 +66,22 @@ Ascenseur::Ascenseur(){}
 
 void Ascenseur::leverAscenseur()
 {
-            qDebug() << "On leve l'ascenseur";
+    qDebug() << "On leve l'ascenseur";
 }
 
 void Ascenseur::baisserAscenseur()
 {
-            qDebug() << "On baisse l'ascenseur";
+    qDebug() << "On baisse l'ascenseur";
 }
 
 void Ascenseur::ouvrirAscenseur()
 {
-            qDebug() << "On ouvre l'ascenseur";
+    qDebug() << "On ouvre l'ascenseur";
 }
 
 void Ascenseur::fermerAscenseur()
 {
-            qDebug() << "On ferme l'ascenseur";
+    qDebug() << "On ferme l'ascenseur";
 }
 
 #endif
@@ -96,7 +96,7 @@ bool Ascenseur::estEnBas()
     return this->microSwitchBas.ferme();
 }
 
-bool Ascenseur::estOuvert ()
+bool Ascenseur::estOuvert()
 {
     return ouvert;
 }
