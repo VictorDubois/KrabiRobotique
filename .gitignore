@@ -1,5 +1,10 @@
-*.o
 *.jpg
 *.JPG
 *.bin
+*.list
+*.out
+*.[oa]
+*~
+*.layout
+*.autosave
 bin/
