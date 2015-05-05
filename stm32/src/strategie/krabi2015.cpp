@@ -1,4 +1,6 @@
 #include "krabi2015.h"
+#include "ascenseur.h"
+#include "pinces.h"
 
 Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 {
@@ -117,7 +119,6 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     actionEtape[20] = &actionRamasserPied[7];
 
     etape0->addVoisin(etape1, false);
-    etape1->addVoisin(etape2);
     etape1->addVoisin(etape9);
     etape1->addVoisin(etape33);
     etape33->addVoisin(etape24);
@@ -130,7 +131,6 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape4->addVoisin(etape8);
     etape6->addVoisin(etape7);
     etape1->addVoisin(etape18);
-    etape18->addVoisin(etape2);
     etape13->addVoisin(etape14);
     etape14->addVoisin(etape8);
     etape18->addVoisin(etape20);
@@ -158,7 +158,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape11->addVoisin(etape20);
     etape10->addVoisin(etape11);
     etape9->addVoisin(etape11);
- //   etape11->addVoisin(etape26);
+    etape11->addVoisin(etape26);
     etape9->addVoisin(etape32);
     etape32->addVoisin(etape15);
     etape9->addVoisin(etape17);
@@ -196,6 +196,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     etape38->addVoisin(etape39);
     etape39->addVoisin(etape11);
     etape5->addVoisin(etape29);
+    etape19->addVoisin(etape3);
+    etape1->addVoisin(etape22);
 
     //Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
     etape2->setNumeroEtapeFinAction(3);//Clapet notre côté vers milieu
@@ -225,22 +227,31 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
             break;
         case Etape::CLAP :
-            return 0;
+            return 1;
             break;
         case Etape::GOBELET :
-            return 0;//ce devrait être 40
+        if (Pinces::getSingleton()->getEstDispo())
+                    return 40;
+            else
+                return 0;
             break;
         case Etape::AMPOULE :
             return 0;
             break;
         case Etape::RAMASSER_PIED :
-            return 100;//ce devrait être 20
+            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
+                return 0;
+            else
+                return 100;
             break;
         case Etape::TAPIS :
             return 0;
             break;
         case Etape::DEPOSE_GOBELET :
-            return 0;
+        if (!Pinces::getSingleton()->getEstDispo())
+                    return 40;
+            else
+                return 0;
             break;
         case Etape::POINT_PASSAGE :
             return 0;
