@@ -18,8 +18,6 @@ void initClocksAndPortsGPIO()
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 
     // on remap l'usart3 pour que le stm soit bien configuré sur les ports 10 et 11 du GPIOC, et le sens sur le par 5 du GPIOB
-//    GPIO_PinAFConfig(GPIOC, GPIO_Pin_10, GPIO_AF_USART3);
-//    GPIO_PinAFConfig(GPIOC, GPIO_Pin_11, GPIO_AF_USART3);
     GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_USART3);
     GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_USART3);
     //GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
@@ -207,10 +205,11 @@ void moveTo(uint16_t position, uint8_t servo)
         sendData(packet[i]);
     }
 }
-void moveAtSpeed(uint16_t vitesse, uint8_t servo)
+void moveAtSpeed(uint16_t vitesse, uint8_t servo, bool sensTrigoSiContinue)
 {
     int packet[16];
-    int packetLength = AX12::getMoveSpeedInstruction(packet, vitesse, servo);
+    //Si rotation continue : de 0 à 1023 dans un sens, de 1024 à 2047 dans l'autre
+    int packetLength = AX12::getMoveSpeedInstruction(packet, vitesse + 1024 * ((uint8_t) sensTrigoSiContinue), servo);//TODO : checker qu'on est bien en rotation continue si sensTrigoSiContinue == true;
     for (int i = 0; i < packetLength; i++) {
         sendData(packet[i]);
     }
@@ -324,7 +323,6 @@ void changeContinuousRotationMode(uint8_t servo, bool continuous, uint8_t step)
         }
     }
 }
-
 int getPosition(uint8_t servo)
 {
     int packet[16];

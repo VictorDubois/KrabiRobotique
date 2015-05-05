@@ -1,11 +1,5 @@
 #include "ascenseur.h"
 
-#ifdef ROBOTHW
-//    #include <QDebug>
-#endif
-
-
-
 #define POS_ASC_OUVERT 0x0200
 //#define POS_ASC_OUVERT_DEPOT 0x01D0
 #define POS_ASC_FERME 0x0235
@@ -33,7 +27,6 @@ Ascenseur::Ascenseur()
 //    this->fermerAscenseur();
 //    this->baisserAscenseur();
     ServosNumeriques::changeContinuousRotationMode(INDEX_SERVO_ASC, true);
-
 }
 
 void Ascenseur::leverAscenseur()
@@ -66,6 +59,8 @@ void Ascenseur::fermerAscenseur()
 }
 
 #else
+
+#include <QDebug>
 
 Ascenseur::Ascenseur(){}
 

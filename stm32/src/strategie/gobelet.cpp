@@ -1,4 +1,5 @@
 #include "gobelet.h"
+#include "pinces.h"
 #include "ascenseur.h"
 #include "strategieV2.h"
 #include "mediumLevelAction.h"
@@ -61,7 +62,7 @@ int Gobelet::update()
 #ifndef ROBOTHW
             qDebug() << "On ouvre les pinces";
 #endif
-            Ascenseur::getSingleton()->ouvrirAscenseur();
+            Pinces::getSingleton()->ouvrirPinces();
             status++;
     }
 
@@ -75,7 +76,7 @@ int Gobelet::update()
 #ifndef ROBOTHW
             qDebug() << "On ferme les pinces";
 #endif
-            Ascenseur::getSingleton()->fermerAscenseur();
+            Pinces::getSingleton()->fermerPinces();
         status++;
     }
 

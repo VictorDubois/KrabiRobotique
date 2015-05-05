@@ -33,7 +33,8 @@ int receiveStatusPacket(int* tableau);
 
 void moveToAtSpeed(uint16_t position, uint16_t vitesse, uint8_t servo); // vitesse min : 0x0000 (stupide), vitesse max : 0x07ff
 void moveTo(uint16_t position, uint8_t servo); // position min : 0x0000, position max : 0x03ff
-void moveAtSpeed(uint16_t vitesse, uint8_t servo); // définie la vitesse des prochains mouvements
+//void moveAtSpeed(uint16_t vitesse, uint8_t servo); // définie la vitesse des prochains mouvements
+void moveAtSpeed(uint16_t vitesse, uint8_t servo, bool sensTrigoSiContinue = false); // définie la vitesse des prochains mouvements. Si rotation continue : de 0 à 1023 dans un sens, de 1024 à 2047 dans l'autre
 void setLedState(uint8_t ledOn, uint8_t servo);
 
 void setMinimumAngle(uint16_t angle, uint8_t servo);
@@ -46,8 +47,6 @@ void setMaxTorque(uint16_t torque, uint8_t servo); // EEPROM, automatiquement mi
 void changeContinuousRotationMode(uint8_t servo, bool continuous = true, uint8_t step = 0);//Rotation continue/angle précis. step sert à n'envoyer qu'un packet à la fois
 
 int getPosition(uint8_t servo);
-
-
 }
 
 

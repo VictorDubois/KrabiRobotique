@@ -180,6 +180,7 @@
 		<Unit filename="src/strategie/gobelet.cpp" />
 		<Unit filename="src/strategie/krabi2015.cpp" />
 		<Unit filename="src/strategie/mediumLevelAction.cpp" />
+		<Unit filename="src/strategie/ramasserPied.cpp" />
 		<Unit filename="src/strategie/recalibrerOdometrie.cpp" />
 		<Unit filename="src/strategie/strategieV2.cpp" />
 		<Unit filename="src/strategie/strategiev3.cpp" />

@@ -173,7 +173,6 @@ void Asservissement::update(void)
 
 #ifdef ROUES
 
-
         //on filtre l'erreur de vitesse lineaire et angulaire
         linearDutySent = activePIDDistance ? pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte) : fixedLinearDuty;
         angularDutySent = activePIDAngle ? pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte) : fixedAngularDuty;

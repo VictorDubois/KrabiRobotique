@@ -10,8 +10,6 @@
     #include "stm32f4xx_gpio.h"
 #endif
 
-#define REMOTE_ON
-
 #include "initialisation.h"
 #include "actionneurs/servo.h"
 #include "memory.h"
@@ -20,22 +18,23 @@
 #include "asservissement.h"
 #include "sensors.h"
 #include "quadratureCoderHandler.h"
-#include "ascenseur.h"
-#include "pinces.h"
+#include "bras.h"
+#include "brak.h"
 #include "roues.h"
 #include "roue.h"
 #include "strategieV2.h"
 #include "sharpSensor.h"
 #include "ax12api.h"
 #include "interfaceServosNumeriques.h"
+#include "canonLances.h"
 #include "capteurCouleur.h"
 #include "tirette.h"
 #include "leds.h"
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
+#include "marteaux.h"
 #include "commandAllerA.h"
 #include "etape.h"
 #include "dijkstra.h"
-#include "microSwitch.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -101,6 +100,7 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
+    Remote::log("Init");
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
@@ -110,77 +110,104 @@ int main()
     //Debug::testSharps();
 #endif
 
-    allumerLED();
-    eteindreLED();
-    allumerLED2();
-    eteindreLED2();
-    allumerLED();
-
-    Remote::log("Init");
-
+//    UartDebug::initClocksAndPortsGPIO();
+//    UartDebug::init(19200);
+//    UartDebug::sendData(0);
+//    UartDebug::sendData(1);
+//    UartDebug::sendData(2);
+//    UartDebug::sendData(10);
+//    UartDebug::sendData(11);
+//    UartDebug::sendData(12);
+//    UartDebug::sendData(20);
+//    UartDebug::sendData(21);
+//    UartDebug::sendData(22);
+//    UartDebug::sendData(30);
+//    UartDebug::sendData(31);
+//    UartDebug::sendData(32);
+//    UartDebug::sendData(40);
+//    UartDebug::sendData(41);
+//    UartDebug::sendData(42);
+//    UartDebug::sendData(50);
+//    UartDebug::sendData(51);
+//    UartDebug::sendData(52);
 
     ServosNumeriques::initClocksAndPortsGPIO();
-    ServosNumeriques::initUART(19231);
+    ServosNumeriques::initUART(1000000);//19230
     ServosNumeriques::sendMode();
-/*<<<<<<< HEAD
 
-/*for(int i=0; i<2000; i++)
-=======
-/*
-for(int i=0; i<2000; i++)
->>>>>>> 8a8fced824885f8d8ca4fba8900250501d6a0eab
-    {
+    ServosNumeriques::changeContinuousRotationMode(21, true);
+    ServosNumeriques::changeContinuousRotationMode(18, true);
+    ServosNumeriques::moveAtSpeed(0x03fe, 21, true);
+    ServosNumeriques::moveAtSpeed(0x0280, 18);
+    for(int i = 0 ; i < 60 * 1000000 ; i++){}
+//    ServosNumeriques::moveAtSpeed(0x03fe, 21);
+//    ServosNumeriques::moveAtSpeed(0x0300, 18, true);
+//    for(int i = 0 ; i < 2 * 1000000 ; i++){}
+//    ServosNumeriques::moveAtSpeed(0x0, 21, true);
+//    ServosNumeriques::moveAtSpeed(0x0, 18);
+//    ServosNumeriques::changeContinuousRotationMode(18, false);
+//    ServosNumeriques::changeContinuousRotationMode(21, false);
+    ServosNumeriques::changeContinuousRotationMode(21,true);
+    ServosNumeriques::changeContinuousRotationMode(18, true);
+    //ServosNumeriques::moveAtSpeed(0x03fe, 21, true);
+    for(int i = 0; i < 5 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(21, false);
+    //ServosNumeriques::changeContinuousRotationMode(18, true);
+    ServosNumeriques::moveAtSpeed(0x0300, 18);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(18, false);
+    //ServosNumeriques::changeContinuousRotationMode(21,true);
+    //ServosNumeriques::moveAtSpeed(0x03fe, 21, true);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(21, false);
+    //ServosNumeriques::changeContinuousRotationMode(18, true);
+    ServosNumeriques::moveAtSpeed(0x0300, 18);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(18, false);
+    //ServosNumeriques::changeContinuousRotationMode(21,true);
+    ServosNumeriques::moveAtSpeed(0x03fe, 21, true);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(21, false);
+    //ServosNumeriques::changeContinuousRotationMode(18, true);
+    ServosNumeriques::moveAtSpeed(0x0300, 18);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(18, false);
+    //ServosNumeriques::changeContinuousRotationMode(21,true);
+    ServosNumeriques::moveAtSpeed(0x03fe, 21, true);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    //ServosNumeriques::changeContinuousRotationMode(21, false);
+    //ServosNumeriques::changeContinuousRotationMode(18, true);
+    ServosNumeriques::moveAtSpeed(0x0300, 18);
+    for(int i = 0; i < 10 * 1000000; i++){}
+    ServosNumeriques::changeContinuousRotationMode(18, false);
+    ServosNumeriques::changeContinuousRotationMode(21, false);
 
-        Pinces::getSingleton()->fermerPinces();
+    /*ServosNumeriques::changeContinuousRotationMode(13, false);
 
-        for(int j=0; j<15000000; j++);
+    ServosNumeriques::moveTo(0x0, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x03ff, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x0, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x03ff, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x0, 13); // position min : 0x0000, position max : 0x03ff
 
+    ServosNumeriques::changeContinuousRotationMode(13, true);
 
-        Pinces::getSingleton()->ouvrirPinces();
+    ServosNumeriques::moveAtSpeed(0x02ff, 13);
+    ServosNumeriques::moveAtSpeed(0x0, 13);
+    ServosNumeriques::moveAtSpeed(0x02ff + 1024, 13);
+    ServosNumeriques::moveAtSpeed(0x0, 13);
+    ServosNumeriques::moveAtSpeed(0x02ff, 13);
+    ServosNumeriques::moveAtSpeed(0x0, 13);
+    ServosNumeriques::moveAtSpeed(0x02ff, 13, true);
+    ServosNumeriques::moveAtSpeed(0x0, 13);
 
-        for(int j=0; j<15000000; j++);
-    }
+    ServosNumeriques::changeContinuousRotationMode(13, false);
 
-for(int i=0; i<2000; i++)
-    {
-
-        allumerLED();
-
-        for(int j=0; j<1000000; j++);
-
-
-        eteindreLED();
-
-        for(int j=0; j<1000000; j++);
-    }
-<<<<<<< HEAD
-=======
-//    #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
-//        //MicroSwitch microSwitchBas(GPIOA, GPIO_Pin_10);//Exemple, il n'y a pas de microswitch pour KJ...
-//        //MicroSwitch microSwitchHaut(GPIOA, GPIO_Pin_10);
-//    #endif
-//    #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
-//        //MicroSwitch microSwitchBas(GPIOA, GPIO_Pin_10);
-//        //MicroSwitch microSwitchHaut(GPIOA, GPIO_Pin_10);
-//    #endif
-    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
-        MicroSwitch microSwitchBas(GPIOE, GPIO_Pin_3);
-        MicroSwitch microSwitchHaut(GPIOE, GPIO_Pin_2);
-    #endif
-
-    //Test MicroSwitch
-//    while(1){
-//        if(microSwitchBas.ferme()||microSwitchHaut->ferme())
-//        {
-//            allumerLED();
-//        }
-//        else
-//        {
-//            eteindreLED();
-//        }
-//    }
-
->>>>>>> 8a8fced824885f8d8ca4fba8900250501d6a0eab*/
+    ServosNumeriques::moveTo(0x0, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x03ff, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x0, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x03ff, 13); // position min : 0x0000, position max : 0x03ff
+    ServosNumeriques::moveTo(0x0, 13); // position min : 0x0000, position max : 0x03ff*/
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
@@ -192,18 +219,16 @@ for(int i=0; i<2000; i++)
         Tirette tirette(GPIOE, GPIO_Pin_5);
     #endif
 
-
-
 #ifdef ALLOW_DEBUG
     //Debug::testTirette(&tirette);
 #endif
 
-    // Initialisation des actionneurs 1
+    //waitServoNumeriquenitialisation des actionneurs 1
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        //BrasLateraux::initBrasLateraux();
-        //Container::getSingleton();
+        BrasLateral::initBrasLateraux();
+        Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateraux::initBrasLateraux();
+        BrasLateral::initBrasLateraux();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 
@@ -211,13 +236,11 @@ for(int i=0; i<2000; i++)
     //Debug::testBrasLateraux();
 #endif
 
+
+
+    Remote::getSingleton();
     tirette.attendreRemise();
     tirette.attendreEnlevee();
-
-    #if defined(STM32F10X_CL)
-        Remote::getSingleton();
-    #endif
-
     // Initialisation des actionneurs 2
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
 
@@ -252,10 +275,10 @@ for(int i=0; i<2000; i++)
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
-    Position pos(250,1000, isBlue());//1500, isBlue());
-    PositionPlusAngle posPlusAngle(pos,-M_PI/4);
+    Position pos(200,1850, isBlue());//1500, isBlue());
+    PositionPlusAngle posPlusAngle(pos,-M_PI/2);
     if (!isBlue())
-        posPlusAngle = PositionPlusAngle(pos,-M_PI/4);
+        posPlusAngle = PositionPlusAngle(pos,-M_PI/2);
     odometrie->setPos(posPlusAngle);
 
     StrategieV2* strat = new StrategieV2(isBlue());
