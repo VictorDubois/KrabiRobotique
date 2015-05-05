@@ -97,6 +97,7 @@
 		<Unit filename="include/hardware/leds.h" />
 		<Unit filename="include/hardware/ligthBarrierSensor.h" />
 		<Unit filename="include/hardware/limitSwitchSensor.h" />
+		<Unit filename="include/hardware/microSwitch.h" />
 		<Unit filename="include/hardware/pwmHandler.h" />
 		<Unit filename="include/hardware/quadratureCoderHandler.h" />
 		<Unit filename="include/hardware/remote.h" />
@@ -155,6 +156,7 @@
 		<Unit filename="src/hardware/leds.cpp" />
 		<Unit filename="src/hardware/ligthBarrierSensor.cpp" />
 		<Unit filename="src/hardware/limitSwitchSensor.cpp" />
+		<Unit filename="src/hardware/microSwitch.cpp" />
 		<Unit filename="src/hardware/pwmHandler.cpp" />
 		<Unit filename="src/hardware/quadratureCoderHandler.cpp" />
 		<Unit filename="src/hardware/remote.cpp" />
