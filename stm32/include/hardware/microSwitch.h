@@ -1,6 +1,8 @@
 #ifndef DEF_MICROSWITCH
 #define DEF_MICROSWITCH
 
+#ifdef ROBOTHW
+
 #ifdef STM32F40_41xxx
     #include "stm32f4xx_gpio.h"
 #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
@@ -24,5 +26,20 @@ class MicroSwitch
         uint16_t GPIO_Pin_x;
 };
 
+#else
+
+class MicroSwitch
+{
+    public:
+
+        // constructeur vide pour Qt
+        MicroSwitch();
+        ~MicroSwitch();
+
+        // est ce que le microSwitch est fermé ?
+        bool ferme() const;
+};
+
+#endif
 #endif
 
