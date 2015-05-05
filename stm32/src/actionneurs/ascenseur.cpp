@@ -1,13 +1,11 @@
 #include "ascenseur.h"
 
-#define POS_ASC_LEVE 0x00
-#define POS_ASC_BAISSE 0x00
-#define POS_ASC_OUVERT 0x0210
+#define POS_ASC_OUVERT 0x0200
 //#define POS_ASC_OUVERT_DEPOT 0x01D0
-#define POS_ASC_FERME 0x0230
-#define INDEX_SERVO_ASC 0
-#define INDEX_SERVO_PORTE_DROITE 16
-#define INDEX_SERVO_PORTE_GAUCHE 15
+#define POS_ASC_FERME 0x0235
+#define INDEX_SERVO_ASC 42
+#define INDEX_SERVO_PORTE_DROITE 15
+#define INDEX_SERVO_PORTE_GAUCHE 16
 
 Ascenseur* Ascenseur::singleton = 0;
 
@@ -21,20 +19,29 @@ Ascenseur *Ascenseur::getSingleton()
 #ifdef ROBOTHW
 Ascenseur::Ascenseur()
 {
-    //this->fermerPincesAscenseur();
-    this->baisserAscenseur();
+    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+        this->microSwitchBas = MicroSwitch(GPIOE, GPIO_Pin_3);
+        this->microSwitchHaut = MicroSwitch(GPIOE, GPIO_Pin_2);
+    #endif
+
+//    this->fermerAscenseur();
+//    this->baisserAscenseur();
+    ServosNumeriques::changeContinuousRotationMode(INDEX_SERVO_ASC, true);
 }
 
 void Ascenseur::leverAscenseur()
 {
-    ServosNumeriques::moveTo(POS_ASC_LEVE, INDEX_SERVO_ASC);
-    leve = true;
+    ServosNumeriques::moveAtSpeed(0x01ff, INDEX_SERVO_ASC, false);
 }
 
 void Ascenseur::baisserAscenseur()
 {
-    ServosNumeriques::moveTo(POS_ASC_BAISSE, INDEX_SERVO_ASC);
-    leve = false;
+    ServosNumeriques::moveAtSpeed(0x01ff, INDEX_SERVO_ASC, true);
+}
+
+void Ascenseur::arreterAscenseur()
+{
+    ServosNumeriques::moveAtSpeed(0x0000, INDEX_SERVO_ASC);
 }
 
 void Ascenseur::ouvrirAscenseur()
@@ -79,9 +86,14 @@ void Ascenseur::fermerAscenseur()
 
 #endif
 
-bool Ascenseur::estLeve ()
+bool Ascenseur::estEnHaut()
 {
-    return leve;
+    return this->microSwitchHaut.ferme();
+}
+
+bool Ascenseur::estEnBas()
+{
+    return this->microSwitchBas.ferme();
 }
 
 bool Ascenseur::estOuvert ()
