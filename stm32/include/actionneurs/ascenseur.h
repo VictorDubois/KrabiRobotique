@@ -2,10 +2,10 @@
 #define ASCENSEUR_H
 
 #include "interfaceServosNumeriques.h"
-#include "microSwitch.h"
 
 #ifdef ROBOTHW
     #include "servo.h"
+    #include "microSwitch.h"
 #endif
 
 
@@ -57,8 +57,10 @@ class Ascenseur
 
         bool ouvert;
         int nbrPiedsStockes;
+#ifdef ROBOTHW
         MicroSwitch microSwitchBas;
         MicroSwitch microSwitchHaut;
+#endif
 
 };
 

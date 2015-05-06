@@ -17,8 +17,12 @@ Clap::Clap(Position positionDepart, Position positionArrivee):MediumLevelAction(
     this->goBack = false;
 }
 
-
 Clap::~Clap(){}
+
+Etape::EtapeType Clap::getType()
+{
+    return Etape::CLAP;
+}
 
 int Clap::update()
 {

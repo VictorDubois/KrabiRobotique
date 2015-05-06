@@ -33,6 +33,7 @@ class Clap : public MediumLevelAction
                 status = -1 : le robot a finit l'action
         */
         int update();
+        Etape::EtapeType getType();
 
     protected :
         Position positionDepart;

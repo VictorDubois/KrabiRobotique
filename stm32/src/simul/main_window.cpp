@@ -5,6 +5,9 @@
 #include <QVBoxLayout>
 #include <QResizeEvent>
 #include <QShortcut>
+#include <QApplication>
+#include <QStyle>
+#include <QDebug>
 
 MainWindow::MainWindow(bool isBlue)
 {
@@ -13,23 +16,41 @@ MainWindow::MainWindow(bool isBlue)
 	dt = 10;
 	timer->start(dt);
 
-	QWidget* inter = new QWidget(this);
+    QWidget* inter = new QWidget(this);
 	setCentralWidget(inter);
 
-	inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
+    inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 
-    table = new Table(inter, isBlue);
+    table = new Table(this, inter, isBlue);
 
 	this->setFixedSize(900,600);
+
+    debugWindow = new DebugWindow(this);
+
+    debugWindow->show();
+
+    postStartTimer.start(1000);
+    connect(&postStartTimer, SIGNAL(timeout()), this, SLOT(postStart()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete debugWindow;
 }
 
 void MainWindow::update()
 {
-	table->update(dt);
+    table->update(dt);
+}
+
+DebugWindow* MainWindow::getDebugWindow()
+{
+    return debugWindow;
+}
+
+void MainWindow::postStart()
+{
+    debugWindow->setReady(true);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* evt)
@@ -59,6 +80,17 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 		table->resize(s.width(),s.width()/proportion);
 	else
 		table->resize(proportion*s.height(),s.height());
+}
+
+void MainWindow::moveEvent(QMoveEvent * event)
+{
+    if (debugWindow->isAttached())
+        debugWindow->moveWithoutEvent(this->mapToGlobal(QPoint()) + QPoint(this->width() + 16, -QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight)));
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    debugWindow->close();
 }
 
 /// #include "main_window.moc"

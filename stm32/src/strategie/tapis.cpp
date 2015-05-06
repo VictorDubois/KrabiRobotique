@@ -24,8 +24,12 @@ Tapis::Tapis(Position position):MediumLevelAction(position)  //si cote est true 
     };
 }
 
-
 Tapis::~Tapis(){}
+
+Etape::EtapeType Tapis::getType()
+{
+    return Etape::TAPIS;
+}
 
 int Tapis::update()
 {
@@ -127,4 +131,3 @@ int Tapis::update()
 
     return status;
 }
-

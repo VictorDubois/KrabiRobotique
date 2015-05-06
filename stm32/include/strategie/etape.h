@@ -1,6 +1,14 @@
 #ifndef ETAPE_H
 #define ETAPE_H
+
 #include "position.h"
+
+class ActionGoTo;
+class MediumLevelAction;
+
+#ifndef ROBOTHW
+    #include <QString>
+#endif
 
 class Etape
 {
@@ -9,6 +17,7 @@ public:
     enum EtapeType
     {
         ROBOT_VU_ICI = 100,
+
         POINT_PASSAGE = 0,
         COLLECT = 1,
         FRUIT = 2,
@@ -28,6 +37,7 @@ public:
         TAPIS = 21,
         DEPOSE_GOBELET = 22,
         DEPOSE_PIED = 23,
+
         ROBOT_POINT_PASSAGE = POINT_PASSAGE + ROBOT_VU_ICI,
         ROBOT_COLLECT =       COLLECT + ROBOT_VU_ICI,
         ROBOT_FRUIT =         FRUIT + ROBOT_VU_ICI,
@@ -49,6 +59,25 @@ public:
 
     };
 
+    /** @brief Constructeur vide d'une etape */
+    Etape();
+
+    /** @brief Constructeur d'une etape *
+    *   @param le numero de cette étape */
+    Etape(int numero);
+
+    /** @brief Constructeur d'une etape *
+    *   @param le numero de cette étape *
+    *   @param l'étape à réaliser */
+    Etape(int numero, MediumLevelAction* action);
+
+    /** @brief Constructeur d'une etape *
+    *   @param position Position de cette étape *
+    *   @param typeType d'étape (un feu, un point de passage...) *
+    *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
+    *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
+    Etape(int numero, Position position, EtapeType type = POINT_PASSAGE, int state = -1, int nombreEtapesLieesParFinirEtape = 0);
+
     /** @brief Constructeur d'une etape *
     *   @param position Position de cette étape *
     *   @param le nombre d'étapes attachées à celle_ci *
@@ -57,10 +86,7 @@ public:
     *   @param typeType d'étape (un feu, un point de passage...) *
     *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
     *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
-    Etape(Position position,/* int nbChildren, */int numero, Etape** tableauEtapesTotal, EtapeType type, int state, int nombreEtapesLieesParFinirEtape);
-
-    /** @brief Constructeur vide d'une etape */
-    Etape();
+    Etape(Position position,/* int nbChildren, */int numero, Etape** tableauEtapesTotal, EtapeType type = POINT_PASSAGE, int state = -1, int nombreEtapesLieesParFinirEtape = 0);
 
     /** @brief Renvoi un pointeur vers une des etapes attachees a celle-ci *
     *   @param nb le numéro du lien vers l'autre etape */
@@ -147,14 +173,50 @@ public:
     /** @brief Renvoi le score de l'étape */
     int getScore();
 
-    /** @brief Ajoute un voisinau tableau de voisins */
-    Etape* addVoisin(Etape* newVoisin, bool autreSens=true);
+    /** @brief Ajoute un voisin au tableau de voisins */
+    void addVoisin(Etape* newVoisin, bool autreSens=true);
+
+    /** @brief Ajoute un voisin au tableau de voisins */
+    void addVoisin(int newVoisinIndex, bool autreSens=true);
+
+    /** @brief Ajoute un voisin au tableau de voisins */
+    void addVoisins(int newVoisinIndex);
+
+    /** @brief Ajoute des voisins au tableau de voisins */
+    void addVoisins(int newVoisinIndex1, int newVoisinIndex2);
+
+    /** @brief Ajoute des voisins au tableau de voisins */
+    void addVoisins(int newVoisinIndex1, int newVoisinIndex2, int newVoisinIndex3);
+
+    /** @brief Ajoute des voisins au tableau de voisins */
+    void addVoisins(int newVoisinIndex1, int newVoisinIndex2, int newVoisinIndex3, int newVoisinIndex4);
 
     /** @brief Setter de l'étape à laquelle on fini l'action de l'étape */
     void setNumeroEtapeFinAction(int newNumeroEtapeFinAction);
 
     /** @brief Getter de l'étape à laquelle on fini l'action de l'étape */
     int getNumeroEtapeFinAction();
+
+    void setAction(MediumLevelAction* action);
+
+    MediumLevelAction* getAction();
+
+    ActionGoTo* getActionGoTo();
+
+    void reset();
+
+    void setGoBack(bool val);
+
+    static Etape** initTableauEtapeTotal(int number);
+
+    static Etape* get(int index);
+
+    static Etape** getTableauEtapesTotal();
+
+#ifndef ROBOTHW
+    static QString getNameType(EtapeType type);
+    static QString getShortNameType(EtapeType type);
+#endif
 
 private:
     /** @brief Tableau des étapes attachées à celle-ci */
@@ -195,6 +257,16 @@ private:
 
     /** @brief Etape à laquelle on fini l'action de l'étape */
     int numeroEtapeFinAction;
+
+    ActionGoTo* actionGoTo;
+
+    MediumLevelAction* action;
+
+    static int numberInit;
+
+    static Etape** tableauEtapesTotal;
+
+    void postInit();
 };
 
 #endif // ETAPE_H

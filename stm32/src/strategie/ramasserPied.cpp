@@ -25,6 +25,11 @@ RamasserPied::RamasserPied(Position goalposition): MediumLevelAction(goalpositio
 
 RamasserPied::~RamasserPied(){}
 
+Etape::EtapeType RamasserPied::getType()
+{
+    return Etape::RAMASSER_PIED;
+}
+
 int RamasserPied::update()
 {
 
@@ -71,19 +76,9 @@ int RamasserPied::update()
         status++;
     }
 
-    else if ((status <MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE) && (status > 0))  //On attend que l'ascenseur se baisse
-    {
-        status++;
-    }
-
     else if (status == MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
         Ascenseur::getSingleton()->fermerAscenseur();
-        status++;
-    }
-
-    else if ((status <MLA_RAMASSER_PIED_FERME +MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE) && (status > 0))  //On attend que l'ascenseur se baisse
-    {
         status++;
     }
 
@@ -93,20 +88,17 @@ int RamasserPied::update()
         status++;
     }
 
-    else if ((status <MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME +MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE) && (status > 0))  //On attend que l'ascenseur se baisse
-    {
-        status++;
-    }
-
     else if (status == MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
 #ifndef ROBOTHW
         qDebug() << "Etape pied finie";
 #endif
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
-        status++;
+
         int nouveauNbrPiedsStockes = Ascenseur::getSingleton()->getNbrPiedsStockes() + 1;
         Ascenseur::getSingleton()->setNbrPiedsStockes(nouveauNbrPiedsStockes);
+
+        status++;
     }
 
     else if (status == MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE+MLA_RAMASSER_PIED_PART)
@@ -114,13 +106,13 @@ int RamasserPied::update()
         if (Command::isNear(goalPosition))
         {
             StrategieV2::lookAt(goalPosition);
-            status++;
+            status = -1;
         }
     }
 
-    else if (MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE+MLA_RAMASSER_PIED_PART+1)
+    else
     {
-        status = -1;
+        status++;
     }
 
     return status;

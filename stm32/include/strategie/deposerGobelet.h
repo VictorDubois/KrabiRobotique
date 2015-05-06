@@ -12,6 +12,7 @@ public:
     DeposerGobelet(Position position);
     ~DeposerGobelet();
     int update();
+    Etape::EtapeType getType();
 
 protected :
     Position position;

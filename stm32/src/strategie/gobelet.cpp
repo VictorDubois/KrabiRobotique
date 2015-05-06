@@ -15,6 +15,11 @@ Gobelet::Gobelet(Position goalposition):MediumLevelAction(goalposition){}
 
 Gobelet::~Gobelet(){}
 
+Etape::EtapeType Gobelet::getType()
+{
+    return Etape::GOBELET;
+}
+
 int Gobelet::update()
 {
     if (status == 0)

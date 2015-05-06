@@ -774,9 +774,9 @@ void Robot::paint(QPainter &p, int dt)
     //drawTriangle(p, 0, 0,  65, 0,  60, 0);
     p.setOpacity(1);
 
-    p.setPen(QColor(Qt::red));
+    /*p.setPen(QColor(Qt::red));
     p.drawLine(0,0,pos.position.x,0);
-    p.drawLine(0,100*pos.angle,0,0);
+    p.drawLine(0,100*pos.angle,0,0);*/
     p.setWorldTransform(QTransform());
 
 

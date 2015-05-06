@@ -2,6 +2,8 @@
 #define MAIN_WINDOW_H_INCLUDED
 
 #include <QMainWindow>
+#include <QTimer>
+#include "debugwindow.h"
 
 class MainWindow: public QMainWindow
 {
@@ -9,13 +11,23 @@ class MainWindow: public QMainWindow
 public:
 	virtual ~MainWindow();
     MainWindow(bool isBlue);
-private:
 
+    DebugWindow* getDebugWindow();
+
+private:
+    DebugWindow* debugWindow;
 	class Table* table;
 	int dt;
 
+    QTimer postStartTimer;
+
+    void moveEvent(QMoveEvent * event);
+    void closeEvent(QCloseEvent *event);
+
 private slots:
+    void postStart();
 	void update();
+
 protected:
 	void resizeEvent(QResizeEvent* event);
     void mousePressEvent(QMouseEvent* evt);

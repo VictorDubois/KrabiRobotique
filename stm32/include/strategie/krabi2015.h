@@ -35,9 +35,6 @@ private:
 //    /** Numéro de l'étape où le robot va se cacher à la fin */
 //    int numeroEtapeGarage = ETAPE_GARAGE;
 
-    /** @brief update du stock et de l'étape */
-    void updateStock();
-
     /** @brief update du score d'une étape */
     int getScoreEtape(int i);
 
