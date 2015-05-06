@@ -33,7 +33,6 @@ StrategieV3::StrategieV3(bool isBlue) : MediumLevelAction()
 
 int StrategieV3::update()
 {
-
     //this->actionEtape[this->etapeEnCours]->reset();
     //this->actionGoto[this->etapeEnCours].reset();
 
@@ -233,6 +232,7 @@ void StrategieV3::updateIntermedaire()
     #endif
     int etapeOuOnVientDArriver = this->etapeEnCours;
     this->etapeEnCours = this->goal;
+    this->nextStep = -1;
 
     // Si la prochaine étape est le goal, alors au prochain update il faudra trouver un nouvel objectif -> status = 1;
     if(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)
@@ -249,6 +249,7 @@ void StrategieV3::updateIntermedaire()
         #ifndef ROBOTHW
         qDebug() << "On cherche l'étape suivant vers l'etape - but" << this->etapeEnCours << "\n";
         #endif
+        this->nextStep = this->etapeEnCours;
         this->etapeEnCours = ((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero()));
     }
 
@@ -260,6 +261,9 @@ void StrategieV3::updateIntermedaire()
     else
     {
         //On ajoute l'action d'aller en ligne droite vers cette étape intermédiaire
+#ifdef SMOOTH_MOVE
+        tableauEtapesTotal[this->etapeEnCours]->getActionGoTo()->setNextGoal(tableauEtapesTotal[this->nextStep]->getPosition());
+#endif
         StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getActionGoTo());
     }
 }

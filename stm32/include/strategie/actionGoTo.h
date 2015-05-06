@@ -5,23 +5,27 @@
 #include "position.h"
 //#include <stdint.h>
 
+class Command;
 
 class ActionGoTo : public MediumLevelAction
 {
     public:
-        ActionGoTo(Position goalPos = Position(0,0), bool goBack1 = false, float _precision = 30.f);
+        ActionGoTo(Position goalPos = Position(), bool goBack1 = false, float _precision = 30.f);
         virtual ~ActionGoTo();
 
         virtual int update();
         virtual void collisionAvoided();
         void reset();
+
+        void setNextGoal(Position nextGoal);
     protected:
     private:
-        float goalAngle;
+        float goalAngle, precision;
         bool goingCurve;
-        int curveFactor;
-        float precision;
-        Position intermediateGoalPosition;
+        int curveFactor, smoothFactor;
+
+        Position intermediateGoalPosition, nextGoal;
+        Command* command;
 };
 
 #endif // ACTIONGOTO_H_INCLUDED

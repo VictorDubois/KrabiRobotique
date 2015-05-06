@@ -9,9 +9,14 @@ Acceleration Command::acceleration_angulaire = ACCELERATION_ANGULAIRE_MAX; // en
 bool Command::stop = false;
 bool Command::limiter = false;
 
+bool Command::previousWasSmooth = false;
+
 Command::Command()
 {
     Command::stop = false;
+
+    fromSmoothMovement = previousWasSmooth;
+    previousWasSmooth = false;
 }
 
 Command::~Command()
@@ -31,6 +36,11 @@ void Command::resetSpeeds()
 void Command::freinageDUrgence(bool doitFreiner)
 {
     Command::stop = doitFreiner;
+}
+
+void Command::markAsSmooth()
+{
+    previousWasSmooth = true;
 }
 
 // est ce que la commande a fini ?

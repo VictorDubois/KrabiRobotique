@@ -657,7 +657,7 @@ void StrategieV2::update()
     //eteindreLED();
 }
 
-void StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Angle precisionAngle)
+Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Angle precisionAngle)
 {
     if (currentCommand != NULL)
         delete currentCommand;
@@ -686,29 +686,54 @@ void StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Ang
         //StrategieV2::sharpsToCheck[SharpSensor::RIGHT_FRONT] = true;
     }*/
 #endif
+
+    return currentCommand;
 }
-void StrategieV2::setCurrentGoal(Position goal, Position center, float vitesse, bool goBack, Angle precisionAngle)
+
+Command* StrategieV2::setCurrentGoalSmooth(Position goal, Position nextGoal, float smoothFactor, bool goBack, float maxSpeed, Angle precisionAngle)
+{
+    if (currentCommand != NULL)
+        delete currentCommand;
+
+    CommandAllerA* command = new CommandAllerA(goal, goBack, maxSpeed, 0.0f, precisionAngle);
+    command->smoothMovement(nextGoal, smoothFactor);
+    currentCommand = command;
+
+    Asservissement::asservissement->setCommandSpeeds(currentCommand);
+    StrategieV2::emptySharpsToCheck();
+
+    return currentCommand;
+}
+
+Command* StrategieV2::setCurrentGoal(Position goal, Position center, float vitesse, bool goBack, Angle precisionAngle)
 {
     if (currentCommand != NULL)
         delete currentCommand;
     currentCommand = new CommandAllerEnArcA(goal, center, vitesse*5, goBack);
     Asservissement::asservissement->setCommandSpeeds(currentCommand);
+
+    return currentCommand;
 }
-void StrategieV2::lookAt(Position pos, float maxSpeed)
+
+Command* StrategieV2::lookAt(Position pos, float maxSpeed)
 {
     if (currentCommand != NULL)
         delete currentCommand;
     currentCommand = new CommandTournerVers(pos, maxSpeed); // create the command
     Asservissement::asservissement->setCommandSpeeds(currentCommand); // apply it
     StrategieV2::emptySharpsToCheck();
+
+    return currentCommand;
 }
-void StrategieV2::lookAt(Angle a, float maxSpeed)
+Command* StrategieV2::lookAt(Angle a, float maxSpeed)
 {
     if (currentCommand != NULL)
         delete currentCommand;
     currentCommand = new CommandTournerVers(a, maxSpeed); // create the command
     Asservissement::asservissement->setCommandSpeeds(currentCommand); // apply it
     StrategieV2::emptySharpsToCheck();
+
+    return currentCommand;
 }
 void StrategieV2::addTemporaryAction(MediumLevelAction* action)
 {

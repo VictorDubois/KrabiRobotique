@@ -8,6 +8,10 @@
 #define abs(x) fabs(x)
 #endif
 
+#ifndef ROBOTHW
+#include "debugwindow.h"
+#endif
+
 float diffAngle(float a, float b)
 {
     float t = a-b;
@@ -177,15 +181,16 @@ bool CommandAllerEnArcA::fini() const
     ////////////////////////////////
 
 CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin, float precisionAngle)
-    : Command()
+    : Command(), smoothFactor(0.f), requireSmoothMovement(false)
 {
+    bonAngle = fromSmoothMovement;
+
     but = p;
     vitesseLinMax = vitesseLineaireMax;
     vFin2 = vitesseFin*vitesseFin;
     m_reculer = reculer;
     linSpeed = Odometrie::odometrie->getVitesseLineaire();
     angSpeed = Odometrie::odometrie->getVitesseAngulaire();
-    bonAngle = false;
     this->precisionAngle = -1.f;//precisionAngle;
 
     m_fini = false;
@@ -193,11 +198,13 @@ CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax,
 
 void CommandAllerA::update()
 {
+    // maximum values
     float accAngMax = ACCELERATION_ANGULAIRE_MAX;
     float vitAngMax = VITESSE_ANGULAIRE_MAX;
     float accLinMax = ACCELERATION_LINEAIRE_MAX;
     float decLinMax = DECELERATION_LINEAIRE_MAX;
     float vitLinMax = vitesseLinMax;//VITESSE_LINEAIRE_MAX;
+    float vitLinIntermediate = vitesseLinMax/2.;
 
     if(this->getLimit())
     {
@@ -210,13 +217,51 @@ void CommandAllerA::update()
         //eteindreLED();
     }
 
+    // settings
     //float angleVitesseMax = M_PI/10.0f;
     float angleVitesseMax = 0.5f*vitAngMax*vitAngMax/accAngMax;
     //float distanceVitesseMax = 350.0f;
     float distanceVitesseMax = 0.5f*(vitLinMax*vitLinMax-vFin2)/decLinMax;
     float angle = Odometrie::odometrie->getPos().getAngle();
     Position pos = Odometrie::odometrie->getPos().getPosition();
-    Position delta = but-pos;
+    Position computedGoal = but;
+    Position deltaFirst = but - pos;
+    Position deltaNext;
+    if (this->requireSmoothMovement)
+        deltaNext = nextGoal - but;
+
+    // distances
+    float distanceNext = (this->requireSmoothMovement ? deltaNext.getNorme() : 0);
+    // disable smooth if short moves
+    /*if (this->requireSmoothMovement && distanceNext < 50.)
+        this->requireSmoothMovement = false;*/
+    float distanceIntermediate = (this->requireSmoothMovement ? deltaFirst.getNorme() : 0);
+
+#ifndef ROBOTHW
+    DebugWindow::instance()->plot(4, "distance", distanceIntermediate / 100.);
+#endif
+
+    bool isChangingToNext = false;
+
+    // smooth movement
+    Position delta;
+    if (this->requireSmoothMovement)
+    {
+        if (distanceIntermediate > this->smoothFactor)
+            delta = deltaFirst;
+        else
+        {
+            isChangingToNext = true;
+            delta = deltaFirst + (deltaNext - deltaFirst) * (0.5f - distanceIntermediate / (this->smoothFactor * 2.));
+        }
+    }
+    else
+        delta = computedGoal - pos;
+
+    // distances
+    float distanceFinal = (this->requireSmoothMovement ? delta.getNorme() + distanceNext : delta.getNorme());
+
+    // angles
     float angleVise = atan2(delta.getY(),delta.getX());
 
     if (m_reculer)
@@ -235,7 +280,7 @@ void CommandAllerA::update()
         if (fabs(diffAng) < angleMaxPourAvancer)
         {
             bonAngle = true;
-            derniereDistance = 1000000.0f;
+            lastDistance = 1000000.0f;
         }
         else
         {
@@ -243,7 +288,7 @@ void CommandAllerA::update()
         }
     }
 
-    // Check sharps
+    // sharps
     StrategieV2::setTourneSurSoiMeme((!bonAngle)&&(abs(linSpeed)<0.2f));
 
     if (linSpeed > 0.2f)
@@ -253,9 +298,7 @@ void CommandAllerA::update()
     else
         StrategieV2::emptySharpsToCheck();
 
-    float distanceBut = delta.getNorme();
-
-    bool distanceOk = /*(distanceBut > derniereDistance) || */(distanceBut < 30.0f);
+    bool distanceOk = /*(distanceBut > derniereDistance) || */(distanceFinal < 30.0f);
 
     // vitesse angulaire
     if (distanceOk)
@@ -316,24 +359,34 @@ void CommandAllerA::update()
     }*/
 
     // vitesse linéaire
-    if (distanceBut > derniereDistance || distanceBut < 10.0f)
-    {
-        m_fini = true;
-    }
-
     if (bonAngle)
     {
 
-        if (fabs(diffAng) > angleMaxPourAvancer)
+        if (fabs(diffAng) > angleMaxPourAvancer && !isChangingToNext)
         {
-            linSpeed *= 0.97f;
+            if (!fromSmoothMovement)
+                linSpeed *= 0.97f;
         }
-        else if (distanceBut > distanceVitesseMax)
+        else if (isChangingToNext)
         {
-             if (m_reculer)
-                linSpeed -= accLinMax;
-             else
-                linSpeed += accLinMax;
+            float linSpeedVisee = (m_reculer ? -vitLinIntermediate : vitLinIntermediate);
+
+            if (abs(linSpeed) < abs(linSpeedVisee))
+            {
+                linSpeed += (m_reculer ? -accLinMax : accLinMax);
+                if (abs(linSpeed) > abs(linSpeedVisee))
+                    linSpeed = linSpeedVisee;
+            }
+            else if (abs(linSpeed) > abs(linSpeedVisee))
+            {
+                linSpeed += (m_reculer ? accLinMax : -accLinMax);
+                if (abs(linSpeed) < abs(linSpeedVisee))
+                    linSpeed = linSpeedVisee;
+            }
+        }
+        else if (distanceFinal > distanceVitesseMax)
+        {
+            linSpeed += (m_reculer ? -accLinMax : accLinMax);
 
             if (linSpeed > vitLinMax)
                 linSpeed = vitLinMax;
@@ -342,21 +395,25 @@ void CommandAllerA::update()
         }
         else
         {
-            float linSpeedVisee;
+            float linSpeedVisee = sqrt(vFin2+2.0f*distanceFinal*decLinMax);
             if (m_reculer)
-                linSpeedVisee = -sqrt(vFin2+2.0f*distanceBut*decLinMax);
-            else
-                linSpeedVisee = sqrt(vFin2+2.0f*distanceBut*decLinMax);
+                linSpeedVisee = -linSpeedVisee;
 
-             if (m_reculer)
-                linSpeed -= accLinMax;
-             else
-                linSpeed += accLinMax;
+            linSpeed += (m_reculer ? -accLinMax : accLinMax);
 
             if (abs(linSpeed) > abs(linSpeedVisee))
                 linSpeed = linSpeedVisee;
+
+            //linSpeed = distanceBut * vitesseLinMax / distanceVitesseMax;
         }
     }
+
+    if ((isChangingToNext && distanceIntermediate > lastDistance) || distanceFinal < 10.0f)
+    {
+        m_fini = true;
+    }
+
+    lastDistance = distanceIntermediate;
 }
 
 void CommandAllerA::resetSpeeds()
@@ -378,6 +435,15 @@ Angle CommandAllerA::getAngularSpeed()
 bool CommandAllerA::fini() const
 {
     return m_fini;
+}
+
+void CommandAllerA::smoothMovement(Position nextGoal, float smoothFactor)
+{
+    this->smoothFactor = smoothFactor;
+    this->nextGoal = nextGoal;
+    this->requireSmoothMovement = true;
+
+    markAsSmooth();
 }
 
 
