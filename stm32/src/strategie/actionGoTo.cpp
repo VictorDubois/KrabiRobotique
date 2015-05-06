@@ -43,7 +43,7 @@ uint8_t tableauEvitement[20][30] =
         3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, // 0
     };//0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
     */
-ActionGoTo::ActionGoTo(Position goalPos, bool goBack1, float _precision) : MediumLevelAction(goalPos)
+ActionGoTo::ActionGoTo(Position goalPos, bool goBack1, float _precision) : MediumLevelAction(goalPos), command(0), smoothFactor(200.f)
 {
     goBack = goBack1;
     goalAngle = 0;
@@ -80,7 +80,10 @@ int ActionGoTo::update()
         }
         else*/
         {
-            StrategieV2::setCurrentGoal(goalPosition, goBack);
+            if (nextGoal == Position())
+                command = StrategieV2::setCurrentGoal(goalPosition, goBack);
+            else
+                command = StrategieV2::setCurrentGoalSmooth(goalPosition, nextGoal, smoothFactor, goBack);
             status = 3;
         }
 
@@ -147,7 +150,7 @@ int ActionGoTo::update()
         Position vect = goalPosition - Odometrie::odometrie->getPos().getPosition();
         //std::cout << vect.getNorme() << std::endl;
         //std::cout << Odometrie::odometrie->getPos().getPosition().getX() << " "<< Odometrie::odometrie->getPos().getPosition().getY()   << std::endl;
-        if (vect.getNorme() < precision)
+        if (vect.getNorme() < precision || (command != 0 && command->fini()))
             status = -1;
     }
     return status;
@@ -162,4 +165,9 @@ void ActionGoTo::collisionAvoided()
 void ActionGoTo::reset()
 {
     this->status = 0;
+}
+
+void ActionGoTo::setNextGoal(Position nextGoal)
+{
+    this->nextGoal = nextGoal;
 }

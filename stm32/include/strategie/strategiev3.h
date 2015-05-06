@@ -6,6 +6,8 @@
 #include "dijkstra.h"
 #include "strategieV2.h"
 
+#define SMOOTH_MOVE
+
 #ifndef ROBOTHW
 #include <QPainter>
 #include <QColor>
@@ -72,6 +74,9 @@ protected:
 
     /** @brief le numéro de l'étape-objectif */
     int goal;
+
+    /** @brief le numéro de l'étape suivante */
+    int nextStep;
 
     /** @brief le status de la stratégie : 1 = vers une étape-objectif, 2 = vers une étape intermédiaire, -1 = stratégie finie, plus rien à faire */
     int statusStrat;
