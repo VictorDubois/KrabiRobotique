@@ -333,7 +333,7 @@ void Table::update(int dt)
     }*/
 
 
-    QString debugText = "Position Robot:\n";
+    QString debugText = "Robot Position :\n";
     QString sharpsChecked = "";
 
     for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
@@ -343,10 +343,18 @@ void Table::update(int dt)
     debugText += "   x : " + QString::number(robots[1]->getPos().position.getX()) + " mm\n";
     debugText += "   y : " + QString::number(robots[1]->getPos().position.getY()) + " mm\n";
     debugText += "   angle : " + QString::number(robots[1]->getPos().getAngle()*180/M_PI) + " °\n\n";
+
+    debugText += "Robot Speeds :\n";
+    debugText += "   lin : " + QString::number(robots[1]->getVitesseLineaire()) + " \n";
+    debugText += "   ang : " + QString::number(robots[1]->getVitesseAngulaire()) + " \n\n";
+
     debugText += "Time : " + QString::number(StrategieV2::getTimeSpent()/1000.) + " s\n\n";
+
     debugText += "Sharps : \n " + sharpsChecked + "\n\n";
 
     mainWindow->getDebugWindow()->setText(debugText);
+    mainWindow->getDebugWindow()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
+    mainWindow->getDebugWindow()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);

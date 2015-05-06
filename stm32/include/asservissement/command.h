@@ -77,6 +77,11 @@ class Command
             @return true s'il est à moins de precision */
         static bool isLookingAt(Position pos, float precision = PREC_ANGLE);
 
+        static void markAsSmooth();
+
+    protected:
+        bool fromSmoothMovement;
+
     private:
 
         /** @brief Indique si le robot doit s'arrêter imédiatement ou non. */
@@ -84,6 +89,8 @@ class Command
 
         /** @brief Indique si la vitesse du robot doit être limitée. */
         static bool limiter;
+
+        static bool previousWasSmooth;
 };
 
 #endif //COMMAND_H

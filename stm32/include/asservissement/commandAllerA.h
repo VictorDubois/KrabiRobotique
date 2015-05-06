@@ -33,28 +33,24 @@ class CommandAllerEnArcA : public Command
 
 class CommandAllerA : public Command
 {
-    Position but;
-    float vitesseLinMax;
-    float vFin2; // vitesse finale * vitesse finale
-    bool bonAngle;
-    float linSpeed;
-    float angSpeed;
-    bool m_reculer;
+public:
+    CommandAllerA(Position p, bool reculer, float vitesseLineaireMax = VITESSE_LINEAIRE_MAX, float vitesseFin = 0.0f, float precisionAngle = -1.);
 
-    float derniereDistance;
-    bool m_fini;
-    float precisionAngle;
-    public:
-        CommandAllerA(Position p, bool reculer, float vitesseLineaireMax = VITESSE_LINEAIRE_MAX, float vitesseFin = 0.0f, float precisionAngle = -1.);
+    virtual void update();
+    virtual Vitesse getLinearSpeed();
+    virtual Angle getAngularSpeed();
+    virtual void resetSpeeds();
+    //virtual void limitSpeed();
 
-        virtual void update();
-        virtual Vitesse getLinearSpeed();
-        virtual Angle getAngularSpeed();
-        virtual void resetSpeeds();
-        //virtual void limitSpeed();
+    void smoothMovement(Position nextGoal, float smoothFactor);
 
-        // est ce que la commande a fini ?
-        virtual bool fini() const;
+    // est ce que la commande a fini ?
+    virtual bool fini() const;
+
+private:
+    Position but, nextGoal;
+    bool bonAngle, m_reculer, m_fini, requireSmoothMovement;
+    float vitesseLinMax, linSpeed, angSpeed, lastDistance, precisionAngle, smoothFactor, vFin2;// vitesse finale * vitesse finale
 };
 
     ////////////////////////////////

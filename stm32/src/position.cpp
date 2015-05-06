@@ -50,6 +50,13 @@ Position Position::operator-(const Position &position) const
     return resultat;
 }
 
+/// @brief Surchage d'opérateur pour multiplier par un flottant
+Position Position::operator*(float val) const
+{
+    Position resultat(x * val,y * val);
+    return resultat;
+}
+
 void Position::operator=(Position position)
 {
 

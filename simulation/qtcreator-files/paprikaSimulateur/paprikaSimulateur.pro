@@ -1,6 +1,7 @@
 
 TEMPLATE = app
-CONFIG += qt debug
+#add 'qwt' to the CONFIG for ploting
+CONFIG += qt debug# qwt
 QT += core gui
 
 INCLUDEPATH += ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D

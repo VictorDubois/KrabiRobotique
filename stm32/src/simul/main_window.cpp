@@ -26,7 +26,6 @@ MainWindow::MainWindow(bool isBlue)
 	this->setFixedSize(900,600);
 
     debugWindow = new DebugWindow(this);
-
     debugWindow->show();
 
     postStartTimer.start(1000);
