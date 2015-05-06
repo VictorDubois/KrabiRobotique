@@ -233,8 +233,6 @@ void StrategieV3::updateIntermedaire()
     #endif
     int etapeOuOnVientDArriver = this->etapeEnCours;
     this->etapeEnCours = this->goal;
-    Etape* toto = this->tableauEtapesTotal[1];
-    Etape* toto2 = this->tableauEtapesTotal[2];
 
     // Si la prochaine étape est le goal, alors au prochain update il faudra trouver un nouvel objectif -> status = 1;
     if(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)

@@ -1,4 +1,6 @@
 #include "krabi2015.h"
+#include "ascenseur.h"
+#include "pinces.h"
 
 Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 {
@@ -140,33 +142,34 @@ int Krabi2015::getScoreEtape(int i){
        Plus tard : pourquoi pas changer le système en ayant les FEU etc... fils de Etape, ça éviterait aussi le switch dans updateStock().
        Juste faire attention à comment transmettre le stock à update.
      */
-    switch (this->tableauEtapesTotal[i]->getEtapeType()){
+    switch (this->tableauEtapesTotal[i]->getEtapeType())
+    {
         case Etape::DEPART :
             return 0;
-            break;
         case Etape::CLAP :
-            return 0;
-            break;
+            return 1;
         case Etape::GOBELET :
-            return 0;//ce devrait être 40
-            break;
+            if (Pinces::getSingleton()->getEstDispo())
+                return 40;
+            else
+                return 0;
         case Etape::AMPOULE :
             return 0;
-            break;
         case Etape::RAMASSER_PIED :
-            return 20;//ce devrait être 20
-            break;
+            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
+                return 0;
+            else
+                return 100;
         case Etape::TAPIS :
             return 0;
-            break;
         case Etape::DEPOSE_GOBELET :
-            return 0;
-            break;
+            /*if (!Pinces::getSingleton()->getEstDispo())
+                return 40;
+            else*/
+                return 0;
         case Etape::POINT_PASSAGE :
             return 0;
-            break;
         default :
             return 0;
-            break;
     }
 }

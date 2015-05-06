@@ -73,6 +73,7 @@ HEADERS += \
     ../../include/strategie/deposerGobelet.h \
     ../../include/actionneurs/pinces.h \
     ../../include/strategie/ramasserPied.h \
+    ../../include/hardware/microSwitch.h \
     ../../include/simul/debugwindow.h
 
 
@@ -129,5 +130,6 @@ SOURCES += \
     ../../src/strategie/deposerGobelet.cpp \
     ../../src/actionneurs/pinces.cpp \
     ../../src/strategie/ramasserPied.cpp \
-    ../../src/simul/debugwindow.cpp
+    ../../src/simul/debugwindow.cpp \
+    ../../src/hardware/microSwitch.cpp
 

@@ -97,6 +97,7 @@
 		<Unit filename="include/hardware/leds.h" />
 		<Unit filename="include/hardware/ligthBarrierSensor.h" />
 		<Unit filename="include/hardware/limitSwitchSensor.h" />
+		<Unit filename="include/hardware/microSwitch.h" />
 		<Unit filename="include/hardware/pwmHandler.h" />
 		<Unit filename="include/hardware/quadratureCoderHandler.h" />
 		<Unit filename="include/hardware/remote.h" />
@@ -113,6 +114,7 @@
 		<Unit filename="include/strategie/actionGoTo.h" />
 		<Unit filename="include/strategie/clap.h" />
 		<Unit filename="include/strategie/deposerGobelet.h" />
+		<Unit filename="include/strategie/deposerPied.h" />
 		<Unit filename="include/strategie/etape.h" />
 		<Unit filename="include/strategie/evitement.h" />
 		<Unit filename="include/strategie/gobelet.h" />
@@ -155,6 +157,7 @@
 		<Unit filename="src/hardware/leds.cpp" />
 		<Unit filename="src/hardware/ligthBarrierSensor.cpp" />
 		<Unit filename="src/hardware/limitSwitchSensor.cpp" />
+		<Unit filename="src/hardware/microSwitch.cpp" />
 		<Unit filename="src/hardware/pwmHandler.cpp" />
 		<Unit filename="src/hardware/quadratureCoderHandler.cpp" />
 		<Unit filename="src/hardware/remote.cpp" />
@@ -175,6 +178,7 @@
 		<Unit filename="src/strategie/anciens_fichiers/feukrabilateral.cpp.limitVitesseVictor" />
 		<Unit filename="src/strategie/clap.cpp" />
 		<Unit filename="src/strategie/deposerGobelet.cpp" />
+		<Unit filename="src/strategie/deposerPied.cpp" />
 		<Unit filename="src/strategie/dijkstra.cpp" />
 		<Unit filename="src/strategie/etape.cpp" />
 		<Unit filename="src/strategie/gobelet.cpp" />

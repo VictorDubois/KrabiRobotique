@@ -1,5 +1,7 @@
 #include "microSwitch.h"
 
+#ifdef ROBOTHW
+
 // initialise la pin deu microSwitch
 MicroSwitch::MicroSwitch(GPIO_TypeDef* GPIOx_microSwitch, uint16_t GPIO_Pin_x_microSwitch)
     : GPIOx(GPIOx_microSwitch), GPIO_Pin_x(GPIO_Pin_x_microSwitch)
@@ -23,4 +25,16 @@ bool MicroSwitch::ferme() const
 {
     return GPIO_ReadInputDataBit(GPIOx, GPIO_Pin_x) == Bit_RESET;
 }
+
+#else
+MicroSwitch::MicroSwitch(){}
+
+MicroSwitch::~MicroSwitch(){}
+
+bool MicroSwitch::ferme() const
+{
+    return true;
+}
+
+#endif
 

@@ -88,7 +88,7 @@ int RamasserPied::update()
         status++;
     }
 
-    else if (status == MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
+    else if (status == MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
 #ifndef ROBOTHW
         qDebug() << "Etape pied finie";
@@ -101,19 +101,15 @@ int RamasserPied::update()
         status++;
     }
 
-    /*else if (status == 84)
+    else if (status == MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE+MLA_RAMASSER_PIED_PART)
     {
         if (Command::isNear(goalPosition))
         {
             StrategieV2::lookAt(goalPosition);
-            status++;
+            status = -1;
         }
-    }*/
-
-    else if (status == 85)
-    {
-        status = -1;
     }
+
     else
     {
         status++;

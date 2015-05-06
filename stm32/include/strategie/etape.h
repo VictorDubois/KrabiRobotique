@@ -67,6 +67,11 @@ public:
     Etape(int numero);
 
     /** @brief Constructeur d'une etape *
+    *   @param le numero de cette étape *
+    *   @param l'étape à réaliser */
+    Etape(int numero, MediumLevelAction* action);
+
+    /** @brief Constructeur d'une etape *
     *   @param position Position de cette étape *
     *   @param typeType d'étape (un feu, un point de passage...) *
     *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
