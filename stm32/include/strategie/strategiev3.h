@@ -50,8 +50,8 @@ protected:
     int numeroEtapeGarage;
 
     /** @brief tableau des actions qu'on peut décider de faire. TODO : mettre à jour ce tableau, en incluant des actions plus diverses */
-    MediumLevelAction** actionEtape;
-    ActionGoTo* actionGoto;
+    /*MediumLevelAction** actionEtape;
+    ActionGoTo* actionGoto;*/
 
 /*
 #ifdef KRABI_JR
@@ -64,7 +64,7 @@ protected:
     Dijkstra* dijkstra;
 
     /** @brief le tableau des étapes constituant le graphe à explorer */
-    Etape** tableauEtapes;
+    //Etape** tableauEtapes;
     Etape** tableauEtapesTotal;
 
     /** @brief vient-on de détecter un robot */
@@ -82,7 +82,7 @@ protected:
     /** @brief status du robot, est-il en train d'éviter en avancant */
     bool enTrainEviterAvancant;
 
-    virtual void updateStock() = 0;
+    void updateStock();
     virtual int getScoreEtape(int i) = 0;
 
 #ifndef ROBOTHW

@@ -1,6 +1,7 @@
 #ifndef DEF_MICROSWITCH
 #define DEF_MICROSWITCH
 
+#ifdef ROBOTHW
 #ifdef STM32F40_41xxx
     #include "stm32f4xx_gpio.h"
 #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
@@ -23,6 +24,7 @@ class MicroSwitch
         GPIO_TypeDef* GPIOx;
         uint16_t GPIO_Pin_x;
 };
+#endif
 
 #endif
 

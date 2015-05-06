@@ -12,6 +12,7 @@ class Gobelet : public MediumLevelAction
         Gobelet(Position position);
         ~Gobelet();
         int update();
+        Etape::EtapeType getType();
 
     protected :
         Position position;

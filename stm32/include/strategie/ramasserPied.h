@@ -12,6 +12,7 @@ class RamasserPied : public MediumLevelAction
         RamasserPied(Position position);
         ~RamasserPied();
         int update();
+        Etape::EtapeType getType();
 
     protected :
         Position position;

@@ -72,7 +72,8 @@ HEADERS += \
     ../../include/actionneurs/brasLateraux.h \
     ../../include/strategie/deposerGobelet.h \
     ../../include/actionneurs/pinces.h \
-    ../../include/strategie/ramasserPied.h
+    ../../include/strategie/ramasserPied.h \
+    ../../include/simul/debugwindow.h
 
 
 SOURCES += \
@@ -127,5 +128,6 @@ SOURCES += \
     ../../src/actionneurs/ascenseur.cpp \
     ../../src/strategie/deposerGobelet.cpp \
     ../../src/actionneurs/pinces.cpp \
-    ../../src/strategie/ramasserPied.cpp
+    ../../src/strategie/ramasserPied.cpp \
+    ../../src/simul/debugwindow.cpp
 

@@ -2,8 +2,10 @@
 #define MEDIUMLEVELACTION_H_INCLUDED
 
 #include "position.h"
+#include "etape.h"
+
 #ifndef ROBOTHW
-#include <QPainter>;
+    #include <QPainter>
 #endif
 
 class MediumLevelAction
@@ -15,7 +17,7 @@ class MediumLevelAction
         virtual int     update() = 0;
         virtual bool    getGoBack();
         virtual void    collisionAvoided();
-        virtual void reset();
+        virtual void    reset();
         void            setGoBack(bool val);
 
         #ifndef ROBOTHW
@@ -23,6 +25,8 @@ class MediumLevelAction
         #endif
 
         Position getGoalPosition();
+
+        virtual Etape::EtapeType getType();
 
         /** @brief Met à jour le temps restant avant la fin du match */
         void updateTime(int millisecondesRestantes);

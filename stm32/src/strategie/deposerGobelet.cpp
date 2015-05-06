@@ -14,6 +14,11 @@ DeposerGobelet::DeposerGobelet(Position goalposition):MediumLevelAction(goalposi
 
 DeposerGobelet::~DeposerGobelet(){}
 
+Etape::EtapeType DeposerGobelet::getType()
+{
+    return Etape::DEPOSE_GOBELET;
+}
+
 int DeposerGobelet::update()
 {
     if (status == 0)
@@ -22,6 +27,7 @@ int DeposerGobelet::update()
         qDebug() << "deposerGobelet";
 #endif
         status++;
+        status = -1;
     }
 
     else if (status == 1)

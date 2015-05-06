@@ -58,6 +58,16 @@ void Ascenseur::fermerAscenseur()
     ouvert = false;
 }
 
+bool Ascenseur::estEnHaut()
+{
+    return this->microSwitchHaut.ferme();
+}
+
+bool Ascenseur::estEnBas()
+{
+    return this->microSwitchBas.ferme();
+}
+
 #else
 
 #include <QDebug>
@@ -84,17 +94,17 @@ void Ascenseur::fermerAscenseur()
     qDebug() << "On ferme l'ascenseur";
 }
 
-#endif
-
 bool Ascenseur::estEnHaut()
 {
-    return this->microSwitchHaut.ferme();
+    return true;
 }
 
 bool Ascenseur::estEnBas()
 {
-    return this->microSwitchBas.ferme();
+    return true;
 }
+
+#endif
 
 bool Ascenseur::estOuvert()
 {

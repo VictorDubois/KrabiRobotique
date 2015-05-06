@@ -8,9 +8,7 @@ MediumLevelAction::MediumLevelAction(Position goalPos)
 }
 
 MediumLevelAction::~MediumLevelAction()
-{
-    //dtor
-}
+{}
 
 Position MediumLevelAction::getGoalPosition()
 {
@@ -33,15 +31,16 @@ void MediumLevelAction::setGoBack(bool val)
 }
 
 void MediumLevelAction::reset()
-{
+{}
 
+Etape::EtapeType MediumLevelAction::getType()
+{
+    return Etape::POINT_PASSAGE;
 }
 
 #ifndef ROBOTHW
 void MediumLevelAction::paint(QPainter* p)
-{
-
-}
+{}
 #endif
 
 void MediumLevelAction::updateTime(int millisecondesRestantes)

@@ -34,6 +34,8 @@ class Tapis : public MediumLevelAction
         */
         int update();
 
+        Etape::EtapeType getType();
+
     protected :
         Position position;
         Position positionLookAt;

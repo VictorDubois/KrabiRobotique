@@ -14,7 +14,7 @@ class KrabiJunior2015 : public StrategieV3
 public:
     /** @brief Constructeur de la stratégie *
     * @param isBlue le côté de départ */
-    KrabiJunior2015(bool isBlue);
+    KrabiJunior2015(bool isYellow);
 
     /** @brief Actions de KrabiJunior */
 
@@ -25,9 +25,6 @@ private:
 
 //    /** Numéro de l'étape où le robot va se cacher à la fin */
 //    int numeroEtapeGarage = ETAPE_GARAGE;
-
-    /** @brief update du stock et de l'étape */
-    void updateStock();
 
     /** @brief update du score d'une étape */
     int getScoreEtape(int i);

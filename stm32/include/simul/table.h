@@ -12,6 +12,8 @@
 #include "robot.h"
 #include "contactlistener.h"
 
+class MainWindow;
+
 class Table : public QWidget, public Singleton<Table>
 {
     friend class Singleton<Table>;
@@ -26,6 +28,8 @@ private:
     ContactListener contactListenerTable;
 
 	void addCard(unsigned int n, int column);
+    MainWindow* mainWindow;
+
 public:
 
 	static const int tableWidth = 3000;
@@ -36,10 +40,10 @@ public:
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
 
-    Table(QWidget* widget = NULL, bool isBlue = true);
+    Table(MainWindow* mainWindow, QWidget* parent = 0, bool isBlue = true);
 	virtual ~Table();
 
-	void update(int dt);
+    void update(int dt);
 	void paintEvent(QPaintEvent* evt);
 	void keyPressEvent(QKeyEvent* evt, bool press);
     void mousePressEvent(QMouseEvent* evt, bool press);

@@ -25,6 +25,11 @@ RamasserPied::RamasserPied(Position goalposition): MediumLevelAction(goalpositio
 
 RamasserPied::~RamasserPied(){}
 
+Etape::EtapeType RamasserPied::getType()
+{
+    return Etape::RAMASSER_PIED;
+}
+
 int RamasserPied::update()
 {
 
@@ -74,11 +79,13 @@ int RamasserPied::update()
     else if (status == MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
         Ascenseur::getSingleton()->fermerAscenseur();
+        status++;
     }
 
     else if (status == MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
         Ascenseur::getSingleton()->leverAscenseur();
+        status++;
     }
 
     else if (status == MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSE + MLA_RAMASSER_PIED_OUVRE + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
@@ -87,19 +94,21 @@ int RamasserPied::update()
         qDebug() << "Etape pied finie";
 #endif
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
-        status++;
+
         int nouveauNbrPiedsStockes = Ascenseur::getSingleton()->getNbrPiedsStockes() + 1;
         Ascenseur::getSingleton()->setNbrPiedsStockes(nouveauNbrPiedsStockes);
+
+        status++;
     }
 
-    else if (status == 84)
+    /*else if (status == 84)
     {
         if (Command::isNear(goalPosition))
         {
             StrategieV2::lookAt(goalPosition);
             status++;
         }
-    }
+    }*/
 
     else if (status == 85)
     {

@@ -6,6 +6,8 @@
 #include "time.h"
 #include "strategieV2.h"
 
+#include "main_window.h"
+
 #define COUPE_2015
 
 #ifndef ROBOTHW
@@ -35,8 +37,8 @@ b2AABB Table::getWorldAABB()
 	return a;
 }
 
-Table::Table(QWidget* parent, bool isBlue) :
-	QWidget(parent),
+Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
+    QWidget(parent), mainWindow(mainWindow),
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
@@ -330,6 +332,22 @@ void Table::update(int dt)
         }
     }*/
 
+
+    QString debugText = "Position Robot:\n";
+    QString sharpsChecked = "";
+
+    for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
+        if (StrategieV2::getSharpsToCheck()[i])
+            sharpsChecked.append((!sharpsChecked.isEmpty() ? QString(", ") : QString()) + QString::number(i));
+
+    debugText += "   x : " + QString::number(robots[1]->getPos().position.getX()) + " mm\n";
+    debugText += "   y : " + QString::number(robots[1]->getPos().position.getY()) + " mm\n";
+    debugText += "   angle : " + QString::number(robots[1]->getPos().getAngle()*180/M_PI) + " °\n\n";
+    debugText += "Time : " + QString::number(StrategieV2::getTimeSpent()/1000.) + " s\n\n";
+    debugText += "Sharps : \n " + sharpsChecked + "\n\n";
+
+    mainWindow->getDebugWindow()->setText(debugText);
+
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);
 #else
@@ -386,7 +404,7 @@ void Table::paintEvent(QPaintEvent* evt)
         this->getMainRobot()->paintStrategie(p);
     }
 
-    QFont font;
+    /*QFont font;
     font.setPixelSize(50);
     p.setFont(font);
     p.setOpacity(1);
@@ -408,7 +426,7 @@ void Table::paintEvent(QPaintEvent* evt)
         if (StrategieV2::getSharpsToCheck()[i])
             sharpsChecked.append((!sharpsChecked.isEmpty() ? QString(", ") : QString()) + QString::number(i));
 
-    p.drawText( QPoint(2625,600), sharpsChecked);
+    p.drawText( QPoint(2625,600), sharpsChecked);*/
 
     evt->ignore();
 }
