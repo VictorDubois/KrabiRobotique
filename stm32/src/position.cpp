@@ -83,7 +83,7 @@ Position Position::operator-=(const Position &position)
 
 bool Position::presqueEgales(const Position &p) const
 {
-	return (distancePresqueEgales(x, p.x) && distancePresqueEgales(y,p.y));
+    return (DistanceTools::distancePresqueEgales(x, p.x) && DistanceTools::distancePresqueEgales(y,p.y));
 }
 
 bool Position::operator==(const Position &p) const

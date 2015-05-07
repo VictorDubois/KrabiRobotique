@@ -5,11 +5,14 @@
 #include "positionPlusAngle.h"
 #include "asservissement.h"
 #ifdef ROBOTHW
-#include "memory.h"
+    #include "memory.h"
 #endif
 #include "actionGoTo.h"
 #include "recalibrerOdometrie.h"
+
 #include "commandAllerA.h"
+#include "commandAllerEnArcA.h"
+#include "commandTournerVers.h"
 
 #include "sensors.h"
 
@@ -18,10 +21,10 @@
 #endif
 
 #ifdef ROBOTHW
-#include "tourelle.h"
-#include "tirette.h"
+    #include "tourelle.h"
+    #include "tirette.h"
 #else
-#include <QDebug>
+    #include <QDebug>
 #endif
 //#include <iostream>
 
@@ -661,6 +664,7 @@ Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed,
 {
     if (currentCommand != NULL)
         delete currentCommand;
+
 //    if (actionsCount == 0)
 //        currentCommand = new CommandAllerA(goal, goBack, maxSpeed/2);
 //    else
