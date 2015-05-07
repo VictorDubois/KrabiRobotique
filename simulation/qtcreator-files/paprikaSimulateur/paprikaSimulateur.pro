@@ -75,7 +75,9 @@ HEADERS += \
     ../../include/actionneurs/pinces.h \
     ../../include/strategie/ramasserPied.h \
     ../../include/hardware/microSwitch.h \
-    ../../include/simul/debugwindow.h
+    ../../include/simul/debugwindow.h \
+    ../../include/asservissement/commandTournerVers.h \
+    ../../include/asservissement/commandAllerEnArcA.h
 
 
 SOURCES += \
@@ -132,5 +134,7 @@ SOURCES += \
     ../../src/actionneurs/pinces.cpp \
     ../../src/strategie/ramasserPied.cpp \
     ../../src/simul/debugwindow.cpp \
-    ../../src/hardware/microSwitch.cpp
+    ../../src/hardware/microSwitch.cpp \
+    ../../src/asservissement/commandTournerVers.cpp \
+    ../../src/asservissement/commandAllerEnArcA.cpp
 

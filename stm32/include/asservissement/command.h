@@ -41,10 +41,10 @@ class Command
         virtual void resetSpeeds();
 
         /**@brief Retourne la vitesse linéaire que l'on veut atteindre. Cette fonction est à déclarer dans les classes héritants de commande*/
-        virtual Vitesse getLinearSpeed() = 0;
+        virtual Vitesse getLinearSpeed();
 
         /**@brief Retourne la vitesse angulaire que l'on veut atteindre. Cette fonction est à déclarer dans les classes héritants de commande*/
-        virtual Angle getAngularSpeed() = 0;
+        virtual Angle getAngularSpeed();
 
         /** @brief Permet d'arrêter le robot imédiatement.
         *   @param doitFreiner Indique si on doit arrêter l'ordre imédiatement. */
@@ -82,8 +82,11 @@ class Command
     protected:
         bool fromSmoothMovement;
 
-    private:
+        float linSpeed, angSpeed;
 
+        bool mFinished;
+
+    private:
         /** @brief Indique si le robot doit s'arrêter imédiatement ou non. */
         static bool stop;
 
