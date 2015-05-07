@@ -1,5 +1,7 @@
 #include "odometrie.h"
 
+#ifdef ROBOTHW
+
 #ifdef STM32F40_41xxx
     #include "stm32f4xx_gpio.h"
 #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
@@ -178,3 +180,41 @@ void Odometrie::setAngle(Angle a)
 
     odometrie->ang = a;
 }
+
+#else
+
+#include "robot.h"
+
+/*** Simulateur ***/
+
+Odometrie* Odometrie::odometrie = NULL;
+
+//Odometrie class implementation for the simulation
+//Yes, it's ugly ! it should not be in this file.
+//But in a separate file
+Odometrie::Odometrie(Robot* robot) : robot(robot)
+{
+    Odometrie::odometrie = this;
+}
+
+PositionPlusAngle Odometrie::getPos() const
+{
+    return robot->getPos();
+}
+
+Distance Odometrie::getVitesseLineaire() const
+{
+    return robot->getVitesseLineaire();
+}
+
+Angle Odometrie::getVitesseAngulaire() const
+{
+    return robot->getVitesseAngulaire();
+}
+
+void Odometrie::setPos(const PositionPlusAngle& p)
+{
+    robot->setPos(p);
+}
+
+#endif

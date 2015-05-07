@@ -13,7 +13,7 @@ MainWindow::MainWindow(bool isBlue)
 {
 	QTimer* timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-	dt = 10;
+    dt = 10;
 	timer->start(dt);
 
     QWidget* inter = new QWidget(this);
@@ -25,31 +25,24 @@ MainWindow::MainWindow(bool isBlue)
 
 	this->setFixedSize(900,600);
 
-    debugWindow = new DebugWindow(this);
-    debugWindow->show();
+    DebugWindow::getInstance()->setParent(this);
+    DebugWindow::getInstance()->show();
 
     postStartTimer.start(1000);
     connect(&postStartTimer, SIGNAL(timeout()), this, SLOT(postStart()));
 }
 
 MainWindow::~MainWindow()
-{
-    delete debugWindow;
-}
+{}
 
 void MainWindow::update()
 {
     table->update(dt);
 }
 
-DebugWindow* MainWindow::getDebugWindow()
-{
-    return debugWindow;
-}
-
 void MainWindow::postStart()
 {
-    debugWindow->setReady(true);
+    DebugWindow::getInstance()->setReady(true);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* evt)
@@ -83,13 +76,13 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 
 void MainWindow::moveEvent(QMoveEvent * event)
 {
-    if (debugWindow->isAttached())
-        debugWindow->moveWithoutEvent(this->mapToGlobal(QPoint()) + QPoint(this->width() + 16, -QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight)));
+    if (DebugWindow::getInstance()->isAttached())
+        DebugWindow::getInstance()->moveWithoutEvent(this->mapToGlobal(QPoint()) + QPoint(this->width() + 16, -QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight)));
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    debugWindow->close();
+    DebugWindow::getInstance()->close();
 }
 
 /// #include "main_window.moc"

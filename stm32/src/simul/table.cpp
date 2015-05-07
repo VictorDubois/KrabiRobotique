@@ -1,6 +1,5 @@
 #include "simul/table.h"
 #include "simul/robot.h"
-#include "simul/objet.h"
 #include "element.h"
 #include "cstdlib"
 #include "time.h"
@@ -18,6 +17,13 @@
 //#include <iostream>
 #include <QPainter>
 //#include "commandGoTo.h"
+
+Table* Table::_instance = NULL;
+
+Table* Table::getMainInstance()
+{
+    return _instance;
+}
 
 Position getCase(unsigned int i, unsigned int j)
 {
@@ -45,6 +51,8 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
     world(b2Vec2(0.f,0.f))
 #endif
 {
+    _instance = this;
+
     contactListenerTable = ContactListener();
     world.SetContactListener(&contactListenerTable);
 	dt=0;
@@ -65,74 +73,74 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
 #ifdef COUPE_2014
     //création des feux
     // côté rouge
-    objets.push_back(new Objet(world, Position(885.,1470.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(915.,330.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(470.,915.), Objet::fireUp, 0, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(0.,1270.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(1370.,30.), Objet::fireUp, 0, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(885.,1470.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(915.,330.), Objet::FIREUP, 3*PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(470.,915.), Objet::FIREUP, 0, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(0.,1270.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(1370.,30.), Objet::FIREUP, 0, QColor(0, 0, 0)));
 
     //côté jaune
-    objets.push_back(new Objet(world, Position(2085.,1470.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2115.,330.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2530.,885.), Objet::fireUp, PI, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2970.,1270.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(1630.,0.), Objet::fireUp, PI, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2085.,1470.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2115.,330.), Objet::FIREUP, 3*PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2530.,885.), Objet::FIREUP, PI, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2970.,1270.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(1630.,0.), Objet::FIREUP, PI, QColor(0, 0, 0)));
 
-    //création des torches
-    //torche rouge
-    objets.push_back(new Objet(world, Position(900.,900.), Objet::torch, 0, QColor(108, 59, 42)));
-    //torche jaune
-    objets.push_back(new Objet(world, Position(2100.,900.), Objet::torch, 0, QColor(108, 59, 42)));
+    //création des TORCHes
+    //TORCHe rouge
+    objets.push_back(new Objet(world, Position(900.,900.), Objet::TORCH, 0, QColor(108, 59, 42)));
+    //TORCHe jaune
+    objets.push_back(new Objet(world, Position(2100.,900.), Objet::TORCH, 0, QColor(108, 59, 42)));
 #endif
 
     // ################################ Coupe 2013 ################################
 #ifdef COUPE_2013
     //Verres 2013
     // côté bleu
-    objets.push_back(new Objet(world, Position(900.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1200.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1050.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1350.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(900.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1200.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(900.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1200.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1050.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1350.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(900.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1200.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
 
 	// côté rouge
-    objets.push_back(new Objet(world, Position(2100.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1800.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1950.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1650.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(2100.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1800.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(2100.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1800.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1950.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1650.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(2100.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1800.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
 #endif
 
     // ################################ Coupe 2015 ################################
 #ifdef COUPE_2015
     //Gobelets à pop-corn
-    objets.push_back(new Objet(world, Position(250.,1750.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(910.,800.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(1500.,1650.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(2090.,800.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(2750.,1750.), Objet::cup, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(250.,1750.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(910.,800.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(1500.,1650.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(2090.,800.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(2750.,1750.), Objet::CUP, 0, QColor(255, 255, 255)));
 
     //Pieds verts
-    objets.push_back(new Objet(world, Position(90.,200.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(90.,1750.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(90.,1850.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(850.,100.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(850.,200.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(870.,1355.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(1100.,1770.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(1300.,1400.), Objet::stand, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,200.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,1750.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,1850.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(850.,100.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(850.,200.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(870.,1355.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(1100.,1770.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(1300.,1400.), Objet::STAND, 0, QColor(252, 189, 31)));
 
     //Pieds jaunes
-    objets.push_back(new Objet(world, Position(2910.,200.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2910.,1750.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2910.,1850.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2150.,100.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2150.,200.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2130.,1355.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(1900.,1770.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(1700.,1400.), Objet::stand, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,200.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,1750.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,1850.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2150.,100.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2150.,200.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2130.,1355.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(1900.,1770.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(1700.,1400.), Objet::STAND, 0, QColor(79, 168, 51)));
 #endif
 
 	//Geometry
@@ -352,9 +360,9 @@ void Table::update(int dt)
 
     debugText += "Sharps : \n " + sharpsChecked + "\n\n";
 
-    mainWindow->getDebugWindow()->setText(debugText);
-    mainWindow->getDebugWindow()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
-    mainWindow->getDebugWindow()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
+    DebugWindow::getInstance()->setText(debugText);
+    DebugWindow::getInstance()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
+    DebugWindow::getInstance()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);
@@ -488,5 +496,18 @@ void Table::removeClosestObject(Position pos)
 
 Robot* Table::getMainRobot()
 {
-    return robots[0];
+    return robots.back();
+}
+
+std::vector<Objet*> Table::findObjectsNear(Position pos, Distance searchRadius, Objet::Type type)
+{
+    std::vector<Objet*> r;
+
+    for(std::vector<Objet*>::iterator it = objets.begin(); it != objets.end(); ++it)
+    {
+        if ((type == Objet::ANY || (*it)->getType() == type) && (*it)->isNear(pos, searchRadius))
+            r.push_back(*it);
+    }
+
+    return r;
 }
