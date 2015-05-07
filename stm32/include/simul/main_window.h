@@ -12,10 +12,7 @@ public:
 	virtual ~MainWindow();
     MainWindow(bool isBlue);
 
-    DebugWindow* getDebugWindow();
-
 private:
-    DebugWindow* debugWindow;
 	class Table* table;
 	int dt;
 

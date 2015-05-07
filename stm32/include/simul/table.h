@@ -7,20 +7,21 @@
 #include "XMLReader.h"
 #include "sensors.h"
 //#include "bougie.h"
-#include "v1-archive/singleton.h"
+//#include "v1-archive/singleton.h"
 #include "position.h"
 #include "robot.h"
 #include "contactlistener.h"
+#include "objet.h"
 
 class MainWindow;
 
-class Table : public QWidget, public Singleton<Table>
+class Table : public QWidget//, public Singleton<Table>
 {
-    friend class Singleton<Table>;
+    //friend class Singleton<Table>;
 private:
 	int dt;
-    std::vector<class Objet*> objets;
-	std::vector<class Robot*> robots;
+    std::vector<Objet*> objets;
+    std::vector<Robot*> robots;
 
 	b2World world;
 	b2Body* tableBody;
@@ -30,8 +31,9 @@ private:
 	void addCard(unsigned int n, int column);
     MainWindow* mainWindow;
 
-public:
+    static Table* _instance;
 
+public:
 	static const int tableWidth = 3000;
     static const int tableHeight = 2000;
 	static b2AABB getWorldAABB();
@@ -39,6 +41,8 @@ public:
     //Bougie p_balles[20];
 	//static const int tableWidth = 2100;
 	//static const int tableHeight = 3000;
+
+    static Table* getMainInstance();
 
     Table(MainWindow* mainWindow, QWidget* parent = 0, bool isBlue = true);
 	virtual ~Table();
@@ -51,6 +55,10 @@ public:
     float getDistanceToObject(Position pos);
     void removeClosestObject(Position pos);
     Robot* getMainRobot();
+
+    std::vector<Objet*> findObjectsNear(Position pos, Distance searchRadius = 0., Objet::Type type = Objet::ANY);
+
+
 };
 
 #endif

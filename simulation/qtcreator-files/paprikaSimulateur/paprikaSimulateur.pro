@@ -136,5 +136,6 @@ SOURCES += \
     ../../src/simul/debugwindow.cpp \
     ../../src/hardware/microSwitch.cpp \
     ../../src/asservissement/commandTournerVers.cpp \
-    ../../src/asservissement/commandAllerEnArcA.cpp
+    ../../src/asservissement/commandAllerEnArcA.cpp \
+    ../../src/asservissement/odometrie.cpp
 

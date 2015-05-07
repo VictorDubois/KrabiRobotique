@@ -6,13 +6,15 @@
 
 DebugWindow* DebugWindow::_instance = NULL;
 
-DebugWindow* DebugWindow::instance()
+DebugWindow* DebugWindow::getInstance()
 {
+    if (_instance == NULL)
+        _instance = new DebugWindow();
     return _instance;
 }
 
-DebugWindow::DebugWindow(MainWindow *parent) :
-    QWidget(), parent(parent), attached(true), ready(false)
+DebugWindow::DebugWindow() :
+    QWidget(), parent(NULL), attached(true), ready(false)
 #ifdef USE_PLOT
   , plotWidget(0)
 #endif
@@ -28,6 +30,11 @@ DebugWindow::DebugWindow(MainWindow *parent) :
     l->addWidget(qlText);
 
     _instance = this;
+}
+
+void DebugWindow::setParent(MainWindow* parent)
+{
+    this->parent = parent;
 }
 
 bool DebugWindow::isAttached()

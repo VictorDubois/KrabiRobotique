@@ -83,7 +83,7 @@ void CommandAllerA::update()
         delta = computedGoal - pos;
 
 #ifndef ROBOTHW
-    DebugWindow::instance()->plot(4, "distance", distanceIntermediate / 100.);
+    DebugWindow::getInstance()->plot(4, "distance", distanceIntermediate / 100.);
 #endif
 
     // distances
@@ -117,7 +117,7 @@ void CommandAllerA::update()
     }
 
 #ifndef ROBOTHW
-    DebugWindow::instance()->plot(4, "distance", distanceIntermediate / 100.);
+    DebugWindow::getInstance()->plot(4, "distance", distanceIntermediate / 100.);
 #endif
 
     // sharps
@@ -148,10 +148,6 @@ void CommandAllerA::update()
         angleSmoothEnd = false;
     /*else if (fabs(diffAng) < angleVitesseMax / 20.f)
         angleSmoothEnd = true;*/
-
-#ifndef ROBOTHW
-        qDebug() << angleSmoothEnd << fabs(diffAng);
-#endif
 
     if (angleSmoothEnd)
     {

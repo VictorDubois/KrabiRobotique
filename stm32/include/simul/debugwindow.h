@@ -33,23 +33,24 @@ class DebugWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DebugWindow(MainWindow *parent = 0);
-
     bool isAttached();
     void setReady(bool ready);
 
     void moveWithoutEvent(QPoint pos);
 
+    void setParent(MainWindow* parent);
+
     void setText(QString text);
     void plot(int index, QString title, float data);
 
-    static DebugWindow* instance();
+    static DebugWindow* getInstance();
     
 signals:
     
 public slots:
 
 private:
+    explicit DebugWindow();
     virtual void moveEvent ( QMoveEvent * event );
 
     static DebugWindow* _instance;

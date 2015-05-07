@@ -7,6 +7,11 @@
 #define INDEX_SERVO_PORTE_DROITE 15
 #define INDEX_SERVO_PORTE_GAUCHE 16
 
+#ifndef ROBOTHW
+    #include <QDebug>
+    #include "table.h"
+#endif
+
 Ascenseur* Ascenseur::singleton = 0;
 
 Ascenseur *Ascenseur::getSingleton()
@@ -70,13 +75,19 @@ bool Ascenseur::estEnBas()
 
 #else
 
-#include <QDebug>
-
 Ascenseur::Ascenseur(){}
 
 void Ascenseur::leverAscenseur()
 {
     qDebug() << "On leve l'ascenseur";
+
+    // supprime le pied qui est dans l'ascenseur de la table
+    PositionPlusAngle ppa = Table::getMainInstance()->getMainRobot()->getPos();
+    Position pElevator = ppa.getPosition() + Position(140. * cos(ppa.getAngle()), 140. * sin(ppa.getAngle()));
+    std::vector<Objet*> objects = Table::getMainInstance()->findObjectsNear(pElevator, 50., Objet::STAND);
+
+    for(std::vector<Objet*>::iterator it = objects.begin(); it != objects.end(); ++it)
+        (*it)->moveOutOfField();
 }
 
 void Ascenseur::baisserAscenseur()

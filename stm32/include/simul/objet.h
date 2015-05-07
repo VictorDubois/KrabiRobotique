@@ -1,6 +1,6 @@
 #ifndef OBJET_H
 #define OBJET_H
-#ifndef ROBOTWH
+#ifndef ROBOTHW
 
 #include "position.h"
 #include "angle.h"
@@ -15,12 +15,13 @@ class Objet
         /**@brief Énumération permettant de classifier les différents objets */
         enum Type
         {
-			glass = 0, /*!< Représente un gobelet*/
-            gift = 1, /*!< Représente un cadeau*/
-            fireUp = 2, /*!< Représente un feu en position verticale*/
-            torch = 3, /*!< Représente une torche*/
-            cup = 4, /*!< Représente un gobelet à pop-corn*/
-            stand = 5 /*!< Représente un pied de projecteur*/
+            ANY,
+            GLASS, /*!< Représente un gobelet*/
+            GIFT, /*!< Représente un cadeau*/
+            FIREUP, /*!< Représente un feu en position verticale*/
+            TORCH, /*!< Représente une torche*/
+            CUP, /*!< Représente un gobelet à pop-corn*/
+            STAND /*!< Représente un pied de projecteur*/
         };
         /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p avec pour angle initial theta. */
         /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/
@@ -36,7 +37,11 @@ class Objet
         /**@brief Met à jour la position de l'objet sur la table ainsi que la ses vitesses */
         void updatePos();
 
+        void moveOutOfField();
+
         Position getPosition();
+        Type getType();
+        bool isNear(Position p, Distance radius = 0.);
 
     protected:
     private:
@@ -52,7 +57,9 @@ class Objet
         b2World* world;
 		/**@brief Couleur de l'objet */
 		QColor p_color;
+
+        Distance radius;
 };
 
-#endif // ROBOTWH
+#endif // ROBOTHW
 #endif // OBJET_H
