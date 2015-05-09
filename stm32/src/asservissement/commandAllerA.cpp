@@ -14,8 +14,8 @@
     #include "debugwindow.h"
 #endif
 
-CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin, float precisionAngle)
-    : Command(), smoothFactor(0.f), requireSmoothMovement(false), bonAngle(false), angleSmoothEnd(false)
+CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin, float precisionAngle, float stopAtDistance)
+    : Command(), smoothFactor(0.f), requireSmoothMovement(false), bonAngle(false), angleSmoothEnd(false), stopAtDistance(stopAtDistance)
 {
     but = p;
     vitesseLinMax = vitesseLineaireMax;
@@ -87,7 +87,7 @@ void CommandAllerA::update()
 #endif
 
     // distances
-    float distanceFinal = (this->requireSmoothMovement ? delta.getNorme() + distanceNext : delta.getNorme());
+    float distanceFinal = (this->requireSmoothMovement ? delta.getNorme() + distanceNext : delta.getNorme() - stopAtDistance);
 
     // angles
     float angleVise = atan2(delta.getY(),delta.getX());

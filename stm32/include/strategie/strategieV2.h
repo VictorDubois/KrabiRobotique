@@ -23,8 +23,9 @@ class StrategieV2
         virtual ~StrategieV2();
 
         static void update();
-        static Command* setCurrentGoal(Position goal, bool goBack = false, float maxSpeed = VITESSE_LINEAIRE_MAX, Angle precisionAngle = -100.00);
-        static Command* setCurrentGoalSmooth(Position goal, Position nextGoal, float smoothFactor = 100., bool goBack = false, float maxSpeed = VITESSE_LINEAIRE_MAX, Angle precisionAngle = -100.00);
+        static Command* setCurrentGoal(Position goal, bool goBack = false, float maxSpeed = VITESSE_LINEAIRE_MAX, Angle precisionAngle = -100.00, float stopAtDistance = 0.f);
+        static Command* setCurrentGoalSmooth(Position goal, Position nextGoal, float smoothFactor = 100., bool goBack = false, float maxSpeed = VITESSE_LINEAIRE_MAX,
+                                             Angle precisionAngle = -100.00);
         static Command* setCurrentGoal(Position goal, Position center, float vitesse, bool goBack = false, Angle precisionAngle = -100.00);
         static Command *lookAt(Position pos, float maxSpeed = VITESSE_ANGULAIRE_MAX);
         static Command* lookAt(Angle a, float maxSpeed = VITESSE_ANGULAIRE_MAX);
