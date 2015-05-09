@@ -660,7 +660,7 @@ void StrategieV2::update()
     //eteindreLED();
 }
 
-Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Angle precisionAngle)
+Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Angle precisionAngle, float stopAtDistance)
 {
     if (currentCommand != NULL)
         delete currentCommand;
@@ -668,7 +668,7 @@ Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed,
 //    if (actionsCount == 0)
 //        currentCommand = new CommandAllerA(goal, goBack, maxSpeed/2);
 //    else
-    currentCommand = new CommandAllerA(goal, goBack, maxSpeed, 0.0f, precisionAngle);
+    currentCommand = new CommandAllerA(goal, goBack, maxSpeed, 0.0f, precisionAngle, stopAtDistance);
     Asservissement::asservissement->setCommandSpeeds(currentCommand);
     StrategieV2::emptySharpsToCheck();
     //TODO
