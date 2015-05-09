@@ -1,6 +1,11 @@
 #ifndef PINCES_H
 #define PINCES_H
 
+#define POS_PINCES_OUVERTES 0x01D0
+#define POS_PINCES_FERMEES 0x0327
+#define INDEX_MOTEUR_PINCE_GAUCHE 10
+#define INDEX_MOTEUR_PINCE_DROITE 11
+
 #include "interfaceServosNumeriques.h"
 
 #ifdef ROBOTHW
@@ -21,9 +26,8 @@ public:
     /// @brief fermerPinces() on ferme la pince
     void fermerPinces();
 
-    bool getEstDispo();
-    void setEstDispo();
-    void setEstNonDispo();
+    bool estDispo();
+    void setDispo(bool dispo);
 
 
 private:
@@ -36,7 +40,7 @@ private:
 
     static Pinces* singleton;
 
-    bool estDispo;
+    bool dispo;
 
     int positionPincesOuvertes;
     int positionPincesFermees;

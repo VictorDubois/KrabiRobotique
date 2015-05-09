@@ -18,6 +18,9 @@ class Ascenseur
 
     static Ascenseur* getSingleton();
 
+        enum STATUS {STOP, UP, DOWN} ;
+        void update();
+
         /// @brief baisserAscenseur() on baisse l'ascenseur
         void baisserAscenseur();
 
@@ -56,6 +59,7 @@ class Ascenseur
         static Ascenseur *singleton;
 
         bool ouvert;
+        STATUS status;
         int nbrPiedsStockes;
 #ifdef ROBOTHW
         MicroSwitch microSwitchBas;

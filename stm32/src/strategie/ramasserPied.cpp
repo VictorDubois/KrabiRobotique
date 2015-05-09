@@ -6,7 +6,7 @@
 
 //MLA : Medium Level Action
 #define MLA_RAMASSER_PIED_APPROCHE 1
-#define MLA_RAMASSER_PIED_REGARDE 1
+#define MLA_RAMASSER_PIED_REGARDE 20
 #define MLA_RAMASSER_PIED_LEVE 50
 #define MLA_RAMASSER_PIED_APPROCHE_PLUS 50
 #define MLA_RAMASSER_PIED_OUVRE 50
@@ -46,15 +46,6 @@ int RamasserPied::update()
     else if (status == MLA_RAMASSER_PIED_APPROCHE)
     {
         if (Command::isNear(goalPosition, 200.0f))
-        {
-            StrategieV2::lookAt(goalPosition);
-            status++;
-        }
-    }
-
-    else if (status == MLA_RAMASSER_PIED_APPROCHE)
-    {
-        if (Command::isNear(goalPosition, 175.0f))
         {
             StrategieV2::lookAt(goalPosition);
             status++;

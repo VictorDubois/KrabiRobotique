@@ -1,15 +1,17 @@
 #include "pinces.h"
+#define POS_PINCES_OUVERTES 0x01D0;
+#define POS_PINCES_FERMEES 0x0327;
+#define INDEX_MOTEUR_PINCE_GAUCHE 10;
+#define INDEX_MOTEUR_PINCE_DROITE 11;
+
+#ifndef ROBOTHW
+#include <QDebug>
+#endif
 
 Pinces* Pinces::singleton = 0;
 
-#ifdef ROBOTHW
 Pinces::Pinces()
 {
-    this->positionPincesOuvertes = 0x01D0;
-    this->positionPincesFermees = 0x0327;
-    this->moteurPinceGauche = 10;
-    this->moteurPinceDroite = 11;
-
     this->fermerPinces();
 }
 
@@ -22,45 +24,31 @@ Pinces* Pinces::getSingleton()
 
 void Pinces::ouvrirPinces()
 {
-    ServosNumeriques::moveTo(positionPincesOuvertes, moteurPinceDroite);
-    ServosNumeriques::moveTo(positionPincesOuvertes, moteurPinceGauche);
+#ifdef ROBOTHW
+    ServosNumeriques::moveTo(POS_PINCES_OUVERTES, INDEX_MOTEUR_PINCE_DROITE);
+    ServosNumeriques::moveTo(POS_PINCES_OUVERTES, INDEX_MOTEUR_PINCE_GAUCHE);
+#else
+    qDebug() << "On ferme les pinces";
+#endif
 }
 
 void Pinces::fermerPinces()
 {
-    ServosNumeriques::moveTo(positionPincesFermees, moteurPinceDroite);
-    ServosNumeriques::moveTo(positionPincesFermees, moteurPinceGauche);
-}
-
+#ifdef ROBOTHW
+    ServosNumeriques::moveTo(POS_PINCES_FERMEES, INDEX_MOTEUR_PINCE_DROITE);
+    ServosNumeriques::moveTo(POS_PINCES_FERMEES, INDEX_MOTEUR_PINCE_GAUCHE);
 #else
-
-Pinces::Pinces(){}
-
-void Pinces::ouvrirPinces(){}
-
-void Pinces::fermerPinces(){}
-
-Pinces *Pinces::getSingleton()
-{
-    if (singleton == 0)
-        singleton = new Pinces();
-    return singleton;
-}
-
+    qDebug() << "On ferme les pinces";
 #endif
-
-bool Pinces::getEstDispo()
-{
-    return estDispo;
 }
 
-void Pinces::setEstDispo()
+bool Pinces::estDispo()
 {
-    this->estDispo = true;
+    return dispo;
 }
 
-void Pinces::setEstNonDispo()
+void Pinces::setDispo(bool dispo)
 {
-    this->estDispo = false;
+    this->dispo = dispo;
 }
 
