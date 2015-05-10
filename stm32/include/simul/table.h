@@ -2,7 +2,10 @@
 #define TABLE_H_INCLUDED
 
 #include <QWidget>
+#include <QTime>
+
 #include <Box2D.h>
+
 #include "TableGraphics.h"
 #include "XMLReader.h"
 #include "sensors.h"
@@ -13,10 +16,13 @@
 #include "contactlistener.h"
 #include "objet.h"
 
+#include "krabipacket.h"
+
 class MainWindow;
 
 class Table : public QWidget//, public Singleton<Table>
 {
+Q_OBJECT
     //friend class Singleton<Table>;
 private:
 	int dt;
@@ -28,10 +34,24 @@ private:
 	TableGraphics tableGraphics;
     ContactListener contactListenerTable;
 
+    bool mHideTable, mDisplayRoute, mDisplayStrategy, mRemoteMod;
+
 	void addCard(unsigned int n, int column);
     MainWindow* mainWindow;
 
+    QImage robotRoute;
+
+    QTime mTime;
+
     static Table* _instance;
+
+public slots:
+    void createObjects();
+    void removeAllObjects();
+    void hideTable(bool hidden);
+    void displayRoute(bool display);
+    void displayStrategy(bool display);
+    void setRemoteMod(bool remote);
 
 public:
 	static const int tableWidth = 3000;
@@ -46,6 +66,9 @@ public:
 
     Table(MainWindow* mainWindow, QWidget* parent = 0, bool isBlue = true);
 	virtual ~Table();
+
+    void treat(KrabiPacket &packet);
+    void watch(KrabiPacket &packet);
 
     void update(int dt);
 	void paintEvent(QPaintEvent* evt);

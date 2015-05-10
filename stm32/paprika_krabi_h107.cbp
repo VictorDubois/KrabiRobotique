@@ -94,6 +94,7 @@
 		<Unit filename="include/hardware/ax12api.h" />
 		<Unit filename="include/hardware/capteurCouleur.h" />
 		<Unit filename="include/hardware/capteurs.h" />
+		<Unit filename="include/hardware/krabipacket.h" />
 		<Unit filename="include/hardware/leds.h" />
 		<Unit filename="include/hardware/ligthBarrierSensor.h" />
 		<Unit filename="include/hardware/limitSwitchSensor.h" />
@@ -145,6 +146,8 @@
 		<Unit filename="src/asservissement/asservissement.cpp" />
 		<Unit filename="src/asservissement/command.cpp" />
 		<Unit filename="src/asservissement/commandAllerA.cpp" />
+		<Unit filename="src/asservissement/commandAllerEnArcA.cpp" />
+		<Unit filename="src/asservissement/commandTournerVers.cpp" />
 		<Unit filename="src/asservissement/odometrie.cpp" />
 		<Unit filename="src/asservissement/pidFilterAngle.cpp" />
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
@@ -154,6 +157,7 @@
 		<Unit filename="src/hardware/ax12api.cpp" />
 		<Unit filename="src/hardware/capteurCouleur.cpp" />
 		<Unit filename="src/hardware/capteurs.cpp" />
+		<Unit filename="src/hardware/krabipacket.cpp" />
 		<Unit filename="src/hardware/leds.cpp" />
 		<Unit filename="src/hardware/ligthBarrierSensor.cpp" />
 		<Unit filename="src/hardware/limitSwitchSensor.cpp" />
@@ -198,7 +202,7 @@
 			<lib_finder disable_auto="1" />
 			<debugger>
 				<remote_debugging target="Debug">
-					<options conn_type="0" serial_baud="115200" ip_address="10.29.230.21" ip_port="3333" additional_cmds_before="source ~/.gdbinit" />
+					<options conn_type="0" serial_baud="115200" ip_address="127.0.0.1" ip_port="3333" additional_cmds_before="source ~/.gdbinit" />
 				</remote_debugging>
 			</debugger>
 		</Extensions>

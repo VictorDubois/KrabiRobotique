@@ -1,6 +1,8 @@
 #include "debugwindow.h"
+#include "ui_debugwindow.h"
 
 #include "strategieV2.h"
+#include "table.h"
 
 #include <QDebug>
 
@@ -14,27 +16,79 @@ DebugWindow* DebugWindow::getInstance()
 }
 
 DebugWindow::DebugWindow() :
-    QWidget(), parent(NULL), attached(true), ready(false)
+    QMainWindow(), parent(NULL), attached(true), ready(false), ui(new Ui::DebugWindow), bluetoothWindow(NULL), bluetoothInterface(NULL)
 #ifdef USE_PLOT
   , plotWidget(0)
 #endif
 {
+    ui->setupUi(this);
+
     this->setWindowTitle("Krabi Debug");
     setGeometry(0, 0, 240, 600);
 
+    /*QWidget* widget = new QWidget();
+    setCentralWidget(widget);
+
     l = new QVBoxLayout();
     l->setAlignment(Qt::AlignTop);
-    setLayout(l);
+    widget->setLayout(l);
 
     qlText = new QLabel(this);
-    l->addWidget(qlText);
+    l->addWidget(qlText);*/
+
+    connect(ui->actionRemove_objects, SIGNAL(triggered()), Table::getMainInstance(), SLOT(removeAllObjects()));
+    connect(ui->actionReset_objects, SIGNAL(triggered()), Table::getMainInstance(), SLOT(createObjects()));
+    connect(ui->actionHide_table, SIGNAL(toggled(bool)), Table::getMainInstance(), SLOT(hideTable(bool)));
+    connect(ui->actionDisplay_route, SIGNAL(toggled(bool)), Table::getMainInstance(), SLOT(displayRoute(bool)));
+    connect(ui->actionDisplay_strategy, SIGNAL(toggled(bool)), Table::getMainInstance(), SLOT(displayStrategy(bool)));
+    connect(ui->actionRemote_Mod, SIGNAL(toggled(bool)), Table::getMainInstance(), SLOT(setRemoteMod(bool)));
+
+    connect(ui->actionBluetooth, SIGNAL(toggled(bool)), this, SLOT(displayBluetoothWindow(bool)));
+    connect(ui->actionBluetooth_Interface, SIGNAL(toggled(bool)), this, SLOT(displayBluetoothInterface(bool)));
+    connect(ui->actionOdometrie, SIGNAL(toggled(bool)), this, SLOT(displayOdometrieWindow(bool)));
 
     _instance = this;
+
+    bluetoothWindow = new BluetoothWindow();
+    bluetoothInterface = new BluetoothInterface();
+    odometrieWindow = new OdometrieWindow();
+
+    ui->statusbar->insertWidget(0, statusLabel = new QLabel("..."));
+    ui->statusbar->insertWidget(1, statusButton = new QPushButton("On"));
+
+    statusButton->setFixedWidth(32);
+    connect(statusButton, SIGNAL(pressed()), bluetoothWindow, SLOT(bluetoothToggle()));
+
+    update();
 }
 
 void DebugWindow::setParent(MainWindow* parent)
 {
     this->parent = parent;
+}
+
+void DebugWindow::update()
+{
+#ifdef BLUETOOTH
+    if (bluetoothWindow->isConnecting())
+    {
+        statusLabel->setText("Bluetooth connecting...");
+        statusButton->setText("X");
+    }
+    else if (bluetoothWindow->isConnected())
+    {
+        statusLabel->setText("Bluetooth connected");
+        statusButton->setText("Off");
+    }
+    else
+    {
+        statusLabel->setText("No connection");
+        statusButton->setText("On");
+    }
+#else
+    statusLabel->setText("Bluetooth not implemented in Qt4");
+    statusButton->hide();
+#endif
 }
 
 bool DebugWindow::isAttached()
@@ -65,7 +119,71 @@ void DebugWindow::moveWithoutEvent(QPoint pos)
 
 void DebugWindow::setText(QString text)
 {
-    qlText->setText(text);
+    ui->infoField->setText(text);
+}
+
+void DebugWindow::displayBluetoothWindow(bool show)
+{
+    if (bluetoothWindow->isHidden())
+    {
+        ui->actionBluetooth->setChecked(true);
+        bluetoothWindow->show();
+    }
+    else
+    {
+        ui->actionBluetooth->setChecked(false);
+        bluetoothWindow->hide();
+    }
+}
+
+void DebugWindow::displayBluetoothInterface(bool show)
+{
+    if (bluetoothInterface->isHidden())
+    {
+        ui->actionBluetooth_Interface->setChecked(true);
+        bluetoothInterface->show();
+    }
+    else
+    {
+        ui->actionBluetooth_Interface->setChecked(false);
+        bluetoothInterface->hide();
+    }
+}
+
+void DebugWindow::displayOdometrieWindow(bool show)
+{
+    if (odometrieWindow->isHidden())
+    {
+        ui->actionOdometrie->setChecked(true);
+        odometrieWindow->show();
+    }
+    else
+    {
+        ui->actionOdometrie->setChecked(false);
+        odometrieWindow->hide();
+    }
+}
+
+void DebugWindow::closeEvent(QCloseEvent *event)
+{
+    bluetoothWindow->close();
+    bluetoothInterface->close();
+    odometrieWindow->close();
+}
+
+BluetoothWindow* DebugWindow::getBluetoothWindow()
+{
+    return bluetoothWindow;
+}
+
+BluetoothInterface* DebugWindow::getBluetoothInterface()
+{
+    return bluetoothInterface;
+}
+
+OdometrieWindow* DebugWindow::getOdometrieWindow()
+{
+    return odometrieWindow;
 }
 
 void DebugWindow::plot(int index, QString title, float data)
@@ -76,7 +194,7 @@ void DebugWindow::plot(int index, QString title, float data)
         plotWidget = new QwtPlot();
         plotWidget->show();
 
-        l->addWidget(plotWidget);
+        ui->centralwidget->layout()->addWidget(plotWidget);
         //plotWidget->setTitle("<font color='#444'>title</font>");
         plotWidget->setCanvasBackground(QColor(Qt::white));
 
