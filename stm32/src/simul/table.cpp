@@ -333,6 +333,11 @@ void Table::displayStrategy(bool display)
     mDisplayStrategy = display;
 }
 
+void Table::clearRoute()
+{
+    robotRoute = QImage(tableWidth, tableHeight, QImage::Format_ARGB32);
+}
+
 void Table::setRemoteMod(bool remote)
 {
     mRemoteMod = remote;
@@ -377,6 +382,20 @@ void Table::treat(KrabiPacket &packet)
     case KrabiPacket::TIME_SYNC:
     {
         int t = packet.get<uint16_t>();
+
+        long diff = t - mTime.elapsed();
+
+        if (abs(diff) > 10)
+        {
+            qDebug() << "Timer sync error" << diff << "ms";
+        }
+
+        if (diff < -1500)
+        {
+            DebugWindow::getInstance()->clearPlots();
+            qDebug() << "Timer restart";
+        }
+
         //mTime.restart();
         mTime.addMSecs(t);
         mTime.addSecs(t / 1000);
@@ -392,7 +411,6 @@ void Table::treat(KrabiPacket &packet)
 void Table::watch(KrabiPacket &packet)
 {
     uint16_t type = packet.get<uint16_t>();
-
 
     switch(type)
     {
@@ -410,11 +428,39 @@ void Table::watch(KrabiPacket &packet)
         break;
     }
     case KrabiPacket::W_SPEED:
-        //getMainRobot()->setPos(PositionPlusAngle(packet.get<float>(), packet.get<float>(), packet.get<float>()));
+    {
+        float l = packet.get<float>();
+        float a = packet.get<float>();
+        DebugWindow::getInstance()->plot(0, "Linear Speed", l);
+        DebugWindow::getInstance()->plot(1, "Angular Speed", a * 100.);
         break;
+    }
     case KrabiPacket::W_SPEED_TARGET:
-        //getMainRobot()->setPos(PositionPlusAngle(packet.get<float>(), packet.get<float>(), packet.get<float>()));
+    {
+        float l = packet.get<float>();
+        float a = packet.get<float>();
+        DebugWindow::getInstance()->plot(2, "Linear Target", l);
+        DebugWindow::getInstance()->plot(3, "Angular Target", a * 100.);
         break;
+    }
+    case KrabiPacket::W_PID_ANG:
+    {
+        float p = packet.get<float>();
+        float i = packet.get<float>();
+        float d = packet.get<float>();
+
+        DebugWindow::getInstance()->getAsservWindow()->settingsReceivedAngular(p, i, d);
+        break;
+    }
+    case KrabiPacket::W_PID_LIN:
+    {
+        float p = packet.get<float>();
+        float i = packet.get<float>();
+        float d = packet.get<float>();
+
+        DebugWindow::getInstance()->getAsservWindow()->settingsReceivedLinear(p, i, d);
+        break;
+    }
     case KrabiPacket::W_ODOMETRIE:
     {
         float wheelsize = packet.get<float>();
@@ -496,8 +542,11 @@ void Table::update(int dt)
     debugText += "Sharps : \n " + sharpsChecked + "\n\n";
 
     DebugWindow::getInstance()->setText(debugText);
-    DebugWindow::getInstance()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
-    DebugWindow::getInstance()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
+    if (!mRemoteMod)
+    {
+        DebugWindow::getInstance()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
+        DebugWindow::getInstance()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
+    }
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);

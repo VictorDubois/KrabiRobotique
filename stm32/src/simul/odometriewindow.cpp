@@ -46,11 +46,13 @@ void OdometrieWindow::resetRelatives()
     rangle = 0.;
 
     update();
+
+    DebugWindow::getInstance()->clearPlots();
 }
 
 void OdometrieWindow::requireSync()
 {
-    KrabiPacket p(KrabiPacket::WATCH_REQUIRE, KrabiPacket::W_ODOMETRIE);
+    KrabiPacket p(KrabiPacket::WATCH_REQUIRE_ONCE, KrabiPacket::W_ODOMETRIE);
     DebugWindow::getInstance()->getBluetoothWindow()->send(p);
 }
 
@@ -63,17 +65,17 @@ void OdometrieWindow::update()
 
 void OdometrieWindow::setWheelSizeFromX()
 {
-
+    ui->wheelSize->setValue(ui->targetX->value() * ui->wheelSize->value() / rx);
 }
 
 void OdometrieWindow::setWheelSizeFromY()
 {
-
+    ui->wheelSize->setValue(ui->targetY->value() * ui->wheelSize->value() / ry);
 }
 
 void OdometrieWindow::setInterAxisFromAngle()
 {
-
+    ui->interAxisDistance->setValue(ui->targetAngle->value() * ui->interAxisDistance->value() / rangle);
 }
 
 void OdometrieWindow::apply()

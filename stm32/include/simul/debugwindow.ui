@@ -48,6 +48,7 @@
     <addaction name="actionBluetooth"/>
     <addaction name="actionBluetooth_Interface"/>
     <addaction name="actionOdometrie"/>
+    <addaction name="actionAsserv_Window"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -150,6 +151,14 @@
    </property>
    <property name="text">
     <string>Odometrie Window</string>
+   </property>
+  </action>
+  <action name="actionAsserv_Window">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Asserv Window</string>
    </property>
   </action>
  </widget>

@@ -27,24 +27,31 @@ public:
         LOG_DEBUG = 11,
 
         WATCH_VARIABLE = 20,
-        WATCH_REQUIRE = 21,
+        WATCH_REQUIRE_ONCE = 21,
 
         WATCH_SET = 22,
         WATCH_RESET = 23,
 
         SET_ODOMETRIE = 30,
-        SET_ASSERV = 31,
+        SET_PID_LIN = 32,
+        SET_PID_ANG = 33,
+        RUN_PID_TEST = 36,
 
         TIME_RESET = 40,
-        TIME_SYNC = 41
+        TIME_SYNC = 41,
+
+        STOP = 100
     };
 
     enum W_TABLE {
-        W_NULL = -1,
-        W_POSITION = 100,
-        W_SPEED = 101,
-        W_SPEED_TARGET = 102,
-        W_ODOMETRIE = 105
+        W_NULL,
+        W_POSITION,
+        W_SPEED,
+        W_SPEED_TARGET,
+        W_ODOMETRIE,
+        W_PID_LIN,
+        W_PID_ANG,
+        MAX_WATCHES
     };
 
     enum DATA_TYPE {

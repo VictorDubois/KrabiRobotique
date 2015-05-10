@@ -1,17 +1,21 @@
 #ifndef REMOTE_H
 #define REMOTE_H
 
+#include "misc.h"
 #ifdef STM32F40_41xxx
     #include "stm32f4xx_rcc.h"
     #include "stm32f4xx_gpio.h"
     #include "stm32f4xx_usart.h"
     #define REMOTE_USART_INDEX USART2
+    #define REMOTE_USART_IRQ_HANDLER USART2_IRQHandler
+    #define REMOTE_USART_IRQn USART2_IRQn
 #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
-    #include "misc.h"
     #include "stm32f10x_rcc.h"
     #include "stm32f10x_gpio.h"
     #include "stm32f10x_usart.h"
     #define REMOTE_USART_INDEX USART3
+    #define REMOTE_USART_IRQ_HANDLER USART3_IRQHandler
+    #define REMOTE_USART_IRQn USART3_IRQn
 #endif
 
 #include "krabipacket.h"
@@ -26,7 +30,7 @@ struct GenericBuffer {
     uint8_t buf[USART_BUFFER_SIZE];
 };
 
-extern "C" void USART3_IRQHandler(void);
+extern "C" void REMOTE_USART_IRQ_HANDLER(void);
 
 class Remote
 {
@@ -39,7 +43,7 @@ class Remote
         void send(KrabiPacket &packet);
 
         void treat(KrabiPacket &packet);
-        void requireWatch(KrabiPacket &packet);
+        void sendWatch(KrabiPacket::W_TABLE w);
 
         int receiveData();
         bool dataAvailable();
@@ -90,7 +94,7 @@ class Remote
         float getLeftPWM();
         float getRightPWM();
 
-        static GenericBuffer buffer;
+        static GenericBuffer bufferRecv, bufferSend;
     protected:
     private:
         static Remote* singleton;
@@ -102,6 +106,8 @@ class Remote
         //long timerLances;
         bool mRemoteMod, mRemoteControl;//, isOpenContainer, isOpenLeftArm, isOpenRightArm, brakInv, brakOut;
         float linSpeed, angSpeed;
+
+        bool mWatchesEnabled[KrabiPacket::MAX_WATCHES];
 
         //uint8_t mBufferSize;
         //uint8_t mBuffer[KRABIPACKET_MAXSIZE];
