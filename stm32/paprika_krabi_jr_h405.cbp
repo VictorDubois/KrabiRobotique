@@ -41,6 +41,9 @@
 			<Add directory="include/asservissement" />
 			<Add directory="include/actionneurs" />
 		</Compiler>
+		<Linker>
+			<Add option="-Tstm32LinkerScript.cmd" />
+		</Linker>
 		<ExtraCommands>
 			<Add before="cp stm32LinkerScriptH405.cmd stm32LinkerScript.cmd" />
 			<Add after="arm-none-eabi-objcopy -Obinary main.out main.bin" />
@@ -89,12 +92,6 @@
 		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="include/actionneurs/bras.h" />
-		<Unit filename="include/actionneurs/braslateral.h" />
-		<Unit filename="include/actionneurs/canonFilet.h" />
-		<Unit filename="include/actionneurs/canonLances.h" />
-		<Unit filename="include/actionneurs/container.h" />
-		<Unit filename="include/actionneurs/marteaux.h" />
 		<Unit filename="include/actionneurs/moteur.h" />
 		<Unit filename="include/actionneurs/roues.h" />
 		<Unit filename="include/actionneurs/sensor.h" />
@@ -125,16 +122,10 @@
 		<Unit filename="include/hardware/ultrasoundSensor.h" />
 		<Unit filename="include/initialisation.h" />
 		<Unit filename="include/memory.h" />
-		<Unit filename="include/strategie/feuCote.h" />
+		<Unit filename="include/strategie/krabijunior2015.h" />
 		<Unit filename="include/strategie/strategieV2.h" />
 		<Unit filename="include/strategie/strategiev3.h" />
 		<Unit filename="include/vector.h" />
-		<Unit filename="src/actionneurs/bras.cpp" />
-		<Unit filename="src/actionneurs/braslateral.cpp" />
-		<Unit filename="src/actionneurs/canonFilet.cpp" />
-		<Unit filename="src/actionneurs/canonLances.cpp" />
-		<Unit filename="src/actionneurs/container.cpp" />
-		<Unit filename="src/actionneurs/marteaux.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />
 		<Unit filename="src/actionneurs/sensor.cpp" />
@@ -172,12 +163,8 @@
 		<Unit filename="src/strategie/actionGoTo.cpp" />
 		<Unit filename="src/strategie/dijkstra.cpp" />
 		<Unit filename="src/strategie/etape.cpp" />
-		<Unit filename="src/strategie/eteindreBougieV2.cpp" />
-		<Unit filename="src/strategie/eteindreBougies.cpp" />
-		<Unit filename="src/strategie/feuCote.cpp" />
+		<Unit filename="src/strategie/krabijunior2015.cpp" />
 		<Unit filename="src/strategie/mediumLevelAction.cpp" />
-		<Unit filename="src/strategie/ramasserVerreV2.cpp" />
-		<Unit filename="src/strategie/ramasserVerres.cpp" />
 		<Unit filename="src/strategie/recalibrerOdometrie.cpp" />
 		<Unit filename="src/strategie/strategieV2.cpp" />
 		<Unit filename="src/strategie/strategiev3.cpp" />
