@@ -38,7 +38,7 @@ int RamasserPied::update()
     #ifndef ROBOTHW
             qDebug() << "action pied";
     #endif
-        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
+        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
         Ascenseur::getSingleton()->leverAscenseur();
         status++;
     }
@@ -95,9 +95,7 @@ int RamasserPied::update()
 #endif
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
 
-        int nouveauNbrPiedsStockes = Ascenseur::getSingleton()->getNbrPiedsStockes() + 1;
-        Ascenseur::getSingleton()->setNbrPiedsStockes(nouveauNbrPiedsStockes);
-
+        Ascenseur::getSingleton()->addPied();
         status++;
     }
 

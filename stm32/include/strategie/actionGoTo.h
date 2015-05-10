@@ -10,7 +10,7 @@ class Command;
 class ActionGoTo : public MediumLevelAction
 {
     public:
-        ActionGoTo(Position goalPos = Position(), bool goBack1 = false, float _precision = 30.f);
+        ActionGoTo(Position goalPos = Position(), bool goBack1 = false, float _precision = 30.f, float stopAtDistance = 0.f);
         virtual ~ActionGoTo();
 
         virtual int update();
@@ -20,7 +20,7 @@ class ActionGoTo : public MediumLevelAction
         void setNextGoal(Position nextGoal);
     protected:
     private:
-        float goalAngle, precision;
+        float goalAngle, precision, stopAtDistance;
         bool goingCurve;
         int curveFactor, smoothFactor;
 

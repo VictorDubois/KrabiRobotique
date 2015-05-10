@@ -43,7 +43,8 @@ uint8_t tableauEvitement[20][30] =
         3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, // 0
     };//0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
     */
-ActionGoTo::ActionGoTo(Position goalPos, bool goBack1, float _precision) : MediumLevelAction(goalPos), command(0), smoothFactor(200.f)
+ActionGoTo::ActionGoTo(Position goalPos, bool goBack1, float _precision, float stopAtDistance)
+    : MediumLevelAction(goalPos), command(0), smoothFactor(200.f), stopAtDistance(stopAtDistance)
 {
     goBack = goBack1;
     goalAngle = 0;
@@ -81,7 +82,7 @@ int ActionGoTo::update()
         else*/
         {
             if (nextGoal == Position())
-                command = StrategieV2::setCurrentGoal(goalPosition, goBack);
+                command = StrategieV2::setCurrentGoal(goalPosition, goBack, VITESSE_LINEAIRE_MAX, -100.0, stopAtDistance);
             else
                 command = StrategieV2::setCurrentGoalSmooth(goalPosition, nextGoal, smoothFactor, goBack);
             status = 3;
