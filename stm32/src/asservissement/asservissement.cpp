@@ -5,16 +5,16 @@
 #include "misc.h"
 #include "capteurCouleur.h"
 
-#ifdef REMOTE_ON
+#ifndef NO_REMOTE
     #include "remote.h"
 #endif
 
-#define DEBUG_ODOMEDTRIE 1
+#define DEBUG_ODOMEDTRIE 0
 
 #define DEBUG_ASSERV 0
 #define DEBUG_ASSERV_SIZE 800
 
-#define DEBUG_BLINK_EACH_SECOND 0
+#define DEBUG_BLINK_EACH_SECOND 1
 
 #if DEBUG_ASSERV == 1
     //int roueGauche[DEBUG_ASSERV_SIZE];
@@ -282,6 +282,39 @@ extern "C" void SysTick_Handler()
 #if DEBUG_BLINK_EACH_SECOND
     if (systick_count%200 == 0){
         Led::toggle(0);
+    }
+#endif
+
+
+#ifndef NO_REMOTE
+    /*static int test = 0;
+    test++;
+    if (test % 100 == 0)
+    {
+        test = 0;
+        Remote::getSingleton()->watch(KrabiPacket::W_POSITION, 10.f, 20.f, (float)ang);
+    }*/
+    if (systick_count%10 == 0)
+    {
+        PositionPlusAngle p = Odometrie::odometrie->getPos();
+        Remote::getSingleton()->watch(KrabiPacket::W_POSITION, p.position.x, p.position.y, p.angle);
+    }
+
+    if (systick_count%10 == 2)
+    {
+        Remote::getSingleton()->watch(KrabiPacket::W_SPEED, Odometrie::odometrie->getVitesseLineaire(), Odometrie::odometrie->getVitesseAngulaire());
+    }
+
+    if (systick_count%10 == 4)
+    {
+        Remote::getSingleton()->watch(KrabiPacket::W_SPEED_TARGET, Asservissement::asservissement->getLinearSpeed(), Asservissement::asservissement->getAngularSpeed());
+    }
+
+    if (systick_count%50 == 5)
+    {
+        KrabiPacket p(KrabiPacket::TIME_SYNC);
+        p.add((uint16_t)StrategieV2::getTimeSpent());
+        Remote::getSingleton()->send(p);
     }
 #endif
 

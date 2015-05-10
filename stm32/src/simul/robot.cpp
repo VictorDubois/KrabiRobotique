@@ -10,7 +10,7 @@
 
 #define ratio_qt_box2d 0.01
 
-Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue) : world(world), olds(10000)
+Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue) : world(world), olds(10000), mRemoteMod(false), body(NULL)
 {
     leftUpperHammerStatus = 0;
     leftLowerHammerStatus = 0;
@@ -532,7 +532,7 @@ void Robot::paint(QPainter &p, int dt)
         deriv.position.y = 0;
 
         //olds.push_back(pos);
-        if(manual)
+        if(manual || mRemoteMod)
         {
             keyPressEvent(NULL,false);
             deriv.position.x = deriv.position.x* 0.97f;
@@ -809,7 +809,7 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
     }
 
 
-    if(manual)
+    if(!mRemoteMod && manual)
     {
         float dinc = .25;
         float ainc = 0.0025;
@@ -873,7 +873,8 @@ PositionPlusAngle Robot::getPos()
 void Robot::setPos(PositionPlusAngle p)
 {
     pos = p;
-    return;
+    if (body != NULL)
+        body->SetTransform(b2Vec2(p.position.x * ratio_qt_box2d, p.position.y * ratio_qt_box2d), p.angle);
 }
 
 Angle Robot::getVitesseAngulaire()
@@ -884,6 +885,11 @@ Angle Robot::getVitesseAngulaire()
 Distance Robot::getVitesseLineaire()
 {
     return deriv.position.x;
+}
+
+void Robot::setRemoteMod(bool remote)
+{
+    mRemoteMod = remote;
 }
 
 QPoint Robot::getLeftUpperHammerPos() const

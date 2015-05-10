@@ -46,7 +46,7 @@ private:
 	b2Body* body;
     std::vector<QPoint> robotPolygonPoints;
 
-    bool isBlue;
+    bool isBlue, mRemoteMod;
 
 public:
 
@@ -78,6 +78,8 @@ public:
 	/** @brief Permet d'obtenir la vitesse linaire actuel du robot
         @return Retourne la vitesse linaire actuel du robot*/
 	Distance getVitesseLineaire();
+
+    void setRemoteMod(bool remote);
 
     QPoint getLeftUpperHammerPos() const;
     QPoint getRightUpperHammerPos() const;

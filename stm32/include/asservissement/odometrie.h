@@ -15,17 +15,19 @@
 class Odometrie
 {
     private:
-
         class Robot* robot;
 
     public:
-
         Odometrie(Robot* robot);
         PositionPlusAngle getPos() const;
         void setPos(const PositionPlusAngle& p);
         Angle getVitesseAngulaire() const;
         Distance getVitesseLineaire() const;
-        void update() { };
+        float getInterAxisDistance();
+        float getWheelSize();
+        void setSettings(float interAxisDistance, float wheelSize);
+
+        void update() {};
         /// @brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme
         static Odometrie* odometrie;
 };
@@ -64,6 +66,12 @@ class Odometrie
 
         /**@brief Pour connaitre la vitesse linéaire du robot */
         Distance getVitesseLineaire() const;
+
+        float getInterAxisDistance();
+
+        float getWheelSize();
+
+        void setSettings(float interAxisDistance, float wheelSize);
 
         /**@brief Attribue de classe contenant un pointeur vers l'unique instance de la classe odometrie executé lors de notre programme*/
         static Odometrie* odometrie;

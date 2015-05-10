@@ -1,101 +1,161 @@
-#ifdef NOTYETIMPLEMENTED
 #include "krabipacket.h"
 
-KrabiPacket::KrabiPacket()
-{
-    packet = new uint8_t[KRABIPACKET_MAXSIZE];
-    header = new uint8_t[KRABIPACKET_HEADER_MAXSIZE];
+#include <string.h>
 
-    length = 0;
-    lengthHeader = 0; //Def, type ?
+#ifndef ROBOTHW
+#include <QDebug>
+#endif
+
+KrabiPacket::KrabiPacket(uint8_t id, W_TABLE watch) : mId(id), mCursor(1), mLength(2), mLengthSecurized(0), mValid(true)
+{
+    mPacket[0] = mId;
+
+    if (watch != W_NULL)
+        add((uint16_t) watch);
 }
 
-KrabiPacket::~KrabiPacket()
+KrabiPacket::KrabiPacket(uint8_t *data, uint8_t size) : mCursor(1), mLength(0), mLengthSecurized(size)
 {
-    delete [] packet;
-    delete [] header;
+    memcpy(mPacketSecurized, data, mLengthSecurized);
+
+    unsecurize();
+
+    mId = mPacket[0];
+
+    checkValidity();
 }
 
-void KrabiPacket::add(char* data)
+#ifndef ROBOTHW
+
+KrabiPacket::KrabiPacket(QByteArray data) : mCursor(1), mLength(0)
+{
+#ifdef BLUETOOTH
+    uint8_t* array = (uint8_t*)(data.toStdString().c_str());
+    mLengthSecurized = data.size();
+
+    memcpy(mPacketSecurized, array, mLengthSecurized);
+
+    unsecurize();
+
+    mId = mPacket[0];
+
+    checkValidity();
+#endif
+}
+
+QByteArray KrabiPacket::dataByteArray()
+{
+    QByteArray q((char*) data(), length());
+
+    return q;
+}
+
+#endif
+
+bool KrabiPacket::checkValidity()
+{
+    uint8_t checksum = mPacket[mLength - 1];
+    uint8_t computedChecksum = 0;
+    for(int i(0); i < mLength - 1; i++)
+        computedChecksum += mPacket[i];
+
+    mValid = (checksum == computedChecksum);
+
+#ifndef ROBOTHW
+    if (!mValid)
+        qDebug() << "ERROR : " << checksum << " != " << computedChecksum;
+#endif
+
+    return mValid;
+}
+
+bool KrabiPacket::isValid()
+{
+    return mValid;
+}
+
+void KrabiPacket::addData(void* data, uint8_t size)
+{
+    if (mCursor + size + KRABIPACKET_SUFFIX_SIZE > KRABIPACKET_MAXSIZE)
+        return;
+
+    memcpy(mPacket + mCursor, data, size);
+    mCursor += size;
+    mLength += size;
+}
+
+void KrabiPacket::copyData(void* dest, uint8_t size)
+{
+    memcpy(dest, mPacket + mCursor, size);
+    mCursor += size;
+}
+
+void KrabiPacket::addString(char* data)
 {
     int size = 0;
     while( data[size] != '\0' )
-        size ++;
-    if (length + size >= KRABIPACKET_MAXSIZE || lengthHeader + 2 >= KRABIPACKET_HEADER_MAXSIZE) return;
+        size++;
 
-    for(int i=0; i<size; i++)
-        packet[length + i] = data[i];
-
-    header[lengthHeader] = 's';
-    header[lengthHeader + 1] = size;
-
-    length += size;
-    lengthHeader += 2;
+    addData(data, size + 1);
 }
 
-void KrabiPacket::add(int data)
+char* KrabiPacket::getString()
 {
-    add((uint32_t) data);
+    char* ptr = (char*)(mPacket + mCursor);
+    while( mPacket[mCursor] != '\0' )
+        mCursor++;
+
+    return ptr;
 }
 
-void KrabiPacket::add(uint8_t data)
+void KrabiPacket::setId(uint8_t id)
 {
-    if (length + 1 >= KRABIPACKET_MAXSIZE || lengthHeader + 1 >= KRABIPACKET_HEADER_MAXSIZE) return;
-
-    packet[length] = data;
-    header[lengthHeader] = 'b';
-
-    length += 1;
-    lengthHeader++;
+    mId = id;
 }
 
-void KrabiPacket::add(uint32_t data)
+uint8_t KrabiPacket::id()
 {
-    if (length + 4 >= KRABIPACKET_MAXSIZE || lengthHeader + 1 >= KRABIPACKET_HEADER_MAXSIZE) return;
+    return mId;
+}
 
-    for(int i=0; i<4; i++)
+uint8_t KrabiPacket::length()
+{
+    securize();
+    return mLengthSecurized;
+}
+
+void KrabiPacket::securize()
+{
+    // securize (delete CR + LF)
+    mLengthSecurized = 0;
+    for(int i(0); i < mLength; i++)
     {
-        packet[length + 3 - i] = (uint8_t)(data % 256);
-        data >>= 8;
+        if (mPacket[i] == 0x0A || mPacket[i] == 0xFF)
+            mPacketSecurized[mLengthSecurized++] = 0xFF;
+        mPacketSecurized[mLengthSecurized++] = mPacket[i];
     }
-    header[lengthHeader] = 'i';
-
-    length += 1; // 4 plutôt non ???????
-    lengthHeader++;
 }
 
-uint16_t KrabiPacket::getLength()
+void KrabiPacket::unsecurize()
 {
-    //Pourquoi int16 ???
-    /* FIXEDBASE = 3 cf getPacket() */
-    return KRABIPACKET_FIXEDBASESIZE + lengthHeader + length;
+    mLength = 0;
+    for(int i(0); i < mLengthSecurized; i++)
+    {
+        if (mPacketSecurized[i] == 0xFF)
+            i++;
+        mPacket[mLength++] = mPacketSecurized[i];
+    }
 }
 
-uint8_t* KrabiPacket::getPacket()
+uint8_t* KrabiPacket::data()
 {
-    uint8_t* final = new uint8_t[KRABIPACKET_MAXSIZE];
-
-    /*Final de taille lengthHeader + length + 3
-    (FIXEDBASESIZE == 3) donc de taille final[0] */
-    //Longueur totale du packet final
-    final[0] = getLength();//TODO : int 16 dans int8
-    //Longueur du header
-    final[1] = lengthHeader;//TODO : Taille,type ??? initialisé jamais défini
+    // checksum
     uint8_t checksum = 0;
-    //Ecriture du packet et calcul de la CS
-    for(int i=0; i<lengthHeader; i++)
-    {
-        final[2+i] = header[i];
-        checksum += header[i];
-    }
-    for(int i=0; i<length; i++)
-    {
-        final[2+lengthHeader+i] = packet[i];
-        checksum += packet[i];
-    }
-    //Ecriture de la CS
-    final[2+lengthHeader+length] = checksum;
+    for(int i(0); i < mLength - 1; i++)
+        checksum += mPacket[i];
+    mPacket[mLength - 1] = checksum;
 
-    return final;
+    securize();
+
+    return mPacketSecurized;
 }
-#endif

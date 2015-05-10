@@ -408,7 +408,7 @@ void Debug::testTirette(Tirette* t)
     }
 }
 
-#ifdef REMOTE_ON
+#ifndef NO_REMOTE
 void Debug::testRemote()
 {
     Remote::getSingleton();
@@ -421,7 +421,7 @@ void Debug::testRemote()
 
 //    Remote::getSingleton()->sendData(&packet);
 
-    int timer = 0;
+    /*int timer = 0;
     while(true)
     {
         if (Remote::getSingleton()->dataAvailable()) {
@@ -430,16 +430,16 @@ void Debug::testRemote()
         }
 
         if (timer==0) {
-            Remote::getSingleton()->sendData('a');
+            Remote::getSingleton()->send('a');
             Led::toggle(0);
         }
 
         timer++;
         if (timer==1000000)
             timer = 0;
-    }
+    }*/
 }
-    #endif
+#endif
 /*void Debug::testPWM(QuadratureCoderHandler* rcg, QuadratureCoderHandler* rcd)
 {
     long r = 0, l = 0;

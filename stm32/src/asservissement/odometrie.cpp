@@ -15,14 +15,11 @@ Odometrie* Odometrie::odometrie = NULL;
 #endif
 
 Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite)
-: rayonRoueCodeuse(RAYON_ROUE)
+: rayonRoueCodeuse(RAYON_ROUE), entraxe(TAILLE_ENTRAXE), nbTicksParTour(NBR_TICK_PAR_TOUR)
 {
 
     vitesseLineaire =0;
     vitesseAngulaire=0;
-    entraxe=TAILLE_ENTRAXE;
-    rayonRoueCodeuse=RAYON_ROUE;
-    nbTicksParTour=NBR_TICK_PAR_TOUR;
 
     coeffDistance=(M_PI*rayonRoueCodeuse)/nbTicksParTour;  //soit la distance parcouru par un demi tour de roue
 
@@ -120,7 +117,6 @@ void Odometrie::update()
     positionPlusAngle.setAngle(ang);
     positionPlusAngle.setX(posX);
     positionPlusAngle.setY(posY);
-
 }
 
 void Odometrie::setPos(const PositionPlusAngle& p)
@@ -129,6 +125,22 @@ void Odometrie::setPos(const PositionPlusAngle& p)
     posY = p.getPosition().getY();
     ang = p.getAngle();
     positionPlusAngle = p;
+}
+
+float Odometrie::getInterAxisDistance()
+{
+    return entraxe;
+}
+
+float Odometrie::getWheelSize()
+{
+    return rayonRoueCodeuse;
+}
+
+void Odometrie::setSettings(float interAxisDistance, float wheelSize)
+{
+    entraxe = interAxisDistance;
+    rayonRoueCodeuse = wheelSize;
 }
 
 PositionPlusAngle Odometrie::getPos() const
@@ -200,6 +212,21 @@ Odometrie::Odometrie(Robot* robot) : robot(robot)
 PositionPlusAngle Odometrie::getPos() const
 {
     return robot->getPos();
+}
+
+float Odometrie::getInterAxisDistance()
+{
+    return TAILLE_ENTRAXE;
+}
+
+float Odometrie::getWheelSize()
+{
+    return RAYON_ROUE;
+}
+
+void Odometrie::setSettings(float interAxisDistance, float wheelSize)
+{
+
 }
 
 Distance Odometrie::getVitesseLineaire() const
