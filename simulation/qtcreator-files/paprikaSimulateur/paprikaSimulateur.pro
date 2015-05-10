@@ -1,14 +1,21 @@
 
 TEMPLATE = app
 #add 'qwt' to the CONFIG for ploting
-CONFIG += qt debug# qwt
-QT += core gui
+CONFIG += qt debug
+QT += core gui widgets
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += bluetooth
+    CONFIG += qwt
+    DEFINES += BLUETOOTH QT5 USE_PLOT
+}
 
 INCLUDEPATH += ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D
 INCLUDEPATH += ../../include/simul ../../include/strategie ../../include/asservissement ../../include/actionneurs ../../include/hardware
 
 LIBS += -L/usr/local/lib/ -lBox2D
 
+DEFINES += NO_REMOTE
 DEFINES += "KRABI"
 #DEFINES += "KRABI_JR"
 
@@ -77,7 +84,12 @@ HEADERS += \
     ../../include/hardware/microSwitch.h \
     ../../include/simul/debugwindow.h \
     ../../include/asservissement/commandTournerVers.h \
-    ../../include/asservissement/commandAllerEnArcA.h
+    ../../include/asservissement/commandAllerEnArcA.h \
+    ../../include/simul/remotedebug.h \
+    ../../include/simul/bluetoothwindow.h \
+    ../../include/simul/bluetoothinterface.h \
+    ../../include/hardware/krabipacket.h \
+    ../../include/simul/odometriewindow.h
 
 
 SOURCES += \
@@ -137,5 +149,17 @@ SOURCES += \
     ../../src/hardware/microSwitch.cpp \
     ../../src/asservissement/commandTournerVers.cpp \
     ../../src/asservissement/commandAllerEnArcA.cpp \
-    ../../src/asservissement/odometrie.cpp
+    ../../src/asservissement/odometrie.cpp \
+    ../../src/simul/remotedebug.cpp \
+    ../../src/simul/bluetoothwindow.cpp \
+    ../../src/simul/bluetoothinterface.cpp \
+    ../../src/hardware/krabipacket.cpp \
+    ../../src/simul/odometriewindow.cpp
+
+FORMS += \
+    ../../include/simul/remotedebug.ui \
+    ../../include/simul/debugwindow.ui \
+    ../../include/simul/bluetoothwindow.ui \
+    ../../include/simul/bluetoothinterface.ui \
+    ../../include/simul/odometriewindow.ui
 

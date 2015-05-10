@@ -32,7 +32,7 @@ void CommandAllerA::update()
     float accLinMax = ACCELERATION_LINEAIRE_MAX;
     float decLinMax = DECELERATION_LINEAIRE_MAX;
     float vitLinMax = vitesseLinMax;//VITESSE_LINEAIRE_MAX;
-    float vitLinIntermediate = vitesseLinMax/2.;
+    float vitLinIntermediate = vitesseLinMax * 0.75;
 
     if(this->getLimit())
     {
@@ -82,10 +82,6 @@ void CommandAllerA::update()
     else
         delta = computedGoal - pos;
 
-#ifndef ROBOTHW
-    DebugWindow::getInstance()->plot(4, "distance", distanceIntermediate / 100.);
-#endif
-
     // distances
     float distanceFinal = (this->requireSmoothMovement ? delta.getNorme() + distanceNext : delta.getNorme());
 
@@ -115,10 +111,6 @@ void CommandAllerA::update()
             linSpeed *= 0.95f;
         }
     }
-
-#ifndef ROBOTHW
-    DebugWindow::getInstance()->plot(4, "distance", distanceIntermediate / 100.);
-#endif
 
     // sharps
     StrategieV2::setTourneSurSoiMeme((!bonAngle)&&(abs(linSpeed)<0.2f));

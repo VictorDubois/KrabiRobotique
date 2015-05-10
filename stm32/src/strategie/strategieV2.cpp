@@ -16,7 +16,7 @@
 
 #include "sensors.h"
 
-#ifdef REMOTE_ON
+#ifndef NO_REMOTE
     #include "remote.h"
 #endif
 
@@ -243,8 +243,8 @@ long StrategieV2::getTimeSpent()
 
 void StrategieV2::update()
 {
-#ifndef ROBOTHW
-    //qDebug() << timeToRestart;
+#ifndef NO_REMOTE
+    Remote::getSingleton()->update();
 #endif
     //Tourelle* tourelle = new Tourelle(TIM6, 0);
     /*

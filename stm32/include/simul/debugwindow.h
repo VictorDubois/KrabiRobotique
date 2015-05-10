@@ -2,18 +2,28 @@
 #define DEBUGWINDOW_H
 
 #include <QVBoxLayout>
-#include <QWidget>
+#include <QMainWindow>
 #include <QLabel>
+#include <QPushButton>
+
+#include "bluetoothwindow.h"
+#include "bluetoothinterface.h"
+#include "odometriewindow.h"
 
 // to use qwt_plot, please install the 'libqwt-dev' package
 // add 'qwt' to CONFIG in .pro to enable this
 // sudo apt-get install libqwt-dev (on the VM)
-//#define USE_PLOT
 #ifdef USE_PLOT
     #include <qwt_plot.h>
     #include <qwt_plot_curve.h>
     #include <qwt_legend.h>
+    #include <qwt_point_data.h>
 #endif
+
+
+namespace Ui {
+class DebugWindow;
+}
 
 class MainWindow;
 
@@ -29,7 +39,7 @@ struct PlotCurve
 };
 #endif
 
-class DebugWindow : public QWidget
+class DebugWindow : public QMainWindow
 {
     Q_OBJECT
 public:
@@ -43,23 +53,38 @@ public:
     void setText(QString text);
     void plot(int index, QString title, float data);
 
+    BluetoothWindow* getBluetoothWindow();
+    BluetoothInterface* getBluetoothInterface();
+    OdometrieWindow* getOdometrieWindow();
+
     static DebugWindow* getInstance();
     
 signals:
     
 public slots:
+    void displayBluetoothWindow(bool show);
+    void displayBluetoothInterface(bool show);
+    void displayOdometrieWindow(bool show);
+
+    void update();
 
 private:
     explicit DebugWindow();
     virtual void moveEvent ( QMoveEvent * event );
+    void closeEvent(QCloseEvent *event);
 
     static DebugWindow* _instance;
 
+    Ui::DebugWindow *ui;
+
     MainWindow *parent;
+    BluetoothWindow* bluetoothWindow;
+    BluetoothInterface* bluetoothInterface;
+    OdometrieWindow* odometrieWindow;
     bool attached, ready;
 
-    QLabel* qlText;
-    QVBoxLayout* l;
+    QLabel* statusLabel;
+    QPushButton* statusButton;
 
     // plot
 #ifdef USE_PLOT

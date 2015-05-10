@@ -28,7 +28,7 @@
 #include "pidFilterAngle.h"
 #include "command.h"
 
-#ifdef REMOTE_ON
+#ifndef NO_REMOTE
     #include "remote.h"
 #endif
 
