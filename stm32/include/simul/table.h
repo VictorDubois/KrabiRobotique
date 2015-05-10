@@ -79,6 +79,8 @@ public:
     void removeClosestObject(Position pos);
     Robot* getMainRobot();
 
+    void clearRoute();
+
     std::vector<Objet*> findObjectsNear(Position pos, Distance searchRadius = 0., Objet::Type type = Objet::ANY);
 
 

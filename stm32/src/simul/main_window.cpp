@@ -25,8 +25,8 @@ MainWindow::MainWindow(bool isBlue)
 
 	this->setFixedSize(900,600);
 
-    DebugWindow::getInstance()->setParent(this);
     DebugWindow::getInstance()->show();
+    DebugWindow::getInstance()->setParent(this);
 
     postStartTimer.start(1000);
     connect(&postStartTimer, SIGNAL(timeout()), this, SLOT(postStart()));

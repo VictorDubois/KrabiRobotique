@@ -9,6 +9,7 @@
 #include "bluetoothwindow.h"
 #include "bluetoothinterface.h"
 #include "odometriewindow.h"
+#include "asservwindow.h"
 
 // to use qwt_plot, please install the 'libqwt-dev' package
 // add 'qwt' to CONFIG in .pro to enable this
@@ -56,6 +57,7 @@ public:
     BluetoothWindow* getBluetoothWindow();
     BluetoothInterface* getBluetoothInterface();
     OdometrieWindow* getOdometrieWindow();
+    AsservWindow* getAsservWindow();
 
     static DebugWindow* getInstance();
     
@@ -65,8 +67,17 @@ public slots:
     void displayBluetoothWindow(bool show);
     void displayBluetoothInterface(bool show);
     void displayOdometrieWindow(bool show);
+    void displayAsservWindow(bool show);
 
     void update();
+
+    void perspectiveAsserv();
+    void perspectiveOdometrie();
+    void perspectiveSimulateur();
+
+    void hideWindows();
+
+    void clearPlots();
 
 private:
     explicit DebugWindow();
@@ -81,6 +92,7 @@ private:
     BluetoothWindow* bluetoothWindow;
     BluetoothInterface* bluetoothInterface;
     OdometrieWindow* odometrieWindow;
+    AsservWindow* asservWindow;
     bool attached, ready;
 
     QLabel* statusLabel;

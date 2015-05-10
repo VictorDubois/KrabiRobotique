@@ -39,7 +39,9 @@ Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables
 bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 
-Asservissement::Asservissement(Odometrie* _odometrie) /*:
+Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(true)
+
+/*:
     seuil_collision(SEUIL_COLISION),
     buffer_collision(0xffffffff)*/
 {
@@ -108,6 +110,17 @@ void Asservissement::setAngularSpeed(VitesseAngulaire vitesse)
     //setEnabledPIDAngle(true);
 }
 
+void Asservissement::stop()
+{
+    stopped = true;
+    testRunning = false;
+}
+
+void Asservissement::resume()
+{
+    stopped = false;
+}
+
 void Asservissement::setCommandSpeeds(Command* command)
 {
     if (command != NULL)
@@ -126,19 +139,32 @@ void Asservissement::setCommandSpeeds(Command* command)
     resetFixedDuty();*/
 }
 
+void Asservissement::runTest(int duration, float linSpeed, float angSpeed, float limit)
+{
+    testDuration = duration;
+    testIndex = 0;
+
+    testLinearSpeed = linSpeed;
+    testAngularSpeed = angSpeed;
+
+    testRunning = true;
+    testMod = true;
+    stopped = false;
+}
+
 Distance Asservissement::getLinearSpeed()
 {
-  /*  if (Remote::getSingleton()->isRemoteMode())
-        return Remote::getSingleton()->getLeftPWM();
-    else*/
+    if (testMod)
+        return testRunning ? testLinearSpeed : 0.f;
+    else
         return vitesseLineaire;
 }
 
 Angle Asservissement::getAngularSpeed()
 {
-   /* if (Remote::getSingleton()->isRemoteMode())
-        return Remote::getSingleton()->getRightPWM();
-    else*/
+    if (testMod)
+        return testRunning ? testAngularSpeed : 0.f;
+    else
         return vitesseAngulaire;
 }
 
@@ -157,7 +183,7 @@ void Asservissement::update(void)
 
     asserCount++;
 
-    if (true)
+    if (!stopped)
     {
 
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
@@ -268,8 +294,19 @@ void Asservissement::update(void)
         roues.droite.tourne(0.);
     }
 #else
-}
+    }
 #endif
+
+    /*** tests ***/
+    if (testMod && testRunning)
+    {
+        testIndex++;
+        if (testIndex >= testDuration)
+        {
+            stopped = true;
+            testRunning = false;
+        }
+    }
 }
 
 #ifdef ROBOTHW
@@ -282,39 +319,6 @@ extern "C" void SysTick_Handler()
 #if DEBUG_BLINK_EACH_SECOND
     if (systick_count%200 == 0){
         Led::toggle(0);
-    }
-#endif
-
-
-#ifndef NO_REMOTE
-    /*static int test = 0;
-    test++;
-    if (test % 100 == 0)
-    {
-        test = 0;
-        Remote::getSingleton()->watch(KrabiPacket::W_POSITION, 10.f, 20.f, (float)ang);
-    }*/
-    if (systick_count%10 == 0)
-    {
-        PositionPlusAngle p = Odometrie::odometrie->getPos();
-        Remote::getSingleton()->watch(KrabiPacket::W_POSITION, p.position.x, p.position.y, p.angle);
-    }
-
-    if (systick_count%10 == 2)
-    {
-        Remote::getSingleton()->watch(KrabiPacket::W_SPEED, Odometrie::odometrie->getVitesseLineaire(), Odometrie::odometrie->getVitesseAngulaire());
-    }
-
-    if (systick_count%10 == 4)
-    {
-        Remote::getSingleton()->watch(KrabiPacket::W_SPEED_TARGET, Asservissement::asservissement->getLinearSpeed(), Asservissement::asservissement->getAngularSpeed());
-    }
-
-    if (systick_count%50 == 5)
-    {
-        KrabiPacket p(KrabiPacket::TIME_SYNC);
-        p.add((uint16_t)StrategieV2::getTimeSpent());
-        Remote::getSingleton()->send(p);
     }
 #endif
 
@@ -496,4 +500,14 @@ void Asservissement::resetAsserv()
 {
     pid_filter_distance.resetErrors();
     pid_filter_angle.resetErrors();
+}
+
+PIDFilterDistance &Asservissement::getPIDDistance()
+{
+    return pid_filter_distance;
+}
+
+PIDFilterAngle &Asservissement::getPIDAngle()
+{
+    return pid_filter_angle;
 }
