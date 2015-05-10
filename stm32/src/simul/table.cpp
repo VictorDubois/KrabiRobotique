@@ -1,6 +1,5 @@
 #include "simul/table.h"
 #include "simul/robot.h"
-#include "simul/objet.h"
 #include "element.h"
 #include "cstdlib"
 #include "time.h"
@@ -18,6 +17,13 @@
 //#include <iostream>
 #include <QPainter>
 //#include "commandGoTo.h"
+
+Table* Table::_instance = NULL;
+
+Table* Table::getMainInstance()
+{
+    return _instance;
+}
 
 Position getCase(unsigned int i, unsigned int j)
 {
@@ -38,13 +44,18 @@ b2AABB Table::getWorldAABB()
 }
 
 Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
-    QWidget(parent), mainWindow(mainWindow),
+    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false),
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
     world(b2Vec2(0.f,0.f))
 #endif
 {
+    _instance = this;
+
+    mTime.start();
+    robotRoute = QImage(tableWidth, tableHeight, QImage::Format_ARGB32);
+
     contactListenerTable = ContactListener();
     world.SetContactListener(&contactListenerTable);
 	dt=0;
@@ -61,79 +72,7 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
     robots.push_back(new Robot(world,PositionPlusAngle(Position(300,1000, isBlue), 0), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
     //195,1760
 
-    // ################################ Coupe 2014 ################################
-#ifdef COUPE_2014
-    //création des feux
-    // côté rouge
-    objets.push_back(new Objet(world, Position(885.,1470.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(915.,330.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(470.,915.), Objet::fireUp, 0, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(0.,1270.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(1370.,30.), Objet::fireUp, 0, QColor(0, 0, 0)));
-
-    //côté jaune
-    objets.push_back(new Objet(world, Position(2085.,1470.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2115.,330.), Objet::fireUp, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2530.,885.), Objet::fireUp, PI, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2970.,1270.), Objet::fireUp, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(1630.,0.), Objet::fireUp, PI, QColor(0, 0, 0)));
-
-    //création des torches
-    //torche rouge
-    objets.push_back(new Objet(world, Position(900.,900.), Objet::torch, 0, QColor(108, 59, 42)));
-    //torche jaune
-    objets.push_back(new Objet(world, Position(2100.,900.), Objet::torch, 0, QColor(108, 59, 42)));
-#endif
-
-    // ################################ Coupe 2013 ################################
-#ifdef COUPE_2013
-    //Verres 2013
-    // côté bleu
-    objets.push_back(new Objet(world, Position(900.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1200.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1050.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1350.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(900.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1200.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-
-	// côté rouge
-    objets.push_back(new Objet(world, Position(2100.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1800.,550.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1950.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1650.,800.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(2100.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1800.,1050.), Objet::glass, 0, QColor(170, 170, 170)));
-#endif
-
-    // ################################ Coupe 2015 ################################
-#ifdef COUPE_2015
-    //Gobelets à pop-corn
-    objets.push_back(new Objet(world, Position(250.,1750.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(910.,800.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(1500.,1650.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(2090.,800.), Objet::cup, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(2750.,1750.), Objet::cup, 0, QColor(255, 255, 255)));
-
-    //Pieds verts
-    objets.push_back(new Objet(world, Position(90.,200.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(90.,1750.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(90.,1850.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(850.,100.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(850.,200.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(870.,1355.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(1100.,1770.), Objet::stand, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(1300.,1400.), Objet::stand, 0, QColor(252, 189, 31)));
-
-    //Pieds jaunes
-    objets.push_back(new Objet(world, Position(2910.,200.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2910.,1750.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2910.,1850.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2150.,100.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2150.,200.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2130.,1355.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(1900.,1770.), Objet::stand, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(1700.,1400.), Objet::stand, 0, QColor(79, 168, 51)));
-#endif
+    createObjects();
 
 	//Geometry
 	b2BodyDef bodyDef;
@@ -293,6 +232,249 @@ Table::~Table()
         delete objets[i];
 }
 
+void Table::createObjects()
+{
+    removeAllObjects();
+
+    // ################################ Coupe 2014 ################################
+#ifdef COUPE_2014
+    //création des feux
+    // côté rouge
+    objets.push_back(new Objet(world, Position(885.,1470.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(915.,330.), Objet::FIREUP, 3*PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(470.,915.), Objet::FIREUP, 0, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(0.,1270.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(1370.,30.), Objet::FIREUP, 0, QColor(0, 0, 0)));
+
+    //côté jaune
+    objets.push_back(new Objet(world, Position(2085.,1470.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2115.,330.), Objet::FIREUP, 3*PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2530.,885.), Objet::FIREUP, PI, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(2970.,1270.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
+    objets.push_back(new Objet(world, Position(1630.,0.), Objet::FIREUP, PI, QColor(0, 0, 0)));
+
+    //création des TORCHes
+    //TORCHe rouge
+    objets.push_back(new Objet(world, Position(900.,900.), Objet::TORCH, 0, QColor(108, 59, 42)));
+    //TORCHe jaune
+    objets.push_back(new Objet(world, Position(2100.,900.), Objet::TORCH, 0, QColor(108, 59, 42)));
+#endif
+
+    // ################################ Coupe 2013 ################################
+#ifdef COUPE_2013
+    //Verres 2013
+    // côté bleu
+    objets.push_back(new Objet(world, Position(900.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1200.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1050.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1350.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(900.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1200.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+
+    // côté rouge
+    objets.push_back(new Objet(world, Position(2100.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1800.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1950.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1650.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(2100.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+    objets.push_back(new Objet(world, Position(1800.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+#endif
+
+    // ################################ Coupe 2015 ################################
+#ifdef COUPE_2015
+    //Gobelets à pop-corn
+    objets.push_back(new Objet(world, Position(250.,1750.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(910.,800.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(1500.,1650.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(2090.,800.), Objet::CUP, 0, QColor(255, 255, 255)));
+    objets.push_back(new Objet(world, Position(2750.,1750.), Objet::CUP, 0, QColor(255, 255, 255)));
+
+    //Pieds verts
+    objets.push_back(new Objet(world, Position(90.,200.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,1750.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(90.,1850.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(850.,100.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(850.,200.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(870.,1355.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(1100.,1770.), Objet::STAND, 0, QColor(252, 189, 31)));
+    objets.push_back(new Objet(world, Position(1300.,1400.), Objet::STAND, 0, QColor(252, 189, 31)));
+
+    //Pieds jaunes
+    objets.push_back(new Objet(world, Position(2910.,200.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,1750.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2910.,1850.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2150.,100.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2150.,200.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(2130.,1355.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(1900.,1770.), Objet::STAND, 0, QColor(79, 168, 51)));
+    objets.push_back(new Objet(world, Position(1700.,1400.), Objet::STAND, 0, QColor(79, 168, 51)));
+#endif
+}
+
+void Table::removeAllObjects()
+{
+    for (unsigned int i = 0; i<objets.size();i++)
+        delete objets[i];
+    objets.clear();
+}
+
+void Table::hideTable(bool hidden)
+{
+    mHideTable = hidden;
+}
+
+void Table::displayRoute(bool display)
+{
+    mDisplayRoute = display;
+}
+
+void Table::displayStrategy(bool display)
+{
+    mDisplayStrategy = display;
+}
+
+void Table::clearRoute()
+{
+    robotRoute = QImage(tableWidth, tableHeight, QImage::Format_ARGB32);
+}
+
+void Table::setRemoteMod(bool remote)
+{
+    mRemoteMod = remote;
+    getMainRobot()->setRemoteMod(mRemoteMod);
+
+    if (mRemoteMod)
+    {
+        if (DebugWindow::getInstance()->getBluetoothWindow()->isConnected())
+        {
+            DebugWindow::getInstance()->getBluetoothInterface()->show();
+
+            KrabiPacket p(KrabiPacket::REMOTE_MOD_SET);
+            DebugWindow::getInstance()->getBluetoothWindow()->send(p);
+
+            DebugWindow::getInstance()->getOdometrieWindow()->requireSync();
+        }
+        else
+        {
+            DebugWindow::getInstance()->getBluetoothWindow()->connectToDevice();
+        }
+    }
+    else if (DebugWindow::getInstance()->getBluetoothWindow()->isConnected())
+    {
+        KrabiPacket p(KrabiPacket::REMOTE_MOD_RESET);
+        //DebugWindow::getInstance()->getBluetoothWindow()->send
+    }
+}
+
+void Table::treat(KrabiPacket &packet)
+{
+    switch(packet.id())
+    {
+    case KrabiPacket::LOG_NORMAL:
+        DebugWindow::getInstance()->getBluetoothInterface()->log(packet.getString());
+        break;
+    case KrabiPacket::LOG_DEBUG:
+        DebugWindow::getInstance()->getBluetoothInterface()->log(packet.getString(), true);
+        break;
+    case KrabiPacket::WATCH_VARIABLE:
+        watch(packet);
+        break;
+    case KrabiPacket::TIME_SYNC:
+    {
+        int t = packet.get<uint16_t>();
+
+        long diff = t - mTime.elapsed();
+
+        if (abs(diff) > 10)
+        {
+            qDebug() << "Timer sync error" << diff << "ms";
+        }
+
+        if (diff < -1500)
+        {
+            DebugWindow::getInstance()->clearPlots();
+            qDebug() << "Timer restart";
+        }
+
+        //mTime.restart();
+        mTime.addMSecs(t);
+        mTime.addSecs(t / 1000);
+        qDebug() << "Timer" << t << t / 1000 << t % 1000;
+        break;
+    }
+    default:
+        qDebug() << "Uncaught packet : " << packet.id() << packet.length();
+        break;
+    }
+}
+
+void Table::watch(KrabiPacket &packet)
+{
+    uint16_t type = packet.get<uint16_t>();
+
+    switch(type)
+    {
+    case KrabiPacket::W_POSITION:
+    {
+        float x = packet.get<float>();
+        float y = packet.get<float>();
+        float ang = packet.get<float>();
+
+        PositionPlusAngle previousPos = getMainRobot()->getPos();
+        PositionPlusAngle newPos = PositionPlusAngle(Position(x, y), ang);
+
+        getMainRobot()->setPos(newPos);
+        DebugWindow::getInstance()->getOdometrieWindow()->addRelative(newPos.position - previousPos.position, newPos.angle - previousPos.angle);
+        break;
+    }
+    case KrabiPacket::W_SPEED:
+    {
+        float l = packet.get<float>();
+        float a = packet.get<float>();
+        DebugWindow::getInstance()->plot(0, "Linear Speed", l);
+        DebugWindow::getInstance()->plot(1, "Angular Speed", a * 100.);
+        break;
+    }
+    case KrabiPacket::W_SPEED_TARGET:
+    {
+        float l = packet.get<float>();
+        float a = packet.get<float>();
+        DebugWindow::getInstance()->plot(2, "Linear Target", l);
+        DebugWindow::getInstance()->plot(3, "Angular Target", a * 100.);
+        break;
+    }
+    case KrabiPacket::W_PID_ANG:
+    {
+        float p = packet.get<float>();
+        float i = packet.get<float>();
+        float d = packet.get<float>();
+
+        DebugWindow::getInstance()->getAsservWindow()->settingsReceivedAngular(p, i, d);
+        break;
+    }
+    case KrabiPacket::W_PID_LIN:
+    {
+        float p = packet.get<float>();
+        float i = packet.get<float>();
+        float d = packet.get<float>();
+
+        DebugWindow::getInstance()->getAsservWindow()->settingsReceivedLinear(p, i, d);
+        break;
+    }
+    case KrabiPacket::W_ODOMETRIE:
+    {
+        float wheelsize = packet.get<float>();
+        float interaxis = packet.get<float>();
+
+        DebugWindow::getInstance()->getOdometrieWindow()->settingsReceived(wheelsize, interaxis);
+        break;
+    }
+    default:
+        qDebug() << "Uncaught watch : " << type;
+        break;
+    }
+}
+
 void Table::update(int dt)
 {
     //exit(0);
@@ -332,6 +514,13 @@ void Table::update(int dt)
         }
     }*/
 
+    //route
+    QPainter painter(&robotRoute);
+    painter.setPen(QPen(Qt::red, 8, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+    Position posRobot = getMainRobot()->getPos().getPosition();
+
+    painter.drawPoint(posRobot.x, posRobot.y);
 
     QString debugText = "Robot Position :\n";
     QString sharpsChecked = "";
@@ -348,13 +537,16 @@ void Table::update(int dt)
     debugText += "   lin : " + QString::number(robots[1]->getVitesseLineaire()) + " \n";
     debugText += "   ang : " + QString::number(robots[1]->getVitesseAngulaire()) + " \n\n";
 
-    debugText += "Time : " + QString::number(StrategieV2::getTimeSpent()/1000.) + " s\n\n";
+    debugText += "Time : " + QString::number(mRemoteMod ? mTime.elapsed() / 1000. : StrategieV2::getTimeSpent()/1000.) + " s\n\n";
 
     debugText += "Sharps : \n " + sharpsChecked + "\n\n";
 
-    mainWindow->getDebugWindow()->setText(debugText);
-    mainWindow->getDebugWindow()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
-    mainWindow->getDebugWindow()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
+    DebugWindow::getInstance()->setText(debugText);
+    if (!mRemoteMod)
+    {
+        DebugWindow::getInstance()->plot(0, "Linear Speed", robots[1]->getVitesseLineaire());
+        DebugWindow::getInstance()->plot(1, "Angular Speed", robots[1]->getVitesseAngulaire() * 100.);
+    }
 
 #ifdef BOX2D_2_0_1
 	world.Step((float)dt/1000., 10);
@@ -378,9 +570,59 @@ void Table::paintEvent(QPaintEvent* evt)
 
 
 	// dessine la table
-	tableGraphics.draw(&p);
+    if (!mHideTable)
+        tableGraphics.draw(&p);
+    else
+    {
+        QFont font;
+        font.setPixelSize(24);
+        p.setFont(font);
 
+        p.setOpacity(1);
+        p.setPen(QColor(Qt::gray));
+        p.fillRect(QRect(0, 0, tableWidth, tableHeight), QBrush(Qt::gray));
 
+        // draw a grid
+        // 100 mm
+        p.setOpacity(0.25);
+        p.setPen(QColor(Qt::white));
+
+        for(int i(100); i < tableWidth; i+=100)
+            p.drawLine(QPoint(i, 0), QPoint(i, tableHeight));
+        for(int i(100); i < tableHeight; i+=100)
+            p.drawLine(QPoint(0, i), QPoint(tableWidth, i));
+
+        // 200 mm
+        p.setOpacity(0.5);
+        p.setPen(QColor(Qt::white));
+
+        for(int i(0); i < tableWidth; i+=200)
+        {
+            p.setPen(QColor(Qt::white));
+            p.drawLine(QPoint(i, 0), QPoint(i, tableHeight));
+            p.setPen(QColor(Qt::black));
+            p.drawText(QPoint(i + 16, 32), QString::number(i));
+        }
+        for(int i(0); i < tableHeight; i+=200)
+        {
+            p.setPen(QColor(Qt::white));
+            p.drawLine(QPoint(0, i), QPoint(tableWidth, i));
+            p.setPen(QColor(Qt::black));
+            p.drawText(QPoint(16, i), QString::number(i));
+        }
+
+        // 1000 mm
+        p.setOpacity(1);
+        p.setPen(QColor(Qt::black));
+
+        for(int i(1000); i < tableWidth; i+=1000)
+            p.drawLine(QPoint(i, 0), QPoint(i, tableHeight));
+        for(int i(1000); i < tableHeight; i+=1000)
+            p.drawLine(QPoint(0, i), QPoint(tableWidth, i));
+    }
+
+    if (mDisplayRoute)
+        p.drawImage(0, 0, robotRoute);
 
     for (unsigned int i=0; i < objets.size(); i++)
         objets[i]->paint(p);
@@ -407,7 +649,7 @@ void Table::paintEvent(QPaintEvent* evt)
     }*/
 
     // On dessine le graphe de la strat
-    if(true)
+    if(mDisplayStrategy)
     {
         this->getMainRobot()->paintStrategie(p);
     }
@@ -488,5 +730,18 @@ void Table::removeClosestObject(Position pos)
 
 Robot* Table::getMainRobot()
 {
-    return robots[0];
+    return robots.back();
+}
+
+std::vector<Objet*> Table::findObjectsNear(Position pos, Distance searchRadius, Objet::Type type)
+{
+    std::vector<Objet*> r;
+
+    for(std::vector<Objet*>::iterator it = objets.begin(); it != objets.end(); ++it)
+    {
+        if ((type == Objet::ANY || (*it)->getType() == type) && (*it)->isNear(pos, searchRadius))
+            r.push_back(*it);
+    }
+
+    return r;
 }

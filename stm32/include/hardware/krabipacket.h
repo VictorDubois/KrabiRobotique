@@ -3,37 +3,114 @@
 
 #include <stdint.h>
 
-#define KRABIPACKET_MAXSIZE 128
-#define KRABIPACKET_FIXEDBASESIZE 3
-#define KRABIPACKET_HEADER_MAXSIZE 3
+#define KRABIPACKET_MAXSIZE 32
+#define KRABIPACKET_SUFFIX_SIZE 1
+
+#ifndef ROBOTHW
+    #include <QByteArray>
+#endif
 
 class KrabiPacket
 {
-    public:
-        KrabiPacket();
-        virtual ~KrabiPacket();
+public:
+    enum PACKET_TYPE {
+        PING_NULL = 0,
+        PING_SET = 1,
 
-        void reset();
+        REMOTE_MOD_SET = 2,
+        REMOTE_MOD_RESET = 3,
 
-        void setId(uint8_t id);
+        REMOTE_CONTROL_SET = 4,
+        REMOTE_CONTROL_RESET = 5,
 
-        void add(char* data);
-        void add(int data);
-        void add(float data);
-        void add(uint8_t data);
-        void add(uint32_t data);
+        LOG_NORMAL = 10,
+        LOG_DEBUG = 11,
 
-        uint8_t getId();
+        WATCH_VARIABLE = 20,
+        WATCH_REQUIRE_ONCE = 21,
 
-        //void* readNext();
+        WATCH_SET = 22,
+        WATCH_RESET = 23,
 
-        uint16_t getLength();
-        uint8_t* getPacket();
-    protected:
-    private:
-        uint8_t *packet;
-        uint16_t length;
-        uint8_t id;
+        SET_ODOMETRIE = 30,
+        SET_PID_LIN = 32,
+        SET_PID_ANG = 33,
+        RUN_PID_TEST = 36,
+
+        TIME_RESET = 40,
+        TIME_SYNC = 41,
+
+        STOP = 100
+    };
+
+    enum W_TABLE {
+        W_NULL,
+        W_POSITION,
+        W_SPEED,
+        W_SPEED_TARGET,
+        W_ODOMETRIE,
+        W_PID_LIN,
+        W_PID_ANG,
+        MAX_WATCHES
+    };
+
+    enum DATA_TYPE {
+        DATA_INT8,
+        DATA_INT16,
+        DATA_INT32,
+        DATA_FLOAT,
+        DATA_DOUBLE,
+        DATA_STRING
+    };
+
+    KrabiPacket(uint8_t* data, uint8_t size);
+    KrabiPacket(uint8_t id = PING_NULL, W_TABLE watch = W_NULL);
+#ifndef ROBOTHW
+    KrabiPacket(QByteArray data);
+#endif
+
+    void addData(void* data, uint8_t size);
+    void copyData(void* dest, uint8_t size);
+
+    // args
+    template<typename T>
+    void add(T data)
+    {
+        addData(&data, sizeof(T));
+    }
+
+    template<typename T>
+    T get()
+    {
+        T d;
+        copyData(&d, sizeof(T));
+        return d;
+    }
+
+    void addString(char* data);
+    char* getString();
+
+    void setId(uint8_t id);
+    uint8_t id();
+
+    uint8_t length();
+    uint8_t* data();
+
+    bool checkValidity();
+
+#ifndef ROBOTHW
+    QByteArray dataByteArray();
+#endif
+
+    bool isValid();
+
+private:
+    uint8_t mPacket[KRABIPACKET_MAXSIZE], mPacketSecurized[KRABIPACKET_MAXSIZE];
+    uint8_t mId, mCursor, mLength, mLengthSecurized;
+    bool mValid;
+
+    void securize();
+    void unsecurize();
 };
 
 #endif // KRABIPACKET_H

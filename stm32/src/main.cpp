@@ -10,8 +10,6 @@
     #include "stm32f4xx_gpio.h"
 #endif
 
-#define REMOTE_ON
-
 #include "initialisation.h"
 #include "actionneurs/servo.h"
 #include "memory.h"
@@ -116,7 +114,7 @@ int main()
     eteindreLED2();
     allumerLED();
 
-    Remote::log("Init");
+    //Remote::getSingleton()->waitForConnection();
 
 
     ServosNumeriques::initClocksAndPortsGPIO();
@@ -124,9 +122,9 @@ int main()
     ServosNumeriques::sendMode();
 /*<<<<<<< HEAD
 
-/*for(int i=0; i<2000; i++)
+for(int i=0; i<2000; i++)
 =======
-/*
+
 for(int i=0; i<2000; i++)
 >>>>>>> 8a8fced824885f8d8ca4fba8900250501d6a0eab
     {
@@ -211,8 +209,8 @@ for(int i=0; i<2000; i++)
     //Debug::testBrasLateraux();
 #endif
 
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
+    //tirette.attendreRemise();
+    //tirette.attendreEnlevee();
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();
@@ -253,9 +251,9 @@ for(int i=0; i<2000; i++)
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
     Position pos(250,1000, isBlue());//1500, isBlue());
-    PositionPlusAngle posPlusAngle(pos,-M_PI/4);
+    PositionPlusAngle posPlusAngle(pos,0);
     if (!isBlue())
-        posPlusAngle = PositionPlusAngle(pos,-M_PI/4);
+        posPlusAngle = PositionPlusAngle(pos,-M_PI);
     odometrie->setPos(posPlusAngle);
 
     StrategieV2* strat = new StrategieV2(isBlue());

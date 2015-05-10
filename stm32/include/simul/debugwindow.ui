@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DebugWindow</class>
+ <widget class="QMainWindow" name="DebugWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="infoField">
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuPerspective">
+    <property name="title">
+     <string>Perspectives</string>
+    </property>
+    <addaction name="actionSimulateur"/>
+    <addaction name="actionOdom_trie"/>
+    <addaction name="actionAsservissement"/>
+   </widget>
+   <widget class="QMenu" name="menuViews">
+    <property name="title">
+     <string>Views</string>
+    </property>
+    <addaction name="actionBluetooth"/>
+    <addaction name="actionBluetooth_Interface"/>
+    <addaction name="actionOdometrie"/>
+    <addaction name="actionAsserv_Window"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionDisplay_route"/>
+    <addaction name="actionDisplay_strategy"/>
+    <addaction name="actionHide_table"/>
+    <addaction name="actionReset_objects"/>
+    <addaction name="actionRemove_objects"/>
+    <addaction name="actionRemote_Mod"/>
+   </widget>
+   <addaction name="menuSettings"/>
+   <addaction name="menuPerspective"/>
+   <addaction name="menuViews"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSimulateur">
+   <property name="text">
+    <string>Simulateur</string>
+   </property>
+  </action>
+  <action name="actionOdom_trie">
+   <property name="text">
+    <string>Odometrie</string>
+   </property>
+  </action>
+  <action name="actionAsservissement">
+   <property name="text">
+    <string>Asservissement</string>
+   </property>
+  </action>
+  <action name="actionDisplay_route">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Display route</string>
+   </property>
+  </action>
+  <action name="actionHide_table">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide table</string>
+   </property>
+  </action>
+  <action name="actionReset_objects">
+   <property name="text">
+    <string>Reset objects</string>
+   </property>
+  </action>
+  <action name="actionRemove_objects">
+   <property name="text">
+    <string>Remove objects</string>
+   </property>
+  </action>
+  <action name="actionDisplay_strategy">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display strategy</string>
+   </property>
+  </action>
+  <action name="actionRemote_Mod">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Remote Mod</string>
+   </property>
+  </action>
+  <action name="actionBluetooth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Bluetooth Scanner</string>
+   </property>
+  </action>
+  <action name="actionBluetooth_Interface">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Bluetooth Interface</string>
+   </property>
+  </action>
+  <action name="actionOdometrie">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Odometrie Window</string>
+   </property>
+  </action>
+  <action name="actionAsserv_Window">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Asserv Window</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -2,7 +2,7 @@
 #include <QDebug>
 
 
-Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) : p(p), type(type),  theta(theta), world(&world), p_color(color)
+Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) : p(p), type(type),  theta(theta), world(&world), p_color(color), radius(0.)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -11,7 +11,9 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
 
     body = world.CreateBody(&bodyDef);
 
-	if (type == glass )
+    switch(type)
+    {
+    case GLASS:
     {
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
@@ -23,8 +25,12 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
-	}
-	else if (type == gift )
+
+        radius = circle.m_radius;
+        break;
+    }
+
+    case GIFT:
     {
         b2Vec2 vertices[4];
 		vertices[0].Set(0.0f, -0.28f);
@@ -43,8 +49,12 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
-	}
-    else if(type == fireUp)
+
+        radius = 1.5f;
+        break;
+    }
+
+    case FIREUP:
     {
         b2Vec2 vertices[4];
         vertices[0].Set(0.0f, -0.3f);
@@ -63,8 +73,12 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
+
+        radius = 1.4f;
+        break;
     }
-    else if (type == torch )
+
+    case TORCH:
     {
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
@@ -76,8 +90,12 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
+
+        radius = circle.m_radius;
+        break;
     }
-    else if (type == cup )
+
+    case CUP:
     {
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
@@ -89,8 +107,12 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
+
+        radius = circle.m_radius;
+        break;
     }
-    else if (type == stand )
+
+    case STAND:
     {
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
@@ -102,6 +124,10 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         fixtureDef.filter.maskBits = 0x3;
         fixtureDef.filter.categoryBits = 0x1;
         body->CreateFixture(&fixtureDef);
+
+        radius = circle.m_radius;
+        break;
+    }
     }
 }
 
@@ -114,7 +140,7 @@ void Objet::paint(QPainter &pa)
 {
     switch (type)
     {
-		case glass:
+        case GLASS:
         {
             pa.setBrush(p_color);
             pa.setPen(p_color);
@@ -122,7 +148,7 @@ void Objet::paint(QPainter &pa)
             pa.drawEllipse(QPoint(p.x,p.y),40,40);
             break;
 		}
-		case gift:
+        case GIFT:
 		{
             pa.setBrush(p_color);
             pa.setPen(p_color);
@@ -130,10 +156,8 @@ void Objet::paint(QPainter &pa)
             pa.drawRect(p.x-75, p.y-25,150,50);
 			break;
 		}
-        case fireUp:
+        case FIREUP:
         {
-
-
             pa.translate(QPointF(p.x,p.y));
             pa.rotate(-theta*180/3.14);
 
@@ -160,7 +184,7 @@ void Objet::paint(QPainter &pa)
             pa.translate(QPointF(-p.x,-p.y));
             break;
         }
-        case torch:
+        case TORCH:
         {
             pa.setBrush(p_color);
             pa.setPen(p_color);
@@ -169,7 +193,7 @@ void Objet::paint(QPainter &pa)
 
             break;
         }
-        case cup:
+        case CUP:
         {
             pa.setBrush(p_color);
             pa.setPen(p_color);
@@ -178,7 +202,7 @@ void Objet::paint(QPainter &pa)
             pa.setOpacity(1);
             break;
         }
-        case stand:
+        case STAND:
         {
             pa.setBrush(p_color);
             pa.setPen(p_color);
@@ -194,10 +218,8 @@ void Objet::paint(QPainter &pa)
 
 void Objet::updatePos()
 {
-
     p.x = 100*body->GetPosition().x;
     p.y = 100*body->GetPosition().y;
-
 
     theta = body->GetAngle()-3.14;
 
@@ -231,7 +253,25 @@ void Objet::updatePos()
 	body->SetAngularVelocity(angular);
 
 }
+
+void Objet::moveOutOfField()
+{
+    body->SetTransform(b2Vec2(-1000., -1000.), body->GetAngle());
+}
+
 Position Objet::getPosition()
 {
     return p;
+}
+
+Objet::Type Objet::getType()
+{
+    return type;
+}
+
+bool Objet::isNear(Position p, Distance radius)
+{
+    Position delta = p - this->p;
+
+    return (delta.getNorme() < radius + this->radius);
 }

@@ -149,7 +149,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::CLAP :
             return 1;
         case Etape::GOBELET :
-            if (Pinces::getSingleton()->getEstDispo())
+            if (Pinces::getSingleton()->estDispo())
                 return 40;
             else
                 return 0;

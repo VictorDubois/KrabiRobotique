@@ -28,7 +28,7 @@
 #include "pidFilterAngle.h"
 #include "command.h"
 
-#ifdef REMOTE_ON
+#ifndef NO_REMOTE
     #include "remote.h"
 #endif
 
@@ -120,6 +120,11 @@ class Asservissement
 
         float fixedLinearDuty, fixedAngularDuty;
 
+        // tests
+        bool testMod, testRunning, stopped;
+        int testDuration, testIndex;
+        float testLinearSpeed, testAngularSpeed, testEngineLimit;
+
     public:
 
         /**@brief Constructeur de l'asservissement (avec forcement l'odometrie) */
@@ -158,6 +163,14 @@ class Asservissement
 
         void resetFixedDuty();
 
+        void runTest(int duration, float linSpeed, float angSpeed, float limit);
+
+        void stop();
+
+        void resume();
+
+        void remuse();
+
         static void finMatch();
 
         static bool matchFini;
@@ -167,6 +180,9 @@ class Asservissement
 
         /**@brief Reset les erreurs, pour repartir doucement après un arrêt*/
         void resetAsserv();
+
+        PIDFilterDistance &getPIDDistance();
+        PIDFilterAngle &getPIDAngle();
 };
 
 static long systick_count = 0;

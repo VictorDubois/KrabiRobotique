@@ -46,7 +46,7 @@ bool PositionPlusAngle::operator==(const PositionPlusAngle& p) const
 
 bool PositionPlusAngle::presqueEgales(const PositionPlusAngle& positionPlusAngle) const
 {
-    return(position.presqueEgales(positionPlusAngle.position) && angleEq(angle,positionPlusAngle.angle));
+    return(position.presqueEgales(positionPlusAngle.position) && AngleTools::anglesAlmostEqual(angle,positionPlusAngle.angle));
 }
 
 Position PositionPlusAngle::getPosition() const

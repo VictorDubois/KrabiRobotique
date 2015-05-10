@@ -5,23 +5,26 @@
 #include "positionPlusAngle.h"
 #include "asservissement.h"
 #ifdef ROBOTHW
-#include "memory.h"
+    #include "memory.h"
 #endif
 #include "actionGoTo.h"
 #include "recalibrerOdometrie.h"
+
 #include "commandAllerA.h"
+#include "commandAllerEnArcA.h"
+#include "commandTournerVers.h"
 
 #include "sensors.h"
 
-#ifdef REMOTE_ON
+#ifndef NO_REMOTE
     #include "remote.h"
 #endif
 
 #ifdef ROBOTHW
-#include "tourelle.h"
-#include "tirette.h"
+    #include "tourelle.h"
+    #include "tirette.h"
 #else
-#include <QDebug>
+    #include <QDebug>
 #endif
 //#include <iostream>
 
@@ -240,8 +243,8 @@ long StrategieV2::getTimeSpent()
 
 void StrategieV2::update()
 {
-#ifndef ROBOTHW
-    //qDebug() << timeToRestart;
+#ifndef NO_REMOTE
+    Remote::getSingleton()->update();
 #endif
     //Tourelle* tourelle = new Tourelle(TIM6, 0);
     /*
@@ -657,14 +660,15 @@ void StrategieV2::update()
     //eteindreLED();
 }
 
-Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Angle precisionAngle)
+Command* StrategieV2::setCurrentGoal(Position goal, bool goBack, float maxSpeed, Angle precisionAngle, float stopAtDistance)
 {
     if (currentCommand != NULL)
         delete currentCommand;
+
 //    if (actionsCount == 0)
 //        currentCommand = new CommandAllerA(goal, goBack, maxSpeed/2);
 //    else
-    currentCommand = new CommandAllerA(goal, goBack, maxSpeed, 0.0f, precisionAngle);
+    currentCommand = new CommandAllerA(goal, goBack, maxSpeed, 0.0f, precisionAngle, stopAtDistance);
     Asservissement::asservissement->setCommandSpeeds(currentCommand);
     StrategieV2::emptySharpsToCheck();
     //TODO

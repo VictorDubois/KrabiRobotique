@@ -16,7 +16,7 @@ class PIDFilterAngle
         Angle erreurPrecedente;
 
         /**@brief Constancte permettant le calcul correcte de la vitesse angulaire optimal */
-        static const float Kp, Ki, Kd;
+        float Kp, Ki, Kd;
 
     public:
 
@@ -28,6 +28,11 @@ class PIDFilterAngle
 
         /**@brief Reset les erreurs, pour repartir doucement après un arrêt*/
         void resetErrors();
+
+        float getKp();
+        float getKi();
+        float getKd();
+        void setSettings(float p, float i, float d);
 };
 
 #endif // PID_FILTER_ANGLE_H

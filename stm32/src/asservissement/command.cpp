@@ -11,7 +11,7 @@ bool Command::limiter = false;
 
 bool Command::previousWasSmooth = false;
 
-Command::Command()
+Command::Command() : mFinished(false), linSpeed(Odometrie::odometrie->getVitesseLineaire()), angSpeed(Odometrie::odometrie->getVitesseAngulaire())
 {
     Command::stop = false;
 
@@ -30,7 +30,8 @@ bool Command::getStop(void)
 
 void Command::resetSpeeds()
 {
-
+    linSpeed = Odometrie::odometrie->getVitesseLineaire();
+    angSpeed = Odometrie::odometrie->getVitesseAngulaire();
 }
 
 void Command::freinageDUrgence(bool doitFreiner)
@@ -43,10 +44,19 @@ void Command::markAsSmooth()
     previousWasSmooth = true;
 }
 
-// est ce que la commande a fini ?
+Vitesse Command::getLinearSpeed()
+{
+    return linSpeed;
+}
+
+Angle Command::getAngularSpeed()
+{
+    return angSpeed;
+}
+
 bool Command::fini() const
 {
-    return false;
+    return mFinished;
 }
 
 void Command::limitSpeed(bool doitLimiter)

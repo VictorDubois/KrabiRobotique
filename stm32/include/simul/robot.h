@@ -10,7 +10,6 @@
 #include "userdata.h"
 #include "leds.h"
 
-#define ROBOT_POLYGON_COUNT 17
 /** @class Robot
     @brief Classe permettant de simuler l'ensemble des couches basses du robot
 
@@ -45,9 +44,9 @@ private:
     struct UserData capteurSharpArriereGauche;
 
 	b2Body* body;
-    QPoint robotPolygonPoints[ROBOT_POLYGON_COUNT];
+    std::vector<QPoint> robotPolygonPoints;
 
-    bool isBlue;
+    bool isBlue, mRemoteMod;
 
 public:
 
@@ -79,6 +78,8 @@ public:
 	/** @brief Permet d'obtenir la vitesse linaire actuel du robot
         @return Retourne la vitesse linaire actuel du robot*/
 	Distance getVitesseLineaire();
+
+    void setRemoteMod(bool remote);
 
     QPoint getLeftUpperHammerPos() const;
     QPoint getRightUpperHammerPos() const;

@@ -16,7 +16,7 @@ class PIDFilterDistance
         Distance erreurPrecedente;
 
         /**@brief Constantes permettant le calcul correct de la vitesse linéaire optimale */
-        static const float Kp, Ki, Kd;
+        float Kp, Ki, Kd;
 
     public:
 
@@ -28,6 +28,11 @@ class PIDFilterDistance
 
         /**@brief Reset les erreurs, pour repartir doucement après un arrêt*/
         void resetErrors();
+
+        float getKp();
+        float getKi();
+        float getKd();
+        void setSettings(float p, float i, float d);
 };
 
 #endif // PIDFILTERDISTANCE_H

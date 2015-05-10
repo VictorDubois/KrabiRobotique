@@ -6,7 +6,7 @@
 
 //MLA : Medium Level Action
 #define MLA_RAMASSER_PIED_APPROCHE 1
-#define MLA_RAMASSER_PIED_REGARDE 1
+#define MLA_RAMASSER_PIED_REGARDE 20
 #define MLA_RAMASSER_PIED_LEVE 50
 #define MLA_RAMASSER_PIED_APPROCHE_PLUS 50
 #define MLA_RAMASSER_PIED_OUVRE 50
@@ -38,7 +38,7 @@ int RamasserPied::update()
     #ifndef ROBOTHW
             qDebug() << "action pied";
     #endif
-        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
+        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
         Ascenseur::getSingleton()->leverAscenseur();
         status++;
     }
@@ -46,15 +46,6 @@ int RamasserPied::update()
     else if (status == MLA_RAMASSER_PIED_APPROCHE)
     {
         if (Command::isNear(goalPosition, 200.0f))
-        {
-            StrategieV2::lookAt(goalPosition);
-            status++;
-        }
-    }
-
-    else if (status == MLA_RAMASSER_PIED_APPROCHE)
-    {
-        if (Command::isNear(goalPosition, 175.0f))
         {
             StrategieV2::lookAt(goalPosition);
             status++;
@@ -95,9 +86,7 @@ int RamasserPied::update()
 #endif
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
 
-        int nouveauNbrPiedsStockes = Ascenseur::getSingleton()->getNbrPiedsStockes() + 1;
-        Ascenseur::getSingleton()->setNbrPiedsStockes(nouveauNbrPiedsStockes);
-
+        Ascenseur::getSingleton()->addPied();
         status++;
     }
 

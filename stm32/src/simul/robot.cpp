@@ -1,49 +1,16 @@
 #include "simul/robot.h"
 #include <cmath>
 
-
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategieV2.h"
 #include "sensors.h"
 #include <iostream>
-
+#include <QDebug>
 
 #define ratio_qt_box2d 0.01
 
-Odometrie* Odometrie::odometrie = NULL;
-
-//Odometrie class implementation for the simulation
-//Yes, it's ugly ! it should not be in this file.
-//But in a separate file
-Odometrie::Odometrie(Robot* robot) : robot(robot)
-{
-    Odometrie::odometrie = this;
-}
-
-PositionPlusAngle Odometrie::getPos() const
-{
-    return robot->getPos();
-}
-
-Distance Odometrie::getVitesseLineaire() const
-{
-    return robot->getVitesseLineaire();
-}
-
-Angle Odometrie::getVitesseAngulaire() const
-{
-    return robot->getVitesseAngulaire();
-}
-
-void Odometrie::setPos(const PositionPlusAngle& p)
-{
-    robot->setPos(p);
-}
-
-/////////
-
-Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue) : world(world), olds(10000)
+Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue) : world(world), olds(10000), mRemoteMod(false), body(NULL)
 {
     leftUpperHammerStatus = 0;
     leftLowerHammerStatus = 0;
@@ -61,14 +28,8 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
     this->isBlue = isBlue;
    //new Sensors();
 
-    strategie = new StrategieV2(isBlue);//true);
-
+    strategie = new StrategieV2(isBlue);
     asservissement = new Asservissement(odometrie);
-
-
-
-
-    //asservissement->strategie = strategie;
 
     deriv.position.x = 0;
     deriv.position.y = 0;
@@ -79,55 +40,55 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 
     //Krabi 2013
 #ifdef KRABI_2013
-    robotPolygonPoints[inc++] = QPoint(24,0);
-    robotPolygonPoints[inc++] = QPoint(36,30);
-    robotPolygonPoints[inc++] = QPoint(45,36);
-    robotPolygonPoints[inc++] = QPoint(66,42);
-    robotPolygonPoints[inc++] = QPoint(108,42);
-    robotPolygonPoints[inc++] = QPoint(133,87);
-    robotPolygonPoints[inc++] = QPoint(53,160);
-    robotPolygonPoints[inc++] = QPoint(-25,160);
-    robotPolygonPoints[inc++] = QPoint(-95,140);
-    robotPolygonPoints[inc++] = QPoint(-95,-140);
-    robotPolygonPoints[inc++] = QPoint(-25,-160);
-    robotPolygonPoints[inc++] = QPoint(53,-160);
-    robotPolygonPoints[inc++] = QPoint(133,-87);
-    robotPolygonPoints[inc++] = QPoint(108,-42);
-    robotPolygonPoints[inc++] = QPoint(66,-42);
-    robotPolygonPoints[inc++] = QPoint(45,-36);
-    robotPolygonPoints[inc++] = QPoint(36,-30);
+    robotPolygonPoints.push_back(QPoint(24,0));
+    robotPolygonPoints.push_back(QPoint(36,30));
+    robotPolygonPoints.push_back(QPoint(45,36));
+    robotPolygonPoints.push_back(QPoint(66,42));
+    robotPolygonPoints.push_back(QPoint(108,42));
+    robotPolygonPoints.push_back(QPoint(133,87));
+    robotPolygonPoints.push_back(QPoint(53,160));
+    robotPolygonPoints.push_back(QPoint(-25,160));
+    robotPolygonPoints.push_back(QPoint(-95,140));
+    robotPolygonPoints.push_back(QPoint(-95,-140));
+    robotPolygonPoints.push_back(QPoint(-25,-160));
+    robotPolygonPoints.push_back(QPoint(53,-160));
+    robotPolygonPoints.push_back(QPoint(133,-87));
+    robotPolygonPoints.push_back(QPoint(108,-42));
+    robotPolygonPoints.push_back(QPoint(66,-42));
+    robotPolygonPoints.push_back(QPoint(45,-36));
+    robotPolygonPoints.push_back(QPoint(36,-30));
 #endif
 
     //Krabi 2014
 #ifdef KRABI
-    robotPolygonPoints[inc++] = QPoint(146,0);
-    robotPolygonPoints[inc++] = QPoint(161,42);
-    robotPolygonPoints[inc++] = QPoint(161,97);
-    robotPolygonPoints[inc++] = QPoint(101,150);
-    robotPolygonPoints[inc++] = QPoint(34,175);
-    robotPolygonPoints[inc++] = QPoint(-97,175);
-    robotPolygonPoints[inc++] = QPoint(-128,86);
-    robotPolygonPoints[inc++] = QPoint(-128,-86);
-    robotPolygonPoints[inc++] = QPoint(-97,-175);
-    robotPolygonPoints[inc++] = QPoint(34,-175);
-    robotPolygonPoints[inc++] = QPoint(101,-150);
-    robotPolygonPoints[inc++] = QPoint(161,-97);
-    robotPolygonPoints[inc++] = QPoint(161,-42);
-    robotPolygonPoints[inc++] = QPoint(146,-0);
+    robotPolygonPoints.push_back(QPoint(106,20));
+    robotPolygonPoints.push_back(QPoint(161,40));
+    robotPolygonPoints.push_back(QPoint(161,97));
+    robotPolygonPoints.push_back(QPoint(101,150));
+    robotPolygonPoints.push_back(QPoint(34,175));
+    robotPolygonPoints.push_back(QPoint(-97,175));
+    robotPolygonPoints.push_back(QPoint(-128,86));
+    robotPolygonPoints.push_back(QPoint(-128,-86));
+    robotPolygonPoints.push_back(QPoint(-97,-175));
+    robotPolygonPoints.push_back(QPoint(34,-175));
+    robotPolygonPoints.push_back(QPoint(101,-150));
+    robotPolygonPoints.push_back(QPoint(161,-97));
+    robotPolygonPoints.push_back(QPoint(161,-40));
+    robotPolygonPoints.push_back(QPoint(106,-20));
 #endif
 
 #ifdef KRABI_JR
-    robotPolygonPoints[inc++] = QPoint(86,0);
-    robotPolygonPoints[inc++] = QPoint(86,94);
-    robotPolygonPoints[inc++] = QPoint(64,115);
-    robotPolygonPoints[inc++] = QPoint(-40,115);
-    robotPolygonPoints[inc++] = QPoint(-40,-115);
-    robotPolygonPoints[inc++] = QPoint(64,-115);
-    robotPolygonPoints[inc++] = QPoint(86,-94);
-    robotPolygonPoints[inc++] = QPoint(86,-0);
+    robotPolygonPoints.push_back(QPoint(86,0));
+    robotPolygonPoints.push_back(QPoint(86,94));
+    robotPolygonPoints.push_back(QPoint(64,115));
+    robotPolygonPoints.push_back(QPoint(-40,115));
+    robotPolygonPoints.push_back(QPoint(-40,-115));
+    robotPolygonPoints.push_back(QPoint(64,-115));
+    robotPolygonPoints.push_back(QPoint(86,-94));
+    robotPolygonPoints.push_back(QPoint(86,-0));
 #endif
 
-    /// Déclaration Physique (Box2D)
+    /*** Déclaration Physique (Box2D) ***/
     b2BodyDef bodyDef;
 #ifndef BOX2D_2_0_1
     bodyDef.type = b2_dynamicBody;
@@ -150,23 +111,62 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
     fixture.density = 10.0f;
     fixture.friction = 1.0f;
 
-    // On crée la "box" de base du robot : void b2PolygonShape::SetAsBox(float32 hx,float32 hy,const b2Vec2 & center,float32 angle)
-/*#ifdef KRABI
-    box.SetAsBox(60*ratio_qt_box2d,42*ratio_qt_box2d,b2Vec2((24.f-60.f)*ratio_qt_box2d,0),0);
-#endif
-#ifdef KRABI_JR
-    box.SetAsBox(60*ratio_qt_box2d,42*ratio_qt_box2d,b2Vec2((24.f-40.f)*ratio_qt_box2d,0),0);
-#endif
-    body->CreateFixture(&fixture);*/
 
 #ifdef BOX2D_2_0_1
     b2Vec2* v = box.vertices;
-    box.vertexCount = 8;
+    box.vertexCount = robotPolygonPoints.size();
 #else
-    b2Vec2 v[8];
+    std::vector<b2Vec2> v;
+    v.reserve(16);
 #endif
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
+    // 2dbox limite à 8 le nombre de vertex par polygone
     inc = 0;
+
+    for(int i = 0; i < robotPolygonPoints.size(); i += 1)
+    {
+        v[0].Set(0., 0.);
+        v[1].Set(robotPolygonPoints[i].x() * ratio_qt_box2d, robotPolygonPoints[i].y() * ratio_qt_box2d);
+        v[2].Set(robotPolygonPoints[(i + 1) % robotPolygonPoints.size()].x() * ratio_qt_box2d,
+                 robotPolygonPoints[(i + 1) % robotPolygonPoints.size()].y() * ratio_qt_box2d);
+        //v[3].Set(robotPolygonPoints[i + 2].x() * ratio_qt_box2d, robotPolygonPoints[i + 2].y() * ratio_qt_box2d);
+
+#ifndef BOX2D_2_0_1
+        box.Set(v.data(), 3);
+#endif
+        fixture.filter.categoryBits=0x9;
+        body->CreateFixture(&fixture);
+    }
+
+    /*** création du modèle physique à partir du polygone de dessin ***/
+    /*for(std::vector<QPoint>::iterator it = robotPolygonPoints.begin(); it != robotPolygonPoints.end(); ++it)
+    {
+        v[inc++].Set(it->x() * ratio_qt_box2d, it->y() * ratio_qt_box2d);
+        if (inc == 8)
+        {
+            qDebug() << "Box" << inc;
+
+#ifndef BOX2D_2_0_1
+            box.Set(v.data(), inc);
+#endif
+            fixture.filter.categoryBits=0x9;
+            body->CreateFixture(&fixture);
+
+            inc = 0;
+            v[inc++].Set(robotPolygonPoints.front().x() * ratio_qt_box2d, robotPolygonPoints.front().y() * ratio_qt_box2d);
+            v[inc++].Set(it->x() * ratio_qt_box2d, it->y() * ratio_qt_box2d);
+        }
+    }
+
+    #ifndef BOX2D_2_0_1
+    if (inc > 2)
+    {
+        box.Set(v.data(), inc);
+        fixture.filter.categoryBits=0x9;
+        body->CreateFixture(&fixture);
+    }
+    #endif*/
+
     // Krabi 2013
 //	v[inc++].Set(-95.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
 //	v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
@@ -176,7 +176,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 //	v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
 
 
-#ifdef KRABI
+/*#ifdef KRABI
     v[inc++].Set(146.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
     v[inc++].Set(161.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
     v[inc++].Set(161.f*ratio_qt_box2d,97.f*ratio_qt_box2d);
@@ -196,16 +196,10 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 #endif
 
 #ifndef BOX2D_2_0_1
-    #ifdef KRABI_2013
-        box.Set(v, 8);
-    #endif
-    #ifdef KRABI
-        box.Set(v, 8);
-    #endif
-    #ifdef KRABI_JR
-        box.Set(v, 5);
-    #endif
+if (inc > 2)
+    box.Set(v.data(), inc);
 #endif
+
     fixture.filter.categoryBits=0x9;
     body->CreateFixture(&fixture);
 
@@ -243,13 +237,13 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 
 #ifndef BOX2D_2_0_1
     #ifdef KRABI_2013
-        box.Set(v, 8);
+        box.Set(v.data(), 8);
     #endif
     #ifdef KRABI
-        box.Set(v, 8);
+        box.Set(v.data(), 8);
     #endif
     #ifdef KRABI_JR
-        box.Set(v, 5);
+        box.Set(v.data(), 5);
     #endif
 #endif
     fixture.filter.categoryBits=0x9;
@@ -257,7 +251,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 
 #ifdef BOX2D_2_0_1
     body->SetMassFromShapes();
-#endif
+#endif*/
 
 
     //Little hack so that linear and angular speed of the object
@@ -289,7 +283,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
     v[inc++].Set(161.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
 
     fixture.isSensor=true;
@@ -319,7 +313,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
     v[inc++].Set(161.f*ratio_qt_box2d,97.f*ratio_qt_box2d);
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
     fixture.isSensor=true;
 
@@ -347,7 +341,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
     v[inc++].Set(133.f*ratio_qt_box2d,-123.f*ratio_qt_box2d);
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
 
     fixture.isSensor=true;
@@ -379,7 +373,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
 
     fixture.isSensor=true;
@@ -409,7 +403,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
 
     fixture.isSensor=true;
@@ -449,7 +443,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
 #endif
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
 
     fixture.isSensor=true;
@@ -478,7 +472,7 @@ Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue
     v[inc++].Set(-128.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
 
 #ifndef BOX2D_2_0_1
-    box.Set(v, 4);
+    box.Set(v.data(), 4);
 #endif
 
     fixture.isSensor=true;
@@ -518,7 +512,6 @@ void Robot::updateForces(int dt)
 
     body->SetLinearVelocity(bvelocity);
     body->SetAngularVelocity(bangular);
-
 }
 
 
@@ -539,7 +532,7 @@ void Robot::paint(QPainter &p, int dt)
         deriv.position.y = 0;
 
         //olds.push_back(pos);
-        if(manual)
+        if(manual || mRemoteMod)
         {
             keyPressEvent(NULL,false);
             deriv.position.x = deriv.position.x* 0.97f;
@@ -594,11 +587,11 @@ void Robot::paint(QPainter &p, int dt)
     p.setOpacity(.3);
 
     // on peint le robot.
-    p.drawConvexPolygon(robotPolygonPoints, 17);
-    p.drawRect(-20, 160, 20, rightUpperHammerStatus);
+    p.drawConvexPolygon(robotPolygonPoints.data(), robotPolygonPoints.size());
+    /*p.drawRect(-20, 160, 20, rightUpperHammerStatus);
     p.drawRect(0, 160, 20, rightLowerHammerStatus);
     p.drawRect(-20, -160, 20, -leftUpperHammerStatus);
-    p.drawRect(0, -160, 20, -leftLowerHammerStatus);
+    p.drawRect(0, -160, 20, -leftLowerHammerStatus);*/
 
     //On peint le carré de la couleur du départ
     if(isBlue)
@@ -816,7 +809,7 @@ void Robot::keyPressEvent(QKeyEvent* evt, bool press)
     }
 
 
-    if(manual)
+    if(!mRemoteMod && manual)
     {
         float dinc = .25;
         float ainc = 0.0025;
@@ -880,7 +873,8 @@ PositionPlusAngle Robot::getPos()
 void Robot::setPos(PositionPlusAngle p)
 {
     pos = p;
-    return;
+    if (body != NULL)
+        body->SetTransform(b2Vec2(p.position.x * ratio_qt_box2d, p.position.y * ratio_qt_box2d), p.angle);
 }
 
 Angle Robot::getVitesseAngulaire()
@@ -891,6 +885,11 @@ Angle Robot::getVitesseAngulaire()
 Distance Robot::getVitesseLineaire()
 {
     return deriv.position.x;
+}
+
+void Robot::setRemoteMod(bool remote)
+{
+    mRemoteMod = remote;
 }
 
 QPoint Robot::getLeftUpperHammerPos() const
