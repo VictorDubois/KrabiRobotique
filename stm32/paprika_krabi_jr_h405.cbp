@@ -100,6 +100,8 @@
 		<Unit filename="include/asservissement/asservissement.h" />
 		<Unit filename="include/asservissement/command.h" />
 		<Unit filename="include/asservissement/commandAllerA.h" />
+		<Unit filename="include/asservissement/commandAllerEnArcA.h" />
+		<Unit filename="include/asservissement/commandTournerVers.h" />
 		<Unit filename="include/asservissement/odometrie.h" />
 		<Unit filename="include/asservissement/pidFilterAngle.h" />
 		<Unit filename="include/asservissement/pidFilterDistance.h" />
@@ -109,11 +111,13 @@
 		<Unit filename="include/hardware/ax12api.h" />
 		<Unit filename="include/hardware/capteurCouleur.h" />
 		<Unit filename="include/hardware/capteurs.h" />
+		<Unit filename="include/hardware/krabipacket.h" />
 		<Unit filename="include/hardware/leds.h" />
 		<Unit filename="include/hardware/ligthBarrierSensor.h" />
 		<Unit filename="include/hardware/limitSwitchSensor.h" />
 		<Unit filename="include/hardware/pwmHandler.h" />
 		<Unit filename="include/hardware/quadratureCoderHandler.h" />
+		<Unit filename="include/hardware/remote.h" />
 		<Unit filename="include/hardware/roue.h" />
 		<Unit filename="include/hardware/sharpSensor.h" />
 		<Unit filename="include/hardware/timerHandler.h" />
@@ -135,6 +139,8 @@
 		<Unit filename="src/asservissement/asservissement.cpp" />
 		<Unit filename="src/asservissement/command.cpp" />
 		<Unit filename="src/asservissement/commandAllerA.cpp" />
+		<Unit filename="src/asservissement/commandAllerEnArcA.cpp" />
+		<Unit filename="src/asservissement/commandTournerVers.cpp" />
 		<Unit filename="src/asservissement/odometrie.cpp" />
 		<Unit filename="src/asservissement/pidFilterAngle.cpp" />
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
@@ -143,11 +149,13 @@
 		<Unit filename="src/hardware/analogSensor.cpp" />
 		<Unit filename="src/hardware/ax12api.cpp" />
 		<Unit filename="src/hardware/capteurCouleur.cpp" />
+		<Unit filename="src/hardware/krabipacket.cpp" />
 		<Unit filename="src/hardware/leds.cpp" />
 		<Unit filename="src/hardware/ligthBarrierSensor.cpp" />
 		<Unit filename="src/hardware/limitSwitchSensor.cpp" />
 		<Unit filename="src/hardware/pwmHandler.cpp" />
 		<Unit filename="src/hardware/quadratureCoderHandler.cpp" />
+		<Unit filename="src/hardware/remote.cpp" />
 		<Unit filename="src/hardware/roue.cpp" />
 		<Unit filename="src/hardware/sharpSensor.cpp" />
 		<Unit filename="src/hardware/timerHandler.cpp" />
