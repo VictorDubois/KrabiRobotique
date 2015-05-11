@@ -2,6 +2,7 @@
 #define TAPIS_H
 
 #include "position.h"
+#include "angle.h"
 #include "mediumLevelAction.h"
 #include "command.h"
 #include "brasTapis.h"
@@ -24,13 +25,7 @@ class Tapis : public MediumLevelAction
         /** @brief Fonction appelée toutes les 50ms qui gère l'action Tapis : le robot avance à la position puis déploie son bras pour poser le tapis.
           * @fn int update()
           * @return le statut ("status" dans le code) (attribut hérité de la classe MediumLevelAction) :
-                status = 0 : le robot commence l'action
-                status = 1 : le robot se déplace jusqu'à la position
-                status = 2 : le robot s'oriente pour être face aux marches
-                status = 3 : le robot ouvre son bras
-                status = 54 : le robot lâche le tapis
-                status = 105 : le robot ferme son bras
-                status = -1 : le robot a fini l'action
+
         */
         int update();
 
@@ -38,7 +33,7 @@ class Tapis : public MediumLevelAction
 
     protected :
         Position position;
-        Position positionLookAt;
+        Angle toLookAt;
         BrasTapis::COTE cote;
 };
 
