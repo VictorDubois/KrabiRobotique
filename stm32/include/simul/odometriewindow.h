@@ -35,6 +35,8 @@ private slots:
 private:
     Ui::OdometrieWindow *ui;
     float rx, ry, rangle;
+
+    void showEvent(QShowEvent* event );
 };
 
 #endif // ODOMETRIEWINDOW_H

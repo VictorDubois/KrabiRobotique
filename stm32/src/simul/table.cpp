@@ -745,8 +745,10 @@ void Table::mousePressEvent(QMouseEvent* evt, bool press)
     float y = (evt->y()/600.0) * tableHeight;
     qDebug() << "X : " << x << "    -    Y : " << y;
 
-    if (evt->button() == Qt::LeftButton && DebugWindow::getInstance()->getAsservWindow()->clickGoto())
+    if (evt->button() == Qt::RightButton && DebugWindow::getInstance()->getAsservWindow()->clickGoto())
     {
+        qDebug() << "Send the robot !";
+
         KrabiPacket p(KrabiPacket::RUN_GOTO);
         p.add((float) x);
         p.add((float) y);

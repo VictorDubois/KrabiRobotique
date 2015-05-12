@@ -42,6 +42,7 @@ SharpSensor** StrategieV2::sharps;
 bool StrategieV2::hasToGoBase = false;
 bool StrategieV2::hasJustAvoided = false;
 bool StrategieV2::mustDeleteAction = false;
+bool StrategieV2::hasToStopAfterAction = false;
 int StrategieV2::glassGathered = 0;
 int StrategieV2::timeSinceLastRecalibration = 0;
 bool StrategieV2::somethingDetected = false;
@@ -628,6 +629,13 @@ void StrategieV2::update()
         }*/
         //else
         //{
+
+        if (hasToStopAfterAction)
+        {
+            hasToStopAfterAction = false;
+            Asservissement::asservissement->stop();
+        }
+
         if (mustDeleteAction) // temporary action
             mustDeleteAction = false;
         else
@@ -744,10 +752,11 @@ Command* StrategieV2::lookAt(Angle a, float maxSpeed)
 
     return currentCommand;
 }
-void StrategieV2::addTemporaryAction(MediumLevelAction* action)
+void StrategieV2::addTemporaryAction(MediumLevelAction* action, bool stopAfter)
 {
     currentAction = action;
     mustDeleteAction = true; // this is a temporary action that needs to be deleted
+    hasToStopAfterAction = stopAfter;
 }
 void StrategieV2::setJustAvoided(bool avoided)
 {

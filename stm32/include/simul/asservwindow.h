@@ -46,6 +46,8 @@ private slots:
 
 private:
     Ui::AsservWindow *ui;
+
+    void showEvent(QShowEvent* event );
 };
 
 #endif // ASSERVWINDOW_H

@@ -37,6 +37,8 @@ private:
     Ui::WatchWindow *ui;
 
     void setWatching(KrabiPacket::W_TABLE w, bool watching, bool transmit, bool force = false);
+
+    void showEvent(QShowEvent* event );
 };
 
 #endif // WATCHWINDOW_H

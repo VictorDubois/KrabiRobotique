@@ -9,7 +9,7 @@ SharpWindow::SharpWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->sharpsList->setRowCount(1);
+    ui->sharpsList->setRowCount(0);
     ui->sharpsList->setColumnCount(3);
     ui->sharpsList->setHorizontalHeaderItem(0, new QTableWidgetItem("Name"));
     ui->sharpsList->setHorizontalHeaderItem(1, new QTableWidgetItem("Value"));
@@ -17,10 +17,6 @@ SharpWindow::SharpWindow(QWidget *parent) :
     ui->sharpsList->setColumnWidth(0, 250);
     ui->sharpsList->setColumnWidth(1, 60);
     ui->sharpsList->setColumnWidth(2, 60);
-
-    ui->sharpsList->setItem(0, 0, new QTableWidgetItem(getSharpName(SharpSensor::BACK_LEFT)));
-    ui->sharpsList->setItem(0, 1, new QTableWidgetItem(QString::number(1225)));
-    ui->sharpsList->setItem(0, 2, new QTableWidgetItem(true ? "Yes" : "No"));
 }
 
 SharpWindow::~SharpWindow()
@@ -61,6 +57,7 @@ QString SharpWindow::getSharpName(SharpSensor::SharpName sharp)
 void SharpWindow::syncFinished(KrabiPacket p)
 {
     ui->sharpsList->clear();
+    ui->sharpsList->setRowCount(SharpSensor::END_SHARP_NAME);
 
     for(int i(0); i < SharpSensor::END_SHARP_NAME; ++i)
     {
@@ -70,8 +67,6 @@ void SharpWindow::syncFinished(KrabiPacket p)
         SharpSensor::SharpName s = (SharpSensor::SharpName) i;
         uint16_t value = p.get<uint16_t>();
         bool on = p.get<bool>();
-
-        ui->sharpsList->setRowCount(i);
         ui->sharpsList->setItem(i, 0, new QTableWidgetItem(getSharpName(s)));
         ui->sharpsList->setItem(i, 1, new QTableWidgetItem(QString::number(value)));
         ui->sharpsList->setItem(i, 2, new QTableWidgetItem(on ? "Yes" : "No"));

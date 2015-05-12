@@ -33,6 +33,11 @@ WatchWindow::~WatchWindow()
     delete ui;
 }
 
+void WatchWindow::showEvent(QShowEvent* event )
+{
+    requireSync();
+}
+
 QString WatchWindow::getWatchName(KrabiPacket::W_TABLE w)
 {
     switch(w)
