@@ -12,15 +12,20 @@ Tapis::Tapis(){}
 
 Tapis::Tapis(Position position):MediumLevelAction(position)  //si cote est true on veut poser le tapis droit, si non c'est le tapis gauche
 {
+    this->toLookAt = M_PI/2;
     if (position == Position(1000, 750))
     {
-        this->positionLookAt = Position(0, 300);
-        this->cote = BrasTapis::DROIT;
+        if(StrategieV2::getIsBlue())
+            this->cote = BrasTapis::DROIT;
+        else
+            this->cote = BrasTapis::GAUCHE;
     };
     if (position == Position(1450, 750))
     {
-        this->positionLookAt = Position(3000, 200);
-        this->cote = BrasTapis::GAUCHE;
+        if(StrategieV2::getIsBlue())
+            this->cote = BrasTapis::GAUCHE;
+        else
+            this->cote = BrasTapis::DROIT;
     };
 }
 
@@ -33,7 +38,6 @@ Etape::EtapeType Tapis::getType()
 
 int Tapis::update()
 {
-
     if (status == 0)
     {
 #ifndef ROBOTHW
@@ -52,14 +56,14 @@ int Tapis::update()
     {
         if (Command::isNear(goalPosition))
         {
-            StrategieV2::lookAt(positionLookAt);
+            StrategieV2::lookAt(toLookAt);
             status++;
         }
     }
 
     else if (status == 3)
     {
-        if (Command::isLookingAt(positionLookAt))
+        if (Command::isLookingAt(toLookAt))
         {
             //ouvrir le bras
 #ifndef ROBOTHW
@@ -71,42 +75,12 @@ int Tapis::update()
         }
     }
 
-    else if ((status <= 23) && (status > -1 ))    //On attend que les bras du robot s'ouvrent : 50ms par incrémentation du status
+    else if (status < 103)
     {
         status++;
     }
 
-    else if (status == 24)
-    {
-        //lacher les tapis
-#ifndef ROBOTHW
-        qDebug() << "On ouvre les pinces pour lacher les tapis";
-#endif
-        BrasTapis::getSingleton(cote)->ouvrirPince();
-        status++;
-    }
-
-    else if ((status <= 44) && (status > -1 ))    //On attend que la pince s'ouvre
-    {
-        status++;
-    }
-
-    else if (status == 45)
-    {
-        //fermer bras
-#ifndef ROBOTHW
-        qDebug() << "On ferme les Pinces";
-#endif
-        BrasTapis::getSingleton(cote)->fermerPince();
-        status++;
-    }
-
-    else if ((status <= 65) && (status > -1 ))    //On attend que la pince se ferme
-    {
-        status++;
-    }
-
-    else if (status == 66)
+    else if (status == 103)
     {
         //fermer bras
 #ifndef ROBOTHW
@@ -116,18 +90,18 @@ int Tapis::update()
         status++;
     }
 
-    else if ((status <= 87) && (status > -1))    //On attend que les bras se ferment.
+    else if (status < 203)
     {
         status++;
     }
 
-    else if (status == 88)
+    else if (status == 203)    //On attend que les bras se ferment.
     {
 #ifndef ROBOTHW
         qDebug() << "Etape tapis finie";
 #endif
         status = -1;
     }
-
     return status;
 }
+

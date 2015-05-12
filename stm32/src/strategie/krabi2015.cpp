@@ -67,8 +67,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(26, new DeposerGobelet(Position(2630, 460, isYellow)) );
 
     // Tapis
-    new Etape(38, new Tapis(Position(1000, 750, isYellow)) );
-    new Etape(39, new Tapis(Position(1450, 750, isYellow)) );
+    new Etape(38, new Tapis(Position(1000, 850, isYellow)) );
+    new Etape(39, new Tapis(Position(1450, 850, isYellow)) );
 
     // Ramasser Pied
     new Etape(13, new RamasserPied(Position(90, 1750, isYellow)) );
@@ -161,7 +161,7 @@ int Krabi2015::getScoreEtape(int i){
             else
                 return 100;
         case Etape::TAPIS :
-            return 0;
+            return 500;
         case Etape::DEPOSE_GOBELET :
             /*if (!Pinces::getSingleton()->getEstDispo())
                 return 40;
