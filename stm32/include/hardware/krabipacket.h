@@ -27,30 +27,39 @@ public:
         LOG_DEBUG = 11,
 
         WATCH_VARIABLE = 20,
-        WATCH_REQUIRE_ONCE = 21,
+        WATCH_VARIABLE_TIMED = 21,
+        WATCH_REQUIRE_ONCE = 23,
 
-        WATCH_SET = 22,
-        WATCH_RESET = 23,
+        WATCH_SET = 24,
+        WATCH_RESET = 25,
+
+        WATCH_DESELECT_ALL = 27,
 
         SET_ODOMETRIE = 30,
         SET_PID_LIN = 32,
         SET_PID_ANG = 33,
-        RUN_PID_TEST = 36,
+
+        ASSERV_RESULT = 38,
 
         TIME_RESET = 40,
         TIME_SYNC = 41,
+
+        RUN_PID_TEST = 50,
+        RUN_GOTO = 51,
 
         STOP = 100
     };
 
     enum W_TABLE {
         W_NULL,
+        W_WATCHES,
         W_POSITION,
         W_SPEED,
         W_SPEED_TARGET,
         W_ODOMETRIE,
         W_PID_LIN,
         W_PID_ANG,
+        W_SHARPS,
         MAX_WATCHES
     };
 
@@ -85,6 +94,12 @@ public:
         T d;
         copyData(&d, sizeof(T));
         return d;
+    }
+
+    template<typename T>
+    bool isReadable()
+    {
+        return mCursor + sizeof(T) < mLength;
     }
 
     void addString(char* data);

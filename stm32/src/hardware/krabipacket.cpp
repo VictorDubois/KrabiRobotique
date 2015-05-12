@@ -86,6 +86,9 @@ void KrabiPacket::addData(void* data, uint8_t size)
 
 void KrabiPacket::copyData(void* dest, uint8_t size)
 {
+    if (mCursor + size >= mLength)
+        return;
+
     memcpy(dest, mPacket + mCursor, size);
     mCursor += size;
 }

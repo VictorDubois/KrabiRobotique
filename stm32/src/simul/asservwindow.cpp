@@ -2,6 +2,7 @@
 #include "ui_asservwindow.h"
 
 #include "debugwindow.h"
+#include "table.h"
 
 AsservWindow::AsservWindow(QWidget *parent) :
     QWidget(parent),
@@ -13,6 +14,26 @@ AsservWindow::AsservWindow(QWidget *parent) :
 AsservWindow::~AsservWindow()
 {
     delete ui;
+}
+
+bool AsservWindow::graphLinear()
+{
+    return ui->linearGraph->isChecked();
+}
+
+bool AsservWindow::graphAngular()
+{
+    return ui->angularGraph->isChecked();
+}
+
+bool AsservWindow::graphDuty()
+{
+    return ui->dutyGraph->isChecked();
+}
+
+bool AsservWindow::clickGoto()
+{
+    return ui->clickGoto->isChecked();
 }
 
 void AsservWindow::settingsReceivedAngular(float p, float i, float d)
@@ -52,6 +73,8 @@ void AsservWindow::runTest()
     DebugWindow::getInstance()->clearPlots();
 
     DebugWindow::getInstance()->getBluetoothWindow()->send(p);
+
+    Table::getMainInstance()->resetTimer();
 }
 
 void AsservWindow::stopTest()
@@ -71,6 +94,7 @@ void AsservWindow::on_linSet_clicked()
     p.add((float) ui->linKp->value());
     p.add((float) ui->linKi->value());
     p.add((float) ui->linKd->value());
+    p.add(ui->linearEnabled->isChecked());
 
     DebugWindow::getInstance()->getBluetoothWindow()->send(p);
 }
@@ -86,6 +110,7 @@ void AsservWindow::on_angSet_clicked()
     p.add((float) ui->angKp->value());
     p.add((float) ui->angKi->value());
     p.add((float) ui->angKd->value());
+    p.add(ui->angularEnabled->isChecked());
 
     DebugWindow::getInstance()->getBluetoothWindow()->send(p);
 }

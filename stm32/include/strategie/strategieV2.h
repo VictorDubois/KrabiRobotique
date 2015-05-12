@@ -44,11 +44,11 @@ class StrategieV2
         static bool sharpDetects(SharpSensor::SharpName name);
         static void setTourneSurSoiMeme(bool tourne);
         static long getTimeSpent();
+        static void resetTime();
         static bool *getSharpsToCheck();
-
-#ifndef ROBOTHW
         static SharpSensor** getSensors();
 
+#ifndef ROBOTHW
 static void paint(QPainter* p);
 #endif
         static bool somethingDetected;

@@ -49,6 +49,8 @@
     <addaction name="actionBluetooth_Interface"/>
     <addaction name="actionOdometrie"/>
     <addaction name="actionAsserv_Window"/>
+    <addaction name="actionSharps"/>
+    <addaction name="actionWatches"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -150,7 +152,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Odometrie Window</string>
+    <string>Odometrie</string>
    </property>
   </action>
   <action name="actionAsserv_Window">
@@ -158,7 +160,23 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Asserv Window</string>
+    <string>Asserv</string>
+   </property>
+  </action>
+  <action name="actionSharps">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sharps</string>
+   </property>
+  </action>
+  <action name="actionWatches">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Watches</string>
    </property>
   </action>
  </widget>
