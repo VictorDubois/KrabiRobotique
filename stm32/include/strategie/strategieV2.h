@@ -29,7 +29,7 @@ class StrategieV2
         static Command* setCurrentGoal(Position goal, Position center, float vitesse, bool goBack = false, Angle precisionAngle = -100.00);
         static Command *lookAt(Position pos, float maxSpeed = VITESSE_ANGULAIRE_MAX);
         static Command* lookAt(Angle a, float maxSpeed = VITESSE_ANGULAIRE_MAX);
-        static void addTemporaryAction(MediumLevelAction* action);
+        static void addTemporaryAction(MediumLevelAction* action, bool stopAfter = false);
         static void gatherGlass();
         static void setJustAvoided(bool value);
         static bool getJustAvoided();
@@ -64,7 +64,7 @@ static void paint(QPainter* p);
         static int numberOfActionsDelayed;
         static int actionsCount;
         static bool hasToGoBase;
-        static bool mustDeleteAction;
+        static bool mustDeleteAction, hasToStopAfterAction;
         static int glassGathered;
         static int timeSinceLastRecalibration;
         static bool hasJustAvoided;

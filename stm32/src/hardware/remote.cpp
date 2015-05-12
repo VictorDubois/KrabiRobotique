@@ -456,12 +456,14 @@ void Remote::treat(KrabiPacket &packet)
             float y = packet.get<float>();
             float speed = packet.get<float>();
 
-            if (speed > 0)
+            /*if (speed > 0)
                 StrategieV2::setCurrentGoal(Position(x, y));
             else
-                StrategieV2::setCurrentGoal(Position(x, y));
+                StrategieV2::setCurrentGoal(Position(x, y));*/
 
             Asservissement::asservissement->resume();
+
+            StrategieV2::addTemporaryAction(new ActionGoTo(Position(x, y)), true);
             break;
         }
         case KrabiPacket::STOP:

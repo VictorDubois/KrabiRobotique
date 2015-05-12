@@ -26,6 +26,11 @@ OdometrieWindow::~OdometrieWindow()
     delete ui;
 }
 
+void OdometrieWindow::showEvent(QShowEvent* event )
+{
+    requireSync();
+}
+
 void OdometrieWindow::addRelative(Position rp, Angle ra)
 {
     rx += rp.x;

@@ -16,6 +16,12 @@ AsservWindow::~AsservWindow()
     delete ui;
 }
 
+void AsservWindow::showEvent(QShowEvent* event )
+{
+    requireSyncAngular();
+    requireSyncLinear();
+}
+
 bool AsservWindow::graphLinear()
 {
     return ui->linearGraph->isChecked();
