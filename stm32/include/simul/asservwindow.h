@@ -15,6 +15,12 @@ public:
     explicit AsservWindow(QWidget *parent = 0);
     ~AsservWindow();
 
+    bool graphLinear();
+    bool graphAngular();
+    bool graphDuty();
+
+    bool clickGoto();
+
 public slots:
     void settingsReceivedAngular(float p, float i, float d);
     void settingsReceivedLinear(float p, float i, float d);

@@ -26,18 +26,18 @@ Tirette::Tirette(GPIO_TypeDef* GPIOx_tirette, uint16_t GPIO_Pin_x_tirette)
 // attends jusqu'à ce que la tirette soit enlevée
 void Tirette::attendreEnlevee() const
 {
-    #ifndef NO_REMOTE
+#ifndef NO_REMOTE
         //Remote::log("Waiting for 'tirette enleve'");
-    #endif
+#endif
     int buffer = 0xffffffff;
     //int waiting = 0;
     while (buffer)
     {
-        #ifndef NO_REMOTE
+#ifndef NO_REMOTE
         Remote::getSingleton()->update(true);
         if (Remote::getSingleton()->isInRemoteMod())
-            break;
-        #endif
+            return;
+#endif
 
         buffer <<= 1;
         buffer |= !enlevee();
@@ -47,17 +47,17 @@ void Tirette::attendreEnlevee() const
 // attends jusqu'à ce que la tirette soit remise
 void Tirette::attendreRemise() const
 {
-    #ifndef NO_REMOTE
+#ifndef NO_REMOTE
         //Remote::log("Waiting for 'tirette remise'");
-    #endif
+#endif
     int buffer = 0xffffffff;
     while (buffer)
     {
-        #ifndef NO_REMOTE
+#ifndef NO_REMOTE
         Remote::getSingleton()->update(true);
         if (Remote::getSingleton()->isInRemoteMod())
-            break;
-        #endif
+            return;
+#endif
 
         buffer <<= 1;
         buffer |= enlevee();

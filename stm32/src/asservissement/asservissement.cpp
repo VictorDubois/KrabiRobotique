@@ -12,15 +12,15 @@
 #define DEBUG_ODOMEDTRIE 0
 
 #define DEBUG_ASSERV 0
-#define DEBUG_ASSERV_SIZE 800
+#define DEBUG_ASSERV_SIZE 1200
 
 #define DEBUG_BLINK_EACH_SECOND 1
 
-#if DEBUG_ASSERV == 1
+//#if DEBUG_ASSERV == 1
     //int roueGauche[DEBUG_ASSERV_SIZE];
     //int roueDroite[DEBUG_ASSERV_SIZE];
 
-    float vitesseLin[DEBUG_ASSERV_SIZE];
+    /*float vitesseLin[DEBUG_ASSERV_SIZE];
     float vitesseLinE[DEBUG_ASSERV_SIZE];
     float linearDuty[DEBUG_ASSERV_SIZE];
 
@@ -32,14 +32,22 @@
     float posy[DEBUG_ASSERV_SIZE];
     float angle[DEBUG_ASSERV_SIZE];
 
-    uint32_t dbgInc = 0;
-#endif
+    uint32_t dbgInc = 0;*/
+
+    float vitesseLin[DEBUG_ASSERV_SIZE];
+    float vitesseLinE[DEBUG_ASSERV_SIZE];
+    float linearDuty[DEBUG_ASSERV_SIZE];
+
+    float vitesseAng[DEBUG_ASSERV_SIZE];
+    float vitesseAngE[DEBUG_ASSERV_SIZE];
+    float angularDuty[DEBUG_ASSERV_SIZE];
+//#endif
 
 Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables static soient défini
 bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 
-Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(true)
+Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(true), engineLimit(0.5f), testDataSent(0), testDataToSend(0)
 
 /*:
     seuil_collision(SEUIL_COLISION),
@@ -141,6 +149,8 @@ void Asservissement::setCommandSpeeds(Command* command)
 
 void Asservissement::runTest(int duration, float linSpeed, float angSpeed, float limit)
 {
+    resetAsserv();
+
     testDuration = duration;
     testIndex = 0;
 
@@ -150,6 +160,11 @@ void Asservissement::runTest(int duration, float linSpeed, float angSpeed, float
     testRunning = true;
     testMod = true;
     stopped = false;
+
+    engineLimit = limit;
+
+    testDataSent = 0;
+    testDataToSend = 0;
 }
 
 Distance Asservissement::getLinearSpeed()
@@ -168,6 +183,16 @@ Angle Asservissement::getAngularSpeed()
         return vitesseAngulaire;
 }
 
+void Asservissement::setPIDDistance(bool enabled)
+{
+    activePIDDistance = enabled;
+}
+
+void Asservissement::setPIDAngle(bool enabled)
+{
+    activePIDAngle = enabled;
+}
+
 void Asservissement::update(void)
 {
 #ifdef ROBOTHW
@@ -183,9 +208,32 @@ void Asservissement::update(void)
 
     asserCount++;
 
+/*#ifdef ROUES
     if (!stopped)
     {
+        roues.gauche.tourne(0.6);
+        roues.droite.tourne(0.6);
+    }
+    else
+    {
+        roues.gauche.tourne(0.0);
+        roues.droite.tourne(0.0);
+    }
 
+    if (testMod && testRunning)
+    {
+        testIndex++;
+        if (testIndex >= testDuration)
+        {
+            stopped = true;
+            testRunning = false;
+        }
+    }
+    return;
+#endif*/
+
+    if (!stopped)
+    {
         PositionPlusAngle positionPlusAngleActuelle = odometrie->getPos();      //Variable juste pour avoir un code plus lisible par la suite
         Angle vitesse_angulaire_atteinte = odometrie->getVitesseAngulaire();    //idem
         Distance vitesse_lineaire_atteinte = odometrie->getVitesseLineaire();   //idem
@@ -200,27 +248,25 @@ void Asservissement::update(void)
 #ifdef ROUES
 
         //on filtre l'erreur de vitesse lineaire et angulaire
-        linearDutySent = activePIDDistance ? pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte) : fixedLinearDuty;
-        angularDutySent = activePIDAngle ? pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte) : fixedAngularDuty;
+        linearDutySent = activePIDDistance ? pid_filter_distance.getFilteredValue(vitesse_lineaire_a_atteindre-vitesse_lineaire_atteinte) : 0.f;
+        angularDutySent = activePIDAngle ? pid_filter_angle.getFilteredValue(vitesse_angulaire_a_atteindre-vitesse_angulaire_atteinte) : 0.f;
 
         //Et on borne la somme de ces valeurs filtrée entre -> voir ci dessous
-        float limit = 0.5f;
-
         #ifdef RRD2
-            limit = 0.5f;
+            engineLimit = 0.5f;
         #endif
 
 
-        linearDutySent =  MIN(MAX(linearDutySent, -limit),limit);
-        angularDutySent = MIN(MAX(angularDutySent, -limit),limit);
+        /*linearDutySent = MIN(MAX(linearDutySent, -engineLimit), engineLimit);
+        angularDutySent = MIN(MAX(angularDutySent, -engineLimit), engineLimit);*/
 
-        computeObstacleDetecte(linearDutySent, angularDutySent, &positionPlusAngleActuelle);
+        /*computeObstacleDetecte(linearDutySent, angularDutySent, &positionPlusAngleActuelle);
 
         if(obstacleDetecte)
         {
             linearDutySent = 0;
             angularDutySent = 0;
-        }
+        }*/
 
         //On évite que le robot fasse du bruit quand il est à l'arrêt
  //       linearDutySent = fabs(linearDutySent) > 0.05 || vitesse_lineaire_a_atteindre > 0.01 ? linearDutySent : 0;
@@ -244,12 +290,24 @@ void Asservissement::update(void)
         else*/
         {
         #if defined(STM32F40_41xxx) || defined(STM32F10X_MD)
-            roues.droite.tourne(0.8*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));
-            roues.gauche.tourne(0.8*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));
+            roues.droite.tourne(0.8*MIN(MAX(+linearDutySent-angularDutySent, -engineLimit), engineLimit));
+            roues.gauche.tourne(0.8*MIN(MAX(+linearDutySent+angularDutySent, -engineLimit), engineLimit));
         #else
-            roues.droite.tourne(0.95*MIN(MAX(+linearDutySent+angularDutySent, -limit),limit));//*1
-            roues.gauche.tourne(0.95*MIN(MAX(+linearDutySent-angularDutySent, -limit),limit));//*1
+            roues.droite.tourne(MIN(MAX(linearDutySent+angularDutySent, -engineLimit), engineLimit));//*1
+            roues.gauche.tourne(MIN(MAX(linearDutySent-angularDutySent, -engineLimit), engineLimit));//*1
         #endif
+        }
+
+        if (testMod && testRunning)
+        {
+            vitesseLin[testDataToSend] = vitesse_lineaire_atteinte;
+            vitesseLinE[testDataToSend] = vitesse_lineaire_a_atteindre;
+            linearDuty[testDataToSend] = linearDutySent;
+
+            vitesseAng[testDataToSend] = vitesse_angulaire_atteinte;
+            vitesseAngE[testDataToSend] = vitesse_angulaire_a_atteindre;
+            angularDuty[testDataToSend] = angularDutySent;
+            testDataToSend++;
         }
 
         #if DEBUG_ASSERV == 1
@@ -305,7 +363,29 @@ void Asservissement::update(void)
         {
             stopped = true;
             testRunning = false;
+            testDataSent = 0;
         }
+    }
+
+    if (testMod && !testRunning && testDataSent < testDataToSend && (systick_count % 10 == 0))
+    {
+        // send data
+#ifndef NO_REMOTE
+        KrabiPacket p(KrabiPacket::ASSERV_RESULT);
+        p.add((uint32_t) testDataSent);
+        p.add(vitesseLin[testDataSent]);
+        p.add(vitesseLinE[testDataSent]);
+        p.add(linearDuty[testDataSent]);
+        p.add(vitesseAng[testDataSent]);
+        p.add(vitesseAngE[testDataSent]);
+        p.add(angularDuty[testDataSent]);
+
+        Remote::getSingleton()->send(p);
+
+        //Remote::getSingleton()->log("Pika %d / %d", testDataSent, testDataToSend);
+
+        testDataSent++;
+#endif
     }
 }
 

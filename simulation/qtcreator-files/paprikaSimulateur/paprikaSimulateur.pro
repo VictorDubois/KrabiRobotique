@@ -90,7 +90,9 @@ HEADERS += \
     ../../include/simul/bluetoothinterface.h \
     ../../include/hardware/krabipacket.h \
     ../../include/simul/odometriewindow.h \
-    ../../include/simul/asservwindow.h
+    ../../include/simul/asservwindow.h \
+    ../../include/simul/sharpwindow.h \
+    ../../include/simul/watchwindow.h
 
 
 SOURCES += \
@@ -156,7 +158,9 @@ SOURCES += \
     ../../src/simul/bluetoothinterface.cpp \
     ../../src/hardware/krabipacket.cpp \
     ../../src/simul/odometriewindow.cpp \
-    ../../src/simul/asservwindow.cpp
+    ../../src/simul/asservwindow.cpp \
+    ../../src/simul/sharpwindow.cpp \
+    ../../src/simul/watchwindow.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \
@@ -164,5 +168,7 @@ FORMS += \
     ../../include/simul/bluetoothwindow.ui \
     ../../include/simul/bluetoothinterface.ui \
     ../../include/simul/odometriewindow.ui \
-    ../../include/simul/asservwindow.ui
+    ../../include/simul/asservwindow.ui \
+    ../../include/simul/sharpwindow.ui \
+    ../../include/simul/watchwindow.ui
 

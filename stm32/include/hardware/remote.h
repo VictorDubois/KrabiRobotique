@@ -38,12 +38,12 @@ class Remote
         static Remote* getSingleton();
         static void logDirect(char* text);
 
-        void sendRaw(int data);
+        void addData(int data);
         void send(char *text);
         void send(KrabiPacket &packet);
 
         void treat(KrabiPacket &packet);
-        void sendWatch(KrabiPacket::W_TABLE w);
+        void sendWatch(KrabiPacket::W_TABLE w, int time = -1);
 
         int receiveData();
         bool dataAvailable();

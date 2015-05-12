@@ -10,6 +10,8 @@
 #include "bluetoothinterface.h"
 #include "odometriewindow.h"
 #include "asservwindow.h"
+#include "sharpwindow.h"
+#include "watchwindow.h"
 
 // to use qwt_plot, please install the 'libqwt-dev' package
 // add 'qwt' to CONFIG in .pro to enable this
@@ -31,12 +33,13 @@ class MainWindow;
 #ifdef USE_PLOT
 struct PlotCurve
 {
-    PlotCurve(QwtPlotCurve* curve) : curve(curve){}
+    PlotCurve(QwtPlotCurve* curve) : curve(curve), nonSignificant(false) {}
     void plot();
     void add(double x, double y);
 
     QwtPlotCurve* curve;
     std::vector<double> x, y;
+    bool nonSignificant;
 };
 #endif
 
@@ -52,12 +55,14 @@ public:
     void setParent(MainWindow* parent);
 
     void setText(QString text);
-    void plot(int index, QString title, float data);
+    void plot(int index, QString title, float data, int timeTick = -1);
 
     BluetoothWindow* getBluetoothWindow();
     BluetoothInterface* getBluetoothInterface();
     OdometrieWindow* getOdometrieWindow();
     AsservWindow* getAsservWindow();
+    SharpWindow* getSharpWindow();
+    WatchWindow* getWatchWindow();
 
     static DebugWindow* getInstance();
     
@@ -68,6 +73,8 @@ public slots:
     void displayBluetoothInterface(bool show);
     void displayOdometrieWindow(bool show);
     void displayAsservWindow(bool show);
+    void displaySharpWindow(bool show);
+    void displayWatchWindow(bool show);
 
     void update();
 
@@ -84,6 +91,8 @@ private:
     virtual void moveEvent ( QMoveEvent * event );
     void closeEvent(QCloseEvent *event);
 
+    void toggleWindow(QWidget* window, QAction* action = NULL);
+
     static DebugWindow* _instance;
 
     Ui::DebugWindow *ui;
@@ -93,6 +102,8 @@ private:
     BluetoothInterface* bluetoothInterface;
     OdometrieWindow* odometrieWindow;
     AsservWindow* asservWindow;
+    SharpWindow* sharpWindow;
+    WatchWindow* watchWindow;
     bool attached, ready;
 
     QLabel* statusLabel;

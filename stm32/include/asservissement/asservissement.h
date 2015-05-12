@@ -116,14 +116,17 @@ class Asservissement
         Vitesse vitesseLineaire;
         Angle vitesseAngulaire;
 
+        void setPIDDistance(bool enabled);
+        void setPIDAngle(bool enabled);
+
         bool activePIDDistance, activePIDAngle;
 
         float fixedLinearDuty, fixedAngularDuty;
 
         // tests
         bool testMod, testRunning, stopped;
-        int testDuration, testIndex;
-        float testLinearSpeed, testAngularSpeed, testEngineLimit;
+        int testDuration, testIndex, testDataSent, testDataToSend;
+        float testLinearSpeed, testAngularSpeed, testEngineLimit, engineLimit;
 
     public:
 
@@ -168,8 +171,6 @@ class Asservissement
         void stop();
 
         void resume();
-
-        void remuse();
 
         static void finMatch();
 

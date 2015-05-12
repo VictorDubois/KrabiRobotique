@@ -47,6 +47,8 @@ DebugWindow::DebugWindow() :
     connect(ui->actionBluetooth_Interface, SIGNAL(toggled(bool)), this, SLOT(displayBluetoothInterface(bool)));
     connect(ui->actionOdometrie, SIGNAL(toggled(bool)), this, SLOT(displayOdometrieWindow(bool)));
     connect(ui->actionAsserv_Window, SIGNAL(toggled(bool)), this, SLOT(displayAsservWindow(bool)));
+    connect(ui->actionSharps, SIGNAL(toggled(bool)), this, SLOT(displaySharpWindow(bool)));
+    connect(ui->actionWatches, SIGNAL(toggled(bool)), this, SLOT(displayWatchWindow(bool)));
 
     connect(ui->actionSimulateur, SIGNAL(triggered(bool)), this, SLOT(perspectiveSimulateur()));
     connect(ui->actionAsservissement, SIGNAL(triggered(bool)), this, SLOT(perspectiveAsserv()));
@@ -58,6 +60,8 @@ DebugWindow::DebugWindow() :
     bluetoothInterface = new BluetoothInterface();
     odometrieWindow = new OdometrieWindow();
     asservWindow = new AsservWindow();
+    sharpWindow = new SharpWindow();
+    watchWindow = new WatchWindow();
 
     ui->statusbar->insertWidget(0, statusLabel = new QLabel("..."));
     ui->statusbar->insertWidget(1, statusButton = new QPushButton("On"));
@@ -83,6 +87,8 @@ void DebugWindow::hideWindows()
     odometrieWindow->hide();
     bluetoothWindow->hide();
     bluetoothInterface->hide();
+    sharpWindow->hide();
+    watchWindow->hide();
 }
 
 void DebugWindow::clearPlots()
@@ -197,65 +203,49 @@ void DebugWindow::setText(QString text)
 
 void DebugWindow::displayBluetoothWindow(bool show)
 {
-    if (bluetoothWindow->isHidden())
-    {
-        ui->actionBluetooth->setChecked(true);
-        bluetoothWindow->show();
-
-        bluetoothWindow->move(mapToGlobal(QPoint(width() + 16, 0)));
-    }
-    else
-    {
-        ui->actionBluetooth->setChecked(false);
-        bluetoothWindow->hide();
-    }
+    toggleWindow(bluetoothWindow, ui->actionBluetooth);
 }
 
 void DebugWindow::displayBluetoothInterface(bool show)
 {
-    if (bluetoothInterface->isHidden())
-    {
-        ui->actionBluetooth_Interface->setChecked(true);
-        bluetoothInterface->show();
-
-        bluetoothInterface->move(mapToGlobal(QPoint(width() + 16, 0)));
-    }
-    else
-    {
-        ui->actionBluetooth_Interface->setChecked(false);
-        bluetoothInterface->hide();
-    }
+    toggleWindow(bluetoothInterface, ui->actionBluetooth_Interface);
 }
 
 void DebugWindow::displayOdometrieWindow(bool show)
 {
-    if (odometrieWindow->isHidden())
-    {
-        ui->actionOdometrie->setChecked(true);
-        odometrieWindow->show();
-
-        odometrieWindow->move(mapToGlobal(QPoint(width() + 16, 0)));
-    }
-    else
-    {
-        ui->actionOdometrie->setChecked(false);
-        odometrieWindow->hide();
-    }
+    toggleWindow(odometrieWindow, ui->actionOdometrie);
 }
 
 void DebugWindow::displayAsservWindow(bool show)
 {
-    if (asservWindow->isHidden())
-    {
-        ui->actionAsserv_Window->setChecked(true);
-        asservWindow->show();
+    toggleWindow(asservWindow, ui->actionAsserv_Window);
+}
 
-        asservWindow->move(mapToGlobal(QPoint(width() + 16, 0)));
+void DebugWindow::displaySharpWindow(bool show)
+{
+    toggleWindow(sharpWindow, ui->actionSharps);
+}
+
+void DebugWindow::displayWatchWindow(bool show)
+{
+    toggleWindow(watchWindow, ui->actionWatches);
+}
+
+void DebugWindow::toggleWindow(QWidget* window, QAction* action)
+{
+    if (window->isHidden())
+    {
+        if (action != NULL)
+            action->setChecked(true);
+        window->show();
+
+        window->move(mapToGlobal(QPoint(width() + 16, 0)));
     }
     else
     {
-        ui->actionAsserv_Window->setChecked(false);
-        asservWindow->hide();
+        if (action != NULL)
+            action->setChecked(false);
+        window->hide();
     }
 }
 
@@ -265,6 +255,8 @@ void DebugWindow::closeEvent(QCloseEvent *event)
     bluetoothInterface->close();
     odometrieWindow->close();
     asservWindow->close();
+    sharpWindow->close();
+    watchWindow->close();
 }
 
 BluetoothWindow* DebugWindow::getBluetoothWindow()
@@ -287,7 +279,17 @@ AsservWindow* DebugWindow::getAsservWindow()
     return asservWindow;
 }
 
-void DebugWindow::plot(int index, QString title, float data)
+SharpWindow* DebugWindow::getSharpWindow()
+{
+    return sharpWindow;
+}
+
+WatchWindow* DebugWindow::getWatchWindow()
+{
+    return watchWindow;
+}
+
+void DebugWindow::plot(int index, QString title, float data, int timeTick)
 {
 #ifdef USE_PLOT
     if (plotWidget == NULL)
@@ -319,8 +321,25 @@ void DebugWindow::plot(int index, QString title, float data)
         plotCurves[index]->curve->setPen(QPen( color[index % 9] ));
     }
 
-    plotCurves[index]->add(StrategieV2::getTimeSpent() / 1000.f, data);
-    plotCurves[index]->plot();
+    bool draw = true;
+    /*if (data < 0.05f)
+    {
+        if (plotCurves[index]->nonSignificant)
+            draw = false;
+        plotCurves[index]->nonSignificant = true;
+    }
+    else
+    {
+        if (plotCurves[index]->nonSignificant)
+            plotCurves[index]->add(timeTick >= 0 ? (float)timeTick * 0.05f : Table::getMainInstance()->getCurrentTime() - 0.005, 0.f);
+        plotCurves[index]->nonSignificant = false;
+    }*/
+
+    if (draw)
+    {
+        plotCurves[index]->add(Table::getMainInstance()->getCurrentTime(), data);
+        plotCurves[index]->plot();
+    }
 
     /*ajout = new int[nbrBoisson];
     achat = new double**[nbrBoisson];

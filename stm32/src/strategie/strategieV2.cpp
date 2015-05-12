@@ -240,6 +240,11 @@ long StrategieV2::getTimeSpent()
     return updateCount * 5;
 }
 
+void StrategieV2::resetTime()
+{
+    updateCount = 0;
+}
+
 
 void StrategieV2::update()
 {
@@ -846,12 +851,12 @@ void StrategieV2::setTourneSurSoiMeme(bool tourne)
     tourneSurSoiMeme = tourne;
 }
 
-#ifndef ROBOTHW
 SharpSensor** StrategieV2::getSensors()
 {
     return sharps;
 }
 
+#ifndef ROBOTHW
 void StrategieV2::paint(QPainter* p)
 {
     actionsToDo[actionsCount]->paint(p);

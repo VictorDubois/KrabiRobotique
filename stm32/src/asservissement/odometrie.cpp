@@ -49,6 +49,8 @@ Odometrie::~Odometrie()
     delete roueCodeuseDroite;
 }
 
+//#include "remote.h"
+
 void Odometrie::update()
 {
     // pour filtrer les ticks
@@ -66,6 +68,14 @@ void Odometrie::update()
         prevDeltaTicksRoueGauche[0] = roueCodeuseGauche->getTickValue();
     #endif
 
+    /*static int sum = 0;
+    sum += prevDeltaTicksRoueGauche[0];
+
+    static int test = 0;
+    test++;
+    if (test % 20 == 0)
+        Remote::getSingleton()->log("Pika %d", sum);*/
+
     int32_t sommeGauche = 0;
     int32_t sommeDroite = 0;
     for (int i = 0 ; i < tailleTabPrevTicks ; i++)
@@ -80,7 +90,7 @@ void Odometrie::update()
     // double filteredDeltaTicksRoueDroite = (deltaTicksRoueDroite+prevDeltaTicksRoueDroite)/2.0;
     double filteredDeltaTicksRoueDroite = (double)sommeDroite/(double)tailleTabPrevTicks;
 
-    double tmpDeltaAngle = (filteredDeltaTicksRoueGauche-filteredDeltaTicksRoueDroite)*coeffAngle;  // cf coef angle
+    double tmpDeltaAngle = (filteredDeltaTicksRoueDroite-filteredDeltaTicksRoueGauche)*coeffAngle;  // cf coef angle
 
 	double tmpDist = (filteredDeltaTicksRoueGauche+filteredDeltaTicksRoueDroite)*coeffDistance;     // soit le nombre moyen de tours de roue * le perimetre de la roue
 

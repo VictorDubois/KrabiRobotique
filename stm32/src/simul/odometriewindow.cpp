@@ -3,6 +3,8 @@
 
 #include "debugwindow.h"
 
+#include <math.h>
+
 OdometrieWindow::OdometrieWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OdometrieWindow), rx(0.), ry(0.), rangle(0.)
@@ -75,7 +77,7 @@ void OdometrieWindow::setWheelSizeFromY()
 
 void OdometrieWindow::setInterAxisFromAngle()
 {
-    ui->interAxisDistance->setValue(ui->targetAngle->value() * ui->interAxisDistance->value() / rangle);
+    ui->interAxisDistance->setValue(ui->targetAngle->value() * M_PI / 180.f * ui->interAxisDistance->value() / rangle);
 }
 
 void OdometrieWindow::apply()

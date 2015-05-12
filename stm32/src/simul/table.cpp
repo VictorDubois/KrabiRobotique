@@ -44,7 +44,7 @@ b2AABB Table::getWorldAABB()
 }
 
 Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
-    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false),
+    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false), mTimerAdjust(0),
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
@@ -347,8 +347,6 @@ void Table::setRemoteMod(bool remote)
     {
         if (DebugWindow::getInstance()->getBluetoothWindow()->isConnected())
         {
-            DebugWindow::getInstance()->getBluetoothInterface()->show();
-
             KrabiPacket p(KrabiPacket::REMOTE_MOD_SET);
             DebugWindow::getInstance()->getBluetoothWindow()->send(p);
 
@@ -366,6 +364,16 @@ void Table::setRemoteMod(bool remote)
     }
 }
 
+bool Table::isInRemoteMod()
+{
+    return mRemoteMod;
+}
+
+float Table::getCurrentTime()
+{
+    return mRemoteMod ? (mTime.elapsed() + mTimerAdjust) / 1000. : StrategieV2::getTimeSpent()/1000.;
+}
+
 void Table::treat(KrabiPacket &packet)
 {
     switch(packet.id())
@@ -379,27 +387,56 @@ void Table::treat(KrabiPacket &packet)
     case KrabiPacket::WATCH_VARIABLE:
         watch(packet);
         break;
+    case KrabiPacket::ASSERV_RESULT:
+    {
+        uint32_t time = packet.get<uint32_t>();
+        float vitesseLin = packet.get<float>();
+        float vitesseLinE = packet.get<float>();
+        float linearDuty = packet.get<float>();
+        float vitesseAng = packet.get<float>();
+        float vitesseAngE = packet.get<float>();
+        float angularDuty = packet.get<float>();
+
+        qDebug() << "Krabi Results" << time;
+
+        if (time == 0)
+            DebugWindow::getInstance()->clearPlots();
+        if (DebugWindow::getInstance()->getAsservWindow()->graphLinear())
+        {
+            DebugWindow::getInstance()->plot(0, "Linear Speed", vitesseLin, time);
+            DebugWindow::getInstance()->plot(1, "Linear Target", vitesseLinE, time);
+        }
+        if (DebugWindow::getInstance()->getAsservWindow()->graphAngular())
+        {
+            DebugWindow::getInstance()->plot(2, "Angular Speed", vitesseAng, time);
+            DebugWindow::getInstance()->plot(3, "Angular Target", vitesseAngE, time);
+        }
+        if (DebugWindow::getInstance()->getAsservWindow()->graphDuty())
+        {
+            DebugWindow::getInstance()->plot(6, "Linear Duty", linearDuty, time);
+            DebugWindow::getInstance()->plot(7, "Angular Duty", angularDuty, time);
+        }
+        break;
+    }
     case KrabiPacket::TIME_SYNC:
     {
         int t = packet.get<uint16_t>();
 
-        long diff = t - mTime.elapsed();
+        long diff = t - (mTime.elapsed() + mTimerAdjust);
 
-        if (abs(diff) > 10)
+        if (abs(diff) > 25)
         {
             qDebug() << "Timer sync error" << diff << "ms";
         }
 
-        if (diff < -1500)
+        /*if (diff < -1500)
         {
             DebugWindow::getInstance()->clearPlots();
             qDebug() << "Timer restart";
-        }
+        }*/
 
-        //mTime.restart();
-        mTime.addMSecs(t);
-        mTime.addSecs(t / 1000);
-        qDebug() << "Timer" << t << t / 1000 << t % 1000;
+        mTimerAdjust = t - mTime.elapsed();
+        //qDebug() << "Timer" << t << t / 1000 << t % 1000;
         break;
     }
     default:
@@ -469,10 +506,22 @@ void Table::watch(KrabiPacket &packet)
         DebugWindow::getInstance()->getOdometrieWindow()->settingsReceived(wheelsize, interaxis);
         break;
     }
+    case KrabiPacket::W_WATCHES:
+        DebugWindow::getInstance()->getWatchWindow()->syncFinished(packet);
+        break;
+    case KrabiPacket::W_SHARPS:
+        DebugWindow::getInstance()->getSharpWindow()->syncFinished(packet);
+        break;
     default:
         qDebug() << "Uncaught watch : " << type;
         break;
     }
+}
+
+void Table::resetTimer()
+{
+    DebugWindow::getInstance()->clearPlots();
+    mTimerAdjust = -mTime.elapsed();
 }
 
 void Table::update(int dt)
@@ -537,7 +586,7 @@ void Table::update(int dt)
     debugText += "   lin : " + QString::number(robots[1]->getVitesseLineaire()) + " \n";
     debugText += "   ang : " + QString::number(robots[1]->getVitesseAngulaire()) + " \n\n";
 
-    debugText += "Time : " + QString::number(mRemoteMod ? mTime.elapsed() / 1000. : StrategieV2::getTimeSpent()/1000.) + " s\n\n";
+    debugText += "Time : " + QString::number(mRemoteMod ? (mTime.elapsed() + mTimerAdjust) / 1000. : StrategieV2::getTimeSpent()/1000.) + " s\n\n";
 
     debugText += "Sharps : \n " + sharpsChecked + "\n\n";
 
@@ -692,7 +741,19 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
 
 void Table::mousePressEvent(QMouseEvent* evt, bool press)
 {
-    qDebug() << "X : " << (evt->x()/900.0)*3000 << "    -    Y : " << (evt->y()/600.0)*2000;
+    float x = (evt->x()/900.0) * tableWidth;
+    float y = (evt->y()/600.0) * tableHeight;
+    qDebug() << "X : " << x << "    -    Y : " << y;
+
+    if (evt->button() == Qt::LeftButton && DebugWindow::getInstance()->getAsservWindow()->clickGoto())
+    {
+        KrabiPacket p(KrabiPacket::RUN_GOTO);
+        p.add((float) x);
+        p.add((float) y);
+        p.add((float) -1.f);
+
+        DebugWindow::getInstance()->getBluetoothWindow()->send(p);
+    }
 }
 
 Position getSideElemCenter(bool right, unsigned int elem)

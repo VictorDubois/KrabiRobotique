@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>634</width>
-    <height>478</height>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,14 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="linKp"/>
+         <widget class="QDoubleSpinBox" name="linKp">
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
@@ -40,7 +47,14 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="linKi"/>
+         <widget class="QDoubleSpinBox" name="linKi">
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_3">
@@ -50,9 +64,26 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="linKd"/>
+         <widget class="QDoubleSpinBox" name="linKd">
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
         </item>
         <item row="3" column="1">
+         <widget class="QCheckBox" name="linearEnabled">
+          <property name="text">
+           <string>Enabled</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QPushButton" name="linQuery">
@@ -93,7 +124,11 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="angKp"/>
+         <widget class="QDoubleSpinBox" name="angKp">
+          <property name="decimals">
+           <number>5</number>
+          </property>
+         </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_6">
@@ -103,7 +138,14 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="angKi"/>
+         <widget class="QDoubleSpinBox" name="angKi">
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_5">
@@ -113,9 +155,16 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="angKd"/>
+         <widget class="QDoubleSpinBox" name="angKd">
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QPushButton" name="angQuery">
@@ -139,7 +188,45 @@
           </item>
          </layout>
         </item>
+        <item row="3" column="1">
+         <widget class="QCheckBox" name="angularEnabled">
+          <property name="text">
+           <string>Enabled</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QCheckBox" name="linearGraph">
+       <property name="text">
+        <string>Linear Graph</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="angularGraph">
+       <property name="text">
+        <string>Angular Graph</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="dutyGraph">
+       <property name="text">
+        <string>Duty Graph</string>
+       </property>
       </widget>
      </item>
     </layout>
@@ -159,6 +246,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="linSpeed">
+        <property name="minimum">
+         <double>-10.000000000000000</double>
+        </property>
         <property name="maximum">
          <double>10.000000000000000</double>
         </property>
@@ -176,8 +266,14 @@
       </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="angSpeed">
+        <property name="decimals">
+         <number>5</number>
+        </property>
+        <property name="minimum">
+         <double>-1.000000000000000</double>
+        </property>
         <property name="maximum">
-         <double>10.000000000000000</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.500000000000000</double>
@@ -203,7 +299,7 @@
          <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <double>0.900000000000000</double>
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -265,6 +361,16 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="clickGoto">
+     <property name="text">
+      <string>Right click on the table to send the robot to this location</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>

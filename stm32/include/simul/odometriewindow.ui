@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>515</width>
-    <height>420</height>
+    <height>422</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="wheelSize"/>
+       <widget class="QDoubleSpinBox" name="wheelSize">
+        <property name="maximum">
+         <double>999.990000000000009</double>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
@@ -38,7 +42,11 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="interAxisDistance"/>
+       <widget class="QDoubleSpinBox" name="interAxisDistance">
+        <property name="maximum">
+         <double>999.990000000000009</double>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -126,7 +134,14 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="targetAngle"/>
+       <widget class="QDoubleSpinBox" name="targetAngle">
+        <property name="minimum">
+         <double>-20.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>20.000000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
@@ -136,15 +151,23 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="targetY"/>
+       <widget class="QDoubleSpinBox" name="targetY">
+        <property name="maximum">
+         <double>5000.000000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="targetX"/>
+       <widget class="QDoubleSpinBox" name="targetX">
+        <property name="maximum">
+         <double>5000.000000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Target Angle</string>
+         <string>Target Angle (°)</string>
         </property>
        </widget>
       </item>

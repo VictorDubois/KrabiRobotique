@@ -4,9 +4,6 @@
 #include "strategieV2.h"
 
 #include "leds.h"
-//#include "canonLances.h"
-//#include "canonFilet.h"
-//#include "brak.h"
 #include "brasLateraux.h"
 #include "odometrie.h"
 #include "asservissement.h"
@@ -49,6 +46,9 @@ Remote::Remote() : mRemoteMod(false), mRemoteControl(false)
 
     for(int i(0); i < KrabiPacket::MAX_WATCHES; i++)
         mWatchesEnabled[i] = false;
+    mWatchesEnabled[KrabiPacket::W_POSITION] = true;
+    //mWatchesEnabled[KrabiPacket::W_SPEED] = true;
+    //mWatchesEnabled[KrabiPacket::W_SPEED_TARGET] = true;
 }
 
 void Remote::initClocksAndPortsGPIO()
@@ -142,7 +142,7 @@ void Remote::initUART(int baudRate)
 
     USART_Cmd(REMOTE_USART_INDEX, ENABLE);
 
-    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_RXNE | USART_IT_TC, ENABLE);
+    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_RXNE, ENABLE);
 
     /**** IT ***/
     NVIC_InitTypeDef NVIC_InitStructure;
@@ -171,33 +171,41 @@ extern "C" void REMOTE_USART_IRQ_HANDLER(void)
         REMOTE_USART_INDEX->SR &= ~USART_FLAG_RXNE;
     }
 
-    if (IIR & USART_FLAG_TC)
+    if (USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_TC) != RESET)
     {
         if (Remote::bufferSend.size > 0)
         {
+            volatile int test = Remote::bufferSend.buf[0];
             USART_SendData(REMOTE_USART_INDEX, (u16) Remote::bufferSend.buf[0]);
             Remote::bufferSend.size--;
             memmove(Remote::bufferSend.buf, Remote::bufferSend.buf + 1, Remote::bufferSend.size);
         }
-
-        REMOTE_USART_INDEX->SR &= ~USART_FLAG_TC;
+        if (Remote::bufferSend.size == 0)
+            USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE);
     }
 }
 
-void Remote::sendRaw(int data)
+void Remote::addData(int data)
 {
     if (!mRemoteMod)
         return;
 
-    if (USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_TC) == RESET)
-    {
+    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE);
+
+    if (Remote::bufferSend.size < USART_BUFFER_SIZE)
+        Remote::bufferSend.buf[Remote::bufferSend.size++] = data;
+
+    //if (Remote::bufferSend.size > 0)
+    /*{
         if (Remote::bufferSend.size < USART_BUFFER_SIZE)
             Remote::bufferSend.buf[Remote::bufferSend.size++] = data;
-    }
-    else
+    }*/
+    /*else
     {
+        //Remote::bufferSend.buf[Remote::bufferSend.size++] = data;
+        USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE);
         USART_SendData(REMOTE_USART_INDEX, (u16) data);
-    }
+    }*/
 
 /*#ifdef ROBOTHW
     // Wait until the send buffer is cleared finishes
@@ -211,10 +219,10 @@ void Remote::send(KrabiPacket &packet)
     uint8_t size = packet.length();
     uint8_t* data = packet.data();
     for(uint8_t i = 0; i<size; i++)
-        sendRaw(data[i]);
+        addData(data[i]);
 
-    sendRaw(0x0D);
-    sendRaw(0x0A);
+    addData(0x0D);
+    addData(0x0A);
 }
 
 void Remote::send(char* text)
@@ -222,12 +230,12 @@ void Remote::send(char* text)
     int pos = 0;
     while(text[pos] != '\0' )
     {
-        sendRaw(text[pos]);
+        addData(text[pos]);
         pos++;
     }
 
-    sendRaw(0x0D);
-    sendRaw(0x0A);
+    addData(0x0D);
+    addData(0x0A);
 }
 
 void Remote::logDirect(char* text)
@@ -296,10 +304,25 @@ void Remote::waitForConnection()
 
 void Remote::update(bool allowChangeMode)
 {
+    static long tick = 0;
+    tick++;
+
     for(int i(0); i < KrabiPacket::MAX_WATCHES; i++)
-        if (systick_count % 10 == i)
-            if (mWatchesEnabled[i])
-                sendWatch((KrabiPacket::W_TABLE)i);
+        if (mWatchesEnabled[i])
+        {
+            if ((KrabiPacket::W_TABLE)i == KrabiPacket::W_POSITION)
+            {
+                if (tick % 20 == i)
+                    sendWatch((KrabiPacket::W_TABLE)i);
+            }
+            else if (tick % 10 == i)
+                    sendWatch((KrabiPacket::W_TABLE)i);
+        }
+
+    /*static int test = 0;
+    test++;
+    if (test % 20 == 0)
+        log("test pika");*/
 
     if (bufferRecv.size > 2)
     {
@@ -347,7 +370,7 @@ void Remote::update(bool allowChangeMode)
         Remote::getSingleton()->sendWatch(KrabiPacket::W_SPEED_TARGET, Asservissement::asservissement->getLinearSpeed(), Asservissement::asservissement->getAngularSpeed());
     }*/
 
-    if (systick_count%50 == 5)
+    if (tick % 200 == 5)
     {
         KrabiPacket p(KrabiPacket::TIME_SYNC);
         p.add((uint16_t)StrategieV2::getTimeSpent());
@@ -399,7 +422,9 @@ void Remote::treat(KrabiPacket &packet)
             float p = packet.get<float>();
             float i = packet.get<float>();
             float d = packet.get<float>();
+            bool enabled = packet.get<bool>();
             Asservissement::asservissement->getPIDDistance().setSettings(p, i, d);
+            Asservissement::asservissement->setEnabledPIDDistance(enabled);
             break;
         }
         case KrabiPacket::SET_PID_ANG:
@@ -407,16 +432,36 @@ void Remote::treat(KrabiPacket &packet)
             float p = packet.get<float>();
             float i = packet.get<float>();
             float d = packet.get<float>();
+            bool enabled = packet.get<bool>();
             Asservissement::asservissement->getPIDAngle().setSettings(p, i, d);
+            Asservissement::asservissement->setEnabledPIDAngle(enabled);
             break;
         }
         case KrabiPacket::RUN_PID_TEST:
         {
+            StrategieV2::resetTime();
+
             float lin = packet.get<float>();
             float ang = packet.get<float>();
             float limit = packet.get<float>();
             uint16_t duration = packet.get<uint16_t>();
+
             Asservissement::asservissement->runTest(duration, lin, ang, limit);
+
+            break;
+        }
+        case KrabiPacket::RUN_GOTO:
+        {
+            float x = packet.get<float>();
+            float y = packet.get<float>();
+            float speed = packet.get<float>();
+
+            if (speed > 0)
+                StrategieV2::setCurrentGoal(Position(x, y));
+            else
+                StrategieV2::setCurrentGoal(Position(x, y));
+
+            Asservissement::asservissement->resume();
             break;
         }
         case KrabiPacket::STOP:
@@ -442,66 +487,90 @@ void Remote::treat(KrabiPacket &packet)
             mWatchesEnabled[w] = false;
             break;
         }
+        case KrabiPacket::WATCH_DESELECT_ALL:
+        {
+            for(int i(0); i < KrabiPacket::MAX_WATCHES; i++)
+                mWatchesEnabled[i] = false;
+            break;
+        }
+        case KrabiPacket::TIME_RESET:
+            StrategieV2::resetTime();
+            break;
     }
 }
 
-void Remote::sendWatch(KrabiPacket::W_TABLE w)
+void Remote::sendWatch(KrabiPacket::W_TABLE w, int time)
 {
+    KrabiPacket p(time == -1 ? KrabiPacket::WATCH_VARIABLE : KrabiPacket::WATCH_VARIABLE_TIMED, w);
+    if (time >= 0)
+        p.add((uint32_t) time);
+
     switch(w)
     {
+        case KrabiPacket::W_WATCHES:
+        {
+            for(int i(1); i < KrabiPacket::MAX_WATCHES; i++)
+            {
+                p.add((uint8_t) i);
+                p.add(mWatchesEnabled[i]);
+            }
+            break;
+        }
         case KrabiPacket::W_POSITION:
         {
             PositionPlusAngle pos = Odometrie::odometrie->getPos();
-            KrabiPacket p(KrabiPacket::WATCH_VARIABLE, w);
             p.add(pos.position.x);
             p.add(pos.position.y);
             p.add(pos.angle);
-            send(p);
             break;
         }
         case KrabiPacket::W_SPEED:
         {
-            KrabiPacket p(KrabiPacket::WATCH_VARIABLE, w);
             p.add(Odometrie::odometrie->getVitesseLineaire());
             p.add(Odometrie::odometrie->getVitesseAngulaire());
-            send(p);
             break;
         }
         case KrabiPacket::W_SPEED_TARGET:
         {
-            KrabiPacket p(KrabiPacket::WATCH_VARIABLE, w);
             p.add(Asservissement::asservissement->getLinearSpeed());
             p.add(Asservissement::asservissement->getAngularSpeed());
-            send(p);
             break;
         }
         case KrabiPacket::W_ODOMETRIE:
         {
-            KrabiPacket p(KrabiPacket::WATCH_VARIABLE, w);
             p.add(Odometrie::odometrie->getWheelSize());
             p.add(Odometrie::odometrie->getInterAxisDistance());
-            send(p);
             break;
         }
         case KrabiPacket::W_PID_LIN:
         {
-            KrabiPacket p(KrabiPacket::WATCH_VARIABLE, w);
             p.add(Asservissement::asservissement->getPIDDistance().getKp());
             p.add(Asservissement::asservissement->getPIDDistance().getKi());
             p.add(Asservissement::asservissement->getPIDDistance().getKd());
-            send(p);
             break;
         }
         case KrabiPacket::W_PID_ANG:
         {
-            KrabiPacket p(KrabiPacket::WATCH_VARIABLE, w);
             p.add(Asservissement::asservissement->getPIDAngle().getKp());
             p.add(Asservissement::asservissement->getPIDAngle().getKi());
             p.add(Asservissement::asservissement->getPIDAngle().getKd());
-            send(p);
             break;
         }
+        case KrabiPacket::W_SHARPS:
+        {
+            for(int i(0); i < SharpSensor::END_SHARP_NAME; i++)
+            {
+                Sensor::OutputSensor out = StrategieV2::getSensors()[i]->getValue();
+                p.add((uint16_t) out.f);
+                p.add(out.b);
+            }
+            break;
+        }
+        default:
+            return;
     }
+
+    send(p);
 }
 
 bool Remote::isInRemoteMod()

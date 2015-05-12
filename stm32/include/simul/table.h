@@ -36,6 +36,8 @@ private:
 
     bool mHideTable, mDisplayRoute, mDisplayStrategy, mRemoteMod;
 
+    long mTimerAdjust;
+
 	void addCard(unsigned int n, int column);
     MainWindow* mainWindow;
 
@@ -70,6 +72,8 @@ public:
     void treat(KrabiPacket &packet);
     void watch(KrabiPacket &packet);
 
+    void resetTimer();
+
     void update(int dt);
 	void paintEvent(QPaintEvent* evt);
 	void keyPressEvent(QKeyEvent* evt, bool press);
@@ -78,6 +82,10 @@ public:
     float getDistanceToObject(Position pos);
     void removeClosestObject(Position pos);
     Robot* getMainRobot();
+
+    float getCurrentTime();
+
+    bool isInRemoteMod();
 
     void clearRoute();
 
