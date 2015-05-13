@@ -44,8 +44,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(13, Position(283, 496, isYellow));
     new Etape(14, Position(421, 283, isYellow));
     //Si gobelets:
-    new Etape(41, Position(2293, 540, isYellow));
-    new Etape(42, Position(2500, 273, isYellow));
+    new Etape(15, Position(2293, 540, isYellow));
+    new Etape(16, Position(2500, 273, isYellow));
 
     // Actions
     // numéro étape, mediumLevelAction
@@ -73,8 +73,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
 
     // Tapis
-    new Etape(43, new Tapis(Position(1366, 780, isYellow)) );
-    new Etape(44, new Tapis(Position(1126, 780, isYellow)) );
+    new Etape(17, new Tapis(Position(1366, 780, isYellow)) );
+    new Etape(36, new Tapis(Position(1126, 780, isYellow)) );
 
     // Ramasser Pied
     new Etape(18, new RamasserPied(Position(870, 1355, isYellow)) );
@@ -106,14 +106,14 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(10)->addVoisins(20, 35);
 
-    Etape::get(11)->addVoisins(22, 24, 27, 41);
+    Etape::get(11)->addVoisins(22, 24, 27, 15);
 
-    Etape::get(12)->addVoisins(12);
+//    Etape::get(12)->addVoisins(12);
 
-    Etape::get(15)->addVoisins(15);
+//    Etape::get(15)->addVoisins(15);
 
-    Etape::get(16)->addVoisins(16);
-    Etape::get(17)->addVoisins(17);
+//    Etape::get(16)->addVoisins(16);
+//    Etape::get(17)->addVoisins(17);
 
     Etape::get(18)->addVoisins(3, 5);
     Etape::get(18)->addVoisins(31, 34, 35);
@@ -139,7 +139,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(34)->addVoisins(2, 19, 35);
 
-    Etape::get(36)->addVoisins(36);
+//    Etape::get(36)->addVoisins(36);
 
     Etape::get(37)->addVoisins(25, 38);
 
@@ -150,11 +150,11 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(8)->addVoisins(12, 13, 14);
     Etape::get(12)->addVoisins(14);
     Etape::get(13)->addVoisins(14);
-    Etape::get(41)->addVoisins(42, 26);
-    Etape::get(42)->addVoisins(26);
+    Etape::get(15)->addVoisins(16, 26);
+    Etape::get(16)->addVoisins(26);
 
-    Etape::get(43)->addVoisins(7, 21);
-    Etape::get(44)->addVoisins(9, 7, 43);
+    Etape::get(17)->addVoisins(7, 21);
+    Etape::get(36)->addVoisins(9, 7, 17);
 
     //Les trajets transversaux:
     Etape::get(27)->addVoisins(1, 18);
