@@ -39,7 +39,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(38, Position(2216, 1636, isYellow));
     new Etape(39, Position(2460, 1610, isYellow));
 
-    new Etape(8, Position(573, 690, isYellow));
+    new Etape(8, Position(620, 700, isYellow));
     new Etape(12, Position(747, 650, isYellow));
     new Etape(13, Position(283, 496, isYellow));
     new Etape(14, Position(421, 283, isYellow));
@@ -81,7 +81,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(20, new RamasserPied(Position(1300, 1400, isYellow)) );
 
     //Deposer Pieds
-    new Etape(45, new DeposerPied(Position(400, 1000, isYellow), isYellow) );
+    new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
 
     // Manipulation dans les coins
     new Etape(30, Position(420, 1600, isYellow));
@@ -158,7 +158,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(17)->addVoisins(7, 21);
     Etape::get(36)->addVoisins(9, 7, 17);
 
-    Etape::get(45)->addVoisin(1);
+    Etape::get(41)->addVoisin(1);
 
     //Les trajets transversaux:
     Etape::get(27)->addVoisins(1, 18);
@@ -182,7 +182,7 @@ int Krabi2015::getScoreEtape(int i){
             return 1;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
-                return 40;
+                return 0;
             else
                 return 0;
         case Etape::AMPOULE :
