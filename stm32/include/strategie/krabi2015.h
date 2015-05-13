@@ -2,7 +2,7 @@
 #define KRABI2015_H
 
 #define ETAPE_GARAGE 1
-#define NOMBRE_ETAPES 40
+#define NOMBRE_ETAPES 45
 
 
 #include "strategiev3.h"
