@@ -61,7 +61,6 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(6)->setNumeroEtapeFinAction(7); //Clapet côté adverse
 
     // Ramasser Gobelets
-    //8, 12 13 14
     new Etape(9, new Gobelet(Position(910, 805, isYellow)) );
     new Etape(10, new Gobelet(Position(1500, 1650, isYellow)) );
     new Etape(11, new Gobelet(Position(2090, 800, isYellow)) );
@@ -80,6 +79,9 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(18, new RamasserPied(Position(870, 1355, isYellow)) );
     new Etape(19, new RamasserPied(Position(1100, 1770, isYellow)) );
     new Etape(20, new RamasserPied(Position(1300, 1400, isYellow)) );
+
+    //Deposer Pieds
+    new Etape(45, new DeposerPied(Position(400, 1000, isYellow), isYellow) );
 
     // Manipulation dans les coins
     new Etape(30, Position(420, 1600, isYellow));
@@ -156,6 +158,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(17)->addVoisins(7, 21);
     Etape::get(36)->addVoisins(9, 7, 17);
 
+    Etape::get(45)->addVoisin(1);
+
     //Les trajets transversaux:
     Etape::get(27)->addVoisins(1, 18);
     Etape::get(11)->addVoisins(18);
@@ -184,13 +188,18 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::AMPOULE :
             return 0;
         case Etape::RAMASSER_PIED :
-            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
+            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
                 return 0;
             else
                 return 100;
+        case Etape::DEPOSER_PIED :
+            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
+                return 100;
+            else
+                return 0;
         case Etape::TAPIS :
-            return 500;
-        case Etape::DEPOSE_GOBELET :
+            return 0;
+        case Etape::DEPOSER_GOBELET :
             /*if (!Pinces::getSingleton()->getEstDispo())
                 return 40;
             else*/
