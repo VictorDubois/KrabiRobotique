@@ -108,38 +108,51 @@ int main()
     //Debug::testSharps();
 #endif
 
-    allumerLED();
-    eteindreLED();
-    allumerLED2();
-    eteindreLED2();
-    allumerLED();
-
     //Remote::getSingleton()->waitForConnection();
 
 
     ServosNumeriques::initClocksAndPortsGPIO();
-    ServosNumeriques::initUART(19231);
+    ServosNumeriques::initUART(1000000);
     ServosNumeriques::sendMode();
-/*<<<<<<< HEAD
 
-for(int i=0; i<2000; i++)
-=======
-
-for(int i=0; i<2000; i++)
->>>>>>> 8a8fced824885f8d8ca4fba8900250501d6a0eab
+    /*while(true)
     {
-
         Pinces::getSingleton()->fermerPinces();
+        allumerLED();
 
         for(int j=0; j<15000000; j++);
-
 
         Pinces::getSingleton()->ouvrirPinces();
+        eteindreLED();
 
         for(int j=0; j<15000000; j++);
-    }
+    }*/
 
-for(int i=0; i<2000; i++)
+    /*while(true)
+    {
+        Ascenseur::getSingleton()->baisserAscenseur();
+        Ascenseur::getSingleton()->ouvrirAscenseur();
+        allumerLED();
+
+        while(Ascenseur::getSingleton()->getStatus() != Ascenseur::STOP)
+            Ascenseur::getSingleton()->update();
+        for(int j=0; j<150000; j++)
+            Ascenseur::getSingleton()->update();
+
+        Ascenseur::getSingleton()->fermerAscenseur();
+
+        for(int j=0; j<150000; j++)
+            Ascenseur::getSingleton()->update();
+
+
+        Ascenseur::getSingleton()->leverAscenseur();
+        eteindreLED();
+
+        while(Ascenseur::getSingleton()->getStatus() != Ascenseur::STOP)
+            Ascenseur::getSingleton()->update();
+    }*/
+
+/*for(int i=0; i<2000; i++)
     {
 
         allumerLED();
@@ -150,9 +163,7 @@ for(int i=0; i<2000; i++)
         eteindreLED();
 
         for(int j=0; j<1000000; j++);
-    }
-<<<<<<< HEAD
-=======
+    }*/
 //    #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
 //        //MicroSwitch microSwitchBas(GPIOA, GPIO_Pin_10);//Exemple, il n'y a pas de microswitch pour KJ...
 //        //MicroSwitch microSwitchHaut(GPIOA, GPIO_Pin_10);
@@ -161,24 +172,22 @@ for(int i=0; i<2000; i++)
 //        //MicroSwitch microSwitchBas(GPIOA, GPIO_Pin_10);
 //        //MicroSwitch microSwitchHaut(GPIOA, GPIO_Pin_10);
 //    #endif
-    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
+    /*#ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
         MicroSwitch microSwitchBas(GPIOE, GPIO_Pin_3);
         MicroSwitch microSwitchHaut(GPIOE, GPIO_Pin_2);
-    #endif
+    #endif*/
 
     //Test MicroSwitch
-//    while(1){
-//        if(microSwitchBas.ferme()||microSwitchHaut->ferme())
-//        {
-//            allumerLED();
-//        }
-//        else
-//        {
-//            eteindreLED();
-//        }
-//    }
-
->>>>>>> 8a8fced824885f8d8ca4fba8900250501d6a0eab*/
+    /*while(1){
+        if(microSwitchBas.ferme()||microSwitchHaut.ferme())
+        {
+            allumerLED();
+        }
+        else
+        {
+            eteindreLED();
+        }
+    }*/
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
@@ -209,8 +218,8 @@ for(int i=0; i<2000; i++)
     //Debug::testBrasLateraux();
 #endif
 
-    //tirette.attendreRemise();
-    //tirette.attendreEnlevee();
+    /*tirette.attendreRemise();
+    tirette.attendreEnlevee();*/
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();
@@ -250,7 +259,7 @@ for(int i=0; i<2000; i++)
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
-    Position pos(250,1000, isBlue());//1500, isBlue());
+    Position pos(194, 1000, isBlue());//1500, isBlue());
     PositionPlusAngle posPlusAngle(pos,0);
     if (!isBlue())
         posPlusAngle = PositionPlusAngle(pos,-M_PI);
