@@ -3,6 +3,7 @@
 #include "strategieV2.h"
 #include "mediumLevelAction.h"
 #include "command.h"
+#include "pinces.h"
 
 //MLA : Medium Level Action
 #define MLA_RAMASSER_PIED_APPROCHE 1
