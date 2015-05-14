@@ -59,7 +59,7 @@ void SharpWindow::syncFinished(KrabiPacket p)
     ui->sharpsList->clear();
     ui->sharpsList->setRowCount(SharpSensor::END_SHARP_NAME);
 
-    qDebug() << "update !";
+    //qDebug() << "update !";
 
     for(int i(0); i < SharpSensor::END_SHARP_NAME; ++i)
     {
