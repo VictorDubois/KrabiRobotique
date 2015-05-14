@@ -732,6 +732,13 @@ Command* StrategieV2::setCurrentGoal(Position goal, Position center, float vites
     return currentCommand;
 }
 
+void StrategieV2::stop()
+{
+    if (currentCommand != NULL)
+        delete currentCommand;
+    currentCommand = NULL;
+}
+
 Command* StrategieV2::lookAt(Position pos, float maxSpeed)
 {
     if (currentCommand != NULL)
