@@ -106,7 +106,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(0)->addVoisin(1, false);
 
     Etape::get(1)->addVoisins(3, 8, 31);
-    Etape::get(1)->addVoisins(12, 18, 34);
+    Etape::get(1)->addVoisins(12, 18);
 
 //    Etape::get(4)->addVoisins(30, 33, 45, 18);
     Etape::get(4)->addVoisins(45);
@@ -119,7 +119,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(14)->addVoisins(46, 47);
 
     Etape::get(18)->addVoisins(3, 5);
-    Etape::get(18)->addVoisins(31, 34, 35);
+    Etape::get(18)->addVoisins(31, 35);
 
     Etape::get(19)->addVoisins(35);
 
@@ -138,16 +138,19 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(29)->addVoisins(24, 28, 38);
 
-    Etape::get(30)->addVoisins(33, 34);
+    Etape::get(30)->addVoisins(33);
 
-    Etape::get(31)->addVoisins(30, 33, 34);
+    Etape::get(31)->addVoisins(30, 33);
 
-    Etape::get(34)->addVoisins(19, 35);
+//    Etape::get(34)->addVoisins(19, 35, 43, 45);
     //Etape::get(34)->addVoisins(2);
+    //Etape::get(34)->addVoisins(30, 31, 18, 1);
 
 //    Etape::get(36)->addVoisins(36);
 
     Etape::get(37)->addVoisins(25, 38);
+
+    Etape::get(38)->addVoisins(6);
 
     Etape::get(39)->addVoisins(25, 37, 38, 6);
 
@@ -169,13 +172,15 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(4)->addVoisins(43);
     Etape::get(6)->addVoisins(44);
     Etape::get(42)->addVoisins(19, 45, 35);
-    Etape::get(43)->addVoisins(34, 30);
+    Etape::get(43)->addVoisins(30);
 
     Etape::get(43)->addVoisins(2);
     Etape::get(44)->addVoisins(37);
     Etape::get(44)->addVoisins(38);
 
-    Etape::get(45)->addVoisins(1, 31, 34);
+    Etape::get(45)->addVoisins(1, 31);
+    Etape::get(45)->addVoisins(18, 35);
+
 
     Etape::get(48)->addVoisins(40);
 
@@ -208,7 +213,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::DEPART :
             return 0;
         case Etape::CLAP :
-            return 0;
+            return 1000000;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
                 return 0;
