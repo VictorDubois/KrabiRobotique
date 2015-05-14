@@ -32,6 +32,7 @@ RamasserPied::RamasserPied(Position goalposition, bool recule): MediumLevelActio
     #ifndef ROBOTHW
     qDebug() << "Pied" << this->goBack;
     #endif
+}
 
 RamasserPied::~RamasserPied(){}
 
