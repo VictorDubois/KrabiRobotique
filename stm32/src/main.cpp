@@ -199,8 +199,6 @@ int main()
         Tirette tirette(GPIOE, GPIO_Pin_5);
     #endif
 
-
-
 #ifdef ALLOW_DEBUG
     //Debug::testTirette(&tirette);
 #endif
@@ -221,6 +219,15 @@ int main()
 
     tirette.attendreRemise();
     tirette.attendreEnlevee();
+
+//    while(1){
+//        BrasLateraux::getRight()->expand();
+//        BrasLateraux::getLeft()->expand();
+//
+//        BrasLateraux::getRight()->collapse();
+//        BrasLateraux::getLeft()->collapse();
+//    }
+
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();
