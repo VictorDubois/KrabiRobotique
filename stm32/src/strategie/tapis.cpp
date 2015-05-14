@@ -15,11 +15,11 @@ Tapis::Tapis(){}
 Tapis::Tapis(Position position):MediumLevelAction(position)
 {
     this->toLookAt = M_PI/2;
-    if (position == Position(1080, 780, StrategieV2::getIsYellow()))
+    if (position == Position(1070, 850, StrategieV2::getIsYellow()))
     {
             this->cote = BrasTapis::GAUCHE;
     }
-    if (position == Position(1420, 780, StrategieV2::getIsYellow()))
+    if (position == Position(1420, 850, StrategieV2::getIsYellow()))
     {
             this->cote = BrasTapis::DROIT;
     }

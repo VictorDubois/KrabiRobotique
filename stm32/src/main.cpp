@@ -34,6 +34,7 @@
 #include "etape.h"
 #include "dijkstra.h"
 #include "microSwitch.h"
+#include "brasTapis.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -114,6 +115,7 @@ int main()
     ServosNumeriques::initClocksAndPortsGPIO();
     ServosNumeriques::initUART(1000000);
     ServosNumeriques::sendMode();
+
 
     /*while(true)
     {
@@ -217,8 +219,23 @@ int main()
     //Debug::testBrasLateraux();
 #endif
 
+
+
     tirette.attendreRemise();
     tirette.attendreEnlevee();
+
+  /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
+    ascenseur->Ascenseur::leverAscenseur();
+    ascenseur->Ascenseur::ouvrirAscenseur();
+    ascenseur->Ascenseur::fermerAscenseur();*/
+
+    /*BrasTapis* bras = BrasTapis::getSingleton(BrasTapis::GAUCHE);
+    bras->ouvrirBras();
+        BrasTapis* bras2 = BrasTapis::getSingleton(BrasTapis::DROIT);
+    bras2->ouvrirBras();
+    tirette.attendreRemise();
+    tirette.attendreEnlevee();*/
+
 
 //    while(1){
 //        BrasLateraux::getRight()->expand();
