@@ -62,11 +62,6 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(43,Position(400, 1780, isYellow) );
     new Etape(44, Position(2300, 1780, isYellow) );
 
-    // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
-    Etape::get(4)->setNumeroEtapeFinAction(43); //Clapet notre côté vers notre bord
-    Etape::get(2)->setNumeroEtapeFinAction(42); //Clapet notre côté vers milieu
-    Etape::get(6)->setNumeroEtapeFinAction(44); //Clapet côté adverse
-
     // Ramasser Gobelets
     new Etape(9, new Gobelet(Position(910, 805, isYellow)) );
     new Etape(10, new Gobelet(Position(1500, 1650, isYellow)) );
@@ -92,10 +87,17 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(47, new RamasserPied(Position(850, 106, isYellow)) );
     new Etape(48, new RamasserPied(Position(90, 203, isYellow)) );
 
+
     // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
-    Etape::get(18)->setNumeroEtapeFinAction(3); //Clapet notre côté vers milieu
-    Etape::get(4)->setNumeroEtapeFinAction(5); //Clapet notre côté vers notre bord
-    Etape::get(6)->setNumeroEtapeFinAction(7); //Clapet côté adverse
+    // Clapets:
+    Etape::get(4)->setNumeroEtapeFinAction(43); //Clapet notre côté vers notre bord
+    Etape::get(2)->setNumeroEtapeFinAction(42); //Clapet notre côté vers milieu
+    Etape::get(6)->setNumeroEtapeFinAction(44); //Clapet côté adverse
+    // Ramasser pieds sans aller jusqu'au point:
+    Etape::get(19)->setNumeroEtapeFinAction(-1);
+    Etape::get(46)->setNumeroEtapeFinAction(-1);
+    Etape::get(47)->setNumeroEtapeFinAction(-1);
+    Etape::get(48)->setNumeroEtapeFinAction(-1);
 
     //Deposer Pieds
     new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
@@ -187,8 +189,9 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(45)->addVoisins(1, 31);
     Etape::get(45)->addVoisins(18, 35);
 
-
-   // Etape::get(48)->addVoisins(40);
+    Etape::get(46)->addVoisins(14);
+    Etape::get(47)->addVoisins(14);
+    Etape::get(48)->addVoisins(40);
 
     //aretes pour coin gauche haut
     Etape::get(8)->addVoisins(40);
@@ -219,7 +222,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::DEPART :
             return 0;
         case Etape::CLAP :
-            return 0;
+            return 10;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
                 return 0;
@@ -229,9 +232,9 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
         case Etape::RAMASSER_PIED :
             if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
-                return 0;
+                return 50;
             else
-                return 100;
+                return 0;
         case Etape::DEPOSER_PIED :
             if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
                 return 10000;
