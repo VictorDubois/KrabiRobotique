@@ -479,12 +479,12 @@ void StrategieV2::update()
             if (currentAction)
             {
                 //Pour changer de trajectoire, décommenter les lignes suivantes
-                //currentAction->collisionAvoided();
-                //actionsToDo[actionsCount]->collisionAvoided();
-                //currentCommand->collisionAvoided();
-                //currentAction->update();
-                //Position pos = Odometrie::odometrie->getPos().getPosition();
-                //addTemporaryAction(new ActionGoTo(pos, true));
+                currentAction->collisionAvoided();
+                actionsToDo[actionsCount]->collisionAvoided();
+//                currentCommand->collisionAvoided();
+                currentAction->update();
+                Position pos = Odometrie::odometrie->getPos().getPosition();
+                addTemporaryAction(new ActionGoTo(pos, true));
 
                 //On arrête le robot
                 if (currentCommand)

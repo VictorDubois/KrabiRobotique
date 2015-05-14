@@ -45,12 +45,12 @@ BrasLateral* BrasLateraux::right = 0;
             TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
             right = new BrasLateral(timer, 2, 0.01f, 0.11f, 96.f, 20.f, 84.f);
-            left = new BrasLateral(timer, 3, 0.01f, 0.11f, 81.f, 180.f, 1.f);
+//            left = new BrasLateral(timer, 3, 0.01f, 0.11f, 81.f, 180.f, 1.f);
 
 
         #endif
 
-        left->collapse();
+//        left->collapse();
         right->collapse();
     }
 #else
