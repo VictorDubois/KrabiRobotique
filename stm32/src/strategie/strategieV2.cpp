@@ -1,6 +1,9 @@
 #include "strategieV2.h"
-#include "krabi2015.h"
-//#include "krabijunior2015.h"
+#if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
+    #include "krabijunior2015.h"
+#else
+    #include "krabi2015.h"
+#endif
 #include "leds.h"
 #include "positionPlusAngle.h"
 #include "asservissement.h"
@@ -92,8 +95,12 @@ StrategieV2::StrategieV2(bool blue)
     /* Appel des stratégies */
 
     //actionsToDo[0] = (MediumLevelAction*) new Krabi2014(blue);
+
+#if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
+    actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(blue);
+#else
     actionsToDo[0] = (MediumLevelAction*) new Krabi2015(blue);
-    //actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(blue);
+#endif
 
     // 2014 :
     //CanonFilet::getSingleton()->attente();
@@ -400,7 +407,7 @@ void StrategieV2::update()
     bool allume = false;
     for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
     {
-        if (sharpsToCheck[i] && !tourneSurSoiMeme)
+        if (/*sharpsToCheck[i] && !tourneSurSoiMeme*/true)
         {
             if (sharps[i]->getValue().b)
             {
@@ -445,10 +452,16 @@ void StrategieV2::update()
             Asservissement::asservissement->setCommandSpeeds(NULL);
             Asservissement::asservissement->update();
             allumerLED2();
+#ifndef NO_REMOTE
+            //Remote::getSingleton()->log("Detect !");
+#endif
         }
         else
         {
             eteindreLED2();
+#ifndef NO_REMOTE
+            //Remote::getSingleton()->log("No !");
+#endif
         }
         //return;
         //somethingDetected = Sensors::getSensors()->sharpDetect();
@@ -830,8 +843,8 @@ void StrategieV2::enableSharpsGroup(bool front)
 #else
         enableSharp(SharpSensor::FRONT_LEFT);
         enableSharp(SharpSensor::FRONT_RIGHT);
-        enableSharp(SharpSensor::LEFT_FRONT);
-        enableSharp(SharpSensor::RIGHT_FRONT);
+        enableSharp(SharpSensor::FRONT_LEFT_SIDE);
+        enableSharp(SharpSensor::FRONT_RIGHT_SIDE);
 #endif
     }
     else
@@ -843,8 +856,8 @@ void StrategieV2::enableSharpsGroup(bool front)
 #else
         enableSharp(SharpSensor::BACK_LEFT);
         enableSharp(SharpSensor::BACK_RIGHT);
-        enableSharp(SharpSensor::LEFT_BACK);
-        enableSharp(SharpSensor::RIGHT_BACK);
+        enableSharp(SharpSensor::BACK_LEFT_SIDE);
+        enableSharp(SharpSensor::BACK_RIGHT_SIDE);
 #endif
     }
 
