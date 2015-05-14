@@ -116,7 +116,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(7)->addVoisins(5, 22);
     Etape::get(7)->addVoisins(20, 23, 3);
 
-    Etape::get(14)->addVoisins(46, 47);
+    //Etape::get(14)->addVoisins(46, 47);
 
     Etape::get(18)->addVoisins(3, 5);
     Etape::get(18)->addVoisins(31, 35);
@@ -183,7 +183,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(45)->addVoisins(18, 35);
 
 
-    Etape::get(48)->addVoisins(40);
+   // Etape::get(48)->addVoisins(40);
 
     //aretes pour coin gauche haut
     Etape::get(8)->addVoisins(40);
@@ -214,7 +214,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::DEPART :
             return 0;
         case Etape::CLAP :
-            return 1000000;
+            return 0;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
                 return 0;
@@ -229,7 +229,7 @@ int Krabi2015::getScoreEtape(int i){
                 return 100;
         case Etape::DEPOSER_PIED :
             if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
-                return 0;
+                return 10000;
             else
                 return 0;
         case Etape::TAPIS :
