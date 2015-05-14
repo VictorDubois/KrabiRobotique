@@ -1,12 +1,16 @@
 #include "mediumLevelAction.h"
 #include "strategieV2.h"
 
+#ifndef ROBOTHW
 #include <QDebug>
+#endif
 
 MediumLevelAction::MediumLevelAction(Position goalPos, bool goBack) : goalPosition(goalPos), status(0), goBack(goBack)
 {
     //(StrategieV2::getIsBlue() ? goalPos : Position(3000,0)-goalPos);
+    #ifndef ROBOTHW
     qDebug() << this->goBack;
+    #endif
 }
 
 MediumLevelAction::~MediumLevelAction()

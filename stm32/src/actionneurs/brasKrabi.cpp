@@ -1,37 +1,37 @@
-#include "brasKrabi.h"
+//#include "brasKrabi.h"
 
-#ifdef ROBOTHW
+//#ifdef ROBOTHW
 
-    BrasKrabi::BrasKrabi(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
-        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
-    {
-        this->servo = new Servo(timer, OCx, RC0degre, RC180degres);
-    }
+//    BrasKrabi::BrasKrabi(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
+//        : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
+//    {
+//        this->servo = new Servo(timer, OCx, RC0degre, RC180degres);
+//    }
 
-    void BrasKrabi::expand()
-    {
-        servo->goToAngle(angleExpanded);
-    }
+//    void BrasKrabi::expand()
+//    {
+//        servo->goToAngle(angleExpanded);
+//    }
 
-    void BrasKrabi::collapse()
-    {
-        servo->goToAngle(angleCollapsed);
-    }
+//    void BrasKrabi::collapse()
+//    {
+//        servo->goToAngle(angleCollapsed);
+//    }
 
-    void BrasKrabi::front()
-    {
-        servo->goToAngle(angleFront);
-    }
+//    void BrasKrabi::front()
+//    {
+//        servo->goToAngle(angleFront);
+//    }
 
-#else
+//#else
 
 
-    BrasKrabi::BrasKrabi(){}
+//    BrasKrabi::BrasKrabi(){}
 
-    void BrasKrabi::expand(){}
+//    void BrasKrabi::expand(){}
 
-    void BrasKrabi::collapse(){}
+//    void BrasKrabi::collapse(){}
 
-    void BrasKrabi::front(){}
+//    void BrasKrabi::front(){}
 
-#endif
+//#endif

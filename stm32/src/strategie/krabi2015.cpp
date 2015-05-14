@@ -46,6 +46,14 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(8, Position(620, 700, isYellow));
     new Etape(12, Position(747, 650, isYellow));
 
+    // Manipulation dans les coins
+//    new Etape(14, new ManipulationCoinGaucheHaut(Position(695, 445, isYellow), isYellow) );
+//    new Etape(40, new ManipulationCoinGaucheHautPiedSolitaire(Position(315, 330, isYellow), isYellow) );
+//    new Etape(30, new ManipulationCoinGaucheBas( Position(260, 1570, isYellow), isYellow) );
+    new Etape(14, Position(695, 445, isYellow));
+    new Etape(40, Position(315, 330, isYellow));
+    new Etape(30, Position(260, 1570, isYellow));
+
     //Si gobelets:
     new Etape(15, Position(2293, 540, isYellow));
     new Etape(16, Position(2500, 273, isYellow));
@@ -106,10 +114,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     //Deposer Pieds
     new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
 
-    // Manipulation dans les coins
-    new Etape(14, new ManipulationCoinGaucheHaut(Position(695, 445, isYellow), isYellow) );
-    new Etape(40, new ManipulationCoinGaucheHautPiedSolitaire(Position(315, 330, isYellow), isYellow) );
-    new Etape(30, new ManipulationCoinGaucheBas( Position(260, 1570, isYellow), isYellow) );
+
 
 
 
