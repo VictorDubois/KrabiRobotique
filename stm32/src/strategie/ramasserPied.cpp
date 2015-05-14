@@ -47,8 +47,8 @@ int RamasserPied::update()
     {
     #ifndef ROBOTHW
             qDebug() << "action pied";
-    #endif
         qDebug() << this->goBack;
+    #endif
         depart = Odometrie::odometrie->getPos().getPosition();
         StrategieV2::setCurrentGoal(this->goalPosition, false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
         Ascenseur::getSingleton()->leverAscenseur();

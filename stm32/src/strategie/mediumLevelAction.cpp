@@ -1,7 +1,9 @@
 #include "mediumLevelAction.h"
 #include "strategieV2.h"
 
+#ifndef ROBOTHW
 #include <QDebug>
+#endif
 
 MediumLevelAction::MediumLevelAction(Position goalPos, bool goBack) : goalPosition(goalPos), status(0), goBack(goBack)
 {
