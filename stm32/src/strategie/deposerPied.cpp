@@ -58,9 +58,6 @@ int DeposerPied::update()
     {
         if (Command::isLookingAt(goalPosition))
         {
-#ifndef ROBOTHW
-            qDebug() << "On ouvre les pinces";
-#endif
             Pinces::getSingleton()->ouvrirPinces();
         status++;
         }
@@ -77,24 +74,27 @@ int DeposerPied::update()
         status++;
     }
 
-    else if ((status <43) && (status > 0))  //On attend que l'ascenseur se baisse
+    else if ((status == 24) && (status > 0))  //On attend que l'ascenseur se baisse
     {
-        status++;
+        if (Ascenseur::getSingleton()->estEnBas())
+        {
+            status++;
+        }
     }
 
-    else if ((status ==43) && (status > 0))  //On ouvre l'ascenseur
+    else if ((status ==25) && (status > 0))  //On ouvre l'ascenseur
     {
         Ascenseur::getSingleton()->ouvrirAscenseur();
         status++;
     }
 
 
-    else if ((status <63) && (status > 0))  //On attend que l'ascenseur soit ouvert
+    else if ((status <45) && (status > 0))  //On attend que l'ascenseur soit ouvert
     {
         status++;
     }
 
-    else if ((status ==63) && (status > 0))  //On dit à Krabi de se déplacer à partir de maintenant à l'envers
+    else if ((status ==45) && (status > 0))  //On dit à Krabi de se déplacer à partir de maintenant à l'envers
     {
 #ifndef ROBOTHW
         qDebug() << "Etape deposerPied finie";
@@ -104,13 +104,13 @@ int DeposerPied::update()
     }
 
 
-    else if ((status ==64) && (status > 0))  //Le robot se déplace jusqu'à un autre point du graphe en arrière.
+    else if ((status ==46) && (status > 0))  //Le robot se déplace jusqu'à un autre point du graphe en arrière.
     {
         StrategieV2::setCurrentGoal(this->positionRetournement, this->goBack);
         status++;;
     }
 
-    else if ((status ==65) && (status > 0)) //Le robot se déplace jusqu'à un autre point du graphe en arrière.
+    else if ((status ==47) && (status > 0)) //Le robot se déplace jusqu'à un autre point du graphe en arrière.
     {
         if (Command::isNear(positionRetournement))
         {
@@ -119,29 +119,43 @@ int DeposerPied::update()
         }
     }
 
-    else if ((status ==66) && (status > 0))  //On ferme l'ascenceur
+    else if ((status ==48) && (status > 0))  //On ferme l'ascenceur
     {
         Ascenseur::getSingleton()->fermerAscenseur();
         status++;
     }
 
-    else if ((status <86) && (status > 0))  //On attend que l'ascenseur soit ferme
+    else if ((status <68) && (status > 0))  //On attend que l'ascenseur soit ferme
     {
         status++;
     }
 
-    else if ((status ==86) && (status > 0))  //Les pinces se ferment
+    else if ((status ==68) && (status > 0))
+    {
+        Ascenseur::getSingleton()->leverAscenseur();
+        status++;
+    }
+
+    else if ((status ==69) && (status > 0))
+    {
+        if (Ascenseur::getSingleton()->estEnHaut())
+        {
+            status++;
+        }
+    }
+
+    else if ((status ==70) && (status > 0))  //Les pinces se ferment
     {
         Pinces::getSingleton()->fermerPinces();
         status++;
     }
 
-    else if ((status <106) && (status > 0))  //On attend que les pinces soient fermees
+    else if ((status <90) && (status > 0))  //On attend que les pinces soient fermees
     {
         status++;
     }
 
-    else if (status == 106) //action finie
+    else if (status == 90) //action finie
     {
         status = -1;
     }
