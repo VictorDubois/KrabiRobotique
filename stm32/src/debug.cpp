@@ -329,7 +329,7 @@ void Debug::testBrasLateraux()
         for (int i = 0; i < 10000000; i++);
     }*/
 
-    BrasLateraux::initBrasLateraux();
+    /*BrasLateraux::initBrasLateraux();
 
     while(true)
     {
@@ -340,17 +340,13 @@ void Debug::testBrasLateraux()
         for(int i=0; i<10000000; i++);
 
         //BrasLateral::getLeft()->front();
-        /*BrasLateral::getRight()->front();
-        Led::toggle(0);
-
-        for(int i=0; i<10000000; i++);*/
 
         BrasLateraux::getLeft()->collapse();
         BrasLateraux::getRight()->collapse();
         Led::toggle(0);
 
         for(int i=0; i<10000000; i++);
-    }
+    }*/
 }
 /*
 void Debug::testContainer()
