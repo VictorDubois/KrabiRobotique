@@ -35,8 +35,8 @@ class StrategieV2
         static void setJustAvoided(bool value);
         static bool getJustAvoided();
         static bool willCollide();
-        static void setIsBlue(bool blue);
-        static bool getIsBlue();
+        static void setIsYellow(bool yellow);
+        static bool getIsYellow();
         static void emptySharpsToCheck();
         static void setEnTrainDeRecalibrer(bool recalibre);
         static void enableSharp(SharpSensor::SharpName name);
@@ -55,7 +55,7 @@ static void paint(QPainter* p);
         static bool somethingDetected;
 
     private:
-        static bool isBlue;
+        static bool isYellow;
         static int updateCount;
         static StrategieV2* strategie;
         static Command* currentCommand;

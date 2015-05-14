@@ -397,7 +397,9 @@ void Table::treat(KrabiPacket &packet)
         float vitesseAngE = packet.get<float>();
         float angularDuty = packet.get<float>();
 
+#ifndef ROBOTHW
         qDebug() << "Krabi Results" << time;
+#endif
 
         if (time == 0)
             DebugWindow::getInstance()->clearPlots();
@@ -426,7 +428,9 @@ void Table::treat(KrabiPacket &packet)
 
         if (abs(diff) > 25)
         {
+            #ifndef ROBOTHW
             qDebug() << "Timer sync error" << diff << "ms";
+            #endif
         }
 
         /*if (diff < -1500)
@@ -513,7 +517,9 @@ void Table::watch(KrabiPacket &packet)
         DebugWindow::getInstance()->getSharpWindow()->syncFinished(packet);
         break;
     default:
+        #ifndef ROBOTHW
         qDebug() << "Uncaught watch : " << type;
+        #endif
         break;
     }
 }
@@ -743,11 +749,15 @@ void Table::mousePressEvent(QMouseEvent* evt, bool press)
 {
     float x = (evt->x()/900.0) * tableWidth;
     float y = (evt->y()/600.0) * tableHeight;
+#ifndef ROBOTH
     qDebug() << "X : " << x << "    -    Y : " << y;
+#endif
 
     if (evt->button() == Qt::RightButton && DebugWindow::getInstance()->getAsservWindow()->clickGoto())
     {
+        #ifndef ROBOTH
         qDebug() << "Send the robot !";
+        #endif
 
         KrabiPacket p(KrabiPacket::RUN_GOTO);
         p.add((float) x);

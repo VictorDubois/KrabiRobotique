@@ -7,6 +7,7 @@
 
 //MLA : Medium Level Action
 
+#define ATTENTE 20
 
 #ifndef ROBOTHW
 #include <QDebug>
@@ -69,58 +70,64 @@ int ManipulationCoinGaucheHaut::update()
         }
     }
 
-    else if (status < 24)
+    else if (status < 4 + ATTENTE)
     {
         status++;
     }
 
-    else if (status == 24)
+    else if (status == 4 + ATTENTE)
     {
         Ascenseur::getSingleton()->ouvrirAscenseur();
         status++;
     }
 
-    else if (status < 44)
+    else if (status < 4 + ATTENTE + ATTENTE)
     {
         status++;
     }
 
-    else if (status == 44)
+    else if (status == 4 + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->baisserAscenseur();
         status++;
     }
 
-    else if (status < 64)
+    else if (status == 5 + ATTENTE + ATTENTE)
     {
-        status++;
+        if (Ascenseur::getSingleton()->estEnBas())
+        {
+            status++;
+        }
     }
 
-    else if (status == 64)
+    else if (status == 6 + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->fermerAscenseur();
         status++;
     }
 
-    else if (status < 84)
+    else if (status < 6 + ATTENTE + ATTENTE + ATTENTE)
     {
         status++;
     }
 
-    else if (status == 84)
+    else if (status == 6 + ATTENTE + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->leverAscenseur();
         Ascenseur::getSingleton()->addPied();
         status++;
     }
 
-    else if (status < 104)
+    else if (status < 7 +  ATTENTE + ATTENTE + ATTENTE)
     {
-        status++;
+        if (Ascenseur::getSingleton()->estEnHaut())
+        {
+            status++;
+        }
     }
 
 
-    else if (status == 104)
+    else if (status == 8 + ATTENTE + ATTENTE + ATTENTE)
     {
         if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
         {
@@ -139,7 +146,7 @@ int ManipulationCoinGaucheHaut::update()
         }
     }
 
-    else if (status == 105)
+    else if (status == 9 + ATTENTE + ATTENTE + ATTENTE)
     {
         if (Command::isNear(goalPosition, 200.0f))
         {
@@ -148,7 +155,7 @@ int ManipulationCoinGaucheHaut::update()
         }
     }
 
-    else if (status == 106)
+    else if (status == 10 + ATTENTE + ATTENTE + ATTENTE)
     {
         if (Command::isLookingAt(this->goalPosition))
         {
@@ -157,45 +164,48 @@ int ManipulationCoinGaucheHaut::update()
         }
     }
 
-    else if (status < 126)
+    else if (status < 10 + ATTENTE + ATTENTE + ATTENTE)
     {
         status++;
     }
 
-    else if (status == 126)
+    else if (status == 10 + ATTENTE + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->ouvrirAscenseur();
         status++;
     }
 
-    else if (status < 146)
+    else if (status < 10 + ATTENTE + ATTENTE + ATTENTE + ATTENTE)
     {
         status++;
     }
 
-    else if (status == 146)
+    else if (status == 10 + ATTENTE + ATTENTE + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->baisserAscenseur();
         status++;
     }
 
-    else if (status < 166)
+    else if (status < 11 + ATTENTE + ATTENTE + ATTENTE + ATTENTE)
     {
-        status++;
+        if (Ascenseur::getSingleton()->estEnBas())
+        {
+            status++;
+        }
     }
 
-    else if (status == 166)
+    else if (status == 12 + ATTENTE + ATTENTE + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->fermerAscenseur();
         status++;
     }
 
-    else if (status < 186)
+    else if (status < 12 + ATTENTE + ATTENTE + ATTENTE + ATTENTE + ATTENTE )
     {
         status++;
     }
 
-    else if (status == 186)
+    else if (status == 12 + ATTENTE + ATTENTE + ATTENTE + ATTENTE + ATTENTE)
     {
         Ascenseur::getSingleton()->leverAscenseur();
         Ascenseur::getSingleton()->addPied();
