@@ -117,7 +117,9 @@ int StrategieV3::update()
                 this->updateStock();
 
                 //On est maintenant arrivé à l'étape de fin de l'action (en général c'est la même étape, mais pas toujours, ex : les claps de 2015)
-                this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
+                this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction() == -1
+                                        ? this->etapeEnCours
+                                        : this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
             }
 
 
