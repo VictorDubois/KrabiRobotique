@@ -32,12 +32,12 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(28, Position(1706, 1586, isYellow));
     new Etape(29, Position(1976, 1550, isYellow));
     new Etape(31, Position(596, 1413, isYellow));
-    new Etape(33, Position(260, 1450, isYellow));
     new Etape(34, Position(756, 1606, isYellow));
     new Etape(35, Position(1070, 1543, isYellow));
     new Etape(37, Position(2376, 1413, isYellow));
     new Etape(38, Position(2216, 1636, isYellow));
     new Etape(39, Position(2460, 1610, isYellow));
+    new Etape(33, Position(260, 1450, isYellow));
 
     new Etape(8, Position(620, 700, isYellow));
     new Etape(12, Position(747, 650, isYellow));
@@ -87,9 +87,9 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
 
     // Manipulation dans les coins
-    new Etape(30, Position(420, 1600, isYellow));
     new Etape(14, new ManipulationCoinGaucheHaut(Position(695, 445, isYellow), isYellow) );
     new Etape(40, new ManipulationCoinGaucheHautPiedSolitaire(Position(315, 330, isYellow), isYellow) );
+    new Etape(30, new ManipulationCoinGaucheBas( Position(260, 1570, isYellow), isYellow) );
 
 
 
@@ -227,7 +227,9 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::COIN_GAUCHE_HAUT :
             return 0;
         case Etape::SPOT_SOLITAIRE_COIN :
-            return 10000;
+            return 0;
+        case Etape::COIN_GAUCHE_BAS :
+            return 100000;
         case Etape::POINT_PASSAGE :
             return 0;
         default :
