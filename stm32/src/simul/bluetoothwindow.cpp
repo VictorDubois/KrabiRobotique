@@ -212,7 +212,9 @@ void BluetoothWindow::read()
                 if (packet.isValid())
                     Table::getMainInstance()->treat(packet);
                 else
+#ifndef ROBOTHW
                     qDebug() << "Discard incorrect packet (checksum failure)";
+#endif
             }
 
             bufferReceive = bufferReceive.right(bufferReceive.size() - (i + 2));
@@ -229,7 +231,9 @@ void BluetoothWindow::send(KrabiPacket &packet)
     a.append(0x0D);
     a.append(0x0A);
 
+#ifndef ROBOTHW
     qDebug() << socket->write(a) << "written !";
+#endif
 #endif
 }
 

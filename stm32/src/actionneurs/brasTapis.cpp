@@ -53,7 +53,7 @@ void BrasTapis::fermerBras(){}
 
 BrasTapis *BrasTapis::getSingleton(COTE cote)
 {
-    return 0;
+    return new BrasTapis();
 }
 
 

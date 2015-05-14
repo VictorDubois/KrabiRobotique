@@ -87,8 +87,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
 
     // Tapis
-    new Etape(17, new Tapis(Position(1366, 780, isYellow)) );
-    new Etape(36, new Tapis(Position(1126, 780, isYellow)) );
+    new Etape(17, new Tapis(Position(1080, 780, isYellow)) );
+    new Etape(36, new Tapis(Position(1420, 780, isYellow)) );
 
     // Ramasser Pied
     new Etape(18, new RamasserPied(Position(870, 1355, isYellow)) );

@@ -78,9 +78,9 @@ int RecalibrerOdometrie::update()
         {
 #ifdef ROBOTHW //A adapter à la taille du robot
             if(this->coinRecalage == COTE_DEPART_ADVERSAIRE_HAUT || this->coinRecalage == COTE_DEPART_ADVERSAIRE_BAS)
-                Odometrie::odometrie->setX((StrategieV2::getIsBlue() ? 95 : 2905)); // robot = 319mm de large
+                Odometrie::odometrie->setX((StrategieV2::getIsYellow() ? 95 : 2905)); // robot = 319mm de large
             else
-                Odometrie::odometrie->setX((StrategieV2::getIsBlue() ? 2905 : 95)); // robot = 319mm de large
+                Odometrie::odometrie->setX((StrategieV2::getIsYellow() ? 2905 : 95)); // robot = 319mm de large
 #endif
             //StrategieV2::setCurrentGoal(Position(goalPosition1.getX(), 1360), false);
             StrategieV2::setCurrentGoal(positionDepart, false);

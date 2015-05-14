@@ -21,7 +21,9 @@ void ContactListener::BeginContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->setEvent();
+#ifndef ROBOTHW
             qDebug() << "Sensor " << detectingSharpSensor->getName() << " is detecting something !!!\n";
+#endif
         }
     }
 
@@ -33,7 +35,9 @@ void ContactListener::BeginContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->setEvent();
+#ifndef ROBOTHW
             qDebug() << "Sensor " << detectingSharpSensor->getName() << " is detecting something !!!\n";
+#endif
         }
     }
 }
@@ -53,7 +57,9 @@ void ContactListener::EndContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->unsetEvent();
+#ifndef ROBOTHW
             qDebug() << "Sensor " << detectingSharpSensor->getName() << " has stopped detecting something !!!\n";
+#endif
         }
     }
 
@@ -65,7 +71,9 @@ void ContactListener::EndContact(b2Contact* contact)
         {
             SharpSensor *detectingSharpSensor = (SharpSensor*) myStructuredUserData->object;
             detectingSharpSensor->unsetEvent();
+#ifndef ROBOTHW
             qDebug() << "Sensor " << detectingSharpSensor->getName() << " has stopped detecting something !!!\n";
+#endif
         }
     }
 }
