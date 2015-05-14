@@ -113,7 +113,10 @@ int DeposerPied::update()
     else if ((status ==65) && (status > 0)) //Le robot se déplace jusqu'à un autre point du graphe en arrière.
     {
         if (Command::isNear(positionRetournement))
-        status++;
+        {
+            this->goBack = false;
+            status++;
+        }
     }
 
     else if ((status ==66) && (status > 0))  //On ferme l'ascenceur
