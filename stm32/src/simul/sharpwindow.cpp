@@ -41,14 +41,22 @@ QString SharpWindow::getSharpName(SharpSensor::SharpName sharp)
         return "FRONT_LEFT";
     case SharpSensor::FRONT_RIGHT:
         return "FRONT_RIGHT";
-    case SharpSensor::LEFT_FRONT:
+    /*case SharpSensor::LEFT_FRONT:
         return "LEFT_FRONT";
     case SharpSensor::LEFT_BACK:
         return "LEFT_BACK";
     case SharpSensor::RIGHT_FRONT:
         return "RIGHT_FRONT";
     case SharpSensor::RIGHT_BACK:
-        return "RIGHT_BACK";
+        return "RIGHT_BACK";*/
+    case SharpSensor::BACK_RIGHT_SIDE:
+        return "BACK_RIGHT_SIDE";
+    case SharpSensor::BACK_LEFT_SIDE:
+        return "BACK_LEFT_SIDE";
+    case SharpSensor::FRONT_LEFT_SIDE:
+        return "FRONT_LEFT_SIDE";
+    case SharpSensor::FRONT_RIGHT_SIDE:
+        return "FRONT_RIGHT_SIDE";
     default:
         return "unknown";
     }
@@ -63,10 +71,10 @@ void SharpWindow::syncFinished(KrabiPacket p)
 
     for(int i(0); i < SharpSensor::END_SHARP_NAME; ++i)
     {
-        if (!p.isReadable<float>())
+        if (!p.isReadable<uint16_t>())
             break;
 
-        SharpSensor::SharpName s = (SharpSensor::SharpName) i;
+        SharpSensor::SharpName s = (SharpSensor::SharpName) (4 + i);
         uint16_t value = p.get<uint16_t>();
         bool on = p.get<bool>();
         ui->sharpsList->setItem(i, 0, new QTableWidgetItem(getSharpName(s)));

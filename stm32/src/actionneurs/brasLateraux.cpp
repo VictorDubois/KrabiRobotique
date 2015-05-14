@@ -1,33 +1,35 @@
 #include "brasLateraux.h"
 
-BrasLateraux* BrasLateraux::left = 0;
-BrasLateraux* BrasLateraux::right = 0;
+BrasLateral* BrasLateraux::left = 0;
+BrasLateral* BrasLateraux::right = 0;
 
 #ifdef ROBOTHW
 
-    BrasLateraux::BrasLateraux(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
+    BrasLateral::BrasLateral(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront)
         : angleCollapsed(angleCollapsed), angleExpanded(angleExpanded), angleFront(angleFront)
     {
         servo = new Servo(timer, OCx, RC0degre, RC180degres);
     }
 
-    void BrasLateraux::expand()
+    void BrasLateral::expand()
     {
         servo->goToAngle(angleExpanded);
     }
 
-    void BrasLateraux::collapse()
+    void BrasLateral::collapse()
     {
         servo->goToAngle(angleCollapsed);
     }
 
-    void BrasLateraux::front()
+    void BrasLateral::front()
     {
         servo->goToAngle(angleFront);
     }
 
     void BrasLateraux::initBrasLateraux()
     {
+        if (right != 0 || left != 0)
+            return;
         #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // Krabi Jr - STM32 H405 / STM32 H103
             Timer* timer = new Timer(TIM3, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
             TIM_CtrlPWMOutputs(TIM3, ENABLE);
@@ -38,8 +40,8 @@ BrasLateraux* BrasLateraux::right = 0;
             Timer* timer = new Timer(TIM1, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
             TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
-            right = new BrasLateraux(timer, 2, 0.01f, 0.11f, 20.f, 86.f, 84.f);
-            left = new BrasLateraux(timer, 3, 0.01f, 0.11f, 120.f, 36.f, 1.f);
+            right = new BrasLateral(timer, 2, 0.01f, 0.11f, 96.f, 20.f, 84.f);
+            left = new BrasLateral(timer, 3, 0.01f, 0.11f, 81.f, 180.f, 1.f);
 
 
         #endif
@@ -50,34 +52,35 @@ BrasLateraux* BrasLateraux::right = 0;
 #else
 
 
-    BrasLateraux::BrasLateraux(){}
+    BrasLateral::BrasLateral(){}
 
-    void BrasLateraux::expand(){} //sort les bras
+    void BrasLateral::expand(){} //sort les bras
 
-    void BrasLateraux::collapse(){} //ferme les bras
+    void BrasLateral::collapse(){} //ferme les bras
 
-    void BrasLateraux::front(){} //sort les bras a 80°
+    void BrasLateral::front(){} //sort les bras a 80°
 
     void BrasLateraux::initBrasLateraux()
     {
-        left = new BrasLateraux();
-        right = new BrasLateraux();
+        if (right != 0 || left != 0)
+            return;
+
+        left = new BrasLateral();
+        right = new BrasLateral();
     }
 
 #endif
 
-BrasLateraux* BrasLateraux::getLeft()
+BrasLateral* BrasLateraux::getLeft()
 {
-    if (left==0)
-        initBrasLateraux();
+    initBrasLateraux();
 
     return left;
 }
 
-BrasLateraux* BrasLateraux::getRight()
+BrasLateral* BrasLateraux::getRight()
 {
-    if (right==0)
-        initBrasLateraux();
+    initBrasLateraux();
 
     return right;
 }

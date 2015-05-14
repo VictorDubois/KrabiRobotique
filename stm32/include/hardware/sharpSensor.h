@@ -26,14 +26,14 @@ class SharpSensor : public AnalogSensor
                 NONE = 7
             #else // Pin pour le stm32 h107 et le simu
 
+                BACK_RIGHT_SIDE,
                 BACK_RIGHT,
                 BACK_LEFT,
+                BACK_LEFT_SIDE,
+                FRONT_LEFT_SIDE,
                 FRONT_LEFT,
                 FRONT_RIGHT,
-                LEFT_FRONT,
-                LEFT_BACK,
-                RIGHT_FRONT,
-                RIGHT_BACK,
+                FRONT_RIGHT_SIDE,
                 END_SHARP_NAME,
                 NONE = 8
 //
