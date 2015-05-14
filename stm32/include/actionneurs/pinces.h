@@ -3,6 +3,7 @@
 
 #define POS_PINCES_OUVERTES 0x01D0
 #define POS_PINCES_FERMEES 0x0327
+#define POS_PINCES_SAISIR 0x0327
 #define INDEX_MOTEUR_PINCE_GAUCHE 10
 #define INDEX_MOTEUR_PINCE_DROITE 11
 
@@ -25,6 +26,7 @@ public:
 
     /// @brief fermerPinces() on ferme la pince
     void fermerPinces();
+    void saisirPied();
 
     bool estDispo();
     void setDispo(bool dispo);
