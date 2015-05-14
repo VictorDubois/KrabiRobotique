@@ -58,9 +58,9 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(44, Position(2300, 1780, isYellow) );
 
     // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
-    Etape::get(2)->setNumeroEtapeFinAction(3); //Clapet notre côté vers milieu
-    Etape::get(4)->setNumeroEtapeFinAction(5); //Clapet notre côté vers notre bord
-    Etape::get(6)->setNumeroEtapeFinAction(7); //Clapet côté adverse
+    Etape::get(2)->setNumeroEtapeFinAction(12); //Clapet notre côté vers milieu
+    Etape::get(4)->setNumeroEtapeFinAction(43); //Clapet notre côté vers notre bord
+    Etape::get(6)->setNumeroEtapeFinAction(44); //Clapet côté adverse
 
     // Ramasser Gobelets
     new Etape(9, new Gobelet(Position(910, 805, isYellow)) );
@@ -80,8 +80,13 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     // Ramasser Pied
     new Etape(18, new RamasserPied(Position(870, 1355, isYellow)) );
-    new Etape(19, new RamasserPied(Position(1100, 1770, isYellow)) );
+    new Etape(19, new RamasserPied(Position(1100, 1770, isYellow), true) );
     new Etape(20, new RamasserPied(Position(1300, 1400, isYellow)) );
+
+    // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
+    Etape::get(18)->setNumeroEtapeFinAction(3); //Clapet notre côté vers milieu
+    Etape::get(4)->setNumeroEtapeFinAction(5); //Clapet notre côté vers notre bord
+    Etape::get(6)->setNumeroEtapeFinAction(7); //Clapet côté adverse
 
     //Deposer Pieds
     new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
