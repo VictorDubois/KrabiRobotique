@@ -210,7 +210,8 @@ int main()
         //BrasLateraux::initBrasLateraux();
         //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateraux::initBrasLateraux();
+        BrasLateraux::getLeft()->collapse();
+        BrasLateraux::getRight()->collapse();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 

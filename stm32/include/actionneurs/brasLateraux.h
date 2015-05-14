@@ -5,8 +5,9 @@
     #include "servo.h"
 
     /// @brief La classe BrasLateraux permet de controler les bras latéraux de Krabi / KrabiJr
-    class BrasLateraux
+    class BrasLateral
     {
+        friend class BrasLateraux;
         public:
             /// @brief expand() Déploie le bras à 90°
             void expand();
@@ -17,39 +18,38 @@
             /// @brief front() Déploie le bras à 180°
             void front();
 
-            static void initBrasLateraux();
-            static BrasLateraux* getLeft();
-            static BrasLateraux* getRight();
+            Servo* servo;
 
         protected:
         private:
-            static BrasLateraux *left, *right;
+            BrasLateral(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront);
 
-            BrasLateraux(Timer* timer, unsigned char OCx, float RC0degre, float RC180degres, float angleCollapsed, float angleExpanded, float angleFront);
-
-            Servo* servo;
             float angleCollapsed, angleExpanded, angleFront;
     };
 #else
 
-    class BrasLateraux
+    class BrasLateral
     {
+        friend class BrasLateraux;
         public:
-            BrasLateraux();
+            BrasLateral();
 
             void expand();
             void collapse();
             void front();
-
-            static void initBrasLateraux();
-            static BrasLateraux* getLeft();
-            static BrasLateraux* getRight();
-
-        protected:
-        private:
-            static BrasLateraux *left, *right;
     };
 
 #endif
+
+class BrasLateraux
+{
+public:
+    static BrasLateral* getLeft();
+    static BrasLateral* getRight();
+
+private:
+    static void initBrasLateraux();
+    static BrasLateral *left, *right;
+};
 
 #endif // BRASLATERAUX_H

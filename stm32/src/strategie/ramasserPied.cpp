@@ -9,14 +9,14 @@
 //MLA : Medium Level Action
 #define MLA_RAMASSER_PIED_APPROCHE 1
 #define MLA_RAMASSER_PIED_REGARDE 1
-#define MLA_RAMASSER_PIED_OUVRIR_PINCES 50
+#define MLA_RAMASSER_PIED_OUVRIR_PINCES 200
 #define MLA_RAMASSER_PIED_APPROCHE_PLUS 1
-#define MLA_RAMASSER_PIED_SAISIR 50
-#define MLA_RAMASSER_PIED_OUVRE_ASC 50
-#define MLA_RAMASSER_PIED_BAISSER_ASC 50
-#define MLA_RAMASSER_PIED_FERME 50
-#define MLA_RAMASSER_PIED_LEVE 50
-#define MLA_RAMASSER_PIED_FERMER_PINCES 50
+#define MLA_RAMASSER_PIED_SAISIR 200
+#define MLA_RAMASSER_PIED_OUVRE_ASC 200
+#define MLA_RAMASSER_PIED_BAISSER_ASC 200
+#define MLA_RAMASSER_PIED_FERME 200
+#define MLA_RAMASSER_PIED_LEVE 200
+#define MLA_RAMASSER_PIED_FERMER_PINCES 200
 #define MLA_RAMASSER_PIED_PART 1
 
 
@@ -38,23 +38,29 @@ Etape::EtapeType RamasserPied::getType()
 int RamasserPied::update()
 {
 
-    if (status == 0)
+    /*if (status == 0)
     {
     #ifndef ROBOTHW
             qDebug() << "action pied";
     #endif
-        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
+        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack, VITESSE_LINEAIRE_MAX, -100.0, 500.f);
         Ascenseur::getSingleton()->leverAscenseur();
         status++;
     }
 
     else if (status == MLA_RAMASSER_PIED_APPROCHE)
     {
-        if (Command::isNear(goalPosition, 200.0f))
+        if (Command::isNear(goalPosition, 100.0f))
         {
             StrategieV2::lookAt(goalPosition);
             status++;
         }
+    }
+    */
+    if(status == 0)
+    {
+        StrategieV2::lookAt(goalPosition);
+        status = MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE;
     }
 
     else if (status == MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
@@ -63,20 +69,23 @@ int RamasserPied::update()
         {
             Pinces::getSingleton()->ouvrirPinces();
             status++;
+            //status = MLA_RAMASSER_PIED_APPROCHE_PLUS + MLA_RAMASSER_PIED_OUVRIR_PINCES + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE;
         }
     }
 
     else if (status == MLA_RAMASSER_PIED_OUVRIR_PINCES + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
-        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack, VITESSE_LINEAIRE_MAX, -100.0, 150.f);
+        StrategieV2::setCurrentGoal(this->goalPosition, this->goBack, VITESSE_LINEAIRE_MAX, -100.0, 140.f);
+        qDebug() << "Deplacement";
         status++;
         //qDebug() << status;
     }
 
     else if (status == MLA_RAMASSER_PIED_APPROCHE_PLUS + MLA_RAMASSER_PIED_OUVRIR_PINCES + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE)
     {
-        if(Command::isNear(goalPosition, 100.f))
+        if(Command::isNear(goalPosition, 140.f))
         {
+            StrategieV2::stop();
             Pinces::getSingleton()->saisirPied();
             status++;
         }
@@ -114,10 +123,9 @@ int RamasserPied::update()
     else if (status == MLA_RAMASSER_PIED_LEVE+ MLA_RAMASSER_PIED_FERME + MLA_RAMASSER_PIED_BAISSER_ASC + MLA_RAMASSER_PIED_OUVRE_ASC
              + MLA_RAMASSER_PIED_SAISIR + MLA_RAMASSER_PIED_APPROCHE_PLUS + MLA_RAMASSER_PIED_REGARDE + MLA_RAMASSER_PIED_APPROCHE + MLA_RAMASSER_PIED_OUVRIR_PINCES)
     {
-#ifndef ROBOTHW
-        qDebug() << "Etape pied finie";
-#endif
+
         StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
+        qDebug() << "Deplacement 2";
         Pinces::getSingleton()->fermerPinces();
         Ascenseur::getSingleton()->addPied();
         status++;
@@ -128,6 +136,9 @@ int RamasserPied::update()
     {
         if (Command::isNear(goalPosition))
         {
+#ifndef ROBOTHW
+        qDebug() << "Etape pied finie";
+#endif
             status = -1;
         }
     }
