@@ -92,7 +92,11 @@ HEADERS += \
     ../../include/simul/odometriewindow.h \
     ../../include/simul/asservwindow.h \
     ../../include/simul/sharpwindow.h \
-    ../../include/simul/watchwindow.h
+    ../../include/simul/watchwindow.h \
+    ../../include/strategie/deposerPied.h \
+    ../../include/strategie/manipulationCoinGaucheHaut.h \
+    ../../include/strategie/manipulationCoinGaucheBas.h \
+    ../../include/strategie/manipulationCoinGaucheHautPiedSolitaire.h
 
 
 SOURCES += \
@@ -160,7 +164,11 @@ SOURCES += \
     ../../src/simul/odometriewindow.cpp \
     ../../src/simul/asservwindow.cpp \
     ../../src/simul/sharpwindow.cpp \
-    ../../src/simul/watchwindow.cpp
+    ../../src/simul/watchwindow.cpp \
+    ../../src/strategie/deposerPied.cpp \
+    ../../src/strategie/manipulationCoinGaucheHaut.cpp \
+    ../../src/strategie/manipulationCoinGaucheBas.cpp \
+    ../../src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \

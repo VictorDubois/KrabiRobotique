@@ -2,7 +2,9 @@
 #define KRABI2015_H
 
 #define ETAPE_GARAGE 1
-#define NOMBRE_ETAPES 41
+
+#define NOMBRE_ETAPES 45
+
 
 
 #include "strategiev3.h"
@@ -11,7 +13,11 @@
 #include "gobelet.h"
 #include "tapis.h"
 #include "ramasserPied.h"
+#include "deposerPied.h"
 #include "deposerGobelet.h"
+#include "manipulationCoinGaucheBas.h"
+#include "manipulationCoinGaucheHaut.h"
+#include "manipulationCoinGaucheHautPiedSolitaire.h"
 
 class Krabi2015 : public StrategieV3
 {

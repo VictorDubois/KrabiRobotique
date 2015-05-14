@@ -387,9 +387,9 @@ QString Etape::getNameType(EtapeType type)
         return "Ampoule";
     case TAPIS:
         return "Tapis";
-    case DEPOSE_GOBELET:
+    case DEPOSER_GOBELET:
         return "Déposer Gobelet";
-    case DEPOSE_PIED:
+    case DEPOSER_PIED:
         return "Déposer Pied";
     default:
         return QString::number(type);
@@ -414,9 +414,9 @@ QString Etape::getShortNameType(EtapeType type)
         return "Amp";
     case TAPIS:
         return "Tapis";
-    case DEPOSE_GOBELET:
+    case DEPOSER_GOBELET:
         return "D.G";
-    case DEPOSE_PIED:
+    case DEPOSER_PIED:
         return "D.P";
     default:
         return "";
