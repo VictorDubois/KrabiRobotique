@@ -41,6 +41,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     new Etape(21, Position(1046, 1040, isYellow));
 
+    new Etape(34, Position(773, 340, isYellow));
 
     new Etape(8, Position(620, 700, isYellow));
     new Etape(12, Position(747, 650, isYellow));
@@ -126,7 +127,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(7)->addVoisins(5, 22);
     Etape::get(7)->addVoisins(20, 23, 3);
 
-    //Etape::get(14)->addVoisins(46, 47);
+    Etape::get(14)->addVoisins(34);
 
     Etape::get(18)->addVoisins(3, 5);
     Etape::get(18)->addVoisins(31, 35);
@@ -193,8 +194,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(45)->addVoisins(1, 31);
     Etape::get(45)->addVoisins(18, 35);
 
-    Etape::get(46)->addVoisins(14);
-    Etape::get(47)->addVoisins(14);
+    Etape::get(46)->addVoisins(34);
+    Etape::get(47)->addVoisins(34);
     Etape::get(48)->addVoisins(40);
 
     //aretes pour coin gauche haut
