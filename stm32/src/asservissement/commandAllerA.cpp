@@ -223,7 +223,7 @@ void CommandAllerA::update()
         else if (distanceFinal > distanceVitesseMax)
         {
             linSpeed += (m_reculer ? -accLinMax : accLinMax);
-
+            //DebugWindow::getInstance()->plot(4, "status", 2, 10);
             if (linSpeed > vitLinMax)
                 linSpeed = vitLinMax;
             else if (linSpeed < -vitLinMax)
@@ -235,6 +235,7 @@ void CommandAllerA::update()
             if (m_reculer)
                 linSpeedVisee = -linSpeedVisee;
 
+            //DebugWindow::getInstance()->plot(4, "status", 2, 20);
             linSpeed += (m_reculer ? -accLinMax : accLinMax);
 
             if (abs(linSpeed) > abs(linSpeedVisee))

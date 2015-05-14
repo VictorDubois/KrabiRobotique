@@ -560,10 +560,10 @@ void Remote::sendWatch(KrabiPacket::W_TABLE w, int time)
         }
         case KrabiPacket::W_SHARPS:
         {
-            for(int i(0); i < SharpSensor::END_SHARP_NAME; i++)
+            for(int i(0); i < SharpSensor::END_SHARP_NAME / 2; i++)
             {
                 Sensor::OutputSensor out = StrategieV2::getSensors()[i]->getValue();
-                p.add((uint16_t) out.f);
+                p.add(/*(uint16_t) */out.f);
                 p.add(out.b);
             }
             break;

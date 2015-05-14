@@ -6,7 +6,7 @@
 #include "dijkstra.h"
 #include "strategieV2.h"
 
-#define SMOOTH_MOVE
+//#define SMOOTH_MOVE
 
 #ifndef ROBOTHW
 #include <QPainter>

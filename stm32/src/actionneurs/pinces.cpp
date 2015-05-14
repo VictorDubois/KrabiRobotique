@@ -24,7 +24,7 @@ void Pinces::ouvrirPinces()
     ServosNumeriques::moveTo(POS_PINCES_OUVERTES, INDEX_MOTEUR_PINCE_DROITE);
     ServosNumeriques::moveTo(POS_PINCES_OUVERTES, INDEX_MOTEUR_PINCE_GAUCHE);
 #else
-    qDebug() << "On ferme les pinces";
+    qDebug() << "On ouvre les pinces";
 #endif
 }
 
@@ -33,6 +33,16 @@ void Pinces::fermerPinces()
 #ifdef ROBOTHW
     ServosNumeriques::moveTo(POS_PINCES_FERMEES, INDEX_MOTEUR_PINCE_DROITE);
     ServosNumeriques::moveTo(POS_PINCES_FERMEES, INDEX_MOTEUR_PINCE_GAUCHE);
+#else
+    qDebug() << "On ferme les pinces";
+#endif
+}
+
+void Pinces::saisirPied()
+{
+#ifdef ROBOTHW
+    ServosNumeriques::moveTo(POS_PINCES_SAISIR, INDEX_MOTEUR_PINCE_DROITE);
+    ServosNumeriques::moveTo(POS_PINCES_SAISIR, INDEX_MOTEUR_PINCE_GAUCHE);
 #else
     qDebug() << "On ferme les pinces";
 #endif
