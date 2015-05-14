@@ -130,6 +130,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(22)->addVoisins(24, 27);
 
     Etape::get(23)->addVoisins(20, 22, 24);
+    Etape::get(23)->addVoisins(3);
 
 
     Etape::get(27)->addVoisins(24, 37);
