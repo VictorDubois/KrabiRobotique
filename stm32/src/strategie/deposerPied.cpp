@@ -16,11 +16,7 @@ DeposerPied::DeposerPied(Position goalposition, bool isYellow):MediumLevelAction
     {
         this->positionRetournement = Position(700, 1000, isYellow);
     }
-   /* if (goalposition == Position(, , isYellow))
-         this->positionRetournement =
-     if (goalposition == Position(, , isYellow))
-          this->positionRetournement =*/
-    else
+    else // ne sert à rien normalement
     {
         this->positionRetournement = goalPosition;
     }
