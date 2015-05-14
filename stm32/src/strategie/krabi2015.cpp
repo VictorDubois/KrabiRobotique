@@ -85,12 +85,17 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     // Ramasser Pied
     new Etape(18, new RamasserPied(Position(870, 1355, isYellow)) );
-    new Etape(19, new RamasserPied(Position(1100, 1770, isYellow)) );
+    new Etape(19, new RamasserPied(Position(1100, 1770, isYellow), true) );
     new Etape(20, new RamasserPied(Position(1300, 1400, isYellow)) );
     // Ramasser Pied, version sans arriver jusqu'au point du graphe
     new Etape(46, new RamasserPied(Position(856, 210, isYellow)) );
     new Etape(47, new RamasserPied(Position(850, 106, isYellow)) );
     new Etape(48, new RamasserPied(Position(90, 203, isYellow)) );
+
+    // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
+    Etape::get(18)->setNumeroEtapeFinAction(3); //Clapet notre côté vers milieu
+    Etape::get(4)->setNumeroEtapeFinAction(5); //Clapet notre côté vers notre bord
+    Etape::get(6)->setNumeroEtapeFinAction(7); //Clapet côté adverse
 
     //Deposer Pieds
     new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
