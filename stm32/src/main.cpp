@@ -210,8 +210,8 @@ int main()
         //BrasLateraux::initBrasLateraux();
         //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateraux::getLeft()->collapse();
-        BrasLateraux::getRight()->collapse();
+//        BrasLateraux::getLeft()->collapse();
+//        BrasLateraux::getRight()->collapse();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 
@@ -219,8 +219,8 @@ int main()
     //Debug::testBrasLateraux();
 #endif
 
-    /*tirette.attendreRemise();
-    tirette.attendreEnlevee();*/
+    tirette.attendreRemise();
+    tirette.attendreEnlevee();
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();

@@ -28,10 +28,10 @@
 RamasserPied::RamasserPied(){}
 
 RamasserPied::RamasserPied(Position goalposition, bool recule): MediumLevelAction(goalposition), recule(recule) {
-#ifndef ROBOTHW
+
+    #ifndef ROBOTHW
     qDebug() << "Pied" << this->goBack;
-#endif
-}
+    #endif
 
 RamasserPied::~RamasserPied(){}
 
@@ -46,7 +46,7 @@ int RamasserPied::update()
     if (status == 0)
     {
     #ifndef ROBOTHW
-            qDebug() << "action pied";
+        qDebug() << "action pied";
         qDebug() << this->goBack;
     #endif
         depart = Odometrie::odometrie->getPos().getPosition();
@@ -134,9 +134,9 @@ int RamasserPied::update()
     {
         if(Ascenseur::getSingleton()->estEnHaut())
         {
-#ifndef ROBOTHW
+            #ifndef ROBOTHW
             qDebug() << this->goBack;
-#endif
+            #endif
             if(this->recule)
                 StrategieV2::setCurrentGoal(this->depart, this->recule);
             else
@@ -152,9 +152,9 @@ int RamasserPied::update()
     {
         if ((!this->recule && Command::isNear(goalPosition) || (this->recule && Command::isNear(depart))))
         {
-#ifndef ROBOTHW
+	#ifndef ROBOTHW
         qDebug() << "Etape pied finie";
-#endif
+	#endif
             status = -1;
         }
     }
