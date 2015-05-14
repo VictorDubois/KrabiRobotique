@@ -9,12 +9,13 @@ class DeposerPied : public MediumLevelAction
 {
 public:
     DeposerPied();
-    DeposerPied(Position position);
+    DeposerPied(Position position, bool isYellow);
     ~DeposerPied();
+    Etape::EtapeType getType();
     int update();
 
-protected :
-    Position position;
+private :
+    Position positionRetournement;
 };
 
 

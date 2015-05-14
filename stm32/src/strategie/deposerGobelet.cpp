@@ -16,7 +16,7 @@ DeposerGobelet::~DeposerGobelet(){}
 
 Etape::EtapeType DeposerGobelet::getType()
 {
-    return Etape::DEPOSE_GOBELET;
+    return Etape::DEPOSER_GOBELET;
 }
 
 int DeposerGobelet::update()
