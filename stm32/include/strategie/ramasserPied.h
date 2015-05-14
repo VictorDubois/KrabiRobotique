@@ -9,14 +9,14 @@ class RamasserPied : public MediumLevelAction
 {
     public :
         RamasserPied();
-        RamasserPied(Position position);
+        RamasserPied(Position goalPosition, bool recule = false);
         ~RamasserPied();
         int update();
         Etape::EtapeType getType();
 
     protected :
-        Position position;
-        bool coin;
+        Position depart;
+        bool recule;
 };
 
 #endif // PIED_H

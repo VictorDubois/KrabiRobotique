@@ -1,10 +1,12 @@
 #include "mediumLevelAction.h"
 #include "strategieV2.h"
 
-MediumLevelAction::MediumLevelAction(Position goalPos) 
+#include <QDebug>
+
+MediumLevelAction::MediumLevelAction(Position goalPos, bool goBack) : goalPosition(goalPos), status(0), goBack(goBack)
 {
-    goalPosition = goalPos; //(StrategieV2::getIsBlue() ? goalPos : Position(3000,0)-goalPos);
-    status = 0;
+    //(StrategieV2::getIsBlue() ? goalPos : Position(3000,0)-goalPos);
+    qDebug() << this->goBack;
 }
 
 MediumLevelAction::~MediumLevelAction()

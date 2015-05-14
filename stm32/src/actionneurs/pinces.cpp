@@ -44,7 +44,7 @@ void Pinces::saisirPied()
     ServosNumeriques::moveTo(POS_PINCES_SAISIR, INDEX_MOTEUR_PINCE_DROITE);
     ServosNumeriques::moveTo(POS_PINCES_SAISIR, INDEX_MOTEUR_PINCE_GAUCHE);
 #else
-    qDebug() << "On ferme les pinces";
+    qDebug() << "On attrape un pied";
 #endif
 }
 
