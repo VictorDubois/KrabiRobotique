@@ -199,7 +199,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::DEPART :
             return 0;
         case Etape::CLAP :
-            return 1;
+            return 0;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
                 return 0;
@@ -208,7 +208,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::AMPOULE :
             return 0;
         case Etape::RAMASSER_PIED :
-            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
+            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
                 return 0;
             else
                 return 100;
@@ -229,7 +229,7 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::SPOT_SOLITAIRE_COIN :
             return 0;
         case Etape::COIN_GAUCHE_BAS :
-            return 100000;
+            return 0;
         case Etape::POINT_PASSAGE :
             return 0;
         default :
