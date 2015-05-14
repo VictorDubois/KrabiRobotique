@@ -411,7 +411,13 @@ void StrategieV2::update()
         {
             if (sharps[i]->getValue().b)
             {
-                allume = true;
+                if(Odometrie::getPos->position->getX()<1500 && Odometrie::getPos->position->getY()>1600)//Si on est en train de faire les claps
+                {
+                    allume = false;//true;//Sharps desactivés
+                }
+                else{
+                    allume = true;
+                }
             }
         }
     }
