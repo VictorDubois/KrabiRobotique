@@ -222,6 +222,14 @@ int main()
         }
     }*/
 
+    allumerLED();
+    eteindreLED();
+    allumerLED();
+    eteindreLED();
+    allumerLED();
+    eteindreLED();
+
+
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif
@@ -253,7 +261,7 @@ int main()
 
 
     #if defined(STM32F10X_CL)
-        Remote::getSingleton();
+//        Remote::getSingleton();
     #endif
 
 
