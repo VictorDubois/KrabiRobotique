@@ -66,10 +66,22 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
 	setPalette(p);
 
     // ####### création des robots ######
+    int x_pos_Krabi = 300;//Proche
+    int x_pos_Advsersaire = 2700;//Loin
+    int angle_Krabi = 0;
+    int angle_Adversaire = M_PI;
+
+    if(isBlue)
+    {
+        x_pos_Krabi = 3000-x_pos_Krabi;
+        x_pos_Advsersaire = 3000-x_pos_Advsersaire;
+        angle_Krabi+=M_PI;
+        angle_Adversaire+=M_PI;
+    }
     //Robot adversaire
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(2700,1000, isBlue), 2*M_PI/2), true, !isBlue));
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(x_pos_Advsersaire,1000, isBlue), angle_Adversaire), true, !isBlue));
     //Robot à nous
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(300,1000, isBlue), 0), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    robots.push_back(new Robot(world,PositionPlusAngle(Position(x_pos_Krabi,1000, isBlue), angle_Krabi), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
     //195,1760
 
     createObjects();
