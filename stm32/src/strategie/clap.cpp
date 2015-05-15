@@ -55,9 +55,7 @@ int Clap::update()
         if (Command::isLookingAt(positionArrivee))
         {
             //ouvrir le bras
-#ifndef ROBOTHW
-            qDebug() << "On ouvre le bras";
-#endif
+
             if ((goalPosition.getX()-positionArrivee.getX())>0)
                 BrasLateraux::getRight()->expand();
             else
@@ -82,9 +80,7 @@ int Clap::update()
         if (Command::isNear(positionArrivee))
         {
             //fermer bras
-#ifndef ROBOTHW
-            qDebug() << "On ferme le bras";
-#endif
+
             if ((goalPosition.getX()-positionArrivee.getX())>0)
                 BrasLateraux::getLeft()->collapse();
             else

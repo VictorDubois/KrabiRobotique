@@ -36,6 +36,7 @@
 #include "microSwitch.h"
 #include "MPU9150.h"
 #include "accelerometer.h"
+#include "brasTapis.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -142,6 +143,7 @@ int main()
     ServosNumeriques::initUART(1000000);
     ServosNumeriques::sendMode();
 
+
     /*while(true)
     {
         Pinces::getSingleton()->fermerPinces();
@@ -226,8 +228,6 @@ int main()
         Tirette tirette(GPIOE, GPIO_Pin_5);
     #endif
 
-
-
 #ifdef ALLOW_DEBUG
     //Debug::testTirette(&tirette);
 #endif
@@ -237,8 +237,8 @@ int main()
         //BrasLateraux::initBrasLateraux();
         //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateraux::getLeft()->collapse();
-        BrasLateraux::getRight()->collapse();
+//        BrasLateraux::getLeft()->collapse();
+//        BrasLateraux::getRight()->collapse();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 
@@ -246,8 +246,32 @@ int main()
     //Debug::testBrasLateraux();
 #endif
 
-    /*tirette.attendreRemise();
+
+
+    tirette.attendreRemise();
+    tirette.attendreEnlevee();
+
+  /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
+    ascenseur->Ascenseur::leverAscenseur();
+    ascenseur->Ascenseur::ouvrirAscenseur();
+    ascenseur->Ascenseur::fermerAscenseur();*/
+
+    /*BrasTapis* bras = BrasTapis::getSingleton(BrasTapis::GAUCHE);
+    bras->ouvrirBras();
+        BrasTapis* bras2 = BrasTapis::getSingleton(BrasTapis::DROIT);
+    bras2->ouvrirBras();
+    tirette.attendreRemise();
     tirette.attendreEnlevee();*/
+
+
+//    while(1){
+//        BrasLateraux::getRight()->expand();
+//        BrasLateraux::getLeft()->expand();
+//
+//        BrasLateraux::getRight()->collapse();
+//        BrasLateraux::getLeft()->collapse();
+//    }
+
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();

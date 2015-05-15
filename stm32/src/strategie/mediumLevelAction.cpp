@@ -8,9 +8,9 @@
 MediumLevelAction::MediumLevelAction(Position goalPos, bool goBack) : goalPosition(goalPos), status(0), goBack(goBack)
 {
     //(StrategieV2::getIsBlue() ? goalPos : Position(3000,0)-goalPos);
-#ifndef ROBOTHW
+    #ifndef ROBOTHW
     qDebug() << this->goBack;
-#endif
+    #endif
 }
 
 MediumLevelAction::~MediumLevelAction()

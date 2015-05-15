@@ -38,6 +38,12 @@ int StrategieV3::update()
 
     tableauEtapesTotal[this->etapeEnCours]->reset();
 
+//    if (this->etapeEnCours > 0)
+//    {
+//        StrategieV2::stop();
+//        return 0;
+//    }
+
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
     if(this->avoiding)
     {

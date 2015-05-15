@@ -38,7 +38,7 @@ class BrasTapis
         */
         BrasTapis(COTE cote);
 
-        static BrasTapis *singletonGauche;
+      //  static BrasTapis *singletonGauche;
         static BrasTapis *singletonDroit;
 
         int positionBrasOuvert;
@@ -70,7 +70,7 @@ class BrasTapis
         */
         BrasTapis();
 
-        static BrasTapis *singletonGauche;
+      //  static BrasTapis *singletonGauche;
         static BrasTapis *singletonDroit;
 
         int positionBrasOuvert;

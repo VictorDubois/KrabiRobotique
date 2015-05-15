@@ -411,7 +411,13 @@ void StrategieV2::update()
         {
             if (sharps[i]->getValue().b)
             {
-                allume = true;
+                if(Odometrie::odometrie->getPos().getPosition().getX()<1500 && Odometrie::odometrie->getPos().getPosition().getY()>1600)//Si on est en train de faire les claps
+                {
+                    allume = false;//true;//Sharps desactivés
+                }
+                else{
+                    allume = true;
+                }
             }
         }
     }
@@ -481,7 +487,7 @@ void StrategieV2::update()
                 //Pour changer de trajectoire, décommenter les lignes suivantes
                 currentAction->collisionAvoided();
                 actionsToDo[actionsCount]->collisionAvoided();
-                //currentCommand->collisionAvoided();
+//                currentCommand->collisionAvoided();
                 currentAction->update();
                 Position pos = Odometrie::odometrie->getPos().getPosition();
                 addTemporaryAction(new ActionGoTo(pos, true));
