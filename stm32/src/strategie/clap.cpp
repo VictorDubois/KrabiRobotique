@@ -56,10 +56,10 @@ int Clap::update()
         {
             //ouvrir le bras
 
-            if ((goalPosition.getX()-positionArrivee.getX())>0)
+            //if ((goalPosition.getX()-positionArrivee.getX())>0)
                 BrasLateraux::getRight()->expand();
-            else
-                BrasLateraux::getLeft()->expand();
+            //else
+                //BrasLateraux::getLeft()->expand();
             status++;
         }
     }
@@ -81,10 +81,10 @@ int Clap::update()
         {
             //fermer bras
 
-            if ((goalPosition.getX()-positionArrivee.getX())>0)
-                BrasLateraux::getLeft()->collapse();
-            else
+            //if ((goalPosition.getX()-positionArrivee.getX())>0)
                 BrasLateraux::getRight()->collapse();
+            //else
+                //BrasLateraux::getLeft()->collapse();
             status++;
         }
     }

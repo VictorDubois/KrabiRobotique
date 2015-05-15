@@ -23,7 +23,7 @@ Sensors::Sensors()
     #if defined(STM32F10X_MD) || defined(STM32F40_41xxx) // KJ - H405
         uint8_t channels[NB_CAPTEUR_A_ADC] = {9,7,11,6,8,10,13,15}; // D2,G2,AG(AD?),F2,D1,G1,AD(AG?),F1 //{10,11,12,13,14,15}; //
     #else // K - H107
-        uint8_t channels[NB_CAPTEUR_A_ADC] = {9,14,12,15,5,4,11,13,8,10};
+        uint8_t channels[NB_CAPTEUR_A_ADC] = {9,14,13,11,5,4,12,15,8,10};
     #endif
 
 
@@ -66,12 +66,12 @@ Sensors::Sensors()
     #endif
     #ifdef STM32F10X_CL // Pin pour le stm32 h107
         sharps[0] = new SharpSensor(SharpSensor::BACK_RIGHT_SIDE, 9, data);      // F1 - 9
-        sharps[1] = new SharpSensor(SharpSensor::BACK_RIGHT, 14, data);    // F2 - 14
+        sharps[1] = new SharpSensor(SharpSensor::BACK_RIGHT, 12, data);    // F2 - 14
         sharps[2] = new SharpSensor(SharpSensor::BACK_LEFT, 13, data);     // G2 - 13
         sharps[3] = new SharpSensor(SharpSensor::BACK_LEFT_SIDE, 11, data);      // G1 - 11
         sharps[4] = new SharpSensor(SharpSensor::FRONT_LEFT_SIDE, 5, data);      // AD - 5
         sharps[5] = new SharpSensor(SharpSensor::FRONT_RIGHT, 4, data);       // AG - 4
-        sharps[6] = new SharpSensor(SharpSensor::FRONT_LEFT, 12, data);    // D1 - 15
+        sharps[6] = new SharpSensor(SharpSensor::FRONT_LEFT, 14, data);    // D1 - 15
         sharps[7] = new SharpSensor(SharpSensor::FRONT_RIGHT_SIDE, 15, data);     // D2 - 12
         sharps[8] = new SharpSensor(SharpSensor::NONE, 8, data);            // rien
         sharps[9] = new SharpSensor(SharpSensor::NONE, 10, data);           // rien

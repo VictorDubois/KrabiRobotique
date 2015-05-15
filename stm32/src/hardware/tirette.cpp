@@ -34,9 +34,9 @@ void Tirette::attendreEnlevee() const
     while (buffer)
     {
 #ifndef NO_REMOTE
-        Remote::getSingleton()->update(true);
+        /*Remote::getSingleton()->update(true);
         if (Remote::getSingleton()->isInRemoteMod())
-            return;
+            return;*/
 #endif
 
         buffer <<= 1;
@@ -54,9 +54,9 @@ void Tirette::attendreRemise() const
     while (buffer)
     {
 #ifndef NO_REMOTE
-        Remote::getSingleton()->update(true);
+        /*Remote::getSingleton()->update(true);
         if (Remote::getSingleton()->isInRemoteMod())
-            return;
+            return;*/
 #endif
 
         buffer <<= 1;

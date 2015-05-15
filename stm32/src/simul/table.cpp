@@ -44,7 +44,7 @@ b2AABB Table::getWorldAABB()
 }
 
 Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
-    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false), mTimerAdjust(0),
+    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false), mTimerAdjust(0), previousPosition(false),
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
@@ -461,11 +461,13 @@ void Table::watch(KrabiPacket &packet)
         float y = packet.get<float>();
         float ang = packet.get<float>();
 
-        PositionPlusAngle previousPos = getMainRobot()->getPos();
         PositionPlusAngle newPos = PositionPlusAngle(Position(x, y), ang);
 
         getMainRobot()->setPos(newPos);
-        DebugWindow::getInstance()->getOdometrieWindow()->addRelative(newPos.position - previousPos.position, newPos.angle - previousPos.angle);
+        if (previousPosition)
+            DebugWindow::getInstance()->getOdometrieWindow()->addRelative(newPos.position - previousPos.position, newPos.angle - previousPos.angle);
+        previousPos = newPos;
+        previousPosition = true;
         break;
     }
     case KrabiPacket::W_SPEED:

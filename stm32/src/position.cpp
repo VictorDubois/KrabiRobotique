@@ -28,6 +28,11 @@ Distance Position::getY() const
     return y;
 }
 
+Position Position::colorPosition(Distance x, Distance y, bool isYellow)
+{
+    return Position(!isYellow ? x : 3000 - x, y, isYellow);
+}
+
 void Position::setX(Distance X)
 {
     x = X;

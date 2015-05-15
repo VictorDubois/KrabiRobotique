@@ -4,6 +4,8 @@
 #include "angle.h"
 #include "distance.h"
 
+#define COLOR_POSITION Position::colorPosition
+
 /// @brief Classe permettant de stocker des positions en coordonnées cartésiennes
 class Position
 {
@@ -23,6 +25,8 @@ class Position
 
         /// @brief Surchage d'opérateur pour multiplier par un flottant
         Position operator*(float val) const;
+
+        static Position colorPosition(Distance x, Distance y, bool isYellow = false);
 
         /// @brief Surcharge d'opérateur pour assigner une position.
         void operator=(Position position);

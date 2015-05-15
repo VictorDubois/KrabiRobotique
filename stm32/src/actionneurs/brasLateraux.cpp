@@ -42,14 +42,14 @@ BrasLateral* BrasLateraux::right = 0;
             Timer* timer = new Timer(TIM1, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
             TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
-            right = new BrasLateral(timer, 2, 0.01f, 0.11f, 96.f, 20.f, 84.f);
+            right = new BrasLateral(timer, 2, 0.01f, 0.11f, 96.f, 0.f, 84.f);
             //left = new BrasLateral(timer, 3, 0.01f, 0.11f, 81.f, 181.f, 1.f);
 
 
         #endif
 
 //        left->collapse();
-        right->collapse();
+        right->expand();
     }
 #else
 

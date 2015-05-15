@@ -137,7 +137,7 @@ void Odometrie::setPos(const PositionPlusAngle& p)
     positionPlusAngle = p;
 }
 
-float Odometrie::getInterAxisDistance()
+/*float Odometrie::getInterAxisDistance()
 {
     return entraxe;
 }
@@ -145,12 +145,15 @@ float Odometrie::getInterAxisDistance()
 float Odometrie::getWheelSize()
 {
     return rayonRoueCodeuse;
-}
+}*/
 
 void Odometrie::setSettings(float interAxisDistance, float wheelSize)
 {
     entraxe = interAxisDistance;
     rayonRoueCodeuse = wheelSize;
+
+    coeffDistance=(M_PI*rayonRoueCodeuse)/nbTicksParTour;
+    coeffAngle=-2*coeffDistance/entraxe;
 }
 
 PositionPlusAngle Odometrie::getPos() const
@@ -201,6 +204,16 @@ void Odometrie::setAngle(Angle a)
     setPos(posPA);
 
     odometrie->ang = a;
+}
+
+float Odometrie::getInterAxisDistance()
+{
+    return entraxe;
+}
+
+float Odometrie::getWheelSize()
+{
+    return rayonRoueCodeuse;
 }
 
 #else
