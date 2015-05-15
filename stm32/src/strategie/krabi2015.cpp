@@ -68,9 +68,9 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     // Claps
     new Etape(2, new Clap(Position(836, 1780, isYellow), Position(933, 1780, isYellow)) );
-    new Etape(4, new Clap(Position(236, 1780, isYellow), Position(400, 1780, isYellow)) );
+    new Etape(4, new Clap(Position(290, 1780, isYellow), Position(400, 1780, isYellow)) );
     new Etape(6, new Clap(Position(2500, 1780, isYellow), Position(2300, 1780, isYellow)) );
-    new Etape(42, Position(933, 1780, isYellow) );
+    new Etape(42, Position(896, 1780, isYellow) );
     new Etape(43,Position(400, 1780, isYellow) );
     new Etape(44, Position(2300, 1780, isYellow) );
 
@@ -143,7 +143,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(21)->addVoisins(3, 7, 17, 27);
 
-    Etape::get(22)->addVoisins(24, 27);
+    Etape::get(22)->addVoisins(24, 27, 36);
 
     Etape::get(23)->addVoisins(20, 22, 24);
     Etape::get(23)->addVoisins(3);
