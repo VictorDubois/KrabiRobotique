@@ -9,12 +9,12 @@ Position::Position()
 {
 }
 
-Position::Position(Distance X, Distance Y, bool isBlue)
+Position::Position(Distance X, Distance Y, bool isYellow)
     : x(X), y(Y)
 {
-    /*if (!isBlue)
+    /*if (!isYellow)
     {
-        x = 3000-x;
+        x = 3000 - x;
     }*/
 }
 

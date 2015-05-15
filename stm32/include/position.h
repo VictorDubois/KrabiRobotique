@@ -13,7 +13,7 @@ class Position
         Position();
 
         /// @brief Constructeur avec des coordonnées prédéfinies.
-        Position(Distance X, Distance Y, bool isBlue = true);
+        Position(Distance X, Distance Y, bool isYellow = false);
 
         /// @brief Surchage d'opérateur pour ajouter des coordonnées
         Position operator+(const Position &position) const;

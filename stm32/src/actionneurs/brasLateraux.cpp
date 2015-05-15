@@ -32,8 +32,6 @@ BrasLateral* BrasLateraux::right = 0;
 
     void BrasLateraux::initBrasLateraux()
     {
-        if (right != 0 || left != 0)
-            return;
         #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // Krabi Jr - STM32 H405 / STM32 H103
             Timer* timer = new Timer(TIM3, PERIOD_TIMER_SERVO, PRESCALER_TIMER_SERVO, CLOCK_TIMER_SERVO);
             TIM_CtrlPWMOutputs(TIM3, ENABLE);
@@ -45,7 +43,7 @@ BrasLateral* BrasLateraux::right = 0;
             TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
             right = new BrasLateral(timer, 2, 0.01f, 0.11f, 96.f, 20.f, 84.f);
-//            left = new BrasLateral(timer, 3, 0.01f, 0.11f, 81.f, 180.f, 1.f);
+            //left = new BrasLateral(timer, 3, 0.01f, 0.11f, 81.f, 181.f, 1.f);
 
 
         #endif
@@ -77,7 +75,7 @@ BrasLateral* BrasLateraux::right = 0;
 
 BrasLateral* BrasLateraux::getLeft()
 {
-    if (left == 0)
+    if (right == 0 && left == 0)
         initBrasLateraux();
 
     return left;
@@ -85,7 +83,7 @@ BrasLateral* BrasLateraux::getLeft()
 
 BrasLateral* BrasLateraux::getRight()
 {
-    if (right == 0)
+    if (right == 0 && left == 0)
         initBrasLateraux();
 
     return right;
