@@ -29,11 +29,11 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(23, COLOR_POSITION(1593, 1150, isYellow));
     new Etape(24, COLOR_POSITION(1896, 1156, isYellow));
     new Etape(27, COLOR_POSITION(2086, 1156, isYellow));
-    new Etape(28, COLOR_POSITION(1706, 1586, isYellow));
+    new Etape(28, COLOR_POSITION(1706, 1563, isYellow));
     new Etape(29, COLOR_POSITION(1976, 1550, isYellow));
     new Etape(31, COLOR_POSITION(596, 1413, isYellow));
     new Etape(34, COLOR_POSITION(756, 1606, isYellow));
-    new Etape(35, COLOR_POSITION(1116, 1600, isYellow));
+    new Etape(35, COLOR_POSITION(1116, 1563, isYellow));
     new Etape(37, COLOR_POSITION(2376, 1413, isYellow));
     new Etape(38, COLOR_POSITION(2216, 1636, isYellow));
     new Etape(39, COLOR_POSITION(2460, 1610, isYellow));
@@ -45,6 +45,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     new Etape(8, COLOR_POSITION(620, 700, isYellow));
     new Etape(12, COLOR_POSITION(747, 650, isYellow));
+
+    new Etape(49, COLOR_POSITION(836, 1563, isYellow));
 
     // Manipulation dans les coins
 //    new Etape(14, new ManipulationCoinGaucheHaut(COLOR_POSITION(695, 445, isYellow), isYellow) );
@@ -69,7 +71,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     // Claps
     new Etape(2, new Clap(COLOR_POSITION(836, 1770, isYellow), COLOR_POSITION(933, 1770, isYellow)) );
     new Etape(4, new Clap(COLOR_POSITION(286, 1780, isYellow), COLOR_POSITION(400, 1780, isYellow)) );
-    new Etape(6, new Clap(COLOR_POSITION(2500, 1770, isYellow), COLOR_POSITION(2300, 1770, isYellow)) );
+    new Etape(6, new Clap(COLOR_POSITION(2460, 1780, isYellow), COLOR_POSITION(2300, 1770, isYellow)) );
     new Etape(42, COLOR_POSITION(900, 1776, isYellow) );
     new Etape(43, COLOR_POSITION(400, 1780, isYellow) );
     new Etape(44, COLOR_POSITION(2300, 1780, isYellow) );
@@ -77,7 +79,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     // Ramasser Gobelets
     new Etape(9, new Gobelet(COLOR_POSITION(910, 805, isYellow)) );
     new Etape(10, new Gobelet(COLOR_POSITION(1500, 1650, isYellow)) );
-    //new Etape(11, new Gobelet(COLOR_POSITION(2090, 800, isYellow)) );
+    new Etape(11, new Gobelet(COLOR_POSITION(2090, 800, isYellow)) );
 
     // pousser pied
     //new Etape(11, new PousserPied(COLOR_POSITION(760, 1100, isYellow)) );
@@ -121,8 +123,6 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     // pousser pied
 //    Etape::get(2)->addVoisin(11);
 
-    Etape::get(11)->addVoisin(11);
-
 
     // Voisins
     Etape::get(0)->addVoisin(1, false);
@@ -130,10 +130,13 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(1)->addVoisins(3, 8, 31);
     Etape::get(1)->addVoisins(12, 21, 45);
 
+    Etape::get(3)->addVoisins(31, 36);
+
 //    Etape::get(4)->addVoisins(30, 33, 45, 18);
     Etape::get(4)->addVoisins(45);
 
     Etape::get(5)->addVoisins(23);
+    //Etape::get(5)->addVoisins(35);
 
     Etape::get(7)->addVoisins(5, 22);
     Etape::get(7)->addVoisins(23, 3);
@@ -155,7 +158,9 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
 
 
-    Etape::get(21)->addVoisins(3, 7, 17, 27);
+    Etape::get(21)->addVoisins(3, 27);
+    Etape::get(21)->addVoisins(7);
+//    Etape::get(21)->addVoisins(17);
 
     Etape::get(22)->addVoisins(24, 27, 36);
 
@@ -169,18 +174,20 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(30)->addVoisins(33);
 
-    Etape::get(31)->addVoisins(30, 33);
+    Etape::get(31)->addVoisins(30, 33, 17);
 
 //    Etape::get(34)->addVoisins(19, 35, 43, 45);
     //Etape::get(34)->addVoisins(2);
     //Etape::get(34)->addVoisins(30, 31, 18, 1);
 
 //    Etape::get(36)->addVoisins(36);
-    Etape::get(35)->addVoisins(28);
+    Etape::get(35)->addVoisins(28, 2);
+
+    Etape::get(36)->addVoisins(5);
 
     Etape::get(37)->addVoisins(25, 38);
 
-    Etape::get(38)->addVoisins(6);
+    Etape::get(38)->addVoisins(6, 28);
 
     Etape::get(39)->addVoisins(25, 37, 38, 6);
 
@@ -201,7 +208,7 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(2)->addVoisins(42);
     Etape::get(4)->addVoisins(43);
     Etape::get(6)->addVoisins(44);
-    Etape::get(42)->addVoisins(45, 35);
+//    Etape::get(42)->addVoisins(45);
     Etape::get(43)->addVoisins(30);
 
     Etape::get(43)->addVoisins(2);
@@ -210,6 +217,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(45)->addVoisins(31);
     Etape::get(45)->addVoisins(35);
+
+    Etape::get(49)->addVoisins(2, 35);
 
     //aretes pour coin gauche haut
     Etape::get(8)->addVoisins(40);
@@ -241,6 +250,10 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
         case Etape::CLAP :
             return 100;
+//            return 1000000;
+        case Etape::TAPIS :
+            return 900;//STRATEGIE
+//            return 0;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
                 return 0;
@@ -269,9 +282,6 @@ int Krabi2015::getScoreEtape(int i){
 //                return 0;
             else
                 return 0;
-        case Etape::TAPIS :
-//            return 1;//STRATEGIE
-            return 10000;
         case Etape::DEPOSER_GOBELET :
             /*if (!Pinces::getSingleton()->getEstDispo())
                 return 40;
