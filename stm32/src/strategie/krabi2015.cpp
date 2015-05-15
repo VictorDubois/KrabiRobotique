@@ -20,46 +20,46 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     // Points de passage
     // numéro étape, position
 
-    new Etape(1, Position(700, 1000, isYellow));
-    new Etape(3, Position(880, 1140, isYellow));
-    new Etape(5, Position(1120, 1203, isYellow));
-    new Etape(7, Position(1303, 883, isYellow));
-    new Etape(21, Position(1493, 716, isYellow));
-    new Etape(22, Position(1763, 876, isYellow));
-    new Etape(23, Position(1593, 1150, isYellow));
-    new Etape(24, Position(1896, 1156, isYellow));
-    new Etape(27, Position(2086, 1156, isYellow));
-    new Etape(28, Position(1706, 1586, isYellow));
-    new Etape(29, Position(1976, 1550, isYellow));
-    new Etape(31, Position(596, 1413, isYellow));
-    new Etape(34, Position(756, 1606, isYellow));
-    new Etape(35, Position(1116, 1600, isYellow));
-    new Etape(37, Position(2376, 1413, isYellow));
-    new Etape(38, Position(2216, 1636, isYellow));
-    new Etape(39, Position(2460, 1610, isYellow));
-    new Etape(33, Position(260, 1450, isYellow));
+    new Etape(1, COLOR_POSITION(700, 1000, isYellow));
+    new Etape(3, COLOR_POSITION(880, 1140, isYellow));
+    new Etape(5, COLOR_POSITION(1120, 1203, isYellow));
+    new Etape(7, COLOR_POSITION(1303, 883, isYellow));
+    new Etape(21, COLOR_POSITION(1493, 716, isYellow));
+    new Etape(22, COLOR_POSITION(1763, 876, isYellow));
+    new Etape(23, COLOR_POSITION(1593, 1150, isYellow));
+    new Etape(24, COLOR_POSITION(1896, 1156, isYellow));
+    new Etape(27, COLOR_POSITION(2086, 1156, isYellow));
+    new Etape(28, COLOR_POSITION(1706, 1586, isYellow));
+    new Etape(29, COLOR_POSITION(1976, 1550, isYellow));
+    new Etape(31, COLOR_POSITION(596, 1413, isYellow));
+    new Etape(34, COLOR_POSITION(756, 1606, isYellow));
+    new Etape(35, COLOR_POSITION(1116, 1600, isYellow));
+    new Etape(37, COLOR_POSITION(2376, 1413, isYellow));
+    new Etape(38, COLOR_POSITION(2216, 1636, isYellow));
+    new Etape(39, COLOR_POSITION(2460, 1610, isYellow));
+    new Etape(33, COLOR_POSITION(260, 1450, isYellow));
 
-    new Etape(21, Position(1046, 1040, isYellow));
+    new Etape(21, COLOR_POSITION(1046, 1040, isYellow));
 
-    new Etape(34, Position(773, 340, isYellow));
+    new Etape(34, COLOR_POSITION(773, 340, isYellow));
 
-    new Etape(8, Position(620, 700, isYellow));
-    new Etape(12, Position(747, 650, isYellow));
+    new Etape(8, COLOR_POSITION(620, 700, isYellow));
+    new Etape(12, COLOR_POSITION(747, 650, isYellow));
 
     // Manipulation dans les coins
-//    new Etape(14, new ManipulationCoinGaucheHaut(Position(695, 445, isYellow), isYellow) );
-//    new Etape(40, new ManipulationCoinGaucheHautPiedSolitaire(Position(315, 330, isYellow), isYellow) );
-//    new Etape(30, new ManipulationCoinGaucheBas( Position(260, 1570, isYellow), isYellow) );
-    new Etape(14, Position(695, 445, isYellow));
-    new Etape(40, Position(315, 330, isYellow));
-    new Etape(30, Position(260, 1570, isYellow));
+//    new Etape(14, new ManipulationCoinGaucheHaut(COLOR_POSITION(695, 445, isYellow), isYellow) );
+//    new Etape(40, new ManipulationCoinGaucheHautPiedSolitaire(COLOR_POSITION(315, 330, isYellow), isYellow) );
+//    new Etape(30, new ManipulationCoinGaucheBas( COLOR_POSITION(260, 1570, isYellow), isYellow) );
+    new Etape(14, COLOR_POSITION(695, 445, isYellow));
+    new Etape(40, COLOR_POSITION(315, 330, isYellow));
+    new Etape(30, COLOR_POSITION(260, 1570, isYellow));
 
     //Si gobelets:
-    new Etape(15, Position(2293, 540, isYellow));
-    new Etape(16, Position(2500, 273, isYellow));
+    new Etape(15, COLOR_POSITION(2293, 540, isYellow));
+    new Etape(16, COLOR_POSITION(2500, 273, isYellow));
 
     //Pour pousser les objets (bourrin) du coin bas gauche avant de faire les claps
-    new Etape(45, Position(550, 1670, isYellow));
+    new Etape(45, COLOR_POSITION(600, 1670, isYellow));
     //C'est provisoire: assurer les claps et bannir ces objets
     //En plus de ça on commente les voisins de l'étape 4
 
@@ -67,37 +67,40 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     // numéro étape, mediumLevelAction
 
     // Claps
-    new Etape(2, new Clap(Position(836, 1780, isYellow), Position(933, 1780, isYellow)) );
-    new Etape(4, new Clap(Position(236, 1780, isYellow), Position(400, 1780, isYellow)) );
-    new Etape(6, new Clap(Position(2500, 1780, isYellow), Position(2300, 1780, isYellow)) );
-    new Etape(42, Position(933, 1780, isYellow) );
-    new Etape(43,Position(400, 1780, isYellow) );
-    new Etape(44, Position(2300, 1780, isYellow) );
+    new Etape(2, new Clap(COLOR_POSITION(836, 1770, isYellow), COLOR_POSITION(933, 1770, isYellow)) );
+    new Etape(4, new Clap(COLOR_POSITION(286, 1780, isYellow), COLOR_POSITION(400, 1780, isYellow)) );
+    new Etape(6, new Clap(COLOR_POSITION(2500, 1770, isYellow), COLOR_POSITION(2300, 1770, isYellow)) );
+    new Etape(42, COLOR_POSITION(933, 1780, isYellow) );
+    new Etape(43,COLOR_POSITION(400, 1780, isYellow) );
+    new Etape(44, COLOR_POSITION(2300, 1780, isYellow) );
 
     // Ramasser Gobelets
-    new Etape(9, new Gobelet(Position(910, 805, isYellow)) );
-    new Etape(10, new Gobelet(Position(1500, 1650, isYellow)) );
-    new Etape(11, new Gobelet(Position(2090, 800, isYellow)) );
+    new Etape(9, new Gobelet(COLOR_POSITION(910, 805, isYellow)) );
+    new Etape(10, new Gobelet(COLOR_POSITION(1500, 1650, isYellow)) );
+    //new Etape(11, new Gobelet(COLOR_POSITION(2090, 800, isYellow)) );
+
+    // pousser pied
+    //new Etape(11, new PousserPied(COLOR_POSITION(760, 1100, isYellow)) );
 
     // Déposer Gobelet
-    new Etape(25, new DeposerGobelet(Position(2696, 1496, isYellow)) );
-    new Etape(26, new DeposerGobelet(Position(2786, 576, isYellow)) );
-    new Etape(32, new DeposerGobelet(Position(490, 1000, isYellow)) );
-    new Etape(13, new DeposerGobelet(Position(283, 496, isYellow)) );
+    new Etape(25, new DeposerGobelet(COLOR_POSITION(2696, 1496, isYellow)) );
+    new Etape(26, new DeposerGobelet(COLOR_POSITION(2786, 576, isYellow)) );
+    new Etape(32, new DeposerGobelet(COLOR_POSITION(490, 1000, isYellow)) );
+    new Etape(13, new DeposerGobelet(COLOR_POSITION(283, 496, isYellow)) );
 
 
     // Tapis
-    new Etape(17, new Tapis(Position(1070, 850, isYellow)) );
-    new Etape(36, new Tapis(Position(1420, 850, isYellow)) );
+    new Etape(17, new Tapis(COLOR_POSITION(1070, 850, isYellow)) );
+    new Etape(36, new Tapis(COLOR_POSITION(1420, 850, isYellow)) );
 
     // Ramasser Pied
-    new Etape(18, new RamasserPied(Position(870, 1355, isYellow)) );
-    new Etape(19, new RamasserPied(Position(1100, 1770, isYellow), true) );
-    new Etape(20, new RamasserPied(Position(1300, 1400, isYellow)) );
+    new Etape(18, new RamasserPied(COLOR_POSITION(870, 1355, isYellow)) );
+    new Etape(19, new RamasserPied(COLOR_POSITION(1100, 1770, isYellow), true) );
+    new Etape(20, new RamasserPied(COLOR_POSITION(1300, 1400, isYellow)) );
     // Ramasser Pied, version sans arriver jusqu'au point du graphe
-    new Etape(46, new RamasserPied(Position(856, 210, isYellow)) );
-    new Etape(47, new RamasserPied(Position(850, 106, isYellow)) );
-    new Etape(48, new RamasserPied(Position(90, 203, isYellow)) );
+    new Etape(46, new RamasserPied(COLOR_POSITION(856, 210, isYellow)) );
+    new Etape(47, new RamasserPied(COLOR_POSITION(850, 106, isYellow)) );
+    new Etape(48, new RamasserPied(COLOR_POSITION(90, 203, isYellow)) );
 
 
     // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
@@ -112,10 +115,11 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(48)->setNumeroEtapeFinAction(-1);
 
     //Deposer Pieds
-    new Etape(41, new DeposerPied(Position(500, 1000, isYellow), isYellow) );
+    new Etape(41, new DeposerPied(COLOR_POSITION(500, 1000, isYellow), isYellow) );
 
 
-
+    // pousser pied
+    Etape::get(2)->addVoisin(11);
 
 
     // Voisins
@@ -196,7 +200,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(44)->addVoisins(37);
     Etape::get(44)->addVoisins(38);
 
-    Etape::get(45)->addVoisins(1, 31);
+    // HERE
+    Etape::get(45)->addVoisins(2, 31);
     Etape::get(45)->addVoisins(18, 35);
 
     Etape::get(46)->addVoisins(34);

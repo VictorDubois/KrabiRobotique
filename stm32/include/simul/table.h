@@ -45,6 +45,9 @@ private:
 
     QTime mTime;
 
+    PositionPlusAngle previousPos;
+    bool previousPosition;
+
     static Table* _instance;
 
 public slots:

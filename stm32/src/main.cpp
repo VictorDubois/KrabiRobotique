@@ -34,8 +34,10 @@
 #include "etape.h"
 #include "dijkstra.h"
 #include "microSwitch.h"
-#include "MPU9150.h"
-#include "accelerometer.h"
+#if defined(STM32F40_41xxx)
+    #include "accelerometer.h"
+    #include "MPU9150.h"
+#endif
 #include "brasTapis.h"
 
 #define ALLOW_DEBUG
@@ -102,6 +104,7 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
+#if defined(STM32F40_41xxx)
     MPU9150::I2C_Initialization();
     MPU9150::Initialize();
 
@@ -110,6 +113,7 @@ int main()
     }
 
     Accelerometer* accelerometer = Accelerometer::getSingleton();
+#endif
 
 //    while(1)
 //    {
@@ -247,9 +251,16 @@ int main()
 #endif
 
 
+    #if defined(STM32F10X_CL)
+        Remote::getSingleton();
+    #endif
+
 
     tirette.attendreRemise();
     tirette.attendreEnlevee();
+    for(int i(0); i<20000000; ++i);
+
+    BrasLateraux::getRight()->expand();
 
   /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
     ascenseur->Ascenseur::leverAscenseur();
@@ -272,10 +283,6 @@ int main()
 //        BrasLateraux::getLeft()->collapse();
 //    }
 
-
-    #if defined(STM32F10X_CL)
-        Remote::getSingleton();
-    #endif
 
     // Initialisation des actionneurs 2
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
@@ -312,6 +319,8 @@ int main()
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     Odometrie* odometrie = new Odometrie(rcg, rcd);
     Position pos(194, 1000, isBlue());//1500, isBlue());
+    if (!isBlue())
+        pos.x = 3000. - pos.x;
     PositionPlusAngle posPlusAngle(pos,0);
     if (!isBlue())
         posPlusAngle = PositionPlusAngle(pos,-M_PI);
