@@ -218,13 +218,6 @@ int main()
         }
     }*/
 
-    while(1){
-
-
-    }
-
-
-
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif
@@ -246,7 +239,8 @@ int main()
     #elif defined(STM32F10X_CL) // H107
 //        BrasLateraux::getLeft()->collapse();
 //        BrasLateraux::getRight()->collapse();
-//        CanonLances* canon = CanonLances::getSingleton();
+        BrasTapis::getSingleton(BrasTapis::DROIT);
+        BrasTapis::getSingleton(BrasTapis::GAUCHE);
     #endif
 
 #ifdef ALLOW_DEBUG
