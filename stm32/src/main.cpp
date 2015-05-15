@@ -34,6 +34,8 @@
 #include "etape.h"
 #include "dijkstra.h"
 #include "microSwitch.h"
+#include "MPU9150.h"
+#include "accelerometer.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -99,6 +101,31 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
+    MPU9150::I2C_Initialization();
+    MPU9150::Initialize();
+
+    if ( MPU9150::TestConnection() == FALSE ) {
+        return ( 0 );
+    }
+
+    Accelerometer* accelerometer = Accelerometer::getSingleton();
+
+//    while(1)
+//    {
+//        int x = accelerometer->getX();
+//        int y = accelerometer->getY();
+//        int z = accelerometer->getZ();
+//    }
+//    int16_t AccelGyro[6]={0};
+//
+//    while ( 1 ) {
+//        MPU9150::GetRawAccelGyro ( AccelGyro );
+//        //horizontal -600 800-1000  15800-16200
+//        //1ere marche osef -1900
+//        //2eme amrche -4400
+//        //3eme marche
+//        //4eme marche
+//    }
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
