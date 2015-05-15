@@ -366,7 +366,7 @@ void StrategieV2::update()
     {
 
     }
-    if (updateCount >= 10000)
+    if (updateCount >= 18000)
     {
         Asservissement::asservissement->setCommandSpeeds(NULL);
         return;

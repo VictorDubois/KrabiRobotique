@@ -28,7 +28,7 @@ Ascenseur *Ascenseur::getSingleton()
 #endif
 {
     this->fermerAscenseur();
-    this->leverAscenseur();
+//    this->leverAscenseur();
     this->nbrPiedsStockes = 0;
 #ifdef ROBOTHW
     ServosNumeriques::changeContinuousRotationMode(INDEX_SERVO_ASC, true);
