@@ -362,13 +362,12 @@ void StrategieV2::update()
             allumerLED();
     }*/
 
-    if (updateCount <= 18000)
-    {
+    if (updateCount <= 16500);
 
-    }
-    if (updateCount >= 18000)
+    else if (updateCount >= 16500)
     {
         Asservissement::asservissement->setCommandSpeeds(NULL);
+        eteindreLED();
         return;
     }
     //if (updateCount > 6000 && updateCount < 10000) // attendre 15 secondes
