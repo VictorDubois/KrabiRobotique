@@ -8,18 +8,18 @@
 #include <QDebug>
 #endif
 
-#define GRANDE_ATTENTE 50
+#define GRANDE_ATTENTE 300
 
 Tapis::Tapis(){}
 
 Tapis::Tapis(Position position):MediumLevelAction(position)
 {
     this->toLookAt = M_PI/2;
-    if (position == Position(1070, 850, StrategieV2::getIsYellow()))
+    if (position == Position(1060, 848, StrategieV2::getIsYellow()))
     {
             this->cote = BrasTapis::GAUCHE;
     }
-    if (position == Position(1420, 850, StrategieV2::getIsYellow()))
+    if (position == Position(1342, 848, StrategieV2::getIsYellow()))
     {
             this->cote = BrasTapis::DROIT;
     }
@@ -65,7 +65,7 @@ int Tapis::update()
 #ifndef ROBOTHW
             qDebug() << "On ouvre le bras";
 #endif
-
+            for (int i = 0; i<10000; i++);
             BrasTapis::getSingleton(cote)->ouvrirBras();
             status++;
         }
