@@ -34,8 +34,8 @@
 #include "etape.h"
 #include "dijkstra.h"
 #include "microSwitch.h"
-#include "MPU9150.h"
-#include "accelerometer.h"
+//#include "MPU9150.h"
+//#include "accelerometer.h"
 #include "brasTapis.h"
 
 #define ALLOW_DEBUG
@@ -102,14 +102,14 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
-    MPU9150::I2C_Initialization();
-    MPU9150::Initialize();
-
-    if ( MPU9150::TestConnection() == FALSE ) {
-        return ( 0 );
-    }
-
-    Accelerometer* accelerometer = Accelerometer::getSingleton();
+//    MPU9150::I2C_Initialization();
+//    MPU9150::Initialize();
+//
+//    if ( MPU9150::TestConnection() == FALSE ) {
+//        return ( 0 );
+//    }
+//
+//    Accelerometer* accelerometer = Accelerometer::getSingleton();
 
 //    while(1)
 //    {
@@ -217,6 +217,13 @@ int main()
             eteindreLED();
         }
     }*/
+
+    while(1){
+
+
+    }
+
+
 
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
