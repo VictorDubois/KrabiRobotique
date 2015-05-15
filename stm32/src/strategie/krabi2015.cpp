@@ -70,8 +70,8 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     new Etape(2, new Clap(COLOR_POSITION(836, 1770, isYellow), COLOR_POSITION(933, 1770, isYellow)) );
     new Etape(4, new Clap(COLOR_POSITION(286, 1780, isYellow), COLOR_POSITION(400, 1780, isYellow)) );
     new Etape(6, new Clap(COLOR_POSITION(2500, 1770, isYellow), COLOR_POSITION(2300, 1770, isYellow)) );
-    new Etape(42, COLOR_POSITION(933, 1780, isYellow) );
-    new Etape(43,COLOR_POSITION(400, 1780, isYellow) );
+    new Etape(42, COLOR_POSITION(900, 1776, isYellow) );
+    new Etape(43, COLOR_POSITION(400, 1780, isYellow) );
     new Etape(44, COLOR_POSITION(2300, 1780, isYellow) );
 
     // Ramasser Gobelets
@@ -119,14 +119,16 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
 
     // pousser pied
-    Etape::get(2)->addVoisin(11);
+//    Etape::get(2)->addVoisin(11);
+
+    Etape::get(11)->addVoisin(11);
 
 
     // Voisins
     Etape::get(0)->addVoisin(1, false);
 
     Etape::get(1)->addVoisins(3, 8, 31);
-    Etape::get(1)->addVoisins(12, 18, 21);
+    Etape::get(1)->addVoisins(12, 21, 45);
 
 //    Etape::get(4)->addVoisins(30, 33, 45, 18);
     Etape::get(4)->addVoisins(45);
@@ -134,28 +136,34 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(5)->addVoisins(23);
 
     Etape::get(7)->addVoisins(5, 22);
-    Etape::get(7)->addVoisins(20, 23, 3);
+    Etape::get(7)->addVoisins(23, 3);
 
     Etape::get(14)->addVoisins(34);
 
-    Etape::get(18)->addVoisins(3, 5);
-    Etape::get(18)->addVoisins(31, 35);
 
-    Etape::get(19)->addVoisins(35);
 
-    Etape::get(20)->addVoisins(5, 35);
+    //Voisins des pieds
+//    Etape::get(18)->addVoisins(3, 5, 1);
+//    Etape::get(18)->addVoisins(31, 35, 27, 45);
+//    Etape::get(19)->addVoisins(35, 42);
+//    Etape::get(20)->addVoisins(5, 35, 23, 28);
+//    Etape::get(20)->addVoisins(7);
+
+//    Etape::get(46)->addVoisins(34);
+//    Etape::get(47)->addVoisins(34);
+//    Etape::get(48)->addVoisins(40);
+
+
 
     Etape::get(21)->addVoisins(3, 7, 17, 27);
 
     Etape::get(22)->addVoisins(24, 27, 36);
 
-    Etape::get(23)->addVoisins(20, 22, 24);
+    Etape::get(23)->addVoisins(22, 24);
     Etape::get(23)->addVoisins(3);
 
 
     Etape::get(27)->addVoisins(24, 37);
-
-    Etape::get(28)->addVoisins(20);
 
     Etape::get(29)->addVoisins(24, 28, 38);
 
@@ -193,26 +201,21 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(2)->addVoisins(42);
     Etape::get(4)->addVoisins(43);
     Etape::get(6)->addVoisins(44);
-    Etape::get(42)->addVoisins(19, 45, 35);
+    Etape::get(42)->addVoisins(45, 35);
     Etape::get(43)->addVoisins(30);
 
     Etape::get(43)->addVoisins(2);
     Etape::get(44)->addVoisins(37);
     Etape::get(44)->addVoisins(38);
 
-    // HERE
-    Etape::get(45)->addVoisins(2, 31);
-    Etape::get(45)->addVoisins(18, 35);
-
-    Etape::get(46)->addVoisins(34);
-    Etape::get(47)->addVoisins(34);
-    Etape::get(48)->addVoisins(40);
+    Etape::get(45)->addVoisins(31);
+    Etape::get(45)->addVoisins(35);
 
     //aretes pour coin gauche haut
     Etape::get(8)->addVoisins(40);
 
     //Les trajets transversaux:
-    Etape::get(27)->addVoisins(1, 18);
+    Etape::get(27)->addVoisins(1);
 
     //Seulement si on fait les gobelets
 //    Etape::get(9)->addVoisins(3, 5, 7);
@@ -237,8 +240,8 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::DEPART :
             return 0;
         case Etape::CLAP :
-//            return 1000000;
             return 1000;
+//            return 1000000;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
                 return 0;
@@ -248,28 +251,28 @@ int Krabi2015::getScoreEtape(int i){
             return 0;
         case Etape::RAMASSER_PIED :
             if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
-//                return 0;
                 return 40;//STRATEGIE
-            else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==2)
 //                return 0;
+            else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==2)
                 return 30;//STRATEGIE
+//                return 0;
             else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
-//                return 100000;
                 return 20;//STRATEGIE
+//                return 100000;
             else
                 return 0;
         case Etape::DEPOSER_PIED :
             if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
-//                return 0;
                 return 10000;//STRATEGIE
-            else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==2)
 //                return 0;
+            else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==2)
                 return 5;//STRATEGIE
+//                return 0;
             else
                 return 0;
         case Etape::TAPIS :
-//            return 0;
             return 1;//STRATEGIE
+//            return 0;
         case Etape::DEPOSER_GOBELET :
             /*if (!Pinces::getSingleton()->getEstDispo())
                 return 40;
