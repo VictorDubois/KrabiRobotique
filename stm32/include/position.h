@@ -4,7 +4,7 @@
 #include "angle.h"
 #include "distance.h"
 
-#define COLOR_POSITION Position::colorPosition
+#define COLOR_POSITION Position
 
 /// @brief Classe permettant de stocker des positions en coordonnées cartésiennes
 class Position
