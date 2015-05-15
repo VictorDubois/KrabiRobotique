@@ -16,7 +16,10 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
 
     // Création des étapes
     // Les étapes correspondant à des actions sont créées automatiquement lors de l'ajout d'actions
-    new Etape(0, Position(250, 1000, isYellow), Etape::DEPART);            // départ au fond de la zone de départ
+    new Etape(0, COLOR_POSITION(250, 1000, isYellow), Etape::DEPART);            // départ au fond de la zone de départ
+
+    //Si ça bug, laisser Position au dessus
+
     // Points de passage
     // numéro étape, position
 
