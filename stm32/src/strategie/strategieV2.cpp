@@ -49,7 +49,7 @@ bool StrategieV2::hasToStopAfterAction = false;
 int StrategieV2::glassGathered = 0;
 int StrategieV2::timeSinceLastRecalibration = 0;
 bool StrategieV2::somethingDetected = false;
-bool StrategieV2::isBlue = false;
+bool StrategieV2::isYellow = false;
 bool StrategieV2::sharpsToCheck[SharpSensor::END_SHARP_NAME];
 int StrategieV2::robotBloque = 0;
 bool StrategieV2::enTrainDeRecalibrerOdometrie = false;
@@ -63,9 +63,9 @@ Tourelle* StrategieV2::tourelle = NULL;
 int StrategieV2::hysteresisTourelle = 0;
 #endif
 
-StrategieV2::StrategieV2(bool blue)
+StrategieV2::StrategieV2(bool yellow)
 {
-    isBlue = blue;
+    isYellow = yellow;
     timeToRestart = 0;
     /*actionsToDo[0] = new RamasserVerreV2(Position(900,550));
     actionsToDo[1] = new RamasserVerreV2(Position(1050,800));
@@ -97,9 +97,9 @@ StrategieV2::StrategieV2(bool blue)
     //actionsToDo[0] = (MediumLevelAction*) new Krabi2014(blue);
 
 #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-    actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(blue);
+    actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(yellow);
 #else
-    actionsToDo[0] = (MediumLevelAction*) new Krabi2015(blue);
+    actionsToDo[0] = (MediumLevelAction*) new Krabi2015(yellow);
 #endif
 
     // 2014 :
@@ -411,7 +411,13 @@ void StrategieV2::update()
         {
             if (sharps[i]->getValue().b)
             {
-                allume = true;
+                if(Odometrie::odometrie->getPos().getPosition().getX()<1500 && Odometrie::odometrie->getPos().getPosition().getY()>1600)//Si on est en train de faire les claps
+                {
+                    allume = false;//true;//Sharps desactivés
+                }
+                else{
+                    allume = true;
+                }
             }
         }
     }
@@ -481,7 +487,7 @@ void StrategieV2::update()
                 //Pour changer de trajectoire, décommenter les lignes suivantes
                 currentAction->collisionAvoided();
                 actionsToDo[actionsCount]->collisionAvoided();
-                //currentCommand->collisionAvoided();
+//                currentCommand->collisionAvoided();
                 currentAction->update();
                 Position pos = Odometrie::odometrie->getPos().getPosition();
                 addTemporaryAction(new ActionGoTo(pos, true));
@@ -793,13 +799,13 @@ bool StrategieV2::willCollide()
     Asservissement::asservissement->resetAsserv();
 }
 
-void StrategieV2::setIsBlue(bool blue)
+void StrategieV2::setIsYellow(bool yellow)
 {
-    isBlue = blue;
+    isYellow = yellow;
 }
-bool StrategieV2::getIsBlue()
+bool StrategieV2::getIsYellow()
 {
-    return isBlue;
+    return isYellow;
 }
 
 void StrategieV2::gatherGlass()

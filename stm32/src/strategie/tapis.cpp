@@ -8,25 +8,21 @@
 #include <QDebug>
 #endif
 
+#define GRANDE_ATTENTE 50
+
 Tapis::Tapis(){}
 
-Tapis::Tapis(Position position):MediumLevelAction(position)  //si cote est true on veut poser le tapis droit, si non c'est le tapis gauche
+Tapis::Tapis(Position position):MediumLevelAction(position)
 {
     this->toLookAt = M_PI/2;
-    if (position == Position(1000, 750))
+    if (position == Position(1070, 850, StrategieV2::getIsYellow()))
     {
-        if(StrategieV2::getIsBlue())
-            this->cote = BrasTapis::DROIT;
-        else
             this->cote = BrasTapis::GAUCHE;
-    };
-    if (position == Position(1450, 750))
+    }
+    if (position == Position(1420, 850, StrategieV2::getIsYellow()))
     {
-        if(StrategieV2::getIsBlue())
-            this->cote = BrasTapis::GAUCHE;
-        else
             this->cote = BrasTapis::DROIT;
-    };
+    }
 }
 
 Tapis::~Tapis(){}
@@ -75,12 +71,12 @@ int Tapis::update()
         }
     }
 
-    else if (status < 103)
+    else if (status < 3 + GRANDE_ATTENTE)
     {
         status++;
     }
 
-    else if (status == 103)
+    else if (status == 3 + GRANDE_ATTENTE)
     {
         //fermer bras
 #ifndef ROBOTHW
@@ -90,12 +86,12 @@ int Tapis::update()
         status++;
     }
 
-    else if (status < 203)
+    else if (status < 3 + GRANDE_ATTENTE + GRANDE_ATTENTE)
     {
         status++;
     }
 
-    else if (status == 203)    //On attend que les bras se ferment.
+    else if (status == 3 + GRANDE_ATTENTE + GRANDE_ATTENTE)    //On attend que les bras se ferment.
     {
 #ifndef ROBOTHW
         qDebug() << "Etape tapis finie";

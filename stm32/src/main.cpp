@@ -34,6 +34,9 @@
 #include "etape.h"
 #include "dijkstra.h"
 #include "microSwitch.h"
+#include "MPU9150.h"
+#include "accelerometer.h"
+#include "brasTapis.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -99,6 +102,31 @@ int main()
     // Appel de la fonction qui permet d'initialiser tous les PINS
     initialisationDesPIN();
 
+    MPU9150::I2C_Initialization();
+    MPU9150::Initialize();
+
+    if ( MPU9150::TestConnection() == FALSE ) {
+        return ( 0 );
+    }
+
+    Accelerometer* accelerometer = Accelerometer::getSingleton();
+
+//    while(1)
+//    {
+//        int x = accelerometer->getX();
+//        int y = accelerometer->getY();
+//        int z = accelerometer->getZ();
+//    }
+//    int16_t AccelGyro[6]={0};
+//
+//    while ( 1 ) {
+//        MPU9150::GetRawAccelGyro ( AccelGyro );
+//        //horizontal -600 800-1000  15800-16200
+//        //1ere marche osef -1900
+//        //2eme amrche -4400
+//        //3eme marche
+//        //4eme marche
+//    }
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
@@ -114,6 +142,7 @@ int main()
     ServosNumeriques::initClocksAndPortsGPIO();
     ServosNumeriques::initUART(1000000);
     ServosNumeriques::sendMode();
+
 
     /*while(true)
     {
@@ -199,8 +228,6 @@ int main()
         Tirette tirette(GPIOE, GPIO_Pin_5);
     #endif
 
-
-
 #ifdef ALLOW_DEBUG
     //Debug::testTirette(&tirette);
 #endif
@@ -210,8 +237,8 @@ int main()
         //BrasLateraux::initBrasLateraux();
         //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-        BrasLateraux::getLeft()->collapse();
-        BrasLateraux::getRight()->collapse();
+//        BrasLateraux::getLeft()->collapse();
+//        BrasLateraux::getRight()->collapse();
 //        CanonLances* canon = CanonLances::getSingleton();
     #endif
 
@@ -219,8 +246,32 @@ int main()
     //Debug::testBrasLateraux();
 #endif
 
-    /*tirette.attendreRemise();
+
+
+    tirette.attendreRemise();
+    tirette.attendreEnlevee();
+
+  /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
+    ascenseur->Ascenseur::leverAscenseur();
+    ascenseur->Ascenseur::ouvrirAscenseur();
+    ascenseur->Ascenseur::fermerAscenseur();*/
+
+    /*BrasTapis* bras = BrasTapis::getSingleton(BrasTapis::GAUCHE);
+    bras->ouvrirBras();
+        BrasTapis* bras2 = BrasTapis::getSingleton(BrasTapis::DROIT);
+    bras2->ouvrirBras();
+    tirette.attendreRemise();
     tirette.attendreEnlevee();*/
+
+
+//    while(1){
+//        BrasLateraux::getRight()->expand();
+//        BrasLateraux::getLeft()->expand();
+//
+//        BrasLateraux::getRight()->collapse();
+//        BrasLateraux::getLeft()->collapse();
+//    }
+
 
     #if defined(STM32F10X_CL)
         Remote::getSingleton();

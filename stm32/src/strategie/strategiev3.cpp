@@ -38,6 +38,12 @@ int StrategieV3::update()
 
     tableauEtapesTotal[this->etapeEnCours]->reset();
 
+//    if (this->etapeEnCours > 0)
+//    {
+//        StrategieV2::stop();
+//        return 0;
+//    }
+
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
     if(this->avoiding)
     {
@@ -117,7 +123,9 @@ int StrategieV3::update()
                 this->updateStock();
 
                 //On est maintenant arrivé à l'étape de fin de l'action (en général c'est la même étape, mais pas toujours, ex : les claps de 2015)
-                this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
+                this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction() == -1
+                                        ? this->etapeEnCours
+                                        : this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
             }
 
 

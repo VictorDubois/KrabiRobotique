@@ -1,7 +1,7 @@
 #include "brasTapis.h"
 
 
-BrasTapis* BrasTapis::singletonGauche = 0;
+//BrasTapis* BrasTapis::singletonGauche = 0;
 BrasTapis* BrasTapis::singletonDroit = 0;
 
 #ifdef ROBOTHW
@@ -18,13 +18,13 @@ BrasTapis::BrasTapis(COTE cote)
 
 BrasTapis* BrasTapis::getSingleton(COTE cote)
 {
-    if(cote == GAUCHE)
+ /*   if(cote == GAUCHE)
     {
         if(singletonGauche == 0)
             singletonGauche = new BrasTapis(GAUCHE);
         return singletonGauche;
-    }
-    else if(cote == DROIT)
+    }*/
+    if(cote == DROIT)
     {
         if(singletonDroit == 0)
             singletonDroit = new BrasTapis(DROIT);
@@ -53,7 +53,7 @@ void BrasTapis::fermerBras(){}
 
 BrasTapis *BrasTapis::getSingleton(COTE cote)
 {
-    return 0;
+    return new BrasTapis();
 }
 
 

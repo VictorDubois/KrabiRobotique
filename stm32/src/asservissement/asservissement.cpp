@@ -47,7 +47,7 @@ Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables
 bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 
-Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(true), engineLimit(0.5f), testDataSent(0), testDataToSend(0)
+Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(false), engineLimit(0.5f), testDataSent(0), testDataToSend(0)
 
 /*:
     seuil_collision(SEUIL_COLISION),

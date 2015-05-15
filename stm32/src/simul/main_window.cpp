@@ -13,7 +13,7 @@ MainWindow::MainWindow(bool isBlue)
 {
 	QTimer* timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    dt = 10;
+    dt = 1;
 	timer->start(dt);
 
     QWidget* inter = new QWidget(this);
