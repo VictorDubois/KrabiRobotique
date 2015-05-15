@@ -249,10 +249,10 @@ int Krabi2015::getScoreEtape(int i){
         case Etape::DEPART :
             return 0;
         case Etape::CLAP :
-            return 100;
+            return 1000;
 //            return 1000000;
         case Etape::TAPIS :
-            return 900;//STRATEGIE
+            return 100;//STRATEGIE
 //            return 0;
         case Etape::GOBELET :
             if (Pinces::getSingleton()->estDispo())
