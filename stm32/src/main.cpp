@@ -249,8 +249,8 @@ int main()
         //BrasLateraux::initBrasLateraux();
         //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-//        BrasLateraux::getLeft()->collapse();
-//        BrasLateraux::getRight()->collapse();
+        BrasLateraux::getLeft()->collapse();
+        BrasLateraux::getRight()->collapse();
         BrasTapis::getSingleton(BrasTapis::DROIT);
         BrasTapis::getSingleton(BrasTapis::GAUCHE);
     #endif
@@ -267,9 +267,9 @@ int main()
 
     tirette.attendreRemise();
     tirette.attendreEnlevee();
+
     for(int i(0); i<20000000; ++i);
 
-    BrasLateraux::getRight()->expand();
 
   /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
     ascenseur->Ascenseur::leverAscenseur();
@@ -285,11 +285,11 @@ int main()
 
 
 //    while(1){
-//        BrasLateraux::getRight()->expand();
-//        BrasLateraux::getLeft()->expand();
-//
-//        BrasLateraux::getRight()->collapse();
-//        BrasLateraux::getLeft()->collapse();
+////        BrasLateraux::getRight()->expand();
+////        BrasLateraux::getLeft()->expand();
+////
+////        BrasLateraux::getRight()->collapse();
+////        BrasLateraux::getLeft()->collapse();
 //    }
 
 
@@ -297,7 +297,6 @@ int main()
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
 
     #elif defined(STM32F10X_CL) // H107
-//        Brak* bracquemart = Brak::getSingleton();
         Sensors* sensors = Sensors::getSingleton();
         ServosNumeriques::setLedState(1, 12);
     #endif
