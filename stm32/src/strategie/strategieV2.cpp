@@ -259,6 +259,12 @@ void StrategieV2::update()
 #ifndef NO_REMOTE
     Remote::getSingleton()->update();
 #endif
+
+    if (!currentAction)
+    {
+        Asservissement::asservissement->setCommandSpeeds(NULL);
+        return;
+    }
     //Tourelle* tourelle = new Tourelle(TIM6, 0);
     /*
         uint8_t resultZoneCritique = tourelle->setZoneCritique(10, 27000);
@@ -289,8 +295,8 @@ void StrategieV2::update()
     if (StrategieV2::strategie == NULL)
         return;
     updateCount++;
-
-    currentAction->updateTime(90*1000-updateCount*5);
+    if(currentAction)
+        currentAction->updateTime(90*1000-updateCount*5);
 
 #ifdef ROBOTHW
 //    if (updateCount % 6 == 2)
