@@ -30,7 +30,10 @@ Distance Position::getY() const
 
 Position Position::colorPosition(Distance x, Distance y, bool isYellow)
 {
-    return Position(!isYellow ? x : 3000 - x, y, isYellow);
+    if (!isYellow)
+        return Position(isYellow ? x : 3000 - x, y, isYellow);
+    else
+        return Position(x,y,isYellow);
 }
 
 void Position::setX(Distance X)
