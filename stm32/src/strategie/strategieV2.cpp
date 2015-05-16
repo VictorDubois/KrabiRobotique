@@ -368,9 +368,11 @@ void StrategieV2::update()
             allumerLED();
     }*/
 
-    if (updateCount <= 16500);
+    if (updateCount <= 10000)
+    {
 
-    else if (updateCount >= 16500)
+    }
+    else if (updateCount >= 10000)
     {
         Asservissement::asservissement->setCommandSpeeds(NULL);
         eteindreLED();
@@ -416,7 +418,7 @@ void StrategieV2::update()
         {
             if (sharps[i]->getValue().b)
             {
-                if(Odometrie::odometrie->getPos().getPosition().getX()<1500 && Odometrie::odometrie->getPos().getPosition().getY()>1600)//Si on est en train de faire les claps
+                if(Odometrie::odometrie->getPos().getPosition().getY()>1600)//Si on est en train de faire les claps
                 {
                     allume = false;//true;//Sharps desactivés
                 }
