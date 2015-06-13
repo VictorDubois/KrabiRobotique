@@ -96,7 +96,14 @@ HEADERS += \
     ../../include/strategie/deposerPied.h \
     ../../include/strategie/manipulationCoinGaucheHaut.h \
     ../../include/strategie/manipulationCoinGaucheBas.h \
-    ../../include/strategie/manipulationCoinGaucheHautPiedSolitaire.h
+    ../../include/strategie/manipulationCoinGaucheHautPiedSolitaire.h \
+    ../../include/vec3d.h \
+    ../../include/vec2d.h \
+    ../../include/interfaceServosNumeriques.h \
+    ../../include/InitKrabiJunior.h \
+    ../../include/initkrabi.h \
+    ../../include/initialisation.h \
+    ../../include/vector.h
 
 
 SOURCES += \
@@ -168,7 +175,13 @@ SOURCES += \
     ../../src/strategie/deposerPied.cpp \
     ../../src/strategie/manipulationCoinGaucheHaut.cpp \
     ../../src/strategie/manipulationCoinGaucheBas.cpp \
-    ../../src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp
+    ../../src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp \
+    ../../src/vec3d.cpp \
+    ../../src/vec2d.cpp \
+    ../../src/loop.cpp \
+    ../../src/InitKrabiJunior.cpp \
+    ../../src/initkrabi.cpp \
+    ../../src/initialisation.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \

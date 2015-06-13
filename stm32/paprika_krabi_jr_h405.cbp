@@ -92,6 +92,7 @@
 		<Unit filename="LibrariesF4/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="include/InitKrabiJunior.h" />
 		<Unit filename="include/actionneurs/moteur.h" />
 		<Unit filename="include/actionneurs/roues.h" />
 		<Unit filename="include/actionneurs/sensor.h" />
@@ -125,11 +126,15 @@
 		<Unit filename="include/hardware/tourelle.h" />
 		<Unit filename="include/hardware/ultrasoundSensor.h" />
 		<Unit filename="include/initialisation.h" />
+		<Unit filename="include/loop.h" />
 		<Unit filename="include/memory.h" />
 		<Unit filename="include/strategie/krabijunior2015.h" />
 		<Unit filename="include/strategie/strategieV2.h" />
 		<Unit filename="include/strategie/strategiev3.h" />
+		<Unit filename="include/vec2d.h" />
+		<Unit filename="include/vec3d.h" />
 		<Unit filename="include/vector.h" />
+		<Unit filename="src/InitKrabiJunior.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />
 		<Unit filename="src/actionneurs/sensor.cpp" />
@@ -179,6 +184,8 @@
 		<Unit filename="src/stub.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/vec2d.cpp" />
+		<Unit filename="src/vec3d.cpp" />
 		<Unit filename="startup_stm32f40_41xxxRIDE.s" />
 		<Extensions>
 			<code_completion />

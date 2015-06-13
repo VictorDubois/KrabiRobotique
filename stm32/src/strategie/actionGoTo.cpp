@@ -63,7 +63,7 @@ int ActionGoTo::update()
     if (status == 0)
     {
 #ifndef ROBOTHW
-        qDebug() << "actionGoTo";
+        qDebug() << "actionGoTo " << goalPosition.getX();
 #endif
         //allumerLED2();
         Position pos = Odometrie::odometrie->getPos().getPosition();
@@ -91,7 +91,7 @@ int ActionGoTo::update()
     }
     else if (status ==1) // on recule
     {
-        Position vect = intermediateGoalPosition - Odometrie::odometrie->getPos().getPosition();
+        Vec2d vect = intermediateGoalPosition - Odometrie::odometrie->getPos().getPosition();
         //std::cout << "status = 1 " << vect.getNorme() << std::endl;
         if (vect.getNorme() < precision) // now we have
         {
@@ -148,7 +148,7 @@ int ActionGoTo::update()
     {
 //        allumerLED();
         //std::cout << "status = 3" << std::endl;
-        Position vect = goalPosition - Odometrie::odometrie->getPos().getPosition();
+        Vec2d vect = goalPosition - Odometrie::odometrie->getPos().getPosition();
         //std::cout << vect.getNorme() << std::endl;
         //std::cout << Odometrie::odometrie->getPos().getPosition().getX() << " "<< Odometrie::odometrie->getPos().getPosition().getY()   << std::endl;
         if (vect.getNorme() < precision || (command != 0 && command->fini()))

@@ -12,7 +12,10 @@ class Tirette
     public:
 
         // initialise la pin de la tirette
+        Tirette();
+   #ifdef ROBOTHW
         Tirette(GPIO_TypeDef* GPIOx_tirette, uint16_t GPIO_Pin_x_tirette);
+   #endif
 
         // attends jusqu'à ce que la tirette soit enlevée
         void attendreEnlevee() const;
@@ -26,8 +29,10 @@ class Tirette
     protected:
 
         // la pin de la tirette
+#ifdef ROBOTHW
         GPIO_TypeDef* GPIOx;
         uint16_t GPIO_Pin_x;
+#endif
 };
 
 #endif

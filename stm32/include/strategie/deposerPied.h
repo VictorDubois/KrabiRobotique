@@ -9,7 +9,7 @@ class DeposerPied : public MediumLevelAction
 {
 public:
     DeposerPied();
-    DeposerPied(Position position, bool isYellow);
+    DeposerPied(Position position);
     ~DeposerPied();
     Etape::EtapeType getType();
     int update();

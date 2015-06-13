@@ -19,7 +19,7 @@
 class StrategieV2
 {
     public:
-        StrategieV2(bool blue = false);
+        StrategieV2(bool yellow = false);
         virtual ~StrategieV2();
 
         static void update();
@@ -35,8 +35,8 @@ class StrategieV2
         static void setJustAvoided(bool value);
         static bool getJustAvoided();
         static bool willCollide();
-        static void setIsYellow(bool yellow);
-        static bool getIsYellow();
+        static bool isYellow();
+        static void setYellow(bool yellow);
         static void emptySharpsToCheck();
         static void setEnTrainDeRecalibrer(bool recalibre);
         static void enableSharp(SharpSensor::SharpName name);
@@ -55,7 +55,7 @@ static void paint(QPainter* p);
         static bool somethingDetected;
 
     private:
-        static bool isYellow;
+        static bool yellow;
         static int updateCount;
         static StrategieV2* strategie;
         static Command* currentCommand;

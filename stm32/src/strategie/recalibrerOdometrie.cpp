@@ -12,7 +12,7 @@ RecalibrerOdometrie::RecalibrerOdometrie(bool blue, Position positionDepart, int
     this->isBlue = blue;
     this->positionDepart = positionDepart;//Position(700, 3000, isBlue);
     //goalPosition2 = Position(0, 1360, isBlue);
-    this->candidatPositionArrete = Position(0, 0, isBlue);
+    this->candidatPositionArrete = Position(0, 0, true);
     this->coinRecalage = coinRecalage;
 }
 
@@ -39,16 +39,16 @@ int RecalibrerOdometrie::update()
     }
     if (status == 1) // attend d'être replacé
     {
-        Position vect = positionDepart - Odometrie::odometrie->getPos().getPosition();
+        Vec2d vect = positionDepart - Odometrie::odometrie->getPos().getPosition();
         if (vect.getNorme() < 40)
         {
             if(this->coinRecalage == COTE_NOTRE_DEPART_BAS || this->coinRecalage == COTE_NOTRE_DEPART_HAUT)
             {
-                StrategieV2::setCurrentGoal(Position(0, positionDepart.getY()), true, 0.5);
+                StrategieV2::setCurrentGoal(Position(0, positionDepart.getY(), true), true, 0.5);
             }
             else
             {
-                StrategieV2::setCurrentGoal(Position(3000, positionDepart.getY()), true, 0.5);
+                StrategieV2::setCurrentGoal(Position(3000, positionDepart.getY(), true), true, 0.5);
             }
             StrategieV2::setEnTrainDeRecalibrer(true);
             status = 2;
@@ -58,7 +58,7 @@ int RecalibrerOdometrie::update()
     {
         static int timeBlockedY = 0;
         //if (abs(Odometrie::odometrie->getVitesseLineaire()) < 0.005f) //if (fdc1->getValue().b && fdc2->getValue().b) // distance parcourue la derniere seconde
-        Position vect = candidatPositionArrete - Odometrie::odometrie->getPos().getPosition();
+        Vec2d vect = candidatPositionArrete - Odometrie::odometrie->getPos().getPosition();
         if(abs(vect.getNorme()) < 5)//Si on a pas bougé de plus de Xmm du dernier candidat de position où le robot s'est arrêté
         {
             timeBlockedY ++;
@@ -78,9 +78,9 @@ int RecalibrerOdometrie::update()
         {
 #ifdef ROBOTHW //A adapter à la taille du robot
             if(this->coinRecalage == COTE_DEPART_ADVERSAIRE_HAUT || this->coinRecalage == COTE_DEPART_ADVERSAIRE_BAS)
-                Odometrie::odometrie->setX((StrategieV2::getIsYellow() ? 95 : 2905)); // robot = 319mm de large
+                Odometrie::odometrie->setX((StrategieV2::isYellow() ? 95 : 2905)); // robot = 319mm de large
             else
-                Odometrie::odometrie->setX((StrategieV2::getIsYellow() ? 2905 : 95)); // robot = 319mm de large
+                Odometrie::odometrie->setX((StrategieV2::isYellow() ? 2905 : 95)); // robot = 319mm de large
 #endif
             //StrategieV2::setCurrentGoal(Position(goalPosition1.getX(), 1360), false);
             StrategieV2::setCurrentGoal(positionDepart, false);
@@ -91,7 +91,7 @@ int RecalibrerOdometrie::update()
     }
     else if (status == 3) // attend d'être replacé
     {
-        Position vect = positionDepart - Odometrie::odometrie->getPos().getPosition();
+        Vec2d vect = positionDepart - Odometrie::odometrie->getPos().getPosition();
         if (vect.getNorme() < 40)
         {
             if(this->coinRecalage == COTE_NOTRE_DEPART_BAS || this->coinRecalage == COTE_DEPART_ADVERSAIRE_BAS)
@@ -110,7 +110,7 @@ int RecalibrerOdometrie::update()
 
         static int timeBlockedX = 0;
         //if (abs(Odometrie::odometrie->getVitesseLineaire()) < 0.005f) // if (fdc1->getValue().b && fdc2->getValue().b) // distance parcourue la derniere seconde
-        Position vect = candidatPositionArrete - Odometrie::odometrie->getPos().getPosition();
+        Vec2d vect = candidatPositionArrete - Odometrie::odometrie->getPos().getPosition();
         if(abs(vect.getNorme()) < 5)//Si on a pas bougé de plus de Xmm du dernier candidat de position où le robot s'est arrêté
         {
             timeBlockedX ++;
@@ -146,7 +146,7 @@ int RecalibrerOdometrie::update()
     }
     else if (status == 5)
     {
-        Position vect = positionDepart - Odometrie::odometrie->getPos().getPosition();//positionGoal2 -
+        Vec2d vect = positionDepart - Odometrie::odometrie->getPos().getPosition();//positionGoal2 -
         if (vect.getNorme() < 40)
         {
             status = -1;

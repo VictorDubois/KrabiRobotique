@@ -40,6 +40,15 @@ void OdometrieWindow::addRelative(Position rp, Angle ra)
     update();
 }
 
+void OdometrieWindow::addRelative(Vec2d rp, Angle ra)
+{
+    rx += rp.x;
+    ry += rp.y;
+    rangle += ra;
+
+    update();
+}
+
 void OdometrieWindow::settingsReceived(float wheelsize, float interaxis)
 {
     ui->wheelSize->setValue(wheelsize);

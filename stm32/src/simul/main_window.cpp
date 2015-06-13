@@ -9,7 +9,7 @@
 #include <QStyle>
 #include <QDebug>
 
-MainWindow::MainWindow(bool isBlue)
+MainWindow::MainWindow(bool isYellow)
 {
 	QTimer* timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -21,7 +21,7 @@ MainWindow::MainWindow(bool isBlue)
 
     inter->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 
-    table = new Table(this, inter, isBlue);
+    table = new Table(this, inter, isYellow);
 
 	this->setFixedSize(900,600);
 
