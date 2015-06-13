@@ -41,6 +41,11 @@
 #include "etape.h"
 #include "dijkstra.h"
 #include "microSwitch.h"
+#if defined(STM32F40_41xxx)
+    #include "accelerometer.h"
+    #include "MPU9150.h"
+#endif
+#include "brasTapis.h"
 
 #define ALLOW_DEBUG
 #ifdef ALLOW_DEBUG
@@ -93,6 +98,7 @@ int main()
         InitKrabi initKrabi;
         initKrabi.init();
     #endif
+
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
@@ -178,7 +184,15 @@ int main()
         }
     }*/
 
+
     /*
+    allumerLED();
+    eteindreLED();
+    allumerLED();
+    eteindreLED();
+    allumerLED();
+    eteindreLED();
+
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif
@@ -186,8 +200,6 @@ int main()
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif
     */
-
-
 
 #ifdef ALLOW_DEBUG
     //Debug::testTirette(&tirette);
@@ -198,9 +210,10 @@ int main()
         //BrasLateraux::initBrasLateraux();
         //Container::getSingleton();
     #elif defined(STM32F10X_CL) // H107
-//        BrasLateraux::getLeft()->collapse();
-//        BrasLateraux::getRight()->collapse();
-//        CanonLances* canon = CanonLances::getSingleton();
+        BrasLateraux::getLeft()->collapse();
+        BrasLateraux::getRight()->collapse();
+        BrasTapis::getSingleton(BrasTapis::DROIT);
+        BrasTapis::getSingleton(BrasTapis::GAUCHE);
     #endif
 
 #ifdef ALLOW_DEBUG
@@ -210,17 +223,33 @@ int main()
 
     /*
     #if defined(STM32F10X_CL)
-        Remote::getSingleton();
+//        Remote::getSingleton();
     #endif
     */
 
-    // Initialisation des actionneurs 2
-    #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
+    //for(int i(0); i<70000000; ++i);
 
-    #elif defined(STM32F10X_CL) // H107
-//        Brak* bracquemart = Brak::getSingleton();
 
-    #endif
+  /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
+    ascenseur->Ascenseur::leverAscenseur();
+    ascenseur->Ascenseur::ouvrirAscenseur();
+    ascenseur->Ascenseur::fermerAscenseur();*/
+
+    /*BrasTapis* bras = BrasTapis::getSingleton(BrasTapis::GAUCHE);
+    bras->ouvrirBras();
+        BrasTapis* bras2 = BrasTapis::getSingleton(BrasTapis::DROIT);
+    bras2->ouvrirBras();
+    tirette.attendreRemise();
+    tirette.attendreEnlevee();*/
+
+
+//    while(1){
+////        BrasLateraux::getRight()->expand();
+////        BrasLateraux::getLeft()->expand();
+////
+////        BrasLateraux::getRight()->collapse();
+////        BrasLateraux::getLeft()->collapse();
+//    }
 
 
     /*
@@ -246,7 +275,6 @@ int main()
 // Pour la v1 :
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
-
 
 /*
     CommandAllerA* command = new CommandAllerA(Position(1000,230), false);

@@ -66,9 +66,9 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isYellow) :
 	setPalette(p);
 
     // ####### création des robots ######
-
     //Robot à nous
     robots.push_back(new Robot(world, false, isYellow)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+
     //195,1760
     //Robot adversaire
     robots.push_back(new Robot(world, true, !isYellow));
@@ -465,11 +465,13 @@ void Table::watch(KrabiPacket &packet)
         float y = packet.get<float>();
         float ang = packet.get<float>();
 
-        PositionPlusAngle previousPos = getMainRobot()->getPos();
         PositionPlusAngle newPos = PositionPlusAngle(Position(x, y), ang);
 
         getMainRobot()->setPos(newPos);
-        DebugWindow::getInstance()->getOdometrieWindow()->addRelative(newPos.position - previousPos.position, newPos.angle - previousPos.angle);
+        if (previousPosition)
+            DebugWindow::getInstance()->getOdometrieWindow()->addRelative(newPos.position - previousPos.position, newPos.angle - previousPos.angle);
+        previousPos = newPos;
+        previousPosition = true;
         break;
     }
     case KrabiPacket::W_SPEED:

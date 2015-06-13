@@ -23,14 +23,6 @@ class BrasTapis
         /// @brief fermeBras() ferme le bras
         void fermerBras();
 
-        /// @brief ouvrirPince() ouvre la pince
-        void ouvrirPince();
-
-        /// @brief fermePince() ferme la pince
-        void fermerPince();
-
-
-
     private:
 
         /** @brief Constructeur

@@ -124,6 +124,12 @@ void StrategieV2::update()
 #ifndef NO_REMOTE
     Remote::getSingleton()->update();
 #endif
+
+    if (!currentAction)
+    {
+        Asservissement::asservissement->setCommandSpeeds(NULL);
+        return;
+    }
     //Tourelle* tourelle = new Tourelle(TIM6, 0);
     /*
         uint8_t resultZoneCritique = tourelle->setZoneCritique(10, 27000);
@@ -154,7 +160,9 @@ void StrategieV2::update()
     if (StrategieV2::strategie == NULL)
         return;
     updateCount++;
-    currentAction->updateTime(90*1000-updateCount*5);
+
+    if(currentAction)
+        currentAction->updateTime(90*1000-updateCount*5);
 
 #ifdef ROBOTHW
 //    if (updateCount % 6 == 2)
@@ -226,13 +234,14 @@ void StrategieV2::update()
             allumerLED();
     }*/
 
-    if (updateCount <= 18000)
+    if (updateCount <= 10000)
     {
 
     }
-    if (updateCount >= 18000)
+    else if (updateCount >= 10000)
     {
         Asservissement::asservissement->setCommandSpeeds(NULL);
+        eteindreLED();
         return;
     }
     //if (updateCount > 6000 && updateCount < 10000) // attendre 15 secondes
@@ -275,7 +284,13 @@ void StrategieV2::update()
         {
             if (sharps[i]->getValue().b)
             {
-                allume = true;
+                if(Odometrie::odometrie->getPos().getPosition().getY()>1600)//Si on est en train de faire les claps
+                {
+                    allume = false;//true;//Sharps desactivés
+                }
+                else{
+                    allume = true;
+                }
             }
         }
     }
@@ -343,12 +358,12 @@ void StrategieV2::update()
             if (currentAction)
             {
                 //Pour changer de trajectoire, décommenter les lignes suivantes
-                //currentAction->collisionAvoided();
-                //actionsToDo[actionsCount]->collisionAvoided();
-                //currentCommand->collisionAvoided();
-                //currentAction->update();
-                //Position pos = Odometrie::odometrie->getPos().getPosition();
-                //addTemporaryAction(new ActionGoTo(pos, true));
+                currentAction->collisionAvoided();
+                actionsToDo[actionsCount]->collisionAvoided();
+//                currentCommand->collisionAvoided();
+                currentAction->update();
+                Position pos = Odometrie::odometrie->getPos().getPosition();
+                addTemporaryAction(new ActionGoTo(pos, true));
 
                 //On arrête le robot
                 if (currentCommand)
