@@ -12,7 +12,7 @@
 #endif
 //#include <iostream>
 
-StrategieV3::StrategieV3(bool isBlue) : MediumLevelAction()
+StrategieV3::StrategieV3(bool isYellow) : MediumLevelAction()
 {
     this->avoiding = false;
     this->etapeEnCours = 0;
@@ -37,12 +37,6 @@ int StrategieV3::update()
     //this->actionGoto[this->etapeEnCours].reset();
 
     tableauEtapesTotal[this->etapeEnCours]->reset();
-
-    if (this->etapeEnCours > 0)
-    {
-        StrategieV2::stop();
-        return 0;
-    }
 
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
     if(this->avoiding)

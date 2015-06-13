@@ -18,6 +18,7 @@ public:
     ~OdometrieWindow();
 
     void addRelative(Position rp, Angle ra);
+    void addRelative(Vec2d rp, Angle ra);
     void settingsReceived(float wheelsize, float interaxis);
 
     void update();

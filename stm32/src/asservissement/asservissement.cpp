@@ -64,7 +64,11 @@ Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunn
 
     linearDutySent = 0;
     angularDutySent = 0;
-    Asservissement::asservissement = this;
+
+    if(asservissement == 0)
+    {
+        Asservissement::asservissement = this;
+    }
     asserCount = 0;
 
     nombreQuatumParDixiemeDeSeconde = 1000/(NB_VERIFICATION_BLOQUAGE_PAR_SECONDE*MS_BETWEEN_UPDATE);
@@ -390,24 +394,7 @@ void Asservissement::update(void)
 }
 
 #ifdef ROBOTHW
-//pour lancer l'update à chaque tic d'horloge
-extern "C" void SysTick_Handler()
-{
-    // Count the number of SysTick_Handler call
-    systick_count++;
 
-#if DEBUG_BLINK_EACH_SECOND
-    if (systick_count%200 == 0){
-        Led::toggle(0);
-    }
-#endif
-
-    Odometrie::odometrie->update();
-
-    StrategieV2::update();
-
-    Asservissement::asservissement->update();
-}
 
 #endif
 

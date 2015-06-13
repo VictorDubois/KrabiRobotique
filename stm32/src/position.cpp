@@ -1,6 +1,7 @@
 #include <math.h>
 
 #include "position.h"
+#include "strategieV2.h"
 
 
 // Constructeur par défaut avec des coordonnées nulles.
@@ -9,13 +10,13 @@ Position::Position()
 {
 }
 
-Position::Position(Distance X, Distance Y, bool isBlue)
+Position::Position(Distance X, Distance Y, bool colorDependent)
     : x(X), y(Y)
 {
-    /*if (!isBlue)
+    if (colorDependent && !StrategieV2::isYellow())
     {
         x = 3000-x;
-    }*/
+    }
 }
 
 Distance Position::getX() const
@@ -38,15 +39,21 @@ void Position::setY(Distance Y)
     y = Y;
 }
 
-Position Position::operator+(const Position &position) const
+Position Position::getSymetrical()
 {
-    Position resultat(x+position.x,y+position.y);
+    Position p(3000 - this->x, this->y);
+    return p;
+}
+
+Vec2d Position::operator+(const Position &position) const
+{
+    Vec2d resultat(x+position.x,y+position.y);
     return resultat;
 }
 
-Position Position::operator-(const Position &position) const
+Vec2d Position::operator-(const Position &position) const
 {
-    Position resultat(x-position.x,y-position.y);
+    Vec2d resultat(x-position.x,y-position.y);
     return resultat;
 }
 
@@ -79,6 +86,18 @@ Position Position::operator-=(const Position &position)
     this->y-=position.y;
 
     return *this;
+}
+
+Position Position::operator+(const Vec2d &vec2d) const
+{
+    Position resultat(x+vec2d.x,y+vec2d.y);
+    return resultat;
+}
+
+Position Position::operator-(const Vec2d &vec2d) const
+{
+    Position resultat(x-vec2d.x,y-vec2d.y);
+    return resultat;
 }
 
 bool Position::presqueEgales(const Position &p) const

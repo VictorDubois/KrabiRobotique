@@ -5,7 +5,6 @@
 #include "angle.h"
 
 #include <math.h>
-
 #ifndef abs
     #define abs(x) fabs(x)
 #endif
@@ -53,8 +52,8 @@ void CommandAllerA::update()
     float angle = Odometrie::odometrie->getPos().getAngle();
     Position pos = Odometrie::odometrie->getPos().getPosition();
     Position computedGoal = but;
-    Position deltaFirst = but - pos;
-    Position deltaNext;
+    Vec2d deltaFirst = but - pos;
+    Vec2d deltaNext;
     if (this->requireSmoothMovement)
         deltaNext = nextGoal - but;
 
@@ -68,7 +67,7 @@ void CommandAllerA::update()
     bool isChangingToNext = false;
 
     // smooth movement
-    Position delta;
+    Vec2d delta;
     if (this->requireSmoothMovement)
     {
         if (distanceIntermediate > this->smoothFactor)

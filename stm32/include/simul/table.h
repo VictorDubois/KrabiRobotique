@@ -66,7 +66,7 @@ public:
 
     static Table* getMainInstance();
 
-    Table(MainWindow* mainWindow, QWidget* parent = 0, bool isBlue = true);
+    Table(MainWindow* mainWindow, QWidget* parent = 0, bool isYellow = true);
 	virtual ~Table();
 
     void treat(KrabiPacket &packet);

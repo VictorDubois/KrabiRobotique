@@ -10,7 +10,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
 	virtual ~MainWindow();
-    MainWindow(bool isBlue);
+    MainWindow(bool isYellow);
 
 private:
 	class Table* table;

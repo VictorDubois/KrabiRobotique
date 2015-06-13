@@ -271,7 +271,7 @@ Objet::Type Objet::getType()
 
 bool Objet::isNear(Position p, Distance radius)
 {
-    Position delta = p - this->p;
+    Vec2d delta = p - this->p;
 
     return (delta.getNorme() < radius + this->radius);
 }

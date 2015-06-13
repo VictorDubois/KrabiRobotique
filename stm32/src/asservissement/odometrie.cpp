@@ -17,7 +17,6 @@ Odometrie* Odometrie::odometrie = NULL;
 Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite)
 : rayonRoueCodeuse(RAYON_ROUE), entraxe(TAILLE_ENTRAXE), nbTicksParTour(NBR_TICK_PAR_TOUR)
 {
-
     vitesseLineaire =0;
     vitesseAngulaire=0;
 
@@ -33,7 +32,11 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
 
     this->roueCodeuseGauche = roueCodeuseGauche;
     this->roueCodeuseDroite = roueCodeuseDroite;
-    Odometrie::odometrie = this;
+
+    if(odometrie == 0)
+    {
+        Odometrie::odometrie = this;
+    }
 
     posX = 0.0;
     posY = 0.0;
@@ -216,7 +219,8 @@ Odometrie* Odometrie::odometrie = NULL;
 //But in a separate file
 Odometrie::Odometrie(Robot* robot) : robot(robot)
 {
-    Odometrie::odometrie = this;
+    if (Odometrie::odometrie == 0)
+        Odometrie::odometrie = this;
 }
 
 PositionPlusAngle Odometrie::getPos() const

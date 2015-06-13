@@ -72,7 +72,7 @@ bool Command::getLimit(void)
 
 bool Command::isNear(Position pos, float precision)
 {
-    Position vect = pos - Odometrie::odometrie->getPos().getPosition();
+    Vec2d vect = pos - Odometrie::odometrie->getPos().getPosition();
 
     return (vect.getNorme() < (int) precision);
 }
@@ -91,7 +91,7 @@ bool Command::isLookingAt(Angle a, float precision)
 
 bool Command::isLookingAt(Position pos, float precision)
 {
-    Position delta = pos - Odometrie::odometrie->getPos().getPosition();
+    Vec2d delta = pos - Odometrie::odometrie->getPos().getPosition();
     Angle angleVise = atan2(delta.getY(),delta.getX());
     Angle diff = angleVise - Odometrie::odometrie->getPos().angle;
 

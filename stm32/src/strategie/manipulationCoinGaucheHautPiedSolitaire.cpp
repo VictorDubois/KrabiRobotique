@@ -47,7 +47,7 @@ int ManipulationCoinGaucheHautPiedSolitaire::update()
     #ifndef ROBOTHW
             qDebug() << "action ManipulationCoinGaucheHautPiedSolitaire";
     #endif
-        this->goalPosition = Position(85,200, isYellow);
+        this->goalPosition = Position(85,200, true);
         StrategieV2::setCurrentGoal(this->goalPosition);
         status++;
     }

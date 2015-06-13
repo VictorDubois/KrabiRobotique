@@ -10,7 +10,14 @@
     #include "stm32f4xx_gpio.h"
 #endif
 
-#include "initialisation.h"
+#if defined(STM32F10X_CL)
+//#ifdef STM32F1
+    #include "initkrabi.h"
+#elif defined(STM32F40_41xxx)
+    #include "InitKrabiJunior.h"
+#endif
+
+#include "initkrabi.h"
 #include "actionneurs/servo.h"
 #include "memory.h"
 #include "servo.h"
@@ -48,18 +55,7 @@
 #define NVIC_CCR ((volatile unsigned long *)(0xE000ED14))
 
 // Dit si on est du coté bleu
-bool isBlue() // = ROUGE
-{
-#ifdef STM32F40_41xxx // Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9) == Bit_RESET;
-#endif
-#ifdef STM32F10X_CL // Pin pour le stm32 h107
-    return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == Bit_RESET;
-#endif
-#ifdef STM32F10X_MD // Pin pour le stm32 h103
-    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9) == Bit_RESET;
-#endif
-}
+
 
 // Dit si la tirette est enlevée
 /*bool isTiretteEnlevee()
@@ -90,15 +86,13 @@ int main()
         SystemInit(); // Appelée implicitement ?
     #endif
 
-    // On initialise les horloges
-    Clk_Init();
-
-    // Définit quelques horloges supplémentaires
-    initAutresHorloges();
-
-    // Appel de la fonction qui permet d'initialiser tous les PINS
-    initialisationDesPIN();
-
+    #if defined(STM32F40_41xxx) // H405
+        InitKrabiJunior initKJ;
+        initKJ.init();
+    #elif defined(STM32F10X_CL) // H107
+        InitKrabi initKrabi;
+        initKrabi.init();
+    #endif
 
 #ifdef ALLOW_DEBUG
     //Debug::testRemote();
@@ -109,11 +103,6 @@ int main()
 #endif
 
     //Remote::getSingleton()->waitForConnection();
-
-
-    ServosNumeriques::initClocksAndPortsGPIO();
-    ServosNumeriques::initUART(1000000);
-    ServosNumeriques::sendMode();
 
     /*while(true)
     {
@@ -189,15 +178,14 @@ int main()
         }
     }*/
 
+    /*
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif
     #ifdef STM32F10X_MD // pour la STM32 H103 2014 v1 :
         Tirette tirette(GPIOA, GPIO_Pin_10);
     #endif
-    #ifdef STM32F10X_CL // pour la STM32 H107 2013 v2 :
-        Tirette tirette(GPIOE, GPIO_Pin_5);
-    #endif
+    */
 
 
 
@@ -219,24 +207,23 @@ int main()
     //Debug::testBrasLateraux();
 #endif
 
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
 
+    /*
     #if defined(STM32F10X_CL)
         Remote::getSingleton();
     #endif
+    */
 
     // Initialisation des actionneurs 2
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
 
     #elif defined(STM32F10X_CL) // H107
 //        Brak* bracquemart = Brak::getSingleton();
-        Sensors* sensors = Sensors::getSingleton();
-        ServosNumeriques::setLedState(1, 12);
+
     #endif
 
 
-
+    /*
     #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
         QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOB, GPIO_Pin_6, GPIOB, GPIO_Pin_7, GPIO_AF_TIM4 ,GPIO_PinSource6, GPIO_PinSource7);
         QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM1, GPIOA, GPIO_Pin_8, GPIOA, GPIO_Pin_9, GPIO_AF_TIM1 ,GPIO_PinSource8, GPIO_PinSource9);
@@ -250,7 +237,7 @@ int main()
         GPIO_PinRemapConfig(GPIO_Remap_TIM4, ENABLE);
         QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
     #endif
-
+    */
     #ifdef ALLOW_DEBUG
         //Debug::testQuadrature(rcg, rcd);
     #endif
@@ -259,21 +246,14 @@ int main()
 // Pour la v1 :
 //    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM2, GPIOA, GPIO_Pin_0, GPIOA, GPIO_Pin_1);
  //   QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, GPIOA, GPIO_Pin_7);
-    Odometrie* odometrie = new Odometrie(rcg, rcd);
-    Position pos(194, 1000, isBlue());//1500, isBlue());
-    PositionPlusAngle posPlusAngle(pos,0);
-    if (!isBlue())
-        posPlusAngle = PositionPlusAngle(pos,-M_PI);
-    odometrie->setPos(posPlusAngle);
 
-    StrategieV2* strat = new StrategieV2(isBlue());
-    Asservissement* asserv = new Asservissement(odometrie);
 
 /*
     CommandAllerA* command = new CommandAllerA(Position(1000,230), false);
     command->update();
     asserv->setCommandSpeeds(command);
 */
+
     while(1);
 
     return 0;

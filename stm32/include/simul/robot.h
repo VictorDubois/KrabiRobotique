@@ -25,7 +25,7 @@ private:
 	/** @brief Position et angle actuel du robot*/
     PositionPlusAngle pos;
     /** @brief Vitesse linéaire et vitesse angulaire actuel du robot*/
-	PositionPlusAngle deriv;
+    PositionPlusAngle deriv;
 	boost::circular_buffer<PositionPlusAngle> olds;
 	class Asservissement* asservissement;
 	class Odometrie* odometrie;
@@ -46,7 +46,7 @@ private:
 	b2Body* body;
     std::vector<QPoint> robotPolygonPoints;
 
-    bool isBlue, mRemoteMod;
+    bool isYellow, mRemoteMod;
 
 public:
 
@@ -54,7 +54,7 @@ public:
 
     /** @brief Constructeur de la classe
         @param world Référence vers le b2World dans lequel évolura le robot*/
-    Robot(b2World &world, PositionPlusAngle depart, bool manual, bool isBlue);
+    Robot(b2World &world, bool manual, bool isYellow);
 	/** @brief Destructeur de la classe*/
 	~Robot();
     /** @brief Permet d'afficher le robot à l'écran

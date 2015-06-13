@@ -47,7 +47,7 @@ int ManipulationCoinGaucheHaut::update()
     #ifndef ROBOTHW
             qDebug() << "action ManipulationCoinGaucheHaut";
     #endif
-        this->goalPosition = Position(850,210, isYellow);
+        this->goalPosition = Position(850,210, true);
         StrategieV2::setCurrentGoal(this->goalPosition);
         status++;
     }
@@ -139,7 +139,7 @@ int ManipulationCoinGaucheHaut::update()
 #ifndef ROBOTHW
         qDebug() << "Etape ManipulationCoinGaucheHaut part2";
 #endif
-            this->goalPosition = Position(850, 110, isYellow);
+            this->goalPosition = Position(850, 110, true);
             StrategieV2::setCurrentGoal(this->goalPosition, this->goBack);
             Pinces::getSingleton()->ouvrirPinces();
             status++;

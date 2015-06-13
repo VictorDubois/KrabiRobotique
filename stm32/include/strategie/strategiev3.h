@@ -22,10 +22,12 @@
 //#define NOMBRE_ETAPES 10
 class StrategieV3 : public MediumLevelAction
 {
+
 public:
+    static bool isYellow();
     /** @brief Constructeur de la stratégie *
-    * @param isBlue le côté de départ */
-    StrategieV3(bool isBlue);
+    * @param isYellow le côté de départ */
+    StrategieV3(bool isYellow);
 
     /** @brief Update la stratégie, soit parceque le robot est arrivé à une étape, soit parcequ'il vient d'éviter un autre robot *
     * @return Le status  : 1 = vers une étape-objectif, 2 = vers une étape intermédiaire, -1 = stratégie finie, plus rien à faire */
@@ -46,6 +48,7 @@ public:
 #endif
 
 protected:
+    static bool yellow;
     /** @brief le numéro de l'étape en cours */
     int etapeEnCours;
     int nombreEtapes;
