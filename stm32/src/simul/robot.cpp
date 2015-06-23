@@ -517,6 +517,7 @@ void Robot::updateForces(int dt)
 
 void Robot::paint(QPainter &p, int dt)
 {
+    return;
     if(dt)
     {
         pos.position.x = 100*body->GetPosition().x;

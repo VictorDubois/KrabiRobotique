@@ -261,14 +261,14 @@ int main()
 
 
     #if defined(STM32F10X_CL)
-//        Remote::getSingleton();
+        Remote::getSingleton();
     #endif
 
 
-    tirette.attendreRemise();
+    /*tirette.attendreRemise();
     tirette.attendreEnlevee();
 
-    for(int i(0); i<70000000; ++i);
+    for(int i(0); i<70000000; ++i);*/
 
 
   /*  Ascenseur* ascenseur = Ascenseur::getSingleton();
