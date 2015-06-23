@@ -622,6 +622,7 @@ void Table::update(int dt)
 
 void Table::paintEvent(QPaintEvent* evt)
 {
+
 	QPainter p(this);
 	p.setRenderHints(QPainter::Antialiasing,true);
     //p.setWindow(QRect(0,-tableHeight,tableWidth,tableHeight));

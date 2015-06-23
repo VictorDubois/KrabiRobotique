@@ -142,10 +142,10 @@ void Remote::initUART(int baudRate)
 
     USART_Cmd(REMOTE_USART_INDEX, ENABLE);
 
-    //USART_ITConfig(REMOTE_USART_INDEX, USART_IT_RXNE, ENABLE);
+    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_RXNE, ENABLE);
 
     /**** IT ***/
-    /*NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 
     // Configure the NVIC Preemption Priority Bits
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
@@ -154,7 +154,7 @@ void Remote::initUART(int baudRate)
     NVIC_InitStructure.NVIC_IRQChannel = REMOTE_USART_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);*/
+    NVIC_Init(&NVIC_InitStructure);
 #endif
 }
 
