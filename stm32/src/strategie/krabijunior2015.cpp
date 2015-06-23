@@ -15,24 +15,24 @@ KrabiJunior2015::KrabiJunior2015(bool isYellow) : StrategieV3(isYellow)
 
     // Création des étapes
     // Les étapes correspondant à des actions sont créées automatiquement lors de l'ajout d'actions
-    new Etape(0, Position(250, 1000, isYellow), Etape::DEPART);            // départ au fond de la zone de départ
+    new Etape(0, Position(250, 1000, true), Etape::DEPART);            // départ au fond de la zone de départ
     // Points de passage
     // numéro étape, position
-    new Etape(1, Position(600, 1000, isYellow));
-    new Etape(2, Position(700, 1000, isYellow));
-    new Etape(3, Position(1200, 1000, isYellow));
-    new Etape(4, Position(1000, 1300, isYellow));
-    new Etape(5, Position(1500, 1300, isYellow));
-    new Etape(6, Position(1800, 1200, isYellow));
-    new Etape(7, Position(1700, 800, isYellow));
-    new Etape(8, Position(1200, 800, isYellow));
-    new Etape(9, Position(1200, 600, isYellow), Etape::TAPIS);
+    new Etape(1, Position(600, 1000, true));
+    new Etape(2, Position(700, 1000, true));
+    new Etape(3, Position(1200, 1000, true));
+    new Etape(4, Position(1000, 1300, true));
+    new Etape(5, Position(1500, 1300, true));
+    new Etape(6, Position(1800, 1200, true));
+    new Etape(7, Position(1700, 800, true));
+    new Etape(8, Position(1200, 800, true));
+    new Etape(9, Position(1200, 600, true), Etape::TAPIS);
 
     // Actions
     // numéro étape, mediumLevelAction
 
     // Tapis
-    //new Etape(9, new Tapis(Position(1200, 600, isYellow)) );
+    //new Etape(9, new Tapis(Position(1200, 600)) );
 
     // Voisins
     Etape::get(0)->addVoisins(0, 2);

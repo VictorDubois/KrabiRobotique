@@ -27,11 +27,9 @@
 
 RamasserPied::RamasserPied(){}
 
-RamasserPied::RamasserPied(Position goalposition, bool recule): MediumLevelAction(goalposition), recule(recule) {
+RamasserPied::RamasserPied(Position goalposition, bool recule): MediumLevelAction(goalposition), recule(recule)
+{
 
-    #ifndef ROBOTHW
-    qDebug() << "Pied" << this->goBack;
-    #endif
 }
 
 RamasserPied::~RamasserPied(){}

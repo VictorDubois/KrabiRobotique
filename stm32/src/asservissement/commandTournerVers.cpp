@@ -47,8 +47,8 @@ void CommandTournerVers::update()
     float angleVise;
     if (!useAngle)
     {
-        Position delta = but-pos;
-        angleVise = atan2(delta.getY(),delta.getX());
+        Vec2d delta = but-pos;
+        angleVise = atan2(delta.x,delta.y);
     }
     else
     {

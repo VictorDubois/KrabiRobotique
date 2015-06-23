@@ -11,10 +11,10 @@
 
 DeposerPied::DeposerPied(){}
 
-DeposerPied::DeposerPied(Position goalposition, bool isYellow):MediumLevelAction(goalposition){
-    if (goalposition == Position(500, 1000, isYellow))
+DeposerPied::DeposerPied(Position goalposition):MediumLevelAction(goalposition){
+    if (goalposition == Position(500, 1000))
     {
-        this->positionRetournement = Position(700, 1000, isYellow);
+        this->positionRetournement = Position(700, 1000);
     }
     else // ne sert à rien normalement
     {

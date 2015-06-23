@@ -2,55 +2,46 @@
 #define VECTOR_H
 
 /** @brief Classe permettant de stocker dans un vecteur un ensemble d'objet quelconque du même type T */
-template <typename T>
+template<typename T>
 class vector
 {
     public:
         /** @brief Constructeur de base d'un vecteur */
         vector();
-
         /** @brief Constructeur d'un vecteur avec un espace mémoire réservé *
         *   @param allocatedSize Taille du vecteur à réserver en mémoire */
         vector(int allocatedSize);
-
         /** @brief Destructeur de la classe */
         virtual ~vector();
 
         /** @brief Permet d'ajouter un élément à la fin du tableau *
         *   @param value Élement à ajouter */
-        void push_back(const T& value);
-
+        void push_back(T value);
         /** @brief Pour retourner un élément précis du vecteur *
         *   @param i Case de l'élément à retourner */
-        T& operator[](int i);
-
+        T operator[](int i);
         /** @brief Permet de réduire la taille du tableau en mémoire à la taille réél dont a besoin le vecteur pour stocker toutes les données */
         void resize();
-
         /** @brief Accesseur de size */
-        int getSize() const;
-
+        int getSize();
         /** @brief Réserver une certaine place en mémoire avant de travailler sur le vecteur *
         *   @param taille Taille à réserver en mémoire */
         void reserve(int taille);
-
         /** @brief Permet de réinitialiser le vector (size = 0) */
         void reset();
 
+    protected:
     private:
-
-        /** @brief Tableau de taille allocatedSize contenant size donnée */
-        T* table;
-
-        /** @brief Nombre de données en mémoire */
-        int size;
-
-        /** @brief Taille du talbeau alloué en mémoire */
-        int allocatedSize;
+    /** @brief Tableau de taille allocatedSize contenant size donnée */
+    T* table;
+    /** @brief Nombre de données en mémoire */
+    int size;
+    /** @brief Taille du talbeau alloué en mémoire */
+    int allocatedSize;
 };
 
 
-template <typename T>
+template<typename T>
 vector<T>::vector()
 {
     allocatedSize = 0;
@@ -58,7 +49,7 @@ vector<T>::vector()
     table = 0x0;
 }
 
-template <typename T>
+template<typename T>
 vector<T>::vector(int allocatedSize)
 {
     this->allocatedSize = allocatedSize;
@@ -66,14 +57,14 @@ vector<T>::vector(int allocatedSize)
     size = 0;
 }
 
-template <typename T>
+template<typename T>
 vector<T>::~vector()
 {
     delete[] table;
 }
 
-template <typename T>
-void vector<T>::push_back(const T& value)
+template<typename T>
+void vector<T>::push_back(T value)
 {
     if (size < allocatedSize)
     {
@@ -93,8 +84,8 @@ void vector<T>::push_back(const T& value)
     }
 }
 
-template <typename T>
-T& vector<T>::operator[](int i)
+template<typename T>
+T vector<T>::operator[](int i)
 {
     if (i<size)
         return table[i];
@@ -102,7 +93,7 @@ T& vector<T>::operator[](int i)
         return table[-1]; // Pour obtenir une erreur
 }
 
-template <typename T>
+template<typename T>
 void vector<T>::resize()
 {
     if (size != allocatedSize)
@@ -120,13 +111,13 @@ void vector<T>::resize()
     }
 }
 
-template <typename T>
-int vector<T>::getSize() const
+template<typename T>
+int vector<T>::getSize()
 {
     return size;
 }
 
-template <typename T>
+template<typename T>
 void vector<T>::reserve(int taille)
 {
     if (taille > allocatedSize)
@@ -140,7 +131,7 @@ void vector<T>::reserve(int taille)
     }
 }
 
-template <typename T>
+template<typename T>
 void vector<T>::reset()
 {
     size = 0;

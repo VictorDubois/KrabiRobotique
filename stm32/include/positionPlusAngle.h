@@ -3,6 +3,7 @@
 
 #include "position.h"
 #include "angle.h"
+#include "vec3d.h"
 
 /// @brief Classe permettant d'avoir la position du robot par rapport à l'angle de la table et son angle par rapport à l'absisse.
 class PositionPlusAngle
@@ -16,6 +17,8 @@ class PositionPlusAngle
         /// @brief Constructeur par défault de la classe.
         PositionPlusAngle();
 
+        PositionPlusAngle getSymetrical();
+
         /// @brief Constructeur de copie.
         PositionPlusAngle(const PositionPlusAngle& original);
 
@@ -23,16 +26,25 @@ class PositionPlusAngle
         PositionPlusAngle operator+(Distance distance) const;
 
         /// @brief Surcharge d'opérateur pour ajouter deux PositionPlusAngle (chaque paramètre deux à deux).
-        PositionPlusAngle operator+(const PositionPlusAngle& posAngAdd) const;
+        Vec3d operator+(const PositionPlusAngle& posAngAdd) const;
 
         /// @brief Surcharge d'opérateur pour enlever une distance.
         PositionPlusAngle operator-(Distance distance) const;
+
+        /// @brief Surcharge d'opérateur pour enlever une distance.
+        Vec3d operator-(const PositionPlusAngle& posAngSub) const;
 
         /// @brief Surcharge d'opérateur pour assigner un PositionPlusAngle
         const PositionPlusAngle& operator=(const PositionPlusAngle& positionPlusAngle);
 
         /// @brief Surcharge d'opérateur pour comparer deux positions et angles.
         bool operator==(const PositionPlusAngle& p) const;
+
+        /// @brief Surchage d'opérateur pour ajouter des coordonnées
+        PositionPlusAngle operator+(const Vec3d &vec3d) const;
+
+        /// @brief Surchage d'opérateur pour soustraire des coordonnées
+        PositionPlusAngle operator-(const Vec3d &vec3d) const;
 
         /// @brief Fonction pour comparer deux positionPlusAngles à peu prés.
         bool presqueEgales(const PositionPlusAngle& positionPlusAngle) const;

@@ -36,6 +36,7 @@
 #endif
 
 StrategieV2* StrategieV2::strategie = NULL;
+
 int StrategieV2::updateCount = 0;
 Command* StrategieV2::currentCommand = NULL;
 MediumLevelAction* StrategieV2::currentAction = NULL;
@@ -49,7 +50,7 @@ bool StrategieV2::hasToStopAfterAction = false;
 int StrategieV2::glassGathered = 0;
 int StrategieV2::timeSinceLastRecalibration = 0;
 bool StrategieV2::somethingDetected = false;
-bool StrategieV2::isYellow = false;
+bool StrategieV2::yellow = true;
 bool StrategieV2::sharpsToCheck[SharpSensor::END_SHARP_NAME];
 int StrategieV2::robotBloque = 0;
 bool StrategieV2::enTrainDeRecalibrerOdometrie = false;
@@ -65,177 +66,41 @@ int StrategieV2::hysteresisTourelle = 0;
 
 StrategieV2::StrategieV2(bool yellow)
 {
-    isYellow = yellow;
-    timeToRestart = 0;
-    /*actionsToDo[0] = new RamasserVerreV2(Position(900,550));
-    actionsToDo[1] = new RamasserVerreV2(Position(1050,800));
-    actionsToDo[2] = new RamasserVerreV2(Position(900,1050));
-    actionsToDo[3] = new RamasserVerreV2(Position(1200,1050));
-    actionsToDo[4] = new RamasserVerreV2(Position(1200,550));
-    actionsToDo[5] = new RamasserVerreV2(Position(1350,800));
-    actionsToDo[6] = new RamasserVerreV2(Position(1650,800));
-    actionsToDo[7] = new RamasserVerreV2(Position(1800,1050));
-    actionsToDo[8] = new RamasserVerreV2(Position(1800,550));
-    actionsToDo[9] = new RamasserVerreV2(Position(1950,800));
-    actionsToDo[10] = new RamasserVerreV2(Position(2100,550));
-    actionsToDo[11] = new RamasserVerreV2(Position(2100,1050));*/
-    for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
-        sharpsToCheck[i] = false;
+    if(strategie == 0)
+    {
+        StrategieV2::setYellow(yellow);
+        timeToRestart = 0;
 
-    //actionsToDo[0] = new Evitement();
-    //actionsToDo[0] = new ActionGoTo(Position(1000,230), false);
-    int decalage = 0;
-    //actionsToDo[0] = new RecalibrerOdometrie(true);
-    //actionsToDo[0] = new RecalibrerOdometrie(blue, Position(200, 1500, blue), RecalibrerOdometrie::COTE_NOTRE_DEPART_HAUT);
-    //actionsToDo[1] = new RecalibrerOdometrie(blue, Position(500, 500, blue), RecalibrerOdometrie::COTE_NOTRE_DEPART_BAS);
-    //actionsToDo[2] = new RecalibrerOdometrie(blue, Position(2500, 500, blue), RecalibrerOdometrie::COTE_DEPART_ADVERSAIRE_BAS);
-    //actionsToDo[3] = new RecalibrerOdometrie(blue, Position(2800, 1500, blue), RecalibrerOdometrie::COTE_DEPART_ADVERSAIRE_HAUT);
-    //actionsToDo[0] = new StrategieV3(blue);
+        for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
+            sharpsToCheck[i] = false;
 
-    /* Appel des stratégies */
+        int decalage = 0;
 
-    //actionsToDo[0] = (MediumLevelAction*) new Krabi2014(blue);
-
-#if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-    actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(yellow);
-#else
-    actionsToDo[0] = (MediumLevelAction*) new Krabi2015(yellow);
-#endif
-
-    // 2014 :
-    //CanonFilet::getSingleton()->attente();
-
-    //actionsToDo[0] = new Fresque(blue, Position(1500, 1500));
-
-
-    /*###############################################
-    Benchmark strategieV3
-    ###############################################
-
-    #ifdef STM32F10X_CL
-        Tirette tirette(GPIOE, GPIO_Pin_5);
-    #elif defined(STM32F10X_MD) || defined(STM32F40_41xxx)
-        Tirette tirette(GPIOA, GPIO_Pin_10);
+    #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
+        actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(yellow);
+    #else
+        actionsToDo[0] = (MediumLevelAction*) new Krabi2015(yellow);
     #endif
 
-
-    StrategieV3 strategieV3 = new StrategieV3(true);
-
-
-    allumerLED();
-    eteindreLED();
-    allumerLED2();
-    eteindreLED2();
-    allumerLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-    eteindreLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-        allumerLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-    eteindreLED();
+        currentAction = actionsToDo[actionsCount];
 
 
+        StrategieV2::strategie = this;
 
-    for(int i = 0 ; i < 100000 ; i++)
-    {
-        if(i%ROBOT_VU_ICI==0)
-        {
-            strategieV3.resetEverything();
-        }
-        strategieV3.update();
-    }
-    allumerLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-    eteindreLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-    allumerLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-    eteindreLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee();
-    allumerLED();
-    tirette.attendreRemise();
-    tirette.attendreEnlevee(); // */
-//    actionsToDo[0] = new EteindreBougies(isBlue); // action d'éteindre les bougies
-//    actionsToDo[1] = new ActionGoTo(Position(400,1000), true);
-    //actionsToDo[1] = new RecalibrerOdometrie(); //EteindreBougies(isBlue); // action d'éteindre les bougies
-//    actionsToDo[1] = new RamasserVerres(); //new ActionGoTo(Position(300,1300,StrategieV2::getIsBlue()), true); // //action de ramasser les verres
-//    actionsToDo[0] = new ActionGoTo(Position(1200, 1000, isBlue), false);
-//    actionsToDo[1] = new ActionGoTo(Position(800, 1000, isBlue), false);
-    //actionsToDo[0] = new ActionGoTo(Position(1200,550), false);//RamasserVerreV2(Position(900,550));
-    //actionsToDo[1] = new ActionGoTo(Position(1200,700), false); // (400,230
+        Sensors* sensors = Sensors::getSingleton();
+        sharps = sensors->getSharpSensorsList();
 
-    /*actionsToDo[2] = new ActionGoTo(Position(350,550), false); // (400,230
-    //actionsToDo[2] = new ActionGoTo(Position(2600,400), false);
-    actionsToDo[3] = new ActionGoTo(Position(2600,550), false);
-    actionsToDo[4] = new ActionGoTo(Position(300, 550), false);
-    actionsToDo[5] = new ActionGoTo(Position(2600,550), true);
-    actionsToDo[6] = new ActionGoTo(Position(2600,800), false);
-    actionsToDo[7] = new ActionGoTo(Position(300, 800), false);
-    actionsToDo[8] = new ActionGoTo(Position(2600,800), true);
-    actionsToDo[9] = new ActionGoTo(Position(2600,1070), false);
-    actionsToDo[10] = new ActionGoTo(Position(300,1070), false);*/
-
-    //currentAction = new RecalibrerOdometrie(new LimitSwitchSensor(LimitSwitchSensor::BACK_LEFT, GPIO_Pin_14, GPIOD), new LimitSwitchSensor(LimitSwitchSensor::BACK_RIGHT, GPIO_Pin_1, GPIOD));
-    currentAction = actionsToDo[actionsCount];
-    //currentCommand = new CommandAllerA(currentAction->getGoalPosition());
-    //Asservissement::setCommand(currentCommand);
-    //currentAction = new RecalibrerOdometrie();
-    //hasJustAvoided = true;
-    //currentAction->update();
-
-
-    StrategieV2::strategie = this;
-
-    //#ifndef ROBOTHW //liste utilisée pour simuler les capteurs
-
-    //#else
-
-    /*uint8_t channels[10] = {9,13,8,11,5,10,4,12,14,15};
-    uint16_t* data = AnalogSensor::initialiserADC(10, channels);
-    int nbSharp = 10;*/
-
-    Sensors* sensors = Sensors::getSingleton();
-    sharps = sensors->getSharpSensorsList();
-    /*
-    StrategieV2::sharps = new SharpSensor*;
-    sharps[0] = new SharpSensor(SharpSensor::FRONT_LEFT, 9, data, 2000.0); // front left 9
-    sharps[1] = new SharpSensor(SharpSensor::FRONT_RIGHT, 13, data); // front side right 13
-    sharps[2] = new SharpSensor(SharpSensor::FRONT_SIDE_LEFT, 8, data); // front side left 8
-    sharps[3] = new SharpSensor(SharpSensor::FRONT_SIDE_RIGHT, 11, data); // avant side droite 11
-    sharps[4] = new SharpSensor(SharpSensor::BACK_LEFT, 5, data); // ARRIERE gauche 5
-    sharps[5] = new SharpSensor(SharpSensor::BACK_MIDDLE, 10, data, 2500.); // back middle 10
-    sharps[6] = new SharpSensor(SharpSensor::NONE, 4, data); //
-    sharps[7] = new SharpSensor(SharpSensor::ELEVATOR_TOP, 12, data); // capteur haut ascenseur 12
-    sharps[8] = new SharpSensor(SharpSensor::ELEVATOR_DOWN, 14, data); // capteur bas ascenseur 14
-    sharps[9] = new SharpSensor(SharpSensor::BACK_RIGHT, 15, data, 2000.0); //
-    #endif*/
-    emptySharpsToCheck();
-    //@TODO
-    /*enableSharp(SharpSensor::BACK_RIGHT);
-    enableSharp(SharpSensor::FRONT_LEFT);*/
-    /*enableSharp(SharpSensor::FRONT_LEFT);
-    enableSharp(SharpSensor::FRONT_RIGHT);
-    enableSharp(SharpSensor::FRONT_SIDE_LEFT);
-    enableSharp(SharpSensor::FRONT_SIDE_RIGHT);
-
-    enableSharp(SharpSensor::BACK_LEFT);
-    enableSharp(SharpSensor::BACK_MIDDLE);
-    enableSharp(SharpSensor::BACK_RIGHT);*/
-
+        emptySharpsToCheck();
 #ifdef ROBOTHW
 //        tourelle = new Tourelle(TIM6, 0);//TIM parameter is not implemented yet
     tourelle = new Tourelle();
     //tourelle->setZoneCritique(10, 27000);
 #endif
 
-    updateCount = 0;
+        updateCount = 0;
+    }
+
+
 }
 
 StrategieV2::~StrategieV2()
@@ -295,6 +160,7 @@ void StrategieV2::update()
     if (StrategieV2::strategie == NULL)
         return;
     updateCount++;
+
     if(currentAction)
         currentAction->updateTime(90*1000-updateCount*5);
 
@@ -806,13 +672,14 @@ bool StrategieV2::willCollide()
     Asservissement::asservissement->resetAsserv();
 }
 
-void StrategieV2::setIsYellow(bool yellow)
+bool StrategieV2::isYellow()
 {
-    isYellow = yellow;
+    return yellow;
 }
-bool StrategieV2::getIsYellow()
+
+void StrategieV2::setYellow(bool yellow)
 {
-    return isYellow;
+    StrategieV2::yellow = yellow;
 }
 
 void StrategieV2::gatherGlass()

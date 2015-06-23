@@ -27,12 +27,12 @@ Table* Table::getMainInstance()
 
 Position getCase(unsigned int i, unsigned int j)
 {
-	return Position(450 + i*350, j*350);
+    return Position(450 + i*350, j*350);
 }
 
 Position getCaseCenter(unsigned int i, unsigned int j)
 {
-	return Position(625 + i*350, 175 + j*350);
+    return Position(625 + i*350, 175 + j*350);
 }
 
 b2AABB Table::getWorldAABB()
@@ -43,8 +43,8 @@ b2AABB Table::getWorldAABB()
 	return a;
 }
 
-Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
-    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false), mTimerAdjust(0), previousPosition(false),
+Table::Table(MainWindow *mainWindow, QWidget* parent, bool isYellow) :
+    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false), mTimerAdjust(0),
 #ifdef BOX2D_2_0_1
 	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
 #else
@@ -66,23 +66,15 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isBlue) :
 	setPalette(p);
 
     // ####### création des robots ######
-    int x_pos_Krabi = 300;//Proche
-    int x_pos_Advsersaire = 2700;//Loin
-    int angle_Krabi = 0;
-    int angle_Adversaire = M_PI;
-
-    if(isBlue)
-    {
-        x_pos_Krabi = 3000-x_pos_Krabi;
-        x_pos_Advsersaire = 3000-x_pos_Advsersaire;
-        angle_Krabi+=M_PI;
-        angle_Adversaire+=M_PI;
-    }
-    //Robot adversaire
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(x_pos_Advsersaire,1000, isBlue), angle_Adversaire), true, !isBlue));
     //Robot à nous
-    robots.push_back(new Robot(world,PositionPlusAngle(Position(x_pos_Krabi,1000, isBlue), angle_Krabi), false, isBlue)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+    robots.push_back(new Robot(world, false, isYellow)); // une seule odometrie, il faut donc mettre ce robot en dernier (celui commandé par la strat)
+
     //195,1760
+    //Robot adversaire
+    robots.push_back(new Robot(world, true, !isYellow));
+
+
+
 
     createObjects();
 
@@ -598,13 +590,13 @@ void Table::update(int dt)
         if (StrategieV2::getSharpsToCheck()[i])
             sharpsChecked.append((!sharpsChecked.isEmpty() ? QString(", ") : QString()) + QString::number(i));
 
-    debugText += "   x : " + QString::number(robots[1]->getPos().position.getX()) + " mm\n";
-    debugText += "   y : " + QString::number(robots[1]->getPos().position.getY()) + " mm\n";
-    debugText += "   angle : " + QString::number(robots[1]->getPos().getAngle()*180/M_PI) + " °\n\n";
+    debugText += "   x : " + QString::number(getMainRobot()->getPos().position.getX()) + " mm\n";
+    debugText += "   y : " + QString::number(getMainRobot()->getPos().position.getY()) + " mm\n";
+    debugText += "   angle : " + QString::number(getMainRobot()->getPos().getAngle()*180/M_PI) + " °\n\n";
 
     debugText += "Robot Speeds :\n";
-    debugText += "   lin : " + QString::number(robots[1]->getVitesseLineaire()) + " \n";
-    debugText += "   ang : " + QString::number(robots[1]->getVitesseAngulaire()) + " \n\n";
+    debugText += "   lin : " + QString::number(getMainRobot()->getVitesseLineaire()) + " \n";
+    debugText += "   ang : " + QString::number(getMainRobot()->getVitesseAngulaire()) + " \n\n";
 
     debugText += "Time : " + QString::number(mRemoteMod ? (mTime.elapsed() + mTimerAdjust) / 1000. : StrategieV2::getTimeSpent()/1000.) + " s\n\n";
 
@@ -818,7 +810,7 @@ void Table::removeClosestObject(Position pos)
 
 Robot* Table::getMainRobot()
 {
-    return robots.back();
+    return robots.front();
 }
 
 std::vector<Objet*> Table::findObjectsNear(Position pos, Distance searchRadius, Objet::Type type)

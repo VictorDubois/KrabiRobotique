@@ -1,6 +1,7 @@
 #include "simul/robot.h"
 #include <cmath>
 
+#include "initkrabi.h"
 #include "odometrie.h"
 #include "asservissement.h"
 #include "strategieV2.h"
@@ -10,26 +11,35 @@
 
 #define ratio_qt_box2d 0.01
 
-Robot::Robot(b2World & world, PositionPlusAngle depart, bool manual, bool isBlue) : world(world), olds(10000), mRemoteMod(false), body(NULL)
+Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(10000), mRemoteMod(false), body(NULL)
 {
-    leftUpperHammerStatus = 0;
-    leftLowerHammerStatus = 0;
-    rightUpperHammerStatus = 0;
-    rightLowerHammerStatus = 0;
-
     this->manual = manual;
     level = 0;
+
+    qDebug() << "Robot :" << isYellow;
+
+    //Initialisation ini = new Initialisation(PositionPlusAngle(Position(300, 1000), 0), isYellow, this);
+    InitKrabi initKrabi(isYellow, this);
+    initKrabi.init();
+
+    odometrie = initKrabi.getOdometrie();
+    asservissement = initKrabi.getAsservissement();
+    strategie = initKrabi.getStrategie();
+
+    /*strategie = new StrategieV2(isYellow);
+
+    PositionPlusAngle depart = PositionPlusAngle(isYellow ? Position(300,1000) : Position(2700, 1000), isYellow ? 0 : M_PI);
 
     odometrie = new Odometrie(this);
 
     odometrie->setPos(depart);
+    qDebug() << depart.position.x;
     pos = odometrie->getPos();
 
-    this->isBlue = isBlue;
-   //new Sensors();
 
-    strategie = new StrategieV2(isBlue);
-    asservissement = new Asservissement(odometrie);
+    asservissement = new Asservissement(odometrie);*/
+
+    this->isYellow = isYellow;    //new Sensors();
 
     deriv.position.x = 0;
     deriv.position.y = 0;
@@ -595,7 +605,7 @@ void Robot::paint(QPainter &p, int dt)
     p.drawRect(0, -160, 20, -leftLowerHammerStatus);*/
 
     //On peint le carré de la couleur du départ
-    if(isBlue)
+    if(!isYellow)
     {
         p.setPen(QColor(Qt::green));
         p.setBrush(QBrush(Qt::green));//QColor(90,90,90)));
@@ -867,8 +877,9 @@ PositionPlusAngle Robot::getPos()
  /*   alea1 = 2.1*(rand() % 801 -400)/1000;
     alea2 = 2.1*(rand() % 801 -400)/1000;
     alea3 = 2.1*(rand() % 801 -400)/6000; */
-    PositionPlusAngle erreur(Position(alea1,alea2),Angle(alea3));
+    Vec3d erreur(alea1, alea2, alea3);
     return (pos + erreur);
+
 }
 
 void Robot::setPos(PositionPlusAngle p)

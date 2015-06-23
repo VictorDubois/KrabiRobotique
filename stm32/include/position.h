@@ -3,6 +3,9 @@
 
 #include "angle.h"
 #include "distance.h"
+#include "vec2d.h"
+
+class StrategieV2;
 
 #define COLOR_POSITION Position::colorPosition
 
@@ -15,13 +18,15 @@ class Position
         Position();
 
         /// @brief Constructeur avec des coordonnées prédéfinies.
-        Position(Distance X, Distance Y, bool isYellow = false);
+        Position(Distance X, Distance Y, bool colorDependent = false);
+
+        Position getSymetrical();
 
         /// @brief Surchage d'opérateur pour ajouter des coordonnées
-        Position operator+(const Position &position) const;
+        Vec2d operator+(const Position &position) const;
 
         /// @brief Surchage d'opérateur pour soustraire des coordonnées
-        Position operator-(const Position &position) const;
+        Vec2d operator-(const Position &position) const;
 
         /// @brief Surchage d'opérateur pour multiplier par un flottant
         Position operator*(float val) const;
@@ -42,6 +47,12 @@ class Position
 
         /// @brief Surchage d'opérateur pour comparer des coordonnées
         bool operator==(const Position &p) const;
+
+        /// @brief Surchage d'opérateur pour ajouter des coordonnées
+        Position operator+(const Vec2d &vec2d) const;
+
+        /// @brief Surchage d'opérateur pour soustraire des coordonnées
+        Position operator-(const Vec2d &vec2d) const;
 
         /// @brief Fonction comparant l'égalité de positions à peu prés
         bool presqueEgales(const Position &p) const;
