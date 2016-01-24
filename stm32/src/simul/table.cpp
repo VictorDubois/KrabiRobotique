@@ -7,7 +7,7 @@
 
 #include "main_window.h"
 
-#define COUPE_2015
+#define COUPE_2016
 
 #ifndef ROBOTHW
 #include <QDebug>
@@ -312,6 +312,56 @@ void Table::createObjects()
     objets.push_back(new Objet(world, Position(2130.,1355.), Objet::STAND, 0, QColor(79, 168, 51)));
     objets.push_back(new Objet(world, Position(1900.,1770.), Objet::STAND, 0, QColor(79, 168, 51)));
     objets.push_back(new Objet(world, Position(1700.,1400.), Objet::STAND, 0, QColor(79, 168, 51)));
+#endif
+
+#ifdef COUPE_2016
+#define SHELL_2
+#ifdef SHELL_1
+    //Coquillages neutres
+    objets.push_back(new Objet(world, Position(2800.,1250.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(2800.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(1500.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(1500.,1850.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(200.,1250.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(200.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+
+    //Coquillages verts
+    objets.push_back(new Objet(world, Position(2100.,1450.), Objet::SHELL, 0, QColor(54, 103, 53)));
+    objets.push_back(new Objet(world, Position(1200.,1650.), Objet::SHELL, 0, QColor(54, 103, 53)));
+
+    //Coquillages violets
+    objets.push_back(new Objet(world, Position(1800.,1650.), Objet::SHELL, 0, QColor(132, 76, 130)));
+    objets.push_back(new Objet(world, Position(900.,1450.), Objet::SHELL, 0, QColor(132, 76, 130)));
+
+#endif
+#ifdef SHELL_2
+    //Coquillages neutres
+    objets.push_back(new Objet(world, Position(2800.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(1500.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(1500.,1850.), Objet::SHELL, 0, QColor(241, 240, 234)));
+    objets.push_back(new Objet(world, Position(200.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+
+    //Coquillages verts
+    objets.push_back(new Objet(world, Position(2800.,1250.), Objet::SHELL, 0, QColor(54, 103, 53)));
+    objets.push_back(new Objet(world, Position(2100.,1450.), Objet::SHELL, 0, QColor(54, 103, 53)));
+    objets.push_back(new Objet(world, Position(1800.,1650.), Objet::SHELL, 0, QColor(54, 103, 53)));
+
+
+    //Coquillages violets
+    objets.push_back(new Objet(world, Position(900.,1450.), Objet::SHELL, 0, QColor(132, 76, 130)));
+    objets.push_back(new Objet(world, Position(1200.,1650.), Objet::SHELL, 0, QColor(132, 76, 130)));
+    objets.push_back(new Objet(world, Position(200.,1250.), Objet::SHELL, 0, QColor(132, 76, 130)));
+#endif
+#ifdef SHELL_3
+    //Coquillages verts
+    objets.push_back(new Objet(world, Position(2300.,1250.), Objet::SHELL, 0, QColor(54, 103, 53)));
+    objets.push_back(new Objet(world, Position(700.,1550.), Objet::SHELL, 0, QColor(54, 103, 53)));
+
+    //Coquillages violets
+    objets.push_back(new Objet(world, Position(700.,1250.), Objet::SHELL, 0, QColor(132, 76, 130)));
+    objets.push_back(new Objet(world, Position(2300.,1550.), Objet::SHELL, 0, QColor(132, 76, 130)));
+
+#endif
 #endif
 }
 

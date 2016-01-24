@@ -21,7 +21,9 @@ class Objet
             FIREUP, /*!< Représente un feu en position verticale*/
             TORCH, /*!< Représente une torche*/
             CUP, /*!< Représente un gobelet à pop-corn*/
-            STAND /*!< Représente un pied de projecteur*/
+            STAND, /*!< Représente un pied de projecteur*/
+            SHELL, /*!< Représente un coquillage*/
+            SANDCUBE /*!< Représente un cube de chateau de sable*/
         };
         /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p avec pour angle initial theta. */
         /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/

@@ -128,6 +128,47 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         radius = circle.m_radius;
         break;
     }
+
+    case SHELL:
+    {
+        b2CircleShape circle;
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circle;
+        circle.m_radius = 0.29f;
+        circle.m_p.Set(0.,0.);
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+
+        radius = circle.m_radius;
+        break;
+    }
+
+    case SANDCUBE:
+    {
+        b2Vec2 vertices[4];
+        vertices[0].Set(0.0f, -0.58f);
+        vertices[1].Set(0.0f, 0.0f);
+        vertices[2].Set(-0.58f, 0.0f);
+        vertices[3].Set(-0.58f, -0.58f);
+
+        int32 count = 4;
+        b2PolygonShape polygon;
+        polygon.Set(vertices, count);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &polygon;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+
+        radius = 0.58f;
+        break;
+    }
     }
 }
 
@@ -208,6 +249,23 @@ void Objet::paint(QPainter &pa)
             pa.setPen(p_color);
 
             pa.drawEllipse(QPoint(p.x,p.y),30,30);
+            break;
+        }
+        case SHELL:
+        {
+            pa.setBrush(p_color);
+            pa.setPen(p_color);
+
+            pa.drawEllipse(QPoint(p.x,p.y),38,38);
+            break;
+        }
+        case SANDCUBE:
+        {
+            p_color = QColor(232, 140, 0);
+            pa.setBrush(p_color);
+            pa.setPen(p_color);
+
+            pa.drawRect(-29, -29, 58, 58);
             break;
         }
 		default:
