@@ -26,19 +26,6 @@ Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(1
     asservissement = initKrabi.getAsservissement();
     strategie = initKrabi.getStrategie();
 
-    /*strategie = new StrategieV2(isYellow);
-
-    PositionPlusAngle depart = PositionPlusAngle(isYellow ? Position(300,1000) : Position(2700, 1000), isYellow ? 0 : M_PI);
-
-    odometrie = new Odometrie(this);
-
-    odometrie->setPos(depart);
-    qDebug() << depart.position.x;
-    pos = odometrie->getPos();
-
-
-    asservissement = new Asservissement(odometrie);*/
-
     this->isYellow = isYellow;    //new Sensors();
 
     deriv.position.x = 0;
@@ -550,7 +537,7 @@ void Robot::paint(QPainter &p, int dt)
         }
     }
 
-//	p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
+    //p.drawChord(-103/2 + 104, -107, 2*103, 215, 16*90, 16*180);
     //p.drawRect(-268, -179.5, 268, 359);
     //drawTriangle(p, 0, 0,  65, 0,  60, 0);
     p.setOpacity(1);
@@ -644,7 +631,6 @@ void Robot::setLevel()
         {
             filter.maskBits = 0x3;
             filter.categoryBits = 0x1;
-
         }
 }
 
@@ -656,7 +642,6 @@ PositionPlusAngle Robot::getPos()
     alea3 = 2.1*(rand() % 801 -400)/6000; */
     Vec3d erreur(alea1, alea2, alea3);
     return (pos + erreur);
-
 }
 
 void Robot::setPos(PositionPlusAngle p)

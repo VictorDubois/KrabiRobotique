@@ -18,7 +18,7 @@ DebugWindow* DebugWindow::getInstance()
 DebugWindow::DebugWindow() :
     QMainWindow(), parent(NULL), attached(true), ready(false), ui(new Ui::DebugWindow), bluetoothWindow(NULL), bluetoothInterface(NULL)
 #ifdef USE_PLOT
-  , plotWidget(0)
+  plotWidget(0)
 #endif
 {
     ui->setupUi(this);
@@ -340,6 +340,7 @@ void DebugWindow::plot(int index, QString title, float data, int timeTick)
         plotCurves[index]->add(Table::getMainInstance()->getCurrentTime(), data);
         plotCurves[index]->plot();
     }
+
 
 
     plotWidget->replot();
