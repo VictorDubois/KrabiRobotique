@@ -113,119 +113,11 @@ Table::Table(MainWindow *mainWindow, QWidget* parent, bool isYellow) :
 	tableBody->CreateFixture(&fixture);
     // fin bordures
 
-#ifdef COUPE_2013
-    // table 2013
-    // plateaux blancs bords zones départ
-    box.SetAsBox(4,1, b2Vec2(0,0),0);
-    tableBody->CreateFixture(&fixture);
-
-    box.SetAsBox(4,1, b2Vec2(30,0),0);
-    tableBody->CreateFixture(&fixture);
-
-    box.SetAsBox(4,1, b2Vec2(0,20),0);
-    tableBody->CreateFixture(&fixture);
-
-    box.SetAsBox(4,1, b2Vec2(30,20),0);
-    tableBody->CreateFixture(&fixture);
-
-	// gateau
-	b2CircleShape circle;
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &circle;
-	circle.m_radius = 5.f;
-    circle.m_p.Set(15.,20.);
-	tableBody->CreateFixture(&fixtureDef);
-
-
-#endif
-
-#ifdef COUPE_2014
-    // table 2014
-
-    //Foyer central
-    b2CircleShape foyerCentral;
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &foyerCentral;
-    foyerCentral.m_radius = 1.5;
-    foyerCentral.m_p.Set(15.0,9.50);
-    tableBody->CreateFixture(&fixtureDef);
-
-    //Foyer rouge
-    b2CircleShape foyerRouge;
-    //b2FixtureDef fixtureDef;
-    fixtureDef.shape = &foyerRouge;
-    foyerRouge.m_radius = 2.5;
-    foyerRouge.m_p.Set(0.0,0.0);
-    tableBody->CreateFixture(&fixtureDef);
-
-    //Foyer jaune
-    b2CircleShape foyerJaune;
-    //b2FixtureDef fixtureDef;
-    fixtureDef.shape = &foyerJaune;
-    foyerJaune.m_radius = 2.5;
-    foyerJaune.m_p.Set(30.0,0.0);
-    tableBody->CreateFixture(&fixtureDef);
-
-    //Bloc dépose côté Jaune
-    box.SetAsBox(3.5,0.65, b2Vec2(7.5,19.35),0);
-    tableBody->CreateFixture(&fixture);
-    box.SetAsBox(3.5,0.85, b2Vec2(7.5,17.85),0);
-    tableBody->CreateFixture(&fixture);
-
-    //Bloc dépose côté Rouge
-    box.SetAsBox(3.5,0.65, b2Vec2(22.5,19.35),0);
-    tableBody->CreateFixture(&fixture);
-    box.SetAsBox(3.5,0.85, b2Vec2(22.5,17.85),0);
-    tableBody->CreateFixture(&fixture);
-#endif
-
-	// load the graphics of the game.
+    // load the graphics of the game.
     tableGraphics.load("../paprikaSimulateur/tabledata.xml");
     tableGraphics.createSolids(tableBody);
 
-#ifdef COUPE_2013
-    // création des bougies :
-    QColor colors[20];
-    colors[0] = QColor(0,0,255);
-    colors[1] = QColor(255,0,0);
-    colors[2] = QColor(255,0,0);
-    colors[3] = QColor(0,0,255);
-    colors[4] = QColor(255,255,255);
-    colors[5] = QColor(255,255,255);
-    colors[6] = QColor(255,255,255);
-    colors[7] = QColor(255,255,255);
-    colors[8] = QColor(255,0,0);
-    colors[9] = QColor(0,0,255);
-    colors[10] = QColor(0,0,255);
-    colors[11] = QColor(255,0,0);
-    colors[12] = QColor(0,0,255);
-    colors[13] = QColor(255,0,0);
-    colors[14] = QColor(0,0,255);
-    colors[15] = QColor(255,0,0);
-    colors[16] = QColor(0,0,255);
-    colors[17] = QColor(255,0,0);
-    colors[18] = QColor(0,0,255);
-    colors[19] = QColor(255,0,0);
 
-    for (int i = 0; i < 12; i++)
-    {
-        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2000.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 40.f);
-        //std::cout << "Position(" << 1500.f-700.f*cos((10+7.5+15.f*(float)(i))*PI/180.f) << ", " << 2000.f-700.f*sin((10+7.5+15.f*(float)(i))*PI/180.f) << "), " << wrapAngle((7.5+15.f*(float)(i))*PI/180.f-M_PI/2) << std::endl;
-    }
-    for (int i = 12; i < 20; i++)
-    {
-        p_bougies[i] = Bougie(colors[i], QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 40.f);
-        std::cout << "Position(" << 1500.f-700.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f) << ", " << 2000.f-700.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f) << "), " << wrapAngle((7.5+15.f*(float)(i))*PI/180.f-M_PI/2) << std::endl;
-    }
-    for (int i = 0; i < 12; i++)
-    {
-        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-450.f*cos((7.5+15.f*(float)(i))*PI/180.f), -2000.f+450.f*sin((7.5+15.f*(float)(i))*PI/180.f)), 33.f);
-    }
-    for (int i = 12; i < 20; i++)
-    {
-        p_balles[i] = Bougie(QColor(255,255,0), QPointF(1500.f-350.f*cos((11.25+22.5f*(float)(i-12))*PI/180.f), -2000.f+350.f*sin((11.25+22.5f*(float)(i-12))*PI/180.f)), 33.f);
-    }
-#endif
 }
 
 Table::~Table()
@@ -240,130 +132,56 @@ void Table::createObjects()
 {
     removeAllObjects();
 
-    // ################################ Coupe 2014 ################################
-#ifdef COUPE_2014
-    //création des feux
-    // côté rouge
-    objets.push_back(new Objet(world, Position(885.,1470.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(915.,330.), Objet::FIREUP, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(470.,915.), Objet::FIREUP, 0, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(0.,1270.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(1370.,30.), Objet::FIREUP, 0, QColor(0, 0, 0)));
+    #ifdef COUPE_2016
+        #define SHELL_2
+        #ifdef SHELL_1
+            //Coquillages neutres
+            objets.push_back(new Objet(world, Position(2800.,1250.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(2800.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(1500.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(1500.,1850.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(200.,1250.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(200.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
 
-    //côté jaune
-    objets.push_back(new Objet(world, Position(2085.,1470.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2115.,330.), Objet::FIREUP, 3*PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2530.,885.), Objet::FIREUP, PI, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(2970.,1270.), Objet::FIREUP, PI/2, QColor(0, 0, 0)));
-    objets.push_back(new Objet(world, Position(1630.,0.), Objet::FIREUP, PI, QColor(0, 0, 0)));
+            //Coquillages verts
+            objets.push_back(new Objet(world, Position(2100.,1450.), Objet::SHELL, 0, QColor(54, 103, 53)));
+            objets.push_back(new Objet(world, Position(1200.,1650.), Objet::SHELL, 0, QColor(54, 103, 53)));
 
-    //création des TORCHes
-    //TORCHe rouge
-    objets.push_back(new Objet(world, Position(900.,900.), Objet::TORCH, 0, QColor(108, 59, 42)));
-    //TORCHe jaune
-    objets.push_back(new Objet(world, Position(2100.,900.), Objet::TORCH, 0, QColor(108, 59, 42)));
-#endif
+            //Coquillages violets
+            objets.push_back(new Objet(world, Position(1800.,1650.), Objet::SHELL, 0, QColor(132, 76, 130)));
+            objets.push_back(new Objet(world, Position(900.,1450.), Objet::SHELL, 0, QColor(132, 76, 130)));
 
-    // ################################ Coupe 2013 ################################
-#ifdef COUPE_2013
-    //Verres 2013
-    // côté bleu
-    objets.push_back(new Objet(world, Position(900.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1200.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1050.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1350.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(900.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1200.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
+        #endif
+        #ifdef SHELL_2
+            //Coquillages neutres
+            objets.push_back(new Objet(world, Position(2800.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(1500.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(1500.,1850.), Objet::SHELL, 0, QColor(241, 240, 234)));
+            objets.push_back(new Objet(world, Position(200.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
 
-    // côté rouge
-    objets.push_back(new Objet(world, Position(2100.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1800.,550.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1950.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1650.,800.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(2100.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
-    objets.push_back(new Objet(world, Position(1800.,1050.), Objet::GLASS, 0, QColor(170, 170, 170)));
-#endif
-
-    // ################################ Coupe 2015 ################################
-#ifdef COUPE_2015
-    //Gobelets à pop-corn
-    objets.push_back(new Objet(world, Position(250.,1750.), Objet::CUP, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(910.,800.), Objet::CUP, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(1500.,1650.), Objet::CUP, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(2090.,800.), Objet::CUP, 0, QColor(255, 255, 255)));
-    objets.push_back(new Objet(world, Position(2750.,1750.), Objet::CUP, 0, QColor(255, 255, 255)));
-
-    //Pieds verts
-    objets.push_back(new Objet(world, Position(90.,200.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(90.,1750.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(90.,1850.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(850.,100.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(850.,200.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(870.,1355.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(1100.,1770.), Objet::STAND, 0, QColor(252, 189, 31)));
-    objets.push_back(new Objet(world, Position(1300.,1400.), Objet::STAND, 0, QColor(252, 189, 31)));
-
-    //Pieds jaunes
-    objets.push_back(new Objet(world, Position(2910.,200.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2910.,1750.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2910.,1850.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2150.,100.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2150.,200.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(2130.,1355.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(1900.,1770.), Objet::STAND, 0, QColor(79, 168, 51)));
-    objets.push_back(new Objet(world, Position(1700.,1400.), Objet::STAND, 0, QColor(79, 168, 51)));
-#endif
-
-#ifdef COUPE_2016
-#define SHELL_2
-#ifdef SHELL_1
-    //Coquillages neutres
-    objets.push_back(new Objet(world, Position(2800.,1250.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(2800.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(1500.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(1500.,1850.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(200.,1250.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(200.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
-
-    //Coquillages verts
-    objets.push_back(new Objet(world, Position(2100.,1450.), Objet::SHELL, 0, QColor(54, 103, 53)));
-    objets.push_back(new Objet(world, Position(1200.,1650.), Objet::SHELL, 0, QColor(54, 103, 53)));
-
-    //Coquillages violets
-    objets.push_back(new Objet(world, Position(1800.,1650.), Objet::SHELL, 0, QColor(132, 76, 130)));
-    objets.push_back(new Objet(world, Position(900.,1450.), Objet::SHELL, 0, QColor(132, 76, 130)));
-
-#endif
-#ifdef SHELL_2
-    //Coquillages neutres
-    objets.push_back(new Objet(world, Position(2800.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(1500.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(1500.,1850.), Objet::SHELL, 0, QColor(241, 240, 234)));
-    objets.push_back(new Objet(world, Position(200.,1550.), Objet::SHELL, 0, QColor(241, 240, 234)));
-
-    //Coquillages verts
-    objets.push_back(new Objet(world, Position(2800.,1250.), Objet::SHELL, 0, QColor(54, 103, 53)));
-    objets.push_back(new Objet(world, Position(2100.,1450.), Objet::SHELL, 0, QColor(54, 103, 53)));
-    objets.push_back(new Objet(world, Position(1800.,1650.), Objet::SHELL, 0, QColor(54, 103, 53)));
+            //Coquillages verts
+            objets.push_back(new Objet(world, Position(2800.,1250.), Objet::SHELL, 0, QColor(54, 103, 53)));
+            objets.push_back(new Objet(world, Position(2100.,1450.), Objet::SHELL, 0, QColor(54, 103, 53)));
+            objets.push_back(new Objet(world, Position(1800.,1650.), Objet::SHELL, 0, QColor(54, 103, 53)));
 
 
-    //Coquillages violets
-    objets.push_back(new Objet(world, Position(900.,1450.), Objet::SHELL, 0, QColor(132, 76, 130)));
-    objets.push_back(new Objet(world, Position(1200.,1650.), Objet::SHELL, 0, QColor(132, 76, 130)));
-    objets.push_back(new Objet(world, Position(200.,1250.), Objet::SHELL, 0, QColor(132, 76, 130)));
-#endif
-#ifdef SHELL_3
-    //Coquillages verts
-    objets.push_back(new Objet(world, Position(2300.,1250.), Objet::SHELL, 0, QColor(54, 103, 53)));
-    objets.push_back(new Objet(world, Position(700.,1550.), Objet::SHELL, 0, QColor(54, 103, 53)));
+            //Coquillages violets
+            objets.push_back(new Objet(world, Position(900.,1450.), Objet::SHELL, 0, QColor(132, 76, 130)));
+            objets.push_back(new Objet(world, Position(1200.,1650.), Objet::SHELL, 0, QColor(132, 76, 130)));
+            objets.push_back(new Objet(world, Position(200.,1250.), Objet::SHELL, 0, QColor(132, 76, 130)));
+        #endif
+        #ifdef SHELL_3
+            //Coquillages verts
+            objets.push_back(new Objet(world, Position(2300.,1250.), Objet::SHELL, 0, QColor(54, 103, 53)));
+            objets.push_back(new Objet(world, Position(700.,1550.), Objet::SHELL, 0, QColor(54, 103, 53)));
 
-    //Coquillages violets
-    objets.push_back(new Objet(world, Position(700.,1250.), Objet::SHELL, 0, QColor(132, 76, 130)));
-    objets.push_back(new Objet(world, Position(2300.,1550.), Objet::SHELL, 0, QColor(132, 76, 130)));
+            //Coquillages violets
+            objets.push_back(new Objet(world, Position(700.,1250.), Objet::SHELL, 0, QColor(132, 76, 130)));
+            objets.push_back(new Objet(world, Position(2300.,1550.), Objet::SHELL, 0, QColor(132, 76, 130)));
 
-#endif
-#endif
-}
+        #endif
+    #endif
+    }
 
 void Table::removeAllObjects()
 {
