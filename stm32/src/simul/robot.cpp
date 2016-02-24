@@ -48,27 +48,6 @@ Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(1
     /// Déclaration graphique (QT)
     int inc = 0;
 
-    //Krabi 2013
-#ifdef KRABI_2013
-    robotPolygonPoints.push_back(QPoint(24,0));
-    robotPolygonPoints.push_back(QPoint(36,30));
-    robotPolygonPoints.push_back(QPoint(45,36));
-    robotPolygonPoints.push_back(QPoint(66,42));
-    robotPolygonPoints.push_back(QPoint(108,42));
-    robotPolygonPoints.push_back(QPoint(133,87));
-    robotPolygonPoints.push_back(QPoint(53,160));
-    robotPolygonPoints.push_back(QPoint(-25,160));
-    robotPolygonPoints.push_back(QPoint(-95,140));
-    robotPolygonPoints.push_back(QPoint(-95,-140));
-    robotPolygonPoints.push_back(QPoint(-25,-160));
-    robotPolygonPoints.push_back(QPoint(53,-160));
-    robotPolygonPoints.push_back(QPoint(133,-87));
-    robotPolygonPoints.push_back(QPoint(108,-42));
-    robotPolygonPoints.push_back(QPoint(66,-42));
-    robotPolygonPoints.push_back(QPoint(45,-36));
-    robotPolygonPoints.push_back(QPoint(36,-30));
-#endif
-
     //Krabi 2014
 #ifdef KRABI
     robotPolygonPoints.push_back(QPoint(106,20));
@@ -148,122 +127,6 @@ Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(1
         body->CreateFixture(&fixture);
     }
 
-    /*** création du modèle physique à partir du polygone de dessin ***/
-    /*for(std::vector<QPoint>::iterator it = robotPolygonPoints.begin(); it != robotPolygonPoints.end(); ++it)
-    {
-        v[inc++].Set(it->x() * ratio_qt_box2d, it->y() * ratio_qt_box2d);
-        if (inc == 8)
-        {
-            qDebug() << "Box" << inc;
-
-#ifndef BOX2D_2_0_1
-            box.Set(v.data(), inc);
-#endif
-            fixture.filter.categoryBits=0x9;
-            body->CreateFixture(&fixture);
-
-            inc = 0;
-            v[inc++].Set(robotPolygonPoints.front().x() * ratio_qt_box2d, robotPolygonPoints.front().y() * ratio_qt_box2d);
-            v[inc++].Set(it->x() * ratio_qt_box2d, it->y() * ratio_qt_box2d);
-        }
-    }
-
-    #ifndef BOX2D_2_0_1
-    if (inc > 2)
-    {
-        box.Set(v.data(), inc);
-        fixture.filter.categoryBits=0x9;
-        body->CreateFixture(&fixture);
-    }
-    #endif*/
-
-    // Krabi 2013
-//	v[inc++].Set(-95.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-//	v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-//	v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
-//	v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
-//	v[inc++].Set(-25.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
-//	v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
-
-
-/*#ifdef KRABI
-    v[inc++].Set(146.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
-    v[inc++].Set(161.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-    v[inc++].Set(161.f*ratio_qt_box2d,97.f*ratio_qt_box2d);
-    v[inc++].Set(101.f*ratio_qt_box2d,150.f*ratio_qt_box2d);
-    v[inc++].Set(34.f*ratio_qt_box2d,175.f*ratio_qt_box2d);
-    v[inc++].Set(-97.f*ratio_qt_box2d,175.f*ratio_qt_box2d);
-    v[inc++].Set(-128.f*ratio_qt_box2d,86.f*ratio_qt_box2d);
-    v[inc++].Set(-128.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
-#endif
-
-#ifdef KRABI_JR
-    v[inc++].Set(86.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
-    v[inc++].Set(86.f*ratio_qt_box2d,94.f*ratio_qt_box2d);
-    v[inc++].Set(64.f*ratio_qt_box2d,115.f*ratio_qt_box2d);
-    v[inc++].Set(-40.f*ratio_qt_box2d,115.f*ratio_qt_box2d);
-    v[inc++].Set(-40.f*ratio_qt_box2d,0.f*ratio_qt_box2d);
-#endif
-
-#ifndef BOX2D_2_0_1
-if (inc > 2)
-    box.Set(v.data(), inc);
-#endif
-
-    fixture.filter.categoryBits=0x9;
-    body->CreateFixture(&fixture);
-
-    // on déclare les points de la deuxieme partie : Attention, doit être convexe et orientée dans le sens indirect
-    inc = 0;
-    //Krabi 2013
-#ifdef KRABI_2013
-    v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
-    v[inc++].Set(-25.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
-    v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
-    v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
-    v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
-    v[inc++].Set(-95.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
-#endif
-
-    //Krabi 2014
-#ifdef KRABI
-    v[inc++].Set(-128.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
-    v[inc++].Set(-128.f*ratio_qt_box2d,-86.f*ratio_qt_box2d);
-    v[inc++].Set(-97.f*ratio_qt_box2d,-175.f*ratio_qt_box2d);
-    v[inc++].Set(34.f*ratio_qt_box2d,-175.f*ratio_qt_box2d);
-    v[inc++].Set(101.f*ratio_qt_box2d,-150.f*ratio_qt_box2d);
-    v[inc++].Set(161.f*ratio_qt_box2d,-97.f*ratio_qt_box2d);
-    v[inc++].Set(161.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
-    v[inc++].Set(146.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
-#endif
-
-#ifdef KRABI_JR
-    v[inc++].Set(-40.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
-    v[inc++].Set(-40.f*ratio_qt_box2d,-115.f*ratio_qt_box2d);
-    v[inc++].Set(64.f*ratio_qt_box2d,-115.f*ratio_qt_box2d);
-    v[inc++].Set(86.f*ratio_qt_box2d,-94.f*ratio_qt_box2d);
-    v[inc++].Set(86.f*ratio_qt_box2d,-0.f*ratio_qt_box2d);
-#endif
-
-#ifndef BOX2D_2_0_1
-    #ifdef KRABI_2013
-        box.Set(v.data(), 8);
-    #endif
-    #ifdef KRABI
-        box.Set(v.data(), 8);
-    #endif
-    #ifdef KRABI_JR
-        box.Set(v.data(), 5);
-    #endif
-#endif
-    fixture.filter.categoryBits=0x9;
-    body->CreateFixture(&fixture);
-
-#ifdef BOX2D_2_0_1
-    body->SetMassFromShapes();
-#endif*/
-
-
     //Little hack so that linear and angular speed of the object
     //are those of the local coord (0,0) of the robot.
     //We don't really care of the mass center accuracy.
@@ -279,12 +142,6 @@ if (inc > 2)
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp avant droit
     inc = 0;
-
-    //Krabi 2013
-//    v[inc++].Set(133.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
-//    v[inc++].Set(183.f*ratio_qt_box2d,-87.f*ratio_qt_box2d);
-//    v[inc++].Set(188.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
-//    v[inc++].Set(108.f*ratio_qt_box2d,-42.f*ratio_qt_box2d);
 
     //Krabi 2014
     v[inc++].Set(161.f*ratio_qt_box2d,-97.f*ratio_qt_box2d);
@@ -310,12 +167,6 @@ if (inc > 2)
     //Capteur sharp avant gauche
     inc = 0;
 
-    //Krabi 2013
-//    v[inc++].Set(108.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-//    v[inc++].Set(188.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
-//    v[inc++].Set(183.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
-//    v[inc++].Set(133.f*ratio_qt_box2d,87.f*ratio_qt_box2d);
-
     //Krabi 2014
     v[inc++].Set(161.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
     v[inc++].Set(211.f*ratio_qt_box2d,42.f*ratio_qt_box2d);
@@ -337,12 +188,6 @@ if (inc > 2)
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp cote droit
     inc = 0;
-
-    //Krabi 2013
-//    v[inc++].Set(53.f*ratio_qt_box2d,-160.f*ratio_qt_box2d);
-//    v[inc++].Set(103.f*ratio_qt_box2d,-205.f*ratio_qt_box2d);
-//    v[inc++].Set(143.f*ratio_qt_box2d,-168.5f*ratio_qt_box2d);
-//    v[inc++].Set(93.f*ratio_qt_box2d,-123.5f*ratio_qt_box2d);
 
     //Krabi 2014
     v[inc++].Set(102.f*ratio_qt_box2d,-150.f*ratio_qt_box2d);
@@ -367,19 +212,11 @@ if (inc > 2)
     //Capteur sharp cote gauche
     inc = 0;
 
-    //Krabi 2013
-//    v[inc++].Set(93.f*ratio_qt_box2d,123.5f*ratio_qt_box2d);
-//    v[inc++].Set(143.f*ratio_qt_box2d,168.5f*ratio_qt_box2d);
-//    v[inc++].Set(103.f*ratio_qt_box2d,205.f*ratio_qt_box2d);
-//    v[inc++].Set(53.f*ratio_qt_box2d,160.f*ratio_qt_box2d);
-
     //Krabi 2014
     v[inc++].Set(133.f*ratio_qt_box2d,123.f*ratio_qt_box2d);
     v[inc++].Set(173.f*ratio_qt_box2d,153.f*ratio_qt_box2d);
     v[inc++].Set(142.f*ratio_qt_box2d,180.f*ratio_qt_box2d);
     v[inc++].Set(102.f*ratio_qt_box2d,150.f*ratio_qt_box2d);
-
-
 
 
 #ifndef BOX2D_2_0_1
@@ -398,18 +235,12 @@ if (inc > 2)
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp arriere milieu
     inc = 0;
-    //Krabi 2013
-//    v[inc++].Set(-95.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
-//    v[inc++].Set(-145.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
-//    v[inc++].Set(-145.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
-//    v[inc++].Set(-95.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
 
     //Krabi 2014
     v[inc++].Set(-128.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
     v[inc++].Set(-178.f*ratio_qt_box2d,25.f*ratio_qt_box2d);
     v[inc++].Set(-178.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
     v[inc++].Set(-128.f*ratio_qt_box2d,-25.f*ratio_qt_box2d);
-
 
 
 #ifndef BOX2D_2_0_1
@@ -428,13 +259,6 @@ if (inc > 2)
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp arriere droit
     inc = 0;
-    //Krabi 2013
-#ifdef KRABI_2013
-    v[inc++].Set(-95.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
-    v[inc++].Set(-145.f*ratio_qt_box2d,-90.f*ratio_qt_box2d);
-    v[inc++].Set(-145.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
-    v[inc++].Set(-95.f*ratio_qt_box2d,-140.f*ratio_qt_box2d);
-#endif
 
     //Krabi 2014
 #ifdef KRABI
@@ -468,12 +292,6 @@ if (inc > 2)
     // on déclare les points d'une partie : Attention, doit être convexe et orientée dans le sens indirect
     //Capteur sharp arriere gauche
     inc = 0;
-
-    //Krabi 2013
-//    v[inc++].Set(-95.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
-//    v[inc++].Set(-145.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
-//    v[inc++].Set(-145.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
-//    v[inc++].Set(-95.f*ratio_qt_box2d,90.f*ratio_qt_box2d);
 
     //Krabi 2014
     v[inc++].Set(-111.f*ratio_qt_box2d,140.f*ratio_qt_box2d);
@@ -623,44 +441,6 @@ void Robot::paint(QPainter &p, int dt)
         p.setBrush(QBrush(QColor(255,0,0)));
         p.setOpacity(.2);
 
-        //Krabi 2013
-        #ifdef KRABI_2013
-            QPolygon polygonCapteurSharpAvantGauche;
-            polygonCapteurSharpAvantGauche << QPoint(133.f,-87.f) << QPoint(183.f,-87.f)
-                    << QPoint(188.f,-42.f) << QPoint(108.f,-42.f);
-            p.drawPolygon(polygonCapteurSharpAvantGauche);
-
-            QPolygon polygonCapteurSharpAvantDroit;
-            polygonCapteurSharpAvantDroit << QPoint(133.f,87.f) << QPoint(183.f,87.f)
-                     << QPoint(188.f,42.f) << QPoint(108.f,42.f);
-            p.drawPolygon(polygonCapteurSharpAvantDroit);
-
-            QPolygon polygonCapteurSharpcoteGauche;
-            polygonCapteurSharpcoteGauche << QPoint(53.f,-160.f) << QPoint(103.f,-205.f)
-                    << QPoint(143.f,-168.5f) << QPoint(93.f,-123.5f);
-            p.drawPolygon(polygonCapteurSharpcoteGauche);
-
-            QPolygon polygonCapteurSharpcoteDroit;
-            polygonCapteurSharpcoteDroit << QPoint(53.f,160.f) << QPoint(103.f,205.f)
-                    << QPoint(143.f,168.5f) << QPoint(93.f,123.5f);
-            p.drawPolygon(polygonCapteurSharpcoteDroit);
-
-            QPolygon polygonCapteurSharpArriereDroit;
-            polygonCapteurSharpArriereDroit << QPoint(-95.f,140.f) << QPoint(-145.f,140.f)
-                    << QPoint(-145.f,90.f) << QPoint(-95.f,90.f);
-            p.drawPolygon(polygonCapteurSharpArriereDroit);
-
-            QPolygon polygonCapteurSharpArriereMilieu;
-            polygonCapteurSharpArriereMilieu << QPoint(-95.f,-25) << QPoint(-145.f,-25.f)
-                    << QPoint(-145.f,25.f) << QPoint(-95.f,25.f);
-            p.drawPolygon(polygonCapteurSharpArriereMilieu);
-
-            QPolygon polygonCapteurSharpArriereGauche;
-            polygonCapteurSharpArriereGauche << QPoint(-95.f,-140.f) << QPoint(-145.f,-140.f)
-                    << QPoint(-145.f,-90.f) << QPoint(-95.f,-90.f);
-            p.drawPolygon(polygonCapteurSharpArriereGauche);
-
-        #endif
         //Krabi 2014
         #ifdef KRABI
             QPolygon polygonCapteurSharpAvantGauche;
@@ -735,8 +515,6 @@ void Robot::paint(QPainter &p, int dt)
                     << QPoint(-178.f,-90.f) << QPoint(-128.f,-90.f);
             p.drawPolygon(polygonCapteurSharpArriereGauche);
         #endif
-
-
 
          p.setPen(QColor(Qt::black));
          p.setBrush(QBrush(QColor(90,90,90)));
