@@ -2,12 +2,10 @@
 #include "cstdlib"
 #include "time.h"
 
-
 #include <QWidget>
 #include <iostream>
 #include <QPainter>
 #include "asservissement.h"
-
 
 Graph::Graph(QWidget* widget) : QWidget(widget), vAngular(1000), vLinear(1000)
 {
@@ -17,8 +15,6 @@ Graph::Graph(QWidget* widget) : QWidget(widget), vAngular(1000), vLinear(1000)
 	QPalette p = palette();
 	p.setColor(QPalette::Window,QColor(Qt::darkGray));
 	setPalette(p);
-
-
 }
 Graph::~Graph()
 {
@@ -49,12 +45,12 @@ void Graph::paintEvent(QPaintEvent* evt)
 	for (int i=0; i+1 < vLinear.size(); i++)
 	{
         p.drawLine(i,-(gHeight/4)*(vLinear[i]/VITESSE_LINEAIRE_MAX)+gHeight/4,i+1,-(gHeight/4)*(vLinear[i+1]/VITESSE_LINEAIRE_MAX)+gHeight/4);
-   //     p.drawEllipse(QRectF(i -diameter / 2.0, (gHeight/2)*(vLinear[i]/VITESSE_LINEAIRE_MAX)+gHeight/2 -diameter / 2.0, diameter, diameter));
+        //p.drawEllipse(QRectF(i -diameter / 2.0, (gHeight/2)*(vLinear[i]/VITESSE_LINEAIRE_MAX)+gHeight/2 -diameter / 2.0, diameter, diameter));
     }
     for (int i=0; i+1 < vLinear.size(); i++)
 	{
         p.drawLine(i,-(gHeight/4)*(vAngular[i]/VITESSE_ANGULAIRE_MAX)+3*gHeight/4,i+1,-(gHeight/4)*(vAngular[i+1]/VITESSE_ANGULAIRE_MAX)+3*gHeight/4);
-   //     p.drawEllipse(QRectF(i -diameter / 2.0, (gHeight/2)*(vLinear[i]/VITESSE_LINEAIRE_MAX)+gHeight/2 -diameter / 2.0, diameter, diameter));
+        //p.drawEllipse(QRectF(i -diameter / 2.0, (gHeight/2)*(vLinear[i]/VITESSE_LINEAIRE_MAX)+gHeight/2 -diameter / 2.0, diameter, diameter));
     }
 
 }
