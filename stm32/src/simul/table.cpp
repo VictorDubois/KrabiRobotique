@@ -18,6 +18,8 @@
 #include <QPainter>
 //#include "commandGoTo.h"
 
+#include <cmath>
+
 Table* Table::_instance = NULL;
 
 Table* Table::getMainInstance()
@@ -43,15 +45,22 @@ b2AABB Table::getWorldAABB()
 	return a;
 }
 
-Table::Table(MainWindow *mainWindow, QWidget* parent, bool isYellow) :
-    QWidget(parent), mainWindow(mainWindow), mHideTable(false), mDisplayRoute(false), mDisplayStrategy(true), mRemoteMod(false), mTimerAdjust(0),
-#ifdef BOX2D_2_0_1
-	world(getWorldAABB(),b2Vec2(0.f,0.f), false)
-#else
-    world(b2Vec2(0.f,0.f))
-#endif
+Table::Table(MainWindow *mainWi, QWidget* parent, bool isYellow): QWidget(parent),
+    #ifdef BOX2D_2_0_1
+        world(getWorldAABB(),b2Vec2(0.f,0.f), false))
+    #else
+        world(b2Vec2(0.f,0.f))
+    #endif
 {
     _instance = this;
+
+    mHideTable          = false;
+    mDisplayRoute       = false;
+    mDisplayStrategy    = true;
+    mRemoteMod          = false;
+    mTimerAdjust        = 0;
+
+    mainWindow          = mainWi;
 
     mTime.start();
     robotRoute = QImage(tableWidth, tableHeight, QImage::Format_ARGB32);
@@ -620,7 +629,7 @@ void Table::keyPressEvent(QKeyEvent* evt, bool press)
     Sensors::getSensors()->keyPressEvent(evt,press);
 }
 
-void Table::mousePressEvent(QMouseEvent* evt, bool press)
+void Table::mousePressEvent(QMouseEvent* evt, bool)
 {
     float x = (evt->x()/900.0) * tableWidth;
     float y = (evt->y()/600.0) * tableHeight;
@@ -692,4 +701,31 @@ std::vector<Objet*> Table::findObjectsNear(Position pos, Distance searchRadius, 
     }
 
     return r;
+}
+
+QList</*Tourelle::*/PositionData> Table::getBeaconsRelativePosition(Robot* refBot)
+{
+    refBot = (!refBot)?getMainRobot():refBot;
+
+    Position refPosition = refBot->getPos().getPosition();
+
+    QList</*Tourelle::*/PositionData> positions;
+
+    for(size_t i = 0; i < robots.size(); ++i)
+    {
+        if(robots[i] == refBot)
+            continue;
+
+
+        float x = (refPosition - robots[i]->getPos().getPosition()).x;
+        float y = (refPosition - robots[i]->getPos().getPosition()).y;
+
+        /*Tourelle::*/PositionData polarPosition;
+        polarPosition.distance = sqrt(x*x+y*y);
+        polarPosition.angle = atan2(y, x);
+
+        positions.append(polarPosition);
+    }
+
+    return positions;
 }
