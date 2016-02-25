@@ -16,6 +16,9 @@
 #include "contactlistener.h"
 #include "objet.h"
 
+#include "../hardware/tourelle.h"
+#include <QList>
+
 #include "krabipacket.h"
 
 class MainWindow;
@@ -85,6 +88,10 @@ public:
     float getDistanceToObject(Position pos);
     void removeClosestObject(Position pos);
     Robot* getMainRobot();
+
+    // Returns a list of the exact position of the beacons (i.e. other bots), in polar coordinates, relative to 'bot'.
+    // By default, uses the main robot as reference
+    QList</*Tourelle::*/PositionData> getBeaconsRelativePosition(Robot* bot = 0);
 
     float getCurrentTime();
 
