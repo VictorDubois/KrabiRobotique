@@ -91,7 +91,6 @@
 		<Unit filename="include/asservissement/pidFilterDistance.h" />
 		<Unit filename="include/constantes.h" />
 		<Unit filename="include/distance.h" />
-		<Unit filename="include/hardware/Tourelle.h" />
 		<Unit filename="include/hardware/analogSensor.h" />
 		<Unit filename="include/hardware/ax12api.h" />
 		<Unit filename="include/hardware/capteurCouleur.h" />
@@ -160,7 +159,6 @@
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
 		<Unit filename="src/debug.cpp" />
 		<Unit filename="src/distance.cpp" />
-		<Unit filename="src/hardware/Tourelle.cpp" />
 		<Unit filename="src/hardware/analogSensor.cpp" />
 		<Unit filename="src/hardware/ax12api.cpp" />
 		<Unit filename="src/hardware/capteurCouleur.cpp" />

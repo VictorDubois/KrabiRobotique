@@ -80,8 +80,8 @@ static void paint(QPainter* p);
         static bool tourneSurSoiMeme;
         static int timeToRestart;
         #ifdef ROBOTHW
-            static Tourelle* tourelle;
-            static int hysteresisTourelle;
+        //static Tourelle* tourelle;
+          //  static int hysteresisTourelle;
         #endif
 };
 

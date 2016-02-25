@@ -60,8 +60,8 @@ bool StrategieV2::tourneSurSoiMeme = false;
 int StrategieV2::timeToRestart = 0;
 
 #ifdef ROBOTHW
-Tourelle* StrategieV2::tourelle = NULL;
-int StrategieV2::hysteresisTourelle = 0;
+//Tourelle* StrategieV2::tourelle = NULL;
+//int StrategieV2::hysteresisTourelle = 0;
 #endif
 
 StrategieV2::StrategieV2(bool yellow)
@@ -93,7 +93,7 @@ StrategieV2::StrategieV2(bool yellow)
         emptySharpsToCheck();
 #ifdef ROBOTHW
 //        tourelle = new Tourelle(TIM6, 0);//TIM parameter is not implemented yet
-    tourelle = new Tourelle();
+//    tourelle = new Tourelle();
     //tourelle->setZoneCritique(10, 27000);
 #endif
 
