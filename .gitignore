@@ -1,3 +1,4 @@
+*.cbTemp
 *.jpg
 *.JPG
 *.bin
@@ -8,5 +9,5 @@
 *.layout
 *.autosave
 bin/
-simulation/qtcreator-files/paprikaSimulateur-build-desktop-Qt_4_8_1_dans_le_PATH__Syst_me__Release
+simulation/qtcreator-files/paprikaSimulateur-build*/
 
