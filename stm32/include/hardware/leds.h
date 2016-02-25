@@ -19,6 +19,7 @@ void eteindreLED2();
 
 #ifndef ROBOTHW
     #define NB_LED 2
+    static int ledIsOn[NB_LED];
     void turnLed(int led, bool turnOn);
     bool isLedOn(int led);
 #endif

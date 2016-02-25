@@ -214,7 +214,7 @@ bool AnalogSensor::conversionFinished()
 #ifndef NULL
 #define NULL 0
 #endif
-DMA_MEMORY_TYPE* AnalogSensor::initialiserADC(uint8_t nbChannel, uint8_t* channels)
+DMA_MEMORY_TYPE* AnalogSensor::initialiserADC(uint8_t /*nbChannel*/, uint8_t* /*channels*/)
 {
     return NULL;
 }

@@ -74,8 +74,6 @@ StrategieV2::StrategieV2(bool yellow)
         for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
             sharpsToCheck[i] = false;
 
-        int decalage = 0;
-
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
         actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(yellow);
     #else
@@ -493,13 +491,13 @@ void StrategieV2::update()
             Asservissement::asservissement->resetAsserv();
             currentCommand = NULL;
             actionsCount = 2;
-            bool mustGoBack = true;
+            //bool mustGoBack = true;
             allumerLED();
             //StrategieV2::addTemporaryAction(new ActionGoTo(Odometrie::odometrie->getPos().getPosition(), mustGoBack));
         }
         robotBloque = 0;
         //std::cout << "Changing action" << std::endl;
-        Position currentPos = Odometrie::odometrie->getPos().getPosition();
+        //Position currentPos = Odometrie::odometrie->getPos().getPosition();
         // delete the current command
         //if (currentCommand != NULL)
         //delete currentCommand;

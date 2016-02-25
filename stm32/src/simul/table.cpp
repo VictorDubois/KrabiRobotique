@@ -703,13 +703,13 @@ std::vector<Objet*> Table::findObjectsNear(Position pos, Distance searchRadius, 
     return r;
 }
 
-QList</*Tourelle::*/PositionData> Table::getBeaconsRelativePosition(Robot* refBot)
+QList<PositionData> Table::getBeaconsRelativePosition(Robot* refBot)
 {
     refBot = (!refBot)?getMainRobot():refBot;
 
     Position refPosition = refBot->getPos().getPosition();
 
-    QList</*Tourelle::*/PositionData> positions;
+    QList<PositionData> positions;
 
     for(size_t i = 0; i < robots.size(); ++i)
     {
@@ -720,9 +720,9 @@ QList</*Tourelle::*/PositionData> Table::getBeaconsRelativePosition(Robot* refBo
         float x = (refPosition - robots[i]->getPos().getPosition()).x;
         float y = (refPosition - robots[i]->getPos().getPosition()).y;
 
-        /*Tourelle::*/PositionData polarPosition;
+        PositionData polarPosition;
         polarPosition.distance = sqrt(x*x+y*y);
-        polarPosition.angle = atan2(y, x);
+        polarPosition.angle = static_cast<unsigned long>(atan2(y, x) * 180.f / 3.1415f + 180.f);
 
         positions.append(polarPosition);
     }
