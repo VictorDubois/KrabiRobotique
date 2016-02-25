@@ -1,5 +1,5 @@
-#ifndef GUARD_DISTANCESENSOR
-#define GUARD_DISTANCESENSOR
+#ifndef GUARD_TOURELLE
+#define GUARD_TOURELLE
 
 //RobotTHW has to be defined for the class to be active, else it will only send void results, for testing purpose of a robot in a simulator, without the sensors
 
@@ -69,16 +69,16 @@ class PositionsList
 
 
 
-// DistanceSensor //
-/* Description: this class manage the distance sensor. As a singleton, it can only be invoqued through DistanceSensor::getSingleton()
+// Tourelle //
+/* Description: this class manage the distance sensor. As a singleton, it can only be invoqued through Tourelle::getSingleton()
 It allows access to the position of the beacons detected during its last revolution. */
-class DistanceSensor
+class Tourelle
 {
 	public:
 		// Public methods //
 
 		// Get the singleton instance
-		static DistanceSensor* getSingleton();
+		static Tourelle* getSingleton();
         //Updates the data in the variables with those in the Serial buffer//
         void update();
 		// Returns a particular 'ping'. idx must be stricly inferior to the amount of beacons detected
@@ -93,7 +93,7 @@ class DistanceSensor
 	private:
 		/// Private methods ///
 		// Private constructor
-		DistanceSensor();
+		Tourelle();
 
 		//Initializes Serial Communication//
 		/** initialize the gpio pins TX & RX for the usart, set the remap/alternate function and the associated clock
