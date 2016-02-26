@@ -1,5 +1,12 @@
 #include "tourelle.h"
+
+#ifndef ROBOTHW
+    #include "../simul/table.h"
+    #include <ctime>
+#endif
+
 #include <string.h>
+
 #define min(a,b) a<b?a:b;
 
 
@@ -59,6 +66,13 @@ void PositionsList::clear()
 	m_usedSize=0;
 }
 
+
+PositionData PositionsList::get(unsigned int idx)
+{
+    return m_array[idx];
+}
+
+
 void PositionsList::copyTo(PositionsList& l)
 {
 	unsigned int us		= l.m_usedSize;
@@ -84,14 +98,21 @@ const PositionData& PositionsList::operator[](unsigned int i) const
 	return (*this)[i];
 }
 
+PositionsList PositionsList::fromQList(const QList<PositionData>& list)
+{
+    PositionsList l;
+
+    for(size_t i=0; i<list.size();++i)
+        l.append(list[i]);
+    return l;
+}
+
   ////////////////////
  // Tourelle //
 ////////////////////
-
+#ifdef ROBOTHW
 void Tourelle::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_af, GPIO_TypeDef* GPIOx_RX, uint16_t GPIO_Pin_RX, GPIO_TypeDef* GPIOx_TX, uint16_t GPIO_Pin_TX)
 {
-
-#ifdef ROBOTHW
 
 #ifdef STM32F40_41xxx // For stm32 h405
     RCC_APB1PeriphClockCmd(usart_rcc_index, ENABLE);
@@ -138,12 +159,11 @@ void Tourelle::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_a
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // port's refresh rate
     GPIO_Init(GPIOx_RX, &GPIO_InitStructure);
 #endif
-#endif
+
 }
 
 void Tourelle::initUART(USART_TypeDef* usart_index, int baudRate)
 {
-#ifdef ROBOTHW
     USART_InitTypeDef USART_InitStructure;
 
     USART_InitStructure.USART_BaudRate = baudRate;
@@ -158,8 +178,9 @@ void Tourelle::initUART(USART_TypeDef* usart_index, int baudRate)
     USART_Init(usart_index, &USART_InitStructure);
 
     USART_Cmd(usart_index, ENABLE);
-#endif
+
 }
+#endif
 
 Tourelle* Tourelle::getSingleton()
 {
@@ -188,22 +209,61 @@ void Tourelle::reset()
 
 unsigned int Tourelle::beaconsDetected()
 {
+#ifdef ROBOTHW
 	return m_closedList.size();
+#else
+    return Table::getMainInstance()->getBeaconsRelativePosition().size();
+#endif
 }
+
+int alea(int mi, int ma)
+{
+    if(ma == mi)
+        return mi;
+
+    if(mi > ma)
+    {
+        int t = ma;
+        ma = mi;
+        mi = t;
+    }
+
+    static bool ini = false;
+    if(!ini)
+    {
+        srand(time(0));
+        ini = true;
+    }
+    return rand()%(ma-mi+1)+mi;
+}
+
 
 PositionData Tourelle::getPositionData(unsigned int idx)
 {
+#ifdef ROBOTHW
 	return m_closedList.get(idx);
-}
-
-PositionData PositionsList::get(unsigned int idx)
-{
-    return m_array[idx];
+#else
+    PositionData pos = Table::getMainInstance()->getBeaconsRelativePosition()[idx];
+    pos.angle += alea(-TURRET_TEST_MAX_ANGLE_DEV, +TURRET_TEST_MAX_ANGLE_DEV);
+    pos.distance += alea(-TURRET_TEST_MAX_LIN_DEV, +TURRET_TEST_MAX_LIN_DEV);
+    return pos;
+#endif
 }
 
 PositionsList Tourelle::getPositionsList() const
 {
+#ifdef ROBOTHW
 	return m_closedList;
+#else
+    PositionsList l = PositionsList::fromQList(Table::getMainInstance()->getBeaconsRelativePosition());
+    for(size_t i = 0; i < l.size(); ++i)
+    {
+        l[i].angle += alea(-TURRET_TEST_MAX_ANGLE_DEV, +TURRET_TEST_MAX_ANGLE_DEV);
+        l[i].distance += alea(-TURRET_TEST_MAX_LIN_DEV, +TURRET_TEST_MAX_LIN_DEV);
+    }
+
+    return l;
+#endif
 }
 
 bool Tourelle::dataAvailable()

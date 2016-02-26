@@ -17,12 +17,26 @@
 #endif
 
 
+#ifndef ROBOTHW
+    #include <QList>
+
+    // Constants to simulate the real-life errors from the sensor
+
+    // Maximum angular error (in degree)
+    #define TURRET_TEST_MAX_ANGLE_DEV  2/2
+    // Maximum linear error (in cm)
+    #define TURRET_TEST_MAX_LIN_DEV  10/2
+
+#endif
+
 
 // PositionData //
 /* Description: represents a position in 2D polar coordinates */
 struct PositionData
 {
+    // Angle, in degree
 	unsigned long angle;
+    // Distance, in cm
 	unsigned int distance;
 };
 
@@ -51,6 +65,12 @@ class PositionsList
 
 		// Swap two PositionsList with as little copies as possible (O(1))
 		void copyTo(PositionsList&);
+
+
+#ifndef ROBOTHW
+        // Create a PositionsList from a QList<PositionData>
+        static PositionsList fromQList(const QList<PositionData>& list);
+#endif
 
 	private:
 		// Resize the internal buffer (O(i+n))
@@ -100,11 +120,12 @@ class Tourelle
 		* - for the H107 : the af argument corresponds to the remap
 		* - for the H405 : the af argument corresponds to the alternate function
 		*/
+#ifdef ROBOTHW
         void initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_af, GPIO_TypeDef* GPIOx_RX, uint16_t GPIO_Pin_RX, GPIO_TypeDef* GPIOx_TX, uint16_t GPIO_Pin_TX);
 
         // initializes the given usart (usart_index) at baudrate
         void initUART(USART_TypeDef* usart_index, int baudRate);
-
+#endif
 		// Internal call when the sensor has completed a revolution
 		void reset();
 
