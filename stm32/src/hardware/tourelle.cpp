@@ -85,10 +85,10 @@ const PositionData& PositionsList::operator[](unsigned int i) const
 }
 
   ////////////////////
- // DistanceSensor //
+ // Tourelle //
 ////////////////////
 
-void DistanceSensor::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_af, GPIO_TypeDef* GPIOx_RX, uint16_t GPIO_Pin_RX, GPIO_TypeDef* GPIOx_TX, uint16_t GPIO_Pin_TX)
+void Tourelle::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_af, GPIO_TypeDef* GPIOx_RX, uint16_t GPIO_Pin_RX, GPIO_TypeDef* GPIOx_TX, uint16_t GPIO_Pin_TX)
 {
 
 #ifdef ROBOTHW
@@ -141,7 +141,7 @@ void DistanceSensor::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t u
 #endif
 }
 
-void DistanceSensor::initUART(USART_TypeDef* usart_index, int baudRate)
+void Tourelle::initUART(USART_TypeDef* usart_index, int baudRate)
 {
 #ifdef ROBOTHW
     USART_InitTypeDef USART_InitStructure;
@@ -161,16 +161,16 @@ void DistanceSensor::initUART(USART_TypeDef* usart_index, int baudRate)
 #endif
 }
 
-DistanceSensor* DistanceSensor::getSingleton()
+Tourelle* Tourelle::getSingleton()
 {
-    static DistanceSensor* ptr = NULL;
+    static Tourelle* ptr = NULL;
 	if(ptr == NULL)
-		ptr = new DistanceSensor();
+		ptr = new Tourelle();
 	return ptr;
 }
 
 
-DistanceSensor::DistanceSensor()
+Tourelle::Tourelle()
 {
 #ifdef ROBOTHW
     initClocksAndPortsGPIO(RCC_APB1Periph_USART2, GPIO_Remap_USART2, GPIOC, GPIO_Pin_12, GPIOD, GPIO_Pin_2);
@@ -179,19 +179,19 @@ DistanceSensor::DistanceSensor()
 }
 
 
-void DistanceSensor::reset()
+void Tourelle::reset()
 {
 	m_currentList.copyTo(m_closedList);
 	m_currentList.clear();
 }
 
 
-unsigned int DistanceSensor::beaconsDetected()
+unsigned int Tourelle::beaconsDetected()
 {
 	return m_closedList.size();
 }
 
-PositionData DistanceSensor::getPositionData(unsigned int idx)
+PositionData Tourelle::getPositionData(unsigned int idx)
 {
 	return m_closedList.get(idx);
 }
@@ -201,12 +201,12 @@ PositionData PositionsList::get(unsigned int idx)
     return m_array[idx];
 }
 
-PositionsList DistanceSensor::getPositionsList() const
+PositionsList Tourelle::getPositionsList() const
 {
 	return m_closedList;
 }
 
-bool DistanceSensor::dataAvailable()
+bool Tourelle::dataAvailable()
 {
 #ifdef ROBOTHW
     return TURRET_USART_INDEX->SR & USART_FLAG_RXNE;
@@ -215,7 +215,7 @@ bool DistanceSensor::dataAvailable()
 #endif
 }
 
-unsigned int DistanceSensor::receiveData()
+unsigned int Tourelle::receiveData()
 {
 #ifdef ROBOTHW
     while (!(TURRET_USART_INDEX->SR & USART_FLAG_RXNE));
@@ -228,7 +228,7 @@ unsigned int DistanceSensor::receiveData()
 
 
 
-void DistanceSensor::update()
+void Tourelle::update()
 {
     while (dataAvailable())
     {
