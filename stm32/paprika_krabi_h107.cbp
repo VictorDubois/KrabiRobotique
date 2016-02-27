@@ -91,7 +91,6 @@
 		<Unit filename="include/asservissement/pidFilterDistance.h" />
 		<Unit filename="include/constantes.h" />
 		<Unit filename="include/distance.h" />
-		<Unit filename="include/hardware/Tourelle.h" />
 		<Unit filename="include/hardware/analogSensor.h" />
 		<Unit filename="include/hardware/ax12api.h" />
 		<Unit filename="include/hardware/capteurCouleur.h" />
@@ -108,6 +107,7 @@
 		<Unit filename="include/hardware/sharpSensor.h" />
 		<Unit filename="include/hardware/timerHandler.h" />
 		<Unit filename="include/hardware/tirette.h" />
+		<Unit filename="include/hardware/tourelle.h" />
 		<Unit filename="include/hardware/ultrasoundSensor.h" />
 		<Unit filename="include/initialisation.h" />
 		<Unit filename="include/initkrabi.h" />
@@ -121,16 +121,17 @@
 		<Unit filename="include/strategie/deposerGobelet.h" />
 		<Unit filename="include/strategie/deposerPied.h" />
 		<Unit filename="include/strategie/etape.h" />
-		<Unit filename="include/strategie/evitement.h" />
 		<Unit filename="include/strategie/gobelet.h" />
 		<Unit filename="include/strategie/krabi2015.h" />
+		<Unit filename="include/strategie/krabi2016.h" />
+		<Unit filename="include/strategie/krabijunior2016.h" />
 		<Unit filename="include/strategie/manipulationCoinGaucheBas.h" />
 		<Unit filename="include/strategie/manipulationCoinGaucheHaut.h" />
 		<Unit filename="include/strategie/manipulationCoinGaucheHautPiedSolitaire.h" />
 		<Unit filename="include/strategie/mediumLevelAction.h" />
 		<Unit filename="include/strategie/recalibrerOdometrie.h" />
-		<Unit filename="include/strategie/strategie.h" />
 		<Unit filename="include/strategie/strategieV2.h" />
+		<Unit filename="include/strategie/strategiev3.h" />
 		<Unit filename="include/strategie/tapis.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/brak (copie).cpp.victor" />
@@ -197,6 +198,8 @@
 		<Unit filename="src/strategie/etape.cpp" />
 		<Unit filename="src/strategie/gobelet.cpp" />
 		<Unit filename="src/strategie/krabi2015.cpp" />
+		<Unit filename="src/strategie/krabi2016.cpp" />
+		<Unit filename="src/strategie/krabijunior2016.cpp" />
 		<Unit filename="src/strategie/manipulationCoinGaucheBas.cpp" />
 		<Unit filename="src/strategie/manipulationCoinGaucheHaut.cpp" />
 		<Unit filename="src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp" />
