@@ -10,4 +10,5 @@
 *.autosave
 bin/
 simulation/qtcreator-files/paprikaSimulateur-build*/
-
+*.user.*
+remote/build-*/

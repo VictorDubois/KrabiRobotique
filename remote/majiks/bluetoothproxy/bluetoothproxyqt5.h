@@ -28,6 +28,12 @@ class BluetoothProxyQt5 : public BluetoothProxy
 
         virtual void scanRemoteDevices();
 
+        virtual bool isBluetoothAvailable() const;
+
+        virtual bool isConnected() const;
+
+        QString remoteAddress() const;
+
     signals:
 
         void deviceDiscovered(const QString& name, const QString& address);

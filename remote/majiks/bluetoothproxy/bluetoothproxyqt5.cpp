@@ -43,15 +43,24 @@ void BluetoothProxyQt5::on_disconnected()
     emit disconnected();
 }
 
+
+QString BluetoothProxyQt5::remoteAddress() const
+{
+    return isConnected()?m_socket->peerAddress().toString():QString();
+}
+
+
 void BluetoothProxyQt5::readData()
 {
     m_buffer.append(m_socket->readAll());
     processData(m_buffer);
 }
 
-
 void BluetoothProxyQt5::sendData(KrabiPacket& data)
 {
+    if(!isConnected())
+        return;
+
     QByteArray binData = data.dataByteArray();
     binData.append(0x0D);
     binData.append(0x0A);
@@ -96,4 +105,14 @@ void BluetoothProxyQt5::scanRemoteDevices()
 void BluetoothProxyQt5::on_deviceDiscovered(const QBluetoothDeviceInfo &info)
 {
     emit deviceDiscovered(info.name(), info.address().toString());
+}
+
+bool BluetoothProxyQt5::isBluetoothAvailable() const
+{
+    return !(QBluetoothLocalDevice::allDevices().isEmpty());
+}
+
+bool BluetoothProxyQt5::isConnected() const
+{
+    return (m_socket->state() == QBluetoothSocket::ConnectedState);
 }
