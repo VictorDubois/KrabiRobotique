@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Robomovies - Krabi" />
+		<Option title="BeachBots - Krabi" />
 		<Option pch_mode="2" />
 		<Option compiler="gnu_gcc_compiler__stm32_architecture" />
 		<Build>
@@ -161,7 +161,6 @@
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
 		<Unit filename="src/debug.cpp" />
 		<Unit filename="src/distance.cpp" />
-		<Unit filename="src/hardware/Tourelle.cpp" />
 		<Unit filename="src/hardware/analogSensor.cpp" />
 		<Unit filename="src/hardware/ax12api.cpp" />
 		<Unit filename="src/hardware/capteurCouleur.cpp" />

@@ -98,6 +98,7 @@ const PositionData& PositionsList::operator[](unsigned int i) const
 	return (*this)[i];
 }
 
+#ifndef ROBOTHW
 PositionsList PositionsList::fromQList(const QList<PositionData>& list)
 {
     PositionsList l;
@@ -106,6 +107,7 @@ PositionsList PositionsList::fromQList(const QList<PositionData>& list)
         l.append(list[i]);
     return l;
 }
+#endif
 
   ////////////////////
  // Tourelle //
@@ -216,6 +218,7 @@ unsigned int Tourelle::beaconsDetected()
 #endif
 }
 
+#ifndef ROBOTHW
 int alea(int mi, int ma)
 {
     if(ma == mi)
@@ -236,6 +239,7 @@ int alea(int mi, int ma)
     }
     return rand()%(ma-mi+1)+mi;
 }
+#endif
 
 
 PositionData Tourelle::getPositionData(unsigned int idx)
