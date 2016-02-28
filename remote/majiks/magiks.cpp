@@ -39,7 +39,6 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
 
     m_packetProcessor = new PacketProcessor(m_odometrie, m_graphs, m_watches, m_asserv, m_logger);
 
-    connect(m_bluetoothProxy, &BluetoothProxy::deviceDiscovered,    this, &Magiks::deviceDiscovered);
     connect(m_bluetoothProxy, &BluetoothProxy::connected,           this, &Magiks::connected);
 
     connect(m_bluetoothProxy, &BluetoothProxy::dataReceived, m_packetProcessor, &PacketProcessor::processData);
@@ -64,11 +63,4 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
 void Magiks::connected()
 {
     qDebug() << "Connected to remote device!";
-}
-
-void Magiks::deviceDiscovered(const QString& name, const QString& address)
-{
-    qDebug() << "Device found: " << name;
-
-    m_bluetoothProxy->connectToHost(address);
 }
