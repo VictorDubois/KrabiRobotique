@@ -23,9 +23,6 @@ class Magiks: public QWidget
         explicit Magiks(QWidget *parent = nullptr);
 
     private:
-
-        void deviceDiscovered(const QString& name, const QString &address);
-
         void connected();
 
         BluetoothProxy* m_bluetoothProxy;
