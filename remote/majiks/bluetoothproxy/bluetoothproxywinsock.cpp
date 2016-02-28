@@ -241,33 +241,15 @@ void BluetoothProxyWinsock::scanRemoteDevices()
         result = WSALookupServiceNext(hLookup, LUP_RETURN_NAME | LUP_CONTAINERS | LUP_RETURN_ADDR | LUP_FLUSHCACHE | LUP_RETURN_TYPE | LUP_RETURN_BLOB | LUP_RES_SERVICE, &bufferLength, pResults);
         if(result==0)
         {
-            LPTSTR s = pResults->lpszServiceInstanceName;
+            QString name = QString::fromWCharArray(pResults->lpszServiceInstanceName);
 
-            QString name = QString::fromWCharArray(s);
-            qDebug() << name;
+            WCHAR wAddress[1000];
+            DWORD wSize = sizeof(wAddress);
+            WSAAddressToString(pResults->lpcsaBuffer->RemoteAddr.lpSockaddr,pResults->lpcsaBuffer->RemoteAddr.iSockaddrLength,NULL, wAddress, &wSize);
+            QString address = QString::fromWCharArray(wAddress);
 
-            /*wcout << s << "found. quering for services\n";
-
-            //Initialise quering the device services
-            WSAQUERYSET queryset2;
-            memset(&queryset2, 0, sizeof(queryset2));
-            queryset2.dwSize = sizeof(queryset2);
-            queryset2.dwNameSpace = NS_BTH;
-            queryset2.dwNumberOfCsAddrs = 0;
-            CSADDR_INFO * addr = (CSADDR_INFO *)pResults->lpcsaBuffer;
-            WCHAR addressAsString[1000];
-            DWORD addressSize = sizeof(addressAsString);
-            WSAAddressToString(addr->RemoteAddr.lpSockaddr,addr->RemoteAddr.iSockaddrLength,NULL,addressAsString, &addressSize);
-            queryset2.lpszContext = addressAsString;
-            GUID protocol = L2CAP_PROTOCOL_UUID;
-            queryset2.lpServiceClassId = &protocol;
-
-            HANDLE hLookup2;
-            if (WSALookupServiceBegin(&queryset2, LUP_FLUSHCACHE |LUP_RETURN_NAME |LUP_RETURN_TYPE| LUP_RETURN_BLOB | LUP_RETURN_COMMENT, &hLookup2) != 0)
-            {
-                qDebug() << "Fail2 : " << getLatestError();
-                return;
-            }*/
+            qDebug() << "Name: " << name << " Address: " << address;
+            emit deviceDiscovered(name, address);
         }
     } while(result == 0);
 
