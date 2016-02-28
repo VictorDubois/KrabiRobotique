@@ -32,7 +32,7 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
     m_bluetoothManagement   = new BluetoothManagementWidget(m_bluetoothProxy);
     m_odometrie             = new OdometrieWindow(m_bluetoothProxy);
     m_asserv                = new AsservWindow(m_bluetoothProxy);
-    m_watches               = new WatchWindow();
+    m_watches               = new WatchWindow(m_bluetoothProxy);
     m_graphs                = new GraphWindow();
     m_logger                = new LoggerWidget();
     m_plots                 = new PlotWidget();
@@ -43,6 +43,10 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
     connect(m_bluetoothProxy, &BluetoothProxy::connected,           this, &Magiks::connected);
 
     connect(m_bluetoothProxy, &BluetoothProxy::dataReceived, m_packetProcessor, &PacketProcessor::processData);
+
+    connect(m_odometrie,        &OdometrieWindow::reseted,      m_plots, &PlotWidget::clear);
+    connect(m_packetProcessor,  &PacketProcessor::reseted,      m_plots, &PlotWidget::clear);
+    connect(m_bluetoothProxy,   &BluetoothProxy::disconnected,  m_plots, &PlotWidget::clear);
 
     m_tabs = new QTabWidget(this);
     m_tabs->addTab(m_bluetoothManagement,   tr("Bluetooth"));

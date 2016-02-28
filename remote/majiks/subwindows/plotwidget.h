@@ -26,6 +26,8 @@ class PlotWidget : public QwtPlot
 
         void addDataToPlot(int idx, float data, QString plotTitle = QString());
 
+        void clear();
+
     private:
 
         QMap<int, PlotWidget::PlotCurve*> m_curves;

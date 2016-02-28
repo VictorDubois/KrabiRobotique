@@ -17,7 +17,6 @@ void BluetoothProxy::setUUID(const QString& UUID)
     m_UUID = UUID;
 }
 
-
 int BluetoothProxy::processData(QByteArray& data)
 {
     if(data.size() < 2)

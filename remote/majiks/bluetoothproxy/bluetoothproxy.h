@@ -24,6 +24,12 @@ class BluetoothProxy: public QObject
 
         virtual void scanRemoteDevices()                                = 0;
 
+        virtual bool isBluetoothAvailable() const                       = 0;
+
+        virtual bool isConnected() const                                = 0;
+
+        virtual QString remoteAddress() const                           = 0;
+
         void setUUID(const QString& UUID);
         QString getUUID() const;
 
@@ -43,6 +49,7 @@ class BluetoothProxy: public QObject
     private:
 
         QString m_UUID;
+        QString m_remoteAddress;
 
 };
 

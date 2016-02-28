@@ -74,10 +74,17 @@ void BluetoothProxyWinsock::connectToHost(const QString& address)
     }
     else
     {
+        m_remoteAddress = address;
+
         // Restart the listener thread
         m_listenerThread->start();
     }
 
+}
+
+QString BluetoothProxyWinsock::remoteAddress() const
+{
+    return m_remoteAddress;
 }
 
 void BluetoothProxyWinsock::disconnect()
@@ -121,6 +128,8 @@ void BluetoothProxyWinsock::WorkerThread::run()
 
     closesocket(m_overseer->m_socket);
     m_overseer->m_socket = INVALID_SOCKET;
+
+    m_overseer->m_remoteAddress.clear();
 
     m_overseer->disconnected(); // 'emit' hack
     qDebug() << "Disconnected";
@@ -202,6 +211,9 @@ QStringList BluetoothProxyWinsock::getAllLocalAdapters()
 
 void BluetoothProxyWinsock::sendData(KrabiPacket& data)
 {
+    if(!isConnected())
+        return;
+
     m_listenerThread->sendPacket(data);
 }
 
@@ -261,7 +273,7 @@ void BluetoothProxyWinsock::scanRemoteDevices()
 
 }
 
-bool BluetoothProxyWinsock::bluetoothAvailable()
+bool BluetoothProxyWinsock::isBluetoothAvailable() const
 {
    SOCKET s = socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
 
@@ -270,6 +282,11 @@ bool BluetoothProxyWinsock::bluetoothAvailable()
    closesocket(s);
 
    return canUseBluetooth;
+}
+
+bool BluetoothProxyWinsock::isConnected() const
+{
+    return m_listenerThread->isRunning();
 }
 
 #endif

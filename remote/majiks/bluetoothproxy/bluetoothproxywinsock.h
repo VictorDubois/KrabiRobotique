@@ -61,7 +61,11 @@ class BluetoothProxyWinsock : public BluetoothProxy
 
         virtual void scanRemoteDevices();
 
-        static bool bluetoothAvailable();
+        bool isBluetoothAvailable() const;
+
+        virtual bool isConnected() const;
+
+        virtual QString remoteAddress() const;
 
     signals:
 
@@ -80,7 +84,7 @@ class BluetoothProxyWinsock : public BluetoothProxy
     private:
        WorkerThread* m_listenerThread;
 
-
+       QString m_remoteAddress;
 };
 
 #endif

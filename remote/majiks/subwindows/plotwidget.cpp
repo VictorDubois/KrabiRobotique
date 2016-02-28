@@ -43,6 +43,16 @@ void PlotWidget::addDataToPlot(int idx, float data, QString plotTitle)
     update();
 }
 
+void PlotWidget::clear()
+{
+    for(auto it = m_curves.begin(); it != m_curves.end(); ++it)
+    {
+        it.value()->curve->detach();
+        delete it.value()->curve;
+    }
+    m_curves.clear();
+}
+
 
 void PlotWidget::PlotCurve::plot()
 {
