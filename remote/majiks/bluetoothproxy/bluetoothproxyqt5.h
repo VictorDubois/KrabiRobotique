@@ -36,8 +36,6 @@ class BluetoothProxyQt5 : public BluetoothProxy
 
     signals:
 
-        void deviceDiscovered(const QString& name, const QString& address);
-
         void connected();
         void disconnected();
 

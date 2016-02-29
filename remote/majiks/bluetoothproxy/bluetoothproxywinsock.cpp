@@ -20,6 +20,7 @@ QString getLatestError(int errorCode = 0)
     if (!FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, er, 0, errmsg, 511, NULL))
     {
     /* if we fail, call ourself to find out why and return that error */
+        qDebug() << "Error reporting... got an error.";
         return getLatestError();
     }
 
@@ -243,13 +244,12 @@ void BluetoothProxyWinsock::scanRemoteDevices()
         {
             QString name = QString::fromWCharArray(pResults->lpszServiceInstanceName);
 
-            WCHAR wAddress[1000];
+            WCHAR wAddress[100];
             DWORD wSize = sizeof(wAddress);
             WSAAddressToString(pResults->lpcsaBuffer->RemoteAddr.lpSockaddr,pResults->lpcsaBuffer->RemoteAddr.iSockaddrLength,NULL, wAddress, &wSize);
             QString address = QString::fromWCharArray(wAddress);
 
-            qDebug() << "Name: " << name << " Address: " << address;
-            emit deviceDiscovered(name, address);
+            emit deviceDiscovered(name, address.mid(1, address.size()-2));
         }
     } while(result == 0);
 
