@@ -2,6 +2,7 @@
 
 #include <QBluetoothServer>
 #include <QBluetoothSocket>
+#include <QBluetoothUuid>
 
 #include "krabipacket.h"
 
@@ -13,7 +14,9 @@ BluetoothTestServer::BluetoothTestServer(QObject *parent): QObject(parent)
 
      connect(m_server, &QBluetoothServer::newConnection, this, &BluetoothTestServer::clientConnected);
 
-     if(!m_server->listen())
+     QBluetoothServiceInfo info = m_server->listen(QBluetoothUuid(QString("B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374")));
+
+     if(!info.isValid())
      {
          qDebug() << "Cannot setup server";
      }

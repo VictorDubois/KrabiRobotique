@@ -24,7 +24,7 @@
 Magiks::Magiks(QWidget *parent): QWidget(parent)
 {
     setWindowTitle(tr("Magiks - Robot remote"));
-#if 0
+#if 1
 #ifdef BLUETOOTH_USING_WINSOCK
     m_bluetoothProxy = new BluetoothProxyWinsock(this);
 #else
@@ -60,9 +60,10 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(m_tabs);
-#endif
+#else
 
     BluetoothTestServer* server = new BluetoothTestServer(this);
+#endif
 }
 
 void Magiks::connected()

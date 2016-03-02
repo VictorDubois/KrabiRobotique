@@ -10,6 +10,8 @@
 
 BluetoothProxyQt5::BluetoothProxyQt5(QObject *parent): BluetoothProxy(parent)
 {
+    setUUID("B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374");
+
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
     m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent();
@@ -24,6 +26,9 @@ BluetoothProxyQt5::BluetoothProxyQt5(QObject *parent): BluetoothProxy(parent)
 void BluetoothProxyQt5::connectToHost(const QString& address)
 {
     disconnect();
+
+    if(m_discoveryAgent->isActive())
+        m_discoveryAgent->stop();
 
     m_socket->connectToService(QBluetoothAddress(address), QBluetoothUuid(getUUID()), QIODevice::ReadWrite);
 }
