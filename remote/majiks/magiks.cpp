@@ -19,10 +19,12 @@
 #include "subwindows/plotwidget.h"
 #include "packetprocessor.h"
 
+#include "bluetoothtestserver.h"
+
 Magiks::Magiks(QWidget *parent): QWidget(parent)
 {
     setWindowTitle(tr("Magiks - Robot remote"));
-
+#if 0
 #ifdef BLUETOOTH_USING_WINSOCK
     m_bluetoothProxy = new BluetoothProxyWinsock(this);
 #else
@@ -58,6 +60,9 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(m_tabs);
+#endif
+
+    BluetoothTestServer* server = new BluetoothTestServer(this);
 }
 
 void Magiks::connected()
