@@ -35,7 +35,7 @@ class BluetoothProxy: public QObject
 
     signals:
 
-        void deviceDiscovered(const QString& name, const QString& address);
+        void deviceDiscovered(QString name, QString address);
 
         void connected();
         void disconnected();
