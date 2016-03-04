@@ -12,6 +12,9 @@ BluetoothProxyQt5::BluetoothProxyQt5(QObject *parent): BluetoothProxy(parent)
 {
     setUUID("B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374");
 
+    //STM32 bluetooth adapter
+    //setUUID("00001101-0000-1000-8000-00805F9B34FB");
+
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
     m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent();
