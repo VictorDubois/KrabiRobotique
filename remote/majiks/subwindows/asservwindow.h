@@ -14,14 +14,12 @@ class AsservWindow : public QWidget
     Q_OBJECT
 
     public:
-        explicit AsservWindow(BluetoothProxy* bluetoothProxy, QWidget *parent = 0);
+        explicit AsservWindow(BluetoothProxy* bluetoothProxy, QWidget *parent = nullptr);
         ~AsservWindow();
 
         bool graphLinear();
         bool graphAngular();
         bool graphDuty();
-
-        bool clickGoto();
 
         void settingsReceivedAngular(float p, float i, float d);
         void settingsReceivedLinear(float p, float i, float d);

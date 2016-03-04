@@ -113,7 +113,7 @@ void BluetoothProxyWinsock::connectToHost(const QString& address)
     // Will soft-kill the listener thread
     disconnect();
 
-    SOCKADDR_BTH addressStruct = {0};
+    SOCKADDR_BTH addressStruct {};
 
     //WSAStringToAddress((LPTSTR)(address.toStdString().c_str()), AF_BTH, NULL, reinterpret_cast<sockaddr*>(&addressStruct), (LPINT)sizeof(SOCKADDR_BTH));
 

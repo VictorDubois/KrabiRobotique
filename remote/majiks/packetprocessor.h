@@ -2,38 +2,33 @@
 #define PACKETPROCESSOR_H
 
 #include <QObject>
-#include <QTime>
+#include <QPointF>
 
-//#include "../../stm32/include/hardware/krabipacket.h"
-
-class OdometrieWindow;
-class GraphWindow;
-class WatchWindow;
-class AsservWindow;
-class LoggerWidget;
-class KrabiPacket;
+#include "krabipacket.h"
 
 class PacketProcessor: public QObject
 {
     Q_OBJECT
     public:
-        PacketProcessor(OdometrieWindow* odometrie, GraphWindow* graphs, WatchWindow* watches, AsservWindow* asserv, LoggerWidget* logger);
+        PacketProcessor(QObject* parent);
 
         void processData(KrabiPacket packet);
 
     signals:
 
         void reseted();
+        void odometrySettingsReceived(float wheelSize, float interAxis);
+        void angularPIDSettingsReceived(float p, float i, float d);
+        void linearPIDSettingsReceived(float p, float i, float d);
+        void logReceived(QString log, bool isDebug);
+        void watchesSyncFinished(KrabiPacket packet);
+        void plotDataReceived(int idx, float data);
+        void robotPositionReceived(QPointF position);
+        void robotAngleReceived(float angle);
 
     private:
         void watch(KrabiPacket packet);
         void resetTimer();
-
-        OdometrieWindow*    m_odometrie;
-        GraphWindow*        m_graphs;
-        WatchWindow*        m_watches;
-        AsservWindow*       m_asserv;
-        LoggerWidget*       m_logger;
 };
 
 #endif // PACKETPROCESSOR_H

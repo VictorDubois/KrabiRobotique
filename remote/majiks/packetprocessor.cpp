@@ -1,25 +1,14 @@
 #include "packetprocessor.h"
 
-#include "subwindows/odometriewindow.h"
-#include "subwindows/asservwindow.h"
-#include "subwindows/watchwindow.h"
-#include "subwindows/loggerwidget.h"
-
 #include "../../stm32/include/hardware/krabipacket.h"
 #include "../../stm32/include/positionPlusAngle.h"
 
+#include "subwindows/plotwidget.h"
 #include "timemaster.h"
 
 #include <QDebug>
 
-PacketProcessor::PacketProcessor(OdometrieWindow *odometrie, GraphWindow *graphs, WatchWindow *watches, AsservWindow *asserv, LoggerWidget* logger)
-{
-    m_odometrie     = odometrie;
-    m_graphs        = graphs;
-    m_watches       = watches;
-    m_asserv        = asserv;
-    m_logger        = logger;
-}
+PacketProcessor::PacketProcessor(QObject *parent): QObject(parent) {}
 
 
 void PacketProcessor::processData(KrabiPacket packet)
@@ -27,10 +16,10 @@ void PacketProcessor::processData(KrabiPacket packet)
     switch(packet.id())
     {
         case KrabiPacket::LOG_NORMAL:
-            m_logger->log(packet.getString());
+            emit logReceived(packet.getString(), false);
             break;
         case KrabiPacket::LOG_DEBUG:
-            m_logger->log(packet.getString(), true);
+            emit logReceived(packet.getString(), true);
             break;
         case KrabiPacket::WATCH_VARIABLE:
             watch(packet);
@@ -38,33 +27,25 @@ void PacketProcessor::processData(KrabiPacket packet)
         case KrabiPacket::ASSERV_RESULT:
         {
             uint32_t time       = packet.get<uint32_t>();
-            /*float vitesseLin    = packet.get<float>();
+            float vitesseLin    = packet.get<float>();
             float vitesseLinE   = packet.get<float>();
             float linearDuty    = packet.get<float>();
             float vitesseAng    = packet.get<float>();
             float vitesseAngE   = packet.get<float>();
-            float angularDuty   = packet.get<float>();*/
+            float angularDuty   = packet.get<float>();
 
             qDebug() << "Krabi Results" << time;
 
             if (time == 0)
                 emit reseted();
 
-            if(m_asserv->graphLinear())
-            {
-                /*DebugWindow::getInstance()->plot(0, "Linear Speed", vitesseLin, time);
-                DebugWindow::getInstance()->plot(1, "Linear Target", vitesseLinE, time);*/
-            }
-            if (m_asserv->graphAngular())
-            {
-                /*DebugWindow::getInstance()->plot(2, "Angular Speed", vitesseAng, time);
-                DebugWindow::getInstance()->plot(3, "Angular Target", vitesseAngE, time);*/
-            }
-            if (m_asserv->graphDuty())
-            {
-                /*DebugWindow::getInstance()->plot(6, "Linear Duty", linearDuty, time);
-                DebugWindow::getInstance()->plot(7, "Angular Duty", angularDuty, time);*/
-            }
+            emit plotDataReceived(PlotWidget::LINEAR_SPEED, vitesseLin);
+            emit plotDataReceived(PlotWidget::LINEAR_TARGET, vitesseLinE);
+            emit plotDataReceived(PlotWidget::LINEAR_DUTY, linearDuty);
+            emit plotDataReceived(PlotWidget::ANGULAR_SPEED, vitesseAng);
+            emit plotDataReceived(PlotWidget::ANGULAR_TARGET, vitesseAngE);
+            emit plotDataReceived(PlotWidget::ANGULAR_DUTY, angularDuty);
+
             break;
         }
         case KrabiPacket::TIME_SYNC:
@@ -74,18 +55,9 @@ void PacketProcessor::processData(KrabiPacket packet)
             int diff = t - TimeMaster::getInstance()->getCurrentTime();
 
             if (abs(diff) > 25)
-            {
-                qDebug() << "Timer sync error (" << diff << "ms)";
-            }
-
-            /*if (diff < -1500)
-            {
-                DebugWindow::getInstance()->clearPlots();
-                qDebug() << "Timer restart";
-            }*/
+                qDebug() << "Timer sync error (" << diff << " ms)";
 
             TimeMaster::getInstance()->delta(t);
-            //qDebug() << "Timer" << t << t / 1000 << t % 1000;
             break;
         }
         default:
@@ -103,33 +75,32 @@ void PacketProcessor::watch(KrabiPacket packet)
     {
         case KrabiPacket::W_POSITION:
         {
-           /* float x = packet.get<float>();
+            float x = packet.get<float>();
             float y = packet.get<float>();
             float ang = packet.get<float>();
 
-            PositionPlusAngle newPos = PositionPlusAngle(Position(x, y), ang);*/
-
-            //getMainRobot()->setPos(newPos);
-            /*if (previousPosition)
-                DebugWindow::getInstance()->getOdometrieWindow()->addRelative(newPos.position - previousPos.position, newPos.angle - previousPos.angle);*/
-           /* previousPos = newPos;
-            previousPosition = true;*/
+            emit robotPositionReceived(QPointF(x, y));
+            emit robotAngleReceived(ang);
             break;
         }
         case KrabiPacket::W_SPEED:
         {
-            /*float l = packet.get<float>();
+            float l = packet.get<float>();
             float a = packet.get<float>();
-            DebugWindow::getInstance()->plot(0, "Linear Speed", l);
-            DebugWindow::getInstance()->plot(1, "Angular Speed", a * 100.);*/
+
+            emit plotDataReceived(PlotWidget::LINEAR_SPEED, l);
+            emit plotDataReceived(PlotWidget::ANGULAR_SPEED, a*100.f);
+
             break;
         }
         case KrabiPacket::W_SPEED_TARGET:
         {
-            /*float l = packet.get<float>();
+            float l = packet.get<float>();
             float a = packet.get<float>();
-            DebugWindow::getInstance()->plot(2, "Linear Target", l);
-            DebugWindow::getInstance()->plot(3, "Angular Target", a * 100.);*/
+
+            emit plotDataReceived(PlotWidget::LINEAR_TARGET, l);
+            emit plotDataReceived(PlotWidget::ANGULAR_TARGET, a*100.f);
+
             break;
         }
         case KrabiPacket::W_PID_ANG:
@@ -138,7 +109,7 @@ void PacketProcessor::watch(KrabiPacket packet)
             float i = packet.get<float>();
             float d = packet.get<float>();
 
-            m_asserv->settingsReceivedAngular(p, i, d);
+            emit angularPIDSettingsReceived(p, i, d);
             break;
         }
         case KrabiPacket::W_PID_LIN:
@@ -147,7 +118,7 @@ void PacketProcessor::watch(KrabiPacket packet)
             float i = packet.get<float>();
             float d = packet.get<float>();
 
-            m_asserv->settingsReceivedLinear(p, i, d);
+            emit linearPIDSettingsReceived(p, i, d);
             break;
         }
         case KrabiPacket::W_ODOMETRIE:
@@ -155,11 +126,11 @@ void PacketProcessor::watch(KrabiPacket packet)
             float wheelsize = packet.get<float>();
             float interaxis = packet.get<float>();
 
-            m_odometrie->settingsReceived(wheelsize, interaxis);
+            emit odometrySettingsReceived(wheelsize, interaxis);
             break;
         }
         case KrabiPacket::W_WATCHES:
-            m_watches->syncFinished(packet);
+            emit watchesSyncFinished(packet);
             break;
         case KrabiPacket::W_SHARPS:
             //DebugWindow::getInstance()->getSharpWindow()->syncFinished(packet);

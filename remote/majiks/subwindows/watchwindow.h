@@ -16,7 +16,7 @@ class WatchWindow : public QWidget
     Q_OBJECT
 
     public:
-        explicit WatchWindow(BluetoothProxy *bluetoothProxy, QWidget *parent = 0);
+        explicit WatchWindow(BluetoothProxy *bluetoothProxy, QWidget *parent = nullptr);
         ~WatchWindow();
 
         bool isWatching(KrabiPacket::W_TABLE w);
