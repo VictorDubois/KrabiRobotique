@@ -17,6 +17,7 @@
 #include "subwindows/watchwindow.h"
 #include "subwindows/loggerwidget.h"
 #include "subwindows/plotwidget.h"
+#include "subwindows/tablewidget.h"
 #include "packetprocessor.h"
 
 #include "bluetoothtestserver.h"
@@ -38,6 +39,7 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
     m_graphs                = new GraphWindow();
     m_logger                = new LoggerWidget();
     m_plots                 = new PlotWidget();
+    m_table                 = new TableWidget(m_bluetoothProxy);
 
     m_packetProcessor = new PacketProcessor(m_odometrie, m_graphs, m_watches, m_asserv, m_logger);
 
@@ -53,6 +55,7 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
     m_tabs->addTab(m_bluetoothManagement,   tr("Bluetooth"));
     m_tabs->addTab(m_odometrie,             tr("Odometrie"));
     m_tabs->addTab(m_asserv,                tr("Asservissement"));
+    m_tabs->addTab(m_table,                 tr("Déplacements"));
     m_tabs->addTab(m_watches,               tr("Watches"));
     m_tabs->addTab(m_graphs,                tr("Graphes A"));
     m_tabs->addTab(m_plots,                 tr("Graphes B"));

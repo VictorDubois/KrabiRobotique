@@ -9,6 +9,8 @@
 #include <QMutexLocker>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 // {B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374}
 DEFINE_GUID(g_guidServiceClass, 0xb62c4e8d, 0x62cc, 0x404b, 0xbb, 0xbf, 0xbf, 0x3e, 0x3b, 0xbb, 0x13, 0x74);
@@ -42,6 +44,9 @@ BluetoothProxyWinsock::BluetoothProxyWinsock(QObject *parent): BluetoothProxy(pa
     }
     else
         qDebug() << "Winsock2 initializated";
+
+    //connectToHost("00:1A:7D:DA:71:05");
+
 }
 
 BluetoothProxyWinsock::WorkerThread::WorkerThread(BluetoothProxyWinsock* overseer): QThread(overseer),m_running(false),m_overseer(overseer) {}
@@ -53,6 +58,56 @@ BluetoothProxyWinsock::~BluetoothProxyWinsock()
 }
 
 
+bool CharToDigit(char c, uint8_t* digit) {
+    if (c >= '0' && c <= '9') {
+      *digit = c - '0';
+    } else if (c >= 'a' && c < 'a' + 16 - 10) {
+      *digit = c - 'a' + 10;
+    } else if (c >= 'A' && c < 'A' + 16 - 10) {
+      *digit = c - 'A' + 10;
+    } else {
+      return false;
+    }
+    return true;
+}
+
+bool HexStringToBytes(const std::string& input, std::vector<uint8_t>* output)
+{
+  //DCHECK_EQ(output->size(), 0u);
+  size_t count = input.size();
+  if (count == 0 || (count % 2) != 0)
+    return false;
+  for (uintptr_t i = 0; i < count / 2; ++i) {
+    uint8_t msb = 0;  // most significant 4 bits
+    uint8_t lsb = 0;  // least significant 4 bits
+    if (!CharToDigit(input[i * 2], &msb) ||
+        !CharToDigit(input[i * 2 + 1], &lsb))
+      return false;
+    output->push_back((msb << 4) | lsb);
+  }
+  return true;
+}
+
+BTH_ADDR ConvertToBthAddr(const QString& add)
+{
+  std::string address = add.toStdString();
+  BTH_ADDR bth_addr = 0;
+  std::string numbers_only;
+  for (int i = 0; i < 6; ++i) {
+    numbers_only += address.substr(i * 3, 2);
+  }
+
+  std::vector<uint8_t> address_bytes;
+  HexStringToBytes(numbers_only, &address_bytes);
+  int byte_position = 0;
+  for (std::vector<uint8_t>::reverse_iterator iter = address_bytes.rbegin();
+       iter != address_bytes.rend(); ++iter) {
+    bth_addr += *iter * pow(256.0, byte_position);
+    byte_position++;
+  }
+  return bth_addr;
+}
+
 void BluetoothProxyWinsock::connectToHost(const QString& address)
 {
     // Will soft-kill the listener thread
@@ -60,7 +115,13 @@ void BluetoothProxyWinsock::connectToHost(const QString& address)
 
     SOCKADDR_BTH addressStruct = {0};
 
-    WSAStringToAddress((LPTSTR)(address.toStdString().c_str()), AF_BTH, NULL, reinterpret_cast<sockaddr*>(&addressStruct), (LPINT)sizeof(SOCKADDR_BTH));
+    //WSAStringToAddress((LPTSTR)(address.toStdString().c_str()), AF_BTH, NULL, reinterpret_cast<sockaddr*>(&addressStruct), (LPINT)sizeof(SOCKADDR_BTH));
+
+    qDebug() << "Address: " << addressStruct.btAddr;
+
+    addressStruct.btAddr = ConvertToBthAddr(address);
+
+    qDebug() << "Address: " << addressStruct.btAddr;
 
     addressStruct.addressFamily     = AF_BTH;
     addressStruct.serviceClassId    = g_guidServiceClass;
@@ -68,10 +129,22 @@ void BluetoothProxyWinsock::connectToHost(const QString& address)
 
     // Will wait for the listener thread to stop
     QMutexLocker lock(&m_socketMutex);
-    if(::connect(m_socket, reinterpret_cast<sockaddr*>(&addressStruct), sizeof(SOCKADDR_BTH)) == SOCKET_ERROR)
+
+    m_socket = socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
+    if(m_socket == INVALID_SOCKET)
+    {
+        qDebug() << "Socket PoS init failed";
+        return;
+    }
+
+    qDebug() << "Socket init OK";
+
+    if(::connect(m_socket, (struct sockaddr*)&addressStruct, sizeof(SOCKADDR_BTH)) == SOCKET_ERROR)
     {
         qDebug() << "Socket PoS couldn't connect to " << address;
         qDebug() << "Error: " << getLatestError();
+        closesocket(m_socket);
+        m_socket = INVALID_SOCKET;
     }
     else
     {
@@ -252,6 +325,8 @@ void BluetoothProxyWinsock::scanRemoteDevices()
             emit deviceDiscovered(name, address.mid(1, address.size()-2));
         }
     } while(result == 0);
+
+    WSALookupServiceEnd(&hLookup);
 
 }
 

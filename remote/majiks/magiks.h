@@ -12,6 +12,7 @@ class GraphWindow;
 class BluetoothManagementWidget;
 class LoggerWidget;
 class PlotWidget;
+class TableWidget;
 
 class QTabWidget;
 
@@ -35,6 +36,7 @@ class Magiks: public QWidget
         BluetoothManagementWidget*  m_bluetoothManagement;
         LoggerWidget*               m_logger;
         PlotWidget*                 m_plots;
+        TableWidget*                m_table;
 
         QTabWidget*  m_tabs;
 

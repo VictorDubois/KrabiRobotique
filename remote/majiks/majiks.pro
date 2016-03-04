@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     subwindows/loggerwidget.cpp \
     subwindows/plotwidget.cpp \
     timemaster.cpp \
-    bluetoothtestserver.cpp
+    bluetoothtestserver.cpp \
+    subwindows/tablewidget.cpp
 
 HEADERS  += magiks.h \
     ../../stm32/include/hardware/krabipacket.h \
@@ -59,7 +60,8 @@ HEADERS  += magiks.h \
     subwindows/loggerwidget.h \
     subwindows/plotwidget.h \
     timemaster.h \
-    bluetoothtestserver.h
+    bluetoothtestserver.h \
+    subwindows/tablewidget.h
 
 FORMS += \
     subwindows/asservwindow.ui \
