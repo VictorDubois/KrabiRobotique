@@ -45,7 +45,7 @@ QString WatchWindow::getWatchName(KrabiPacket::W_TABLE w)
     case KrabiPacket::W_NULL:
         return "NULL";
     case KrabiPacket::W_ODOMETRIE:
-        return "Odométrie";
+        return "Odometry";
     case KrabiPacket::W_PID_ANG:
         return "PID Angular";
     case KrabiPacket::W_PID_LIN:

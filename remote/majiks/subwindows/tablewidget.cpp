@@ -16,6 +16,7 @@ TABLE_LENGTH_F(static_cast<float>(TABLE_LENGTH)), TABLE_WIDTH_F(static_cast<floa
     m_bluetoothProxy = bluetoothProxy;
 
     setRobotVisible(true);
+    setRobotAngle(0.f);
     setRobotPosition(QPointF(TABLE_LENGTH_F/2.f, TABLE_WIDTH_F/2.f));
 }
 
@@ -29,11 +30,16 @@ bool TableWidget::isRobotVisible() const
     return m_robotVisible;
 }
 
+void TableWidget::setRobotAngle(float angle)
+{
+    m_robotAngle = angle;
+    update();
+}
+
 void TableWidget::setRobotPosition(const QPointF& position)
 {
     m_robotPosition.rx() = qBound<float>(0.f, position.x(), TABLE_LENGTH_F);
     m_robotPosition.ry() = qBound<float>(0.f, position.y(), TABLE_WIDTH_F);
-
     update();
 }
 

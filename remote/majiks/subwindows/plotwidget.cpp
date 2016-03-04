@@ -20,7 +20,7 @@ PlotWidget::PlotWidget(QWidget *parent): QwtPlot(parent)
 }
 
 
-void PlotWidget::addDataToPlot(int idx, float data, QString plotTitle)
+void PlotWidget::addDataToPlot(int idx, float data)
 {
     QColor color[9] = {Qt::red, Qt::green, Qt::blue, Qt::magenta, Qt::gray, Qt::yellow, Qt::cyan, Qt::darkYellow, Qt::magenta};
 
@@ -28,7 +28,25 @@ void PlotWidget::addDataToPlot(int idx, float data, QString plotTitle)
 
     if (!current)
     {
-        plotTitle = (plotTitle.isEmpty()?QString("Plot %1").arg(idx):plotTitle);
+        QString plotTitle;
+        switch(idx)
+        {
+            case LINEAR_SPEED:
+                plotTitle = tr("Linear speed");
+            break;
+            case ANGULAR_SPEED:
+                plotTitle = tr("Angular speed");
+            break;
+            case LINEAR_TARGET:
+                plotTitle = tr("Linear target");
+            break;
+            case ANGULAR_TARGET:
+                plotTitle = tr("Angular target");
+            break;
+            default:
+                plotTitle = QString("Plot %1").arg(idx);
+        }
+
         current = new PlotWidget::PlotCurve(new QwtPlotCurve(plotTitle));
         current->curve->attach(this);
         current->curve->setPen(QPen(color[idx % 9]));

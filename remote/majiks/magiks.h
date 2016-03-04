@@ -5,10 +5,9 @@
 
 class BluetoothProxy;
 class PacketProcessor;
-class OdometrieWindow;
+class OdometryWindow;
 class WatchWindow;
 class AsservWindow;
-class GraphWindow;
 class BluetoothManagementWidget;
 class LoggerWidget;
 class PlotWidget;
@@ -29,16 +28,17 @@ class Magiks: public QWidget
         BluetoothProxy* m_bluetoothProxy;
 
         PacketProcessor*            m_packetProcessor;
-        OdometrieWindow*            m_odometrie;
+        OdometryWindow*             m_odometry;
         WatchWindow*                m_watches;
         AsservWindow*               m_asserv;
-        GraphWindow*                m_graphs;
         BluetoothManagementWidget*  m_bluetoothManagement;
         LoggerWidget*               m_logger;
         PlotWidget*                 m_plots;
         TableWidget*                m_table;
 
         QTabWidget*  m_tabs;
+        QTabWidget*  m_remoteControlTab;
+        QTabWidget*  m_robotSettingsTab;
 
 };
 

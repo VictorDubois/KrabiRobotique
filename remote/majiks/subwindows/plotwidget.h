@@ -9,10 +9,22 @@ class QwtPlotCurve;
 
 class PlotWidget : public QwtPlot
 {
+    public:
+        enum PlotType
+        {
+            LINEAR_SPEED    = 0x01,
+            ANGULAR_SPEED   = 0x02,
+            LINEAR_TARGET   = 0x04,
+            ANGULAR_TARGET  = 0x08,
+            LINEAR_DUTY     = 0x10,
+            ANGULAR_DUTY    = 0x20,
+            CUSTOM_PLOT     = 0x40
+        };
+
     private:
         struct PlotCurve
         {
-            PlotCurve(QwtPlotCurve* curve, bool nonSig = false) : curve(curve), nonSignificant(nonSig) {}
+            explicit PlotCurve(QwtPlotCurve* curve, bool nonSig = false) : curve(curve), nonSignificant(nonSig) {}
             void plot();
             void add(double x, double y);
 
@@ -24,7 +36,7 @@ class PlotWidget : public QwtPlot
     public:
         explicit PlotWidget(QWidget *parent = nullptr);
 
-        void addDataToPlot(int idx, float data, QString plotTitle = QString());
+        void addDataToPlot(int idx, float data);
 
         void clear();
 

@@ -13,6 +13,8 @@ class TableWidget: public QWidget
         void setRobotPosition(const QPointF& position);
         QPointF getRobotPosition() const;
         QPointF getRobotRelativePosition() const;
+        void setRobotAngle(float angle);
+        float getRobotAngle() const;
 
         void setRobotVisible(bool visible);
         bool isRobotVisible() const;
@@ -23,14 +25,16 @@ class TableWidget: public QWidget
 
     private:
 
-        const unsigned int TABLE_WIDTH;
         const unsigned int TABLE_LENGTH;
+        const unsigned int TABLE_WIDTH;
 
-        const float TABLE_WIDTH_F;
         const float TABLE_LENGTH_F;
+        const float TABLE_WIDTH_F;
+
 
         QPointF m_robotPosition;
-        bool m_robotVisible;
+        float   m_robotAngle;
+        bool    m_robotVisible;
 
         BluetoothProxy* m_bluetoothProxy;
 };

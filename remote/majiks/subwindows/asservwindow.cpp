@@ -35,11 +35,6 @@ bool AsservWindow::graphDuty()
     return ui->dutyGraph->isChecked();
 }
 
-bool AsservWindow::clickGoto()
-{
-    return ui->clickGoto->isChecked();
-}
-
 void AsservWindow::settingsReceivedAngular(float p, float i, float d)
 {
     ui->angKp->setValue(p);
