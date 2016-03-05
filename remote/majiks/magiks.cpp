@@ -17,6 +17,8 @@
 #include "subwindows/loggerwidget.h"
 #include "subwindows/plotwidget.h"
 #include "subwindows/tablewidget.h"
+#include "subwindows/remotewidget.h"
+#include "subwindows/movementsettingswidget.h"
 #include "packetprocessor.h"
 
 #include "bluetoothtestserver.h"
@@ -38,29 +40,35 @@ Magiks::Magiks(QWidget *parent): QWidget(parent)
     m_logger                = new LoggerWidget();
     m_plots                 = new PlotWidget();
     m_table                 = new TableWidget(m_bluetoothProxy);
+    m_remote                = new RemoteWidget(m_bluetoothProxy);
+    m_remoteSettings        = new MovementSettingsWidget();
 
     m_packetProcessor = new PacketProcessor(this);
 
-    connect(m_packetProcessor, &PacketProcessor::odometrySettingsReceived,      m_odometry, &OdometryWindow::settingsReceived);
-    connect(m_packetProcessor, &PacketProcessor::linearPIDSettingsReceived,     m_asserv,   &AsservWindow::settingsReceivedLinear);
-    connect(m_packetProcessor, &PacketProcessor::angularPIDSettingsReceived,    m_asserv,   &AsservWindow::settingsReceivedAngular);
-    connect(m_packetProcessor, &PacketProcessor::logReceived,                   m_logger,   &LoggerWidget::log);
-    connect(m_packetProcessor, &PacketProcessor::watchesSyncFinished,           m_watches,  &WatchWindow::syncFinished);
-    connect(m_packetProcessor, &PacketProcessor::plotDataReceived,              m_plots,    &PlotWidget::addDataToPlot);
-    connect(m_packetProcessor, &PacketProcessor::robotPositionReceived,         m_table,    &TableWidget::setRobotPosition);
-    connect(m_packetProcessor, &PacketProcessor::robotAngleReceived,            m_table,    &TableWidget::setRobotAngle);
-    connect(m_packetProcessor, &PacketProcessor::robotPositionReceived,         m_odometry, &OdometryWindow::setCurrentRobotPosition);
-    connect(m_packetProcessor, &PacketProcessor::robotAngleReceived,            m_odometry, &OdometryWindow::setCurrentRobotAngle);
+    connect(m_packetProcessor,  &PacketProcessor::odometrySettingsReceived,      m_odometry, &OdometryWindow::settingsReceived);
+    connect(m_packetProcessor,  &PacketProcessor::robotPositionReceived,         m_odometry, &OdometryWindow::setCurrentRobotPosition);
+    connect(m_packetProcessor,  &PacketProcessor::robotAngleReceived,            m_odometry, &OdometryWindow::setCurrentRobotAngle);
+    connect(m_packetProcessor,  &PacketProcessor::linearPIDSettingsReceived,     m_asserv,   &AsservWindow::settingsReceivedLinear);
+    connect(m_packetProcessor,  &PacketProcessor::angularPIDSettingsReceived,    m_asserv,   &AsservWindow::settingsReceivedAngular);
+    connect(m_packetProcessor,  &PacketProcessor::logReceived,                   m_logger,   &LoggerWidget::log);
+    connect(m_packetProcessor,  &PacketProcessor::watchesSyncFinished,           m_watches,  &WatchWindow::syncFinished);
+    connect(m_packetProcessor,  &PacketProcessor::plotDataReceived,              m_plots,    &PlotWidget::addDataToPlot);
+    connect(m_packetProcessor,  &PacketProcessor::reseted,                       m_plots,    &PlotWidget::clear);
+    connect(m_packetProcessor,  &PacketProcessor::robotPositionReceived,         m_table,    &TableWidget::setRobotPosition);
+    connect(m_packetProcessor,  &PacketProcessor::robotAngleReceived,            m_table,    &TableWidget::setRobotAngle);
 
-    connect(m_bluetoothProxy, &BluetoothProxy::connected,    this,              &Magiks::connected);
-    connect(m_bluetoothProxy, &BluetoothProxy::dataReceived, m_packetProcessor, &PacketProcessor::processData);
+    connect(m_bluetoothProxy,   &BluetoothProxy::connected,             this,               &Magiks::connected);
+    connect(m_bluetoothProxy,   &BluetoothProxy::dataReceived,          m_packetProcessor,  &PacketProcessor::processData);
+    connect(m_bluetoothProxy,   &BluetoothProxy::disconnected,          m_plots,            &PlotWidget::clear);
 
-    connect(m_odometry,         &OdometryWindow::reseted,       m_plots, &PlotWidget::clear);
-    connect(m_packetProcessor,  &PacketProcessor::reseted,      m_plots, &PlotWidget::clear);
-    connect(m_bluetoothProxy,   &BluetoothProxy::disconnected,  m_plots, &PlotWidget::clear);
+    connect(m_odometry,         &OdometryWindow::reseted,               m_plots,            &PlotWidget::clear);
+
+    connect(m_remoteSettings,   &MovementSettingsWidget::stepsUpdated,  m_remote,           &RemoteWidget::setSteps);
 
     m_remoteControlTab = new QTabWidget();
-    m_remoteControlTab->addTab(m_table, tr("Absolu"));
+    m_remoteControlTab->addTab(m_table,         tr("Absolu"));
+    m_remoteControlTab->addTab(m_remote,        tr("Relatif"));
+    m_remoteControlTab->addTab(m_remoteSettings,tr("Paramètres"));
 
     m_robotSettingsTab = new QTabWidget();
     m_robotSettingsTab->addTab(m_odometry,  tr("Odometrie"));

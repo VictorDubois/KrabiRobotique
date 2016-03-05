@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
+#include <QLineEdit>
 
 #include <QDebug>
 
@@ -25,6 +26,9 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
     m_connectButton         = new QPushButton(this);
     m_checkBluetoothButton  = new QPushButton(tr("Check Bluetooth"), this);
 
+    m_UUIDInput             = new QLineEdit(this);
+    m_UUIDInput->setAlignment(Qt::AlignHCenter);
+    m_UUIDInput->setValidator(new QRegExpValidator(QRegExp("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")));
 
     m_detectedDevices = new QTableWidget(this);
     m_detectedDevices->insertColumn(0);
@@ -43,8 +47,11 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
     btCxLay->addWidget(m_connectionLabel);
     btCxLay->addWidget(m_connectButton);
 
+
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addLayout(btAvLay);
+    layout->addWidget(new QLabel(tr("UUID:")));
+    layout->addWidget(m_UUIDInput);
     layout->addLayout(btCxLay);
     layout->addWidget(m_scanButton);
     layout->addWidget(m_detectedDevices);
@@ -57,11 +64,20 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
     connect(m_bluetoothProxy,       &BluetoothProxy::connected,         this,               &BluetoothManagementWidget::checkConnectionStatus);
     connect(m_bluetoothProxy,       &BluetoothProxy::disconnected,      this,               &BluetoothManagementWidget::checkConnectionStatus);
 
+    connect(m_UUIDInput,            &QLineEdit::textChanged,            this,               &BluetoothManagementWidget::changeUUID);
+
     //Debug
     connect(m_sendButton, &QPushButton::clicked, this, &BluetoothManagementWidget::sendTest);
 
+    m_UUIDInput->setText("B62C4E8D-62CC-404B-BBBF-BF3E3BBB1374");
+
     checkBluetoothAvailability();
     checkConnectionStatus();
+}
+
+void BluetoothManagementWidget::changeUUID(const QString& uuid)
+{
+    m_bluetoothProxy->setUUID(uuid);
 }
 
 void BluetoothManagementWidget::deviceDiscovered(const QString& name, const QString& address)
@@ -113,6 +129,8 @@ void BluetoothManagementWidget::checkBluetoothAvailability()
 void BluetoothManagementWidget::checkConnectionStatus()
 {
     bool cxSt = m_bluetoothProxy->isConnected();
+
+    m_UUIDInput->setEnabled(!cxSt);
 
     if(cxSt)
     {

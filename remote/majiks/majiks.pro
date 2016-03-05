@@ -5,7 +5,7 @@ QT       += bluetooth
 CONFIG += console c++11 warn_on
 
 # Disabled because of an obnoxious bug in GCC (struct A = {0} triggers the warning even though it's legal)
-QMAKE_CXXFLAGS += -Wno-missing-field-initializers
+win32-g++:QMAKE_CXXFLAGS += -Wno-missing-field-initializers
 
 TARGET = majiks
 TEMPLATE = app
@@ -41,11 +41,13 @@ SOURCES += 	main.cpp \
                 subwindows/loggerwidget.cpp  \
                 subwindows/plotwidget.cpp \
                 subwindows/tablewidget.cpp \
+                subwindows/remotewidget.cpp \
                 bluetoothproxy/bluetoothproxy.cpp \
                 bluetoothproxy/bluetoothproxyqt5.cpp \
                 packetprocessor.cpp \
                 timemaster.cpp 	\
-                bluetoothtestserver.cpp
+                bluetoothtestserver.cpp \
+    subwindows/movementsettingswidget.cpp
 
     
 
@@ -60,9 +62,12 @@ HEADERS  += magiks.h  \
             subwindows/loggerwidget.h \
             subwindows/tablewidget.h \
             subwindows/plotwidget.h \
+            subwindows/remotewidget.h \
             packetprocessor.h \
             timemaster.h \
-            bluetoothtestserver.h
+            bluetoothtestserver.h \
+    subwindows/movementsettingswidget.h
+
 
 
 FORMS += \
