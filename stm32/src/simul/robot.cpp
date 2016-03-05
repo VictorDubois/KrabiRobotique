@@ -35,22 +35,14 @@ Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(1
     /// Déclaration graphique (QT)
     int inc = 0;
 
-    //Krabi 2014
+
+    //Krabi 2016
 #ifdef KRABI
-    robotPolygonPoints.push_back(QPoint(106,20));
-    robotPolygonPoints.push_back(QPoint(161,40));
-    robotPolygonPoints.push_back(QPoint(161,97));
-    robotPolygonPoints.push_back(QPoint(101,150));
-    robotPolygonPoints.push_back(QPoint(34,175));
-    robotPolygonPoints.push_back(QPoint(-97,175));
-    robotPolygonPoints.push_back(QPoint(-128,86));
-    robotPolygonPoints.push_back(QPoint(-128,-86));
-    robotPolygonPoints.push_back(QPoint(-97,-175));
-    robotPolygonPoints.push_back(QPoint(34,-175));
-    robotPolygonPoints.push_back(QPoint(101,-150));
-    robotPolygonPoints.push_back(QPoint(161,-97));
-    robotPolygonPoints.push_back(QPoint(161,-40));
-    robotPolygonPoints.push_back(QPoint(106,-20));
+    // NB: les points doivent être entrés dans le sens anti-horaire
+    robotPolygonPoints.push_back(QPoint(350/2,250/2));
+    robotPolygonPoints.push_back(QPoint(-350/2,250/2));
+    robotPolygonPoints.push_back(QPoint(-350/2,-250/2));
+    robotPolygonPoints.push_back(QPoint(350/2,-250/2));
 #endif
 
 #ifdef KRABI_JR
