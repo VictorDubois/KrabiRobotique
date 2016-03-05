@@ -12,6 +12,8 @@ class BluetoothManagementWidget;
 class LoggerWidget;
 class PlotWidget;
 class TableWidget;
+class RemoteWidget;
+class MovementSettingsWidget;
 
 class QTabWidget;
 
@@ -35,6 +37,8 @@ class Magiks: public QWidget
         LoggerWidget*               m_logger;
         PlotWidget*                 m_plots;
         TableWidget*                m_table;
+        RemoteWidget*               m_remote;
+        MovementSettingsWidget*     m_remoteSettings;
 
         QTabWidget*  m_tabs;
         QTabWidget*  m_remoteControlTab;

@@ -8,6 +8,7 @@ class BluetoothProxy;
 class QPushButton;
 class QTableWidget;
 class QLabel;
+class QLineEdit;
 
 class BluetoothManagementWidget: public QWidget
 {
@@ -27,6 +28,8 @@ class BluetoothManagementWidget: public QWidget
         void deviceDiscovered(const QString& name, const QString& address);
         void on_connectButton_clicked();
 
+        void changeUUID(const QString& uuid);
+
         // Find a device in the list by its address.
         // Returns -1 if none is found
         int findDeviceByAddress(const QString& address);
@@ -41,6 +44,8 @@ class BluetoothManagementWidget: public QWidget
 
         QLabel* m_bluetoothAvLabel;
         QLabel* m_connectionLabel;
+
+        QLineEdit* m_UUIDInput;
 
         QTableWidget* m_detectedDevices;
 
