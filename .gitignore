@@ -12,3 +12,5 @@ bin/
 simulation/qtcreator-files/paprikaSimulateur-build*/
 *.pro.user
 remote/build-*/
+remote/doc/
+remote/Majiks/majiks.pro.user
