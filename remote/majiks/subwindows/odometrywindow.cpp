@@ -1,5 +1,5 @@
 #include "odometrywindow.h"
-#include "ui_OdometryWindow.h"
+#include "ui_odometrywindow.h"
 
 #include "../bluetoothproxy/bluetoothproxy.h"
 
