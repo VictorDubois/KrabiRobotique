@@ -67,13 +67,6 @@ class BluetoothProxyWinsock : public BluetoothProxy
 
         virtual QString remoteAddress() const;
 
-    signals:
-
-        void connected();
-        void disconnected();
-
-        void dataReceived(KrabiPacket data);
-
     protected:
 
        SOCKET m_socket;

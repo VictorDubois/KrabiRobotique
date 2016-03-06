@@ -34,13 +34,6 @@ class BluetoothProxyQt5 : public BluetoothProxy
 
         QString remoteAddress() const;
 
-    signals:
-
-        void connected();
-        void disconnected();
-
-        void dataReceived(KrabiPacket data);
-
     protected:
 
         QBluetoothLocalDevice* m_localAdapter;
