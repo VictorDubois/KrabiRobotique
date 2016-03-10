@@ -22,7 +22,7 @@ StrategieV3::StrategieV3(bool isYellow) : MediumLevelAction()
     this->millisecondesRestantes = 90 * 1000;
 
 #ifndef ROBOTHW
-    colorLiaisonsEtapes = QColor("orange");
+    colorLiaisonsEtapes = QColor("blue");
     colorEtapeGoal = QColor("red");
     colorEtapesIntermediaires = QColor("yellow");
     colorEtapes = QColor("orange");
@@ -36,15 +36,18 @@ int StrategieV3::update()
     //this->actionEtape[this->etapeEnCours]->reset();
     //this->actionGoto[this->etapeEnCours].reset();
 
-    tableauEtapesTotal[this->etapeEnCours]->reset();
+    tableaudebug[this->etapeEnCours]->reset();
 
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
     if(this->avoiding)
     {
-        this->tableauEtapesTotal[this->etapeEnCours]->robotVu();
-        //this->tableauEtapesTotal[this->etapeEnCours]->setState(-2);
-        this->tableauEtapesTotal[etapeEnCours]->getParent()->setParent(this->tableauEtapesTotal[this->etapeEnCours]);
-        this->etapeEnCours = this->tableauEtapesTotal[etapeEnCours]->getParent()->getNumero();
+
+        qDebug() << "En train d'eviter";
+
+        this->tableaudebug[this->etapeEnCours]->robotVu();
+        //this->tableaudebug[this->etapeEnCours]->setState(-2);
+        this->tableaudebug[etapeEnCours]->getParent()->setParent(this->tableaudebug[this->etapeEnCours]);
+        this->etapeEnCours = this->tableaudebug[etapeEnCours]->getParent()->getNumero();
 
         //On recalcul les distances par rapport à l'étape où l'on vient d'arriver
         dijkstra->setEtapeCourante(this->etapeEnCours);
@@ -53,29 +56,29 @@ int StrategieV3::update()
         {
             this->enTrainEviterReculant = false;
             this->enTrainEviterAvancant = true;
-            tableauEtapesTotal[etapeEnCours]->getActionGoTo()->setGoBack(false);
+            tableaudebug[etapeEnCours]->getActionGoTo()->setGoBack(false);
             //actionEtape[etapeEnCours]->setGoBack(false);
         }
         else
         {
             this->enTrainEviterReculant = true;
             this->enTrainEviterAvancant = false;
-            tableauEtapesTotal[etapeEnCours]->getActionGoTo()->setGoBack(true);
+            tableaudebug[etapeEnCours]->getActionGoTo()->setGoBack(true);
             //actionEtape[etapeEnCours]->setGoBack(true);
         }
 
-        StrategieV2::addTemporaryAction(tableauEtapesTotal[etapeEnCours]->getActionGoTo());
+        StrategieV2::addTemporaryAction(tableaudebug[etapeEnCours]->getActionGoTo());
         //StrategieV2::addTemporaryAction(actionEtape[etapeEnCours]);
-        //dijkstra->setEtapeCourante((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero()));
+        //dijkstra->setEtapeCourante((this->tableaudebug[this->etapeEnCours]->getParent()->getNumero()));
         if(dijkstra->run() != 0)
         {
             // Si run renvoit autre chose que 0, c'est que l'étape en cours a changée.
             // Cela arrive pour débloquer le robot
-            //Etape* ancienneEtape = this->tableauEtapesTotal[this->etapeEnCours];
-            //this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero();
+            //Etape* ancienneEtape = this->tableaudebug[this->etapeEnCours];
+            //this->etapeEnCours = this->tableaudebug[this->etapeEnCours]->getParent()->getNumero();
             /*this->actionEtape[this->etapeEnCours]->reset();
             this->actionGoto[this->etapeEnCours].reset();*/
-            tableauEtapesTotal[this->etapeEnCours]->reset();
+            tableaudebug[this->etapeEnCours]->reset();
         }
 
         //On retourne à l'étape intermédiaire précédente, en marche arrière
@@ -85,12 +88,14 @@ int StrategieV3::update()
     }
     else
     {
+        qDebug() << "Pas en train d'eviter";
+
         //On reset toute les directions à aller en marche avant
         for(int i = 0 ; i < this->nombreEtapes ; i++)
         {
             /*actionGoto[i].setGoBack(false);
             actionEtape[i]->setGoBack(false);*/
-            tableauEtapesTotal[i]->setGoBack(false);
+            tableaudebug[i]->setGoBack(false);
         }
         this->enTrainEviterReculant = false;
         this->enTrainEviterAvancant = false;
@@ -105,21 +110,21 @@ int StrategieV3::update()
             if(!(enTrainEviterReculant || enTrainEviterAvancant))
             {
                 //L'objectif qu'on vient de remplir est maintenant un simple point de passage
-                //this->tableauEtapesTotal[this->etapeEnCours]->finir();//Vieux, on utilise maintenant updateStock dans la strat de l'année en cours
+                //this->tableaudebug[this->etapeEnCours]->finir();//Vieux, on utilise maintenant updateStock dans la strat de l'année en cours
                 //Idem pour les autres étapes correspondant au même objectif
-                for(int etapeLiee = 0 ; etapeLiee < this->tableauEtapesTotal[this->etapeEnCours]->getNombreEtapesLieesParFinirEtape() ; etapeLiee++)
+                for(int etapeLiee = 0 ; etapeLiee < this->tableaudebug[this->etapeEnCours]->getNombreEtapesLieesParFinirEtape() ; etapeLiee++)
                 {
-                    int numeroEtapeLiee = this->tableauEtapesTotal[this->etapeEnCours]->getEtapesLieesParFinirEtape()[etapeLiee];
-                    this->tableauEtapesTotal[numeroEtapeLiee]->finir();
+                    int numeroEtapeLiee = this->tableaudebug[this->etapeEnCours]->getEtapesLieesParFinirEtape()[etapeLiee];
+                    this->tableaudebug[numeroEtapeLiee]->finir();
                 }
 
                 //Mise à jour du stock et l'objectif qu'on vient de remplir est maintenant un simple point de passage
                 this->updateStock();
 
                 //On est maintenant arrivé à l'étape de fin de l'action (en général c'est la même étape, mais pas toujours, ex : les claps de 2015)
-                this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction() == -1
+                this->etapeEnCours = this->tableaudebug[this->etapeEnCours]->getNumeroEtapeFinAction() == -1
                                         ? this->etapeEnCours
-                                        : this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
+                                        : this->tableaudebug[this->etapeEnCours]->getNumeroEtapeFinAction();
             }
 
 
@@ -132,7 +137,7 @@ int StrategieV3::update()
             {
                 for(int i = 0 ; i < this->nombreEtapes ; i++)
                 {
-                    this->tableauEtapesTotal[i]->oublieRobotVu();
+                    this->tableaudebug[i]->oublieRobotVu();
                 }
                 resteDesChosesAFaire = updateScores();
 
@@ -151,7 +156,7 @@ int StrategieV3::update()
                     else
                     {
                         //Sinon on y va
-                        this->tableauEtapesTotal[this->numeroEtapeGarage]->setScore(1000);
+                        this->tableaudebug[this->numeroEtapeGarage]->setScore(1000);
                     }
                 }
 
@@ -159,13 +164,14 @@ int StrategieV3::update()
 
             //On recalcul les distances par rapport à l'étape où l'on vient d'arriver
             dijkstra->setEtapeCourante(this->etapeEnCours);
+
             if(dijkstra->run() != 0)
             {
                 // Si run renvoit autre chose que 0, c'est que l'étape en cours a changée.
                 // Cela arrive pour débloquer le robot
-                //Etape* ancienneEtape = this->tableauEtapesTotal[this->etapeEnCours];
-                //this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero();
-                tableauEtapesTotal[this->etapeEnCours]->getAction()->reset();
+                //Etape* ancienneEtape = this->tableaudebug[this->etapeEnCours];
+                //this->etapeEnCours = this->tableaudebug[this->etapeEnCours]->getParent()->getNumero();
+                tableaudebug[this->etapeEnCours]->getAction()->reset();
             }
 
             //On sélectionne l'objectif le plus prometteur : pas trop loin et qui rapporte
@@ -175,10 +181,10 @@ int StrategieV3::update()
             int scoreTypeEtape = 0;
             for(int i = 0 ; i < this->nombreEtapes ; i++)
             {
-                scoreTypeEtape = this->tableauEtapesTotal[i]->getScore();
-        //        score = modificateurTemporel*(10000-this->tableauEtapesTotal[i]->getDistance() + scoreTypeEtape);
-                score = (10000-this->tableauEtapesTotal[i]->getDistance() + scoreTypeEtape);
-                if((scoreMaxi < score) && scoreTypeEtape && (this->tableauEtapesTotal[i]->getDistance() != -1))
+                scoreTypeEtape = this->tableaudebug[i]->getScore();
+        //        score = modificateurTemporel*(10000-this->tableaudebug[i]->getDistance() + scoreTypeEtape);
+                score = (10000-this->tableaudebug[i]->getDistance() + scoreTypeEtape);
+                if((scoreMaxi < score) && scoreTypeEtape && (this->tableaudebug[i]->getDistance() != -1))
                 {
                     scoreMaxi = score;
                     meilleurEtape = i;
@@ -208,7 +214,7 @@ int StrategieV3::update()
 
 void StrategieV3::resetEverything(){
     for(int i = 0 ; i < 10 ; i++){
-        this->tableauEtapesTotal[i]->setState(0);
+        this->tableaudebug[i]->setState(0);
     }
 }
 
@@ -231,7 +237,7 @@ void StrategieV3::updateIntermedaire()
     this->nextStep = -1;
 
     // Si la prochaine étape est le goal, alors au prochain update il faudra trouver un nouvel objectif -> status = 1;
-    if(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)
+    if(((this->tableaudebug[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)
     {
         #ifndef ROBOTHW
             qDebug() << "la prochaine etape est le goal\n";
@@ -239,28 +245,33 @@ void StrategieV3::updateIntermedaire()
         this->statusStrat = 1;
     }
 
+
     //On cherche l'etape suivant vers l'etape - but
-    while(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) != etapeOuOnVientDArriver)
+    while(((this->tableaudebug[this->etapeEnCours]->getParent()->getNumero())) != etapeOuOnVientDArriver)
     {
         #ifndef ROBOTHW
         qDebug() << "On cherche l'etape suivant vers l'etape - but" << this->etapeEnCours << "\n";
+        qDebug() << "tableaudebug[0]" << (this->tableaudebug[0]->getEtapeType());
+        qDebug() << "tableaudebug[10]" << (this->tableaudebug[10]->getEtapeType());
+        qDebug() << "tableaudebug[36]" << (this->tableaudebug[36]->getEtapeType());
+        qDebug() << "tableaudebug[36]" << (this->tableaudebug[36]->getPosition().getX());
         #endif
         this->nextStep = this->etapeEnCours;
-        this->etapeEnCours = ((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero()));
+        this->etapeEnCours = ((this->tableaudebug[this->etapeEnCours]->getParent()->getNumero()));
     }
 
     if(this->statusStrat == 1)
     {
         //On réalise l'action de l'étape - but
-        StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getAction());
+        StrategieV2::addTemporaryAction(tableaudebug[this->etapeEnCours]->getAction());
     }
     else
     {
         //On ajoute l'action d'aller en ligne droite vers cette étape intermédiaire
 #ifdef SMOOTH_MOVE
-        tableauEtapesTotal[this->etapeEnCours]->getActionGoTo()->setNextGoal(tableauEtapesTotal[this->nextStep]->getPosition());
+        tableaudebug[this->etapeEnCours]->getActionGoTo()->setNextGoal(tableaudebug[this->nextStep]->getPosition());
 #endif
-        StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getActionGoTo());
+        StrategieV2::addTemporaryAction(tableaudebug[this->etapeEnCours]->getActionGoTo());
     }
 }
 
@@ -271,8 +282,8 @@ void StrategieV3::paint(QPainter* p)
     for(int numeroEtape = 0 ; numeroEtape<this->nombreEtapes ; numeroEtape++)
     {
         QPoint position = QPoint(
-        this->tableauEtapesTotal[numeroEtape]->getPosition().getX(),
-        this->tableauEtapesTotal[numeroEtape]->getPosition().getY());
+        this->tableaudebug[numeroEtape]->getPosition().getX(),
+        this->tableaudebug[numeroEtape]->getPosition().getY());
 
         // Affichage des étapes
         p->setPen(colorEtapesIntermediaires);//"orange"));
@@ -299,7 +310,7 @@ void StrategieV3::paint(QPainter* p)
         }
 
         // Etapes où on a vu un robot
-        if(this->tableauEtapesTotal[numeroEtape]->aEviter())
+        if(this->tableaudebug[numeroEtape]->aEviter())
         {
             p->setPen(colorEtapesRobotVu);
             p->setBrush(colorEtapesRobotVu);
@@ -314,20 +325,20 @@ void StrategieV3::paint(QPainter* p)
         p->setOpacity(1);
         p->setPen(colorTexteEtapes);
         p->setBrush(colorTexteEtapes);
-        p->drawText(position, QString::number(this->tableauEtapesTotal[numeroEtape]->getNumero()));
+        p->drawText(position, QString::number(this->tableaudebug[numeroEtape]->getNumero()));
 
         // Affichage des liaisons entre étapes
-        for(int numeroChild = 0 ; numeroChild < this->tableauEtapesTotal[numeroEtape]->getNbChildren() ; numeroChild++)
+        for(int numeroChild = 0 ; numeroChild < this->tableaudebug[numeroEtape]->getNbChildren() ; numeroChild++)
         {
 //            Affichages de liaisons
 //            QPoint positionChild = QPoint(
-//            this->tableauEtapesTotal[numeroEtape]->getChildren()[numeroChild]->getPosition().getX(),
-//            -(this->tableauEtapesTotal[numeroEtape]->getChildren()[numeroChild]->getPosition().getY()));
+//            this->tableaudebug[numeroEtape]->getChildren()[numeroChild]->getPosition().getX(),
+//            -(this->tableaudebug[numeroEtape]->getChildren()[numeroChild]->getPosition().getY()));
 
             // Affichage des demi-liaisons, pour mieux voir les liens mono-directionnels
             QPoint positionChild = QPoint(
-            (this->tableauEtapesTotal[numeroEtape]->getChildren()[numeroChild]->getPosition().getX()+this->tableauEtapesTotal[numeroEtape]->getPosition().getX())/2,
-            (this->tableauEtapesTotal[numeroEtape]->getChildren()[numeroChild]->getPosition().getY()+this->tableauEtapesTotal[numeroEtape]->getPosition().getY())/2);
+            (this->tableaudebug[numeroEtape]->getChildren()[numeroChild]->getPosition().getX()+this->tableaudebug[numeroEtape]->getPosition().getX())/2,
+            (this->tableaudebug[numeroEtape]->getChildren()[numeroChild]->getPosition().getY()+this->tableaudebug[numeroEtape]->getPosition().getY())/2);
             p->setOpacity(0.5f);
             p->setPen(colorLiaisonsEtapes);
             p->setBrush(colorLiaisonsEtapes);
@@ -337,36 +348,37 @@ void StrategieV3::paint(QPainter* p)
 
         //Affichage du type d'étape
         QPoint positionTypeEtape = QPoint(
-        this->tableauEtapesTotal[numeroEtape]->getPosition().getX(),
-        this->tableauEtapesTotal[numeroEtape]->getPosition().getY() + 50);
+        this->tableaudebug[numeroEtape]->getPosition().getX(),
+        this->tableaudebug[numeroEtape]->getPosition().getY() + 50);
         p->setFont(font);
         p->setOpacity(0.5);
         p->setPen(colorTexteEtapes);
         p->setBrush(colorTexteEtapes);
-        p->drawText(positionTypeEtape, Etape::getShortNameType(this->tableauEtapesTotal[numeroEtape]->getEtapeType()));
+        p->drawText(positionTypeEtape, Etape::getShortNameType(this->tableaudebug[numeroEtape]->getEtapeType()));
     }
     p->setOpacity(1);
 }
 #endif
 
 void StrategieV3::startDijkstra() {
+
     for(int i=0; i<this->nombreEtapes; i++)
-        tableauEtapesTotal[i]->computeChildDistances();
+        tableaudebug[i]->computeChildDistances();
 
-    this->dijkstra = new Dijkstra(tableauEtapesTotal, this->nombreEtapes);
+    this->dijkstra = new Dijkstra(tableaudebug, this->nombreEtapes);
 
-    tableauEtapesTotal[0]->setParent(tableauEtapesTotal[0]);// Evite de planter si on detecte dès la première boucle (dans le simu)
+    tableaudebug[0]->setParent(tableaudebug[0]);// Evite de planter si on detecte dès la première boucle (dans le simu)
 
     dijkstra->setEtapeCourante(0);
 }
 
 void StrategieV3::updateStock(){
-    switch(this->tableauEtapesTotal[this->etapeEnCours]->getEtapeType()){
+    switch(this->tableaudebug[this->etapeEnCours]->getEtapeType()){
         case Etape::DEPART :
-            this->tableauEtapesTotal[this->etapeEnCours]->setEtapeType(Etape::POINT_PASSAGE);
+            this->tableaudebug[this->etapeEnCours]->setEtapeType(Etape::POINT_PASSAGE);
             break;
         default:
-            this->tableauEtapesTotal[this->etapeEnCours]->setEtapeType(Etape::POINT_PASSAGE);
+            this->tableaudebug[this->etapeEnCours]->setEtapeType(Etape::POINT_PASSAGE);
     }
 }
 
@@ -393,7 +405,7 @@ bool StrategieV3::updateScores() {
             resteDesChosesAFaire = true;
         }
 
-        this->tableauEtapesTotal[i]->setScore(scoreTypeEtape);
+        this->tableaudebug[i]->setScore(scoreTypeEtape);
     }
     return resteDesChosesAFaire;
 }

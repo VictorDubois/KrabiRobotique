@@ -1,8 +1,8 @@
 #include "strategieV2.h"
 #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-    #include "krabijunior2015.h"
+    #include "krabijunior2016.h"
 #else
-    #include "krabi2015.h"
+    #include "krabi2016.h"
 #endif
 #include "leds.h"
 #include "positionPlusAngle.h"
@@ -75,9 +75,9 @@ StrategieV2::StrategieV2(bool yellow)
             sharpsToCheck[i] = false;
 
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2015(yellow);
+        actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2016(yellow);
     #else
-        actionsToDo[0] = (MediumLevelAction*) new Krabi2015(yellow);
+        actionsToDo[0] = (MediumLevelAction*) new Krabi2016(yellow);
     #endif
 
         currentAction = actionsToDo[actionsCount];

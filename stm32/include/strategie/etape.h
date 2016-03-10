@@ -92,7 +92,7 @@ public:
     *   @param typeType d'étape (un feu, un point de passage...) *
     *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
     *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
-    Etape(Position position,/* int nbChildren, */int numero, Etape** tableauEtapesTotal, EtapeType type = POINT_PASSAGE, int state = -1, int nombreEtapesLieesParFinirEtape = 0);
+    Etape(Position position,/* int nbChildren, */int numero, Etape** tableaudebug, EtapeType type = POINT_PASSAGE, int state = -1, int nombreEtapesLieesParFinirEtape = 0);
 
     /** @brief Renvoi un pointeur vers une des etapes attachees a celle-ci *
     *   @param nb le numéro du lien vers l'autre etape */
@@ -217,7 +217,7 @@ public:
 
     static Etape* get(int index);
 
-    static Etape** getTableauEtapesTotal();
+    static Etape** getTableaudebug();
 
 #ifndef ROBOTHW
     static QString getNameType(EtapeType type);
@@ -270,7 +270,7 @@ private:
 
     static int numberInit;
 
-    static Etape** tableauEtapesTotal;
+    static Etape** tableaudebug;
 
     void postInit();
 };
