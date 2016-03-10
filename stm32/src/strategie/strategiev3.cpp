@@ -198,12 +198,6 @@ int StrategieV3::update()
                 }
             }
 
-            //Si c'est un fruit, on considère déjà qu'on l'a attrapé
-            /*if(this->tableauEtapesTotal[meilleurEtape]->getEtapeType()==Etape::DEPOSE_FRUIT)
-            {
-                this->nombreFruitsTransporte++;
-            }*/
-
             this->goal = meilleurEtape;
             this->statusStrat = 2;//Jusqu'à preuve du contraire, la prochaine étape est une étape intermédiaire
             this->updateIntermedaire();//On y va
@@ -240,16 +234,16 @@ void StrategieV3::updateIntermedaire()
     if(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)
     {
         #ifndef ROBOTHW
-            qDebug() << "la prochaine étape est le goal\n";
+            qDebug() << "la prochaine etape est le goal\n";
         #endif
         this->statusStrat = 1;
     }
 
-    //On cherche l'étape suivant vers l'etape - but
+    //On cherche l'etape suivant vers l'etape - but
     while(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) != etapeOuOnVientDArriver)
     {
         #ifndef ROBOTHW
-        qDebug() << "On cherche l'étape suivant vers l'etape - but" << this->etapeEnCours << "\n";
+        qDebug() << "On cherche l'etape suivant vers l'etape - but" << this->etapeEnCours << "\n";
         #endif
         this->nextStep = this->etapeEnCours;
         this->etapeEnCours = ((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero()));

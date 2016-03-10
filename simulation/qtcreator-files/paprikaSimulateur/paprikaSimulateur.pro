@@ -103,7 +103,9 @@ HEADERS += \
     ../../include/InitKrabiJunior.h \
     ../../include/initkrabi.h \
     ../../include/initialisation.h \
-    ../../include/vector.h
+    ../../include/vector.h \
+    ../../include/strategie/krabijunior2016.h \
+    ../../include/strategie/krabi2016.h
 
 
 SOURCES += \
@@ -181,7 +183,9 @@ SOURCES += \
     ../../src/loop.cpp \
     ../../src/InitKrabiJunior.cpp \
     ../../src/initkrabi.cpp \
-    ../../src/initialisation.cpp
+    ../../src/initialisation.cpp \
+    ../../src/strategie/krabijunior2016.cpp \
+    ../../src/strategie/krabi2016.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \
