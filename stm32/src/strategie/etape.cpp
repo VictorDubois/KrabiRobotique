@@ -6,7 +6,7 @@
     #include <QDebug>
 #endif
 
-Etape** Etape::tableauEtapesTotal = 0;
+Etape** Etape::tableaudebug = 0;
 
 Etape::Etape(){}
 
@@ -52,7 +52,7 @@ Etape::Etape(int numero, Position position, EtapeType type, int state, int nombr
     postInit();
 }
 
-Etape::Etape(Position position, int numero, Etape** tableauEtapesTotal, EtapeType type, int state, int nombreEtapesLieesParFinirEtape)
+Etape::Etape(Position position, int numero, Etape** tableaudebug, EtapeType type, int state, int nombreEtapesLieesParFinirEtape)
 {
     this->position = position;
     this->type = type;
@@ -71,7 +71,7 @@ void Etape::postInit()
     this->score = 0;
     this->numeroEtapeFinAction = numero;//Par défaut, on fini à l'endroit de l'étape
 
-    tableauEtapesTotal[this->numero] = this;
+    tableaudebug[this->numero] = this;
 
     this->actionGoTo = new ActionGoTo(getPosition());
 }
@@ -350,22 +350,22 @@ int Etape::getNumeroEtapeFinAction()
 
 Etape** Etape::initTableauEtapeTotal(int number)
 {
-    tableauEtapesTotal = new Etape*[number];
+    tableaudebug = new Etape*[number];
     for(int i(0); i<number; ++i)
-        tableauEtapesTotal[i] = 0;
-    return tableauEtapesTotal;
+        tableaudebug[i] = 0;
+    return tableaudebug;
 }
 
 Etape* Etape::get(int index)
 {
-    if (tableauEtapesTotal[index] == 0)
+    if (tableaudebug[index] == 0)
         new Etape(index);
-    return tableauEtapesTotal[index];
+    return tableaudebug[index];
 }
 
-Etape** Etape::getTableauEtapesTotal()
+Etape** Etape::getTableaudebug()
 {
-    return tableauEtapesTotal;
+    return tableaudebug;
 }
 
 #ifndef ROBOTHW

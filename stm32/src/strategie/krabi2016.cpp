@@ -9,13 +9,10 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     //Initialisation des tableaux d'étapes
     this->nombreEtapes = NOMBRE_ETAPES;
     this->numeroEtapeGarage = ETAPE_GARAGE;
-    tableauEtapesTotal = Etape::initTableauEtapeTotal(NOMBRE_ETAPES);//new Etape*[NOMBRE_ETAPES];
+    tableaudebug = Etape::initTableauEtapeTotal(NOMBRE_ETAPES);//new Etape*[NOMBRE_ETAPES];
     //actionEtape = new MediumLevelAction*[NOMBRE_ETAPES];
     //actionGoto = new ActionGoTo[NOMBRE_ETAPES];
 
-
-    // Création des étapes
-    // Les étapes correspondant à des actions sont créées automatiquement lors de l'ajout d'actions
 
     new Etape(0, Position(250, 1000, true), Etape::DEPART);            // départ au fond de la zone de départ
     // Points de passage
@@ -26,7 +23,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     new Etape(5, Position(1120, 1203, true));
     new Etape(7, Position(1303, 883, true));
     new Etape(21, Position(1493, 716, true));
-    new Etape(22, Position(1763, 876, true));
+    new Etape(22, Position(2463, 676, true));
     new Etape(23, Position(1593, 1150, true));
     new Etape(24, Position(1896, 1156, true));
     new Etape(27, Position(2086, 1156, true));
@@ -69,8 +66,6 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     // numéro étape, mediumLevelAction
 
     // Claps
-    new Etape(2, new Clap(Position(836, 1780, true), Position(933, 1780, true)) );
-    new Etape(4, new Clap(Position(236, 1780, true), Position(400, 1780)) );
     new Etape(6, new Clap(Position(2500, 1780, true), Position(2300, 1780, true)) );
     new Etape(42, Position(933, 1780, true) );
     new Etape(43,Position(400, 1780, true) );
@@ -89,8 +84,8 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
 
     // Tapis
-    new Etape(17, new Tapis(Position(1080, 780, true)) );
-    new Etape(36, new Tapis(Position(1420, 780, true)) );
+    new Etape(17, new Tapis(Position(480, 780, true)) );
+    new Etape(36, new Tapis(Position(1420, 180, true)) );
 
     // Ramasser Pied
     new Etape(18, new RamasserPied(Position(870, 1355, true)) );
@@ -116,52 +111,27 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     //Deposer Pieds
     new Etape(41, new DeposerPied(Position(500, 1000, true)) );
 
-
-    // pousser pied
-//    Etape::get(2)->addVoisin(11);
-
-
     // Voisins
     Etape::get(0)->addVoisin(1, false);
-
-    Etape::get(1)->addVoisins(3, 8, 31);
-    Etape::get(1)->addVoisins(12, 21, 45);
-
-    Etape::get(3)->addVoisins(31, 36);
-
-//    Etape::get(4)->addVoisins(30, 33, 45, 18);
-    Etape::get(4)->addVoisins(45);
-
-    Etape::get(5)->addVoisins(23);
-    //Etape::get(5)->addVoisins(35);
-
-    Etape::get(7)->addVoisins(5, 22);
-    Etape::get(7)->addVoisins(23, 3);
-
-    Etape::get(14)->addVoisins(34);
-
 
 
     // Voisins des pieds
     Etape::get(18)->addVoisins(3, 5, 1);
     Etape::get(18)->addVoisins(31, 35, 27, 45);
     Etape::get(19)->addVoisins(35, 42);
-    Etape::get(20)->addVoisins(5, 35, 23, 28);
+    Etape::get(20)->addVoisins(5, 35, 23 , 28);
     Etape::get(20)->addVoisins(7);
 
     Etape::get(46)->addVoisins(34);
     Etape::get(47)->addVoisins(34);
-    Etape::get(48)->addVoisins(40);
-
-
 
     Etape::get(21)->addVoisins(3, 27);
-    Etape::get(21)->addVoisins(7);
+
 //    Etape::get(21)->addVoisins(17);
 
     Etape::get(22)->addVoisins(24, 27, 36);
 
-    Etape::get(23)->addVoisins(22, 24);
+    Etape::get(23)->addVoisins(24);
     Etape::get(23)->addVoisins(3);
 
 
@@ -173,64 +143,25 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(31)->addVoisins(30, 33, 17);
 
-//    Etape::get(34)->addVoisins(19, 35, 43, 45);
-    //Etape::get(34)->addVoisins(2);
-    //Etape::get(34)->addVoisins(30, 31, 18, 1);
-
-//    Etape::get(36)->addVoisins(36);
-    Etape::get(35)->addVoisins(28, 2);
-
-    Etape::get(36)->addVoisins(5);
-
-    Etape::get(37)->addVoisins(25, 38);
-
-    Etape::get(38)->addVoisins(6, 28);
-
-    Etape::get(39)->addVoisins(25, 37, 38, 6);
-
-
-    Etape::get(40)->addVoisins(12, 13, 14);
-    Etape::get(8)->addVoisins(12, 13, 14);
-    Etape::get(12)->addVoisins(14);
-    Etape::get(13)->addVoisins(14);
-    Etape::get(15)->addVoisins(16, 26);
-    Etape::get(16)->addVoisins(26);
-
     Etape::get(17)->addVoisins(7);
-    Etape::get(36)->addVoisins(7, 17);
+    Etape::get(36)->addVoisins(17);
 
     Etape::get(41)->addVoisins(1);
 
     //aretes pour baisser les claps
-    Etape::get(2)->addVoisins(42);
-    Etape::get(4)->addVoisins(43);
     Etape::get(6)->addVoisins(44);
-//    Etape::get(42)->addVoisins(45);
+
     Etape::get(43)->addVoisins(30);
 
-    Etape::get(43)->addVoisins(2);
     Etape::get(44)->addVoisins(37);
     Etape::get(44)->addVoisins(38);
 
     Etape::get(45)->addVoisins(31);
     Etape::get(45)->addVoisins(35);
 
-    Etape::get(49)->addVoisins(2, 35);
-
-    //aretes pour coin gauche haut
-    Etape::get(8)->addVoisins(40);
 
     //Les trajets transversaux:
     Etape::get(27)->addVoisins(1);
-
-    //Seulement si on fait les gobelets
-//    Etape::get(9)->addVoisins(3, 5, 7);
-//    Etape::get(9)->addVoisins(12, 36, 1);
-//    Etape::get(10)->addVoisins(20, 35, 23, 28);
-//    Etape::get(11)->addVoisins(22, 24, 27, 15);
-//    Etape::get(11)->addVoisins(18);
-
-
 
     // Lancer Dijkstra
     startDijkstra();
@@ -241,7 +172,7 @@ int Krabi2016::getScoreEtape(int i){
        Plus tard : pourquoi pas changer le système en ayant les FEU etc... fils de Etape, ça éviterait aussi le switch dans updateStock().
        Juste faire attention à comment transmettre le stock à update.
      */
-    switch (this->tableauEtapesTotal[i]->getEtapeType())
+    switch (this->tableaudebug[i]->getEtapeType())
     {
         case Etape::DEPART :
             return 0;

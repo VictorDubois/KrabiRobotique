@@ -8,7 +8,7 @@ KrabiJunior2016::KrabiJunior2016(bool isYellow) : StrategieV3(isYellow)
     //Initialisation des tableaux d'étapes
     this->nombreEtapes = NOMBRE_ETAPES;
     this->numeroEtapeGarage = ETAPE_GARAGE;
-    tableauEtapesTotal = Etape::initTableauEtapeTotal(NOMBRE_ETAPES);
+    tableaudebug = Etape::initTableauEtapeTotal(NOMBRE_ETAPES);
     /*actionEtape = new MediumLevelAction*[NOMBRE_ETAPES];
     actionGoto = new ActionGoTo[NOMBRE_ETAPES];*/
 
@@ -20,13 +20,7 @@ KrabiJunior2016::KrabiJunior2016(bool isYellow) : StrategieV3(isYellow)
     // numéro étape, position
     new Etape(1, Position(600, 1000, true));
     new Etape(2, Position(700, 1000, true));
-    new Etape(3, Position(1200, 1000, true));
-    new Etape(4, Position(1000, 1300, true));
-    new Etape(5, Position(1500, 1300, true));
-    new Etape(6, Position(1800, 1200, true));
-    new Etape(7, Position(1700, 800, true));
-    new Etape(8, Position(1200, 800, true));
-    new Etape(9, Position(1200, 600, true), Etape::TAPIS);
+
 
     // Actions
     // numéro étape, mediumLevelAction
@@ -58,7 +52,7 @@ int KrabiJunior2016::getScoreEtape(int i){
     Plus tard : pourquoi pas changer le système en ayant les FEU etc... fils de Etape, ça éviterait aussi le switch dans updateStock().
     Juste faire attention à comment transmettre le stock à update.
     */
-    switch (this->tableauEtapesTotal[i]->getEtapeType()){
+    switch (this->tableaudebug[i]->getEtapeType()){
             case Etape::DEPART :
                 return 10;
                 break;
