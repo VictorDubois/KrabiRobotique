@@ -14,21 +14,12 @@
     #include "stm32f10x_gpio.h"
     #include "stm32f10x_usart.h"
 
-    #define USING_UART1 // Use USART1 instead of USART3 (I2C pins instead of DEBUG pins)
+    // USART name
+    #define REMOTE_USART_INDEX USART1
+    // Interruption handler name
+    #define REMOTE_USART_IRQ_HANDLER USART1_IRQHandler
+    #define REMOTE_USART_IRQn USART1_IRQn
 
-    #ifdef USING_UART1
-        // USART name
-        #define REMOTE_USART_INDEX USART1
-        // Interruption handler name
-        #define REMOTE_USART_IRQ_HANDLER USART1_IRQHandler
-        #define REMOTE_USART_IRQn USART1_IRQn
-    #else
-        // USART name
-        #define REMOTE_USART_INDEX USART3
-        // Interruption handler name
-        #define REMOTE_USART_IRQ_HANDLER USART3_IRQHandler
-        #define REMOTE_USART_IRQn USART3_IRQn
-    #endif
 #endif
 
 #include "krabipacket.h"

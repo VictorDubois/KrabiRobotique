@@ -77,6 +77,8 @@ Remote::Remote() : mRemoteMod(true), mRemoteControl(false)
 
 void Remote::initClocksAndPortsGPIO()
 {
+#ifdef STM32F10X_CL //H107
+
     /* Bit configuration structure for GPIOA PIN9 and PIN10 */
     GPIO_InitTypeDef gpioa_init_struct;
 
@@ -105,29 +107,66 @@ void Remote::initClocksAndPortsGPIO()
     GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
 
     GPIO_Init(GPIOB, &GPIO_InitStructure);
+#endif
+#ifdef STM32F40_41xxx //H405
+
+/** /!\ NOT TESTED IN FOREVER /!\ **/
+
+//CF tuto : http://eliaselectronics.com/stm32f4-discovery-usart-example/
+
+    /* enable peripheral clock for USART2 */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+    /* GPIOA clock enable */
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+
+    GPIO_InitTypeDef GPIO_InitStructure;
+ 	// port A pin 2 TX : du stm vers l'extérieur
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;// the pins are configured as alternate function so the USART peripheral has access to them
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;// this defines the output type as push pull mode (as opposed to open drain)
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;// this activates the pullup resistors on the IO pins
+
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port (// this defines the IO speed and has nothing to do with the baudrate!)
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+ 	// port A pin 3 RX : vers le stm
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
+
+#endif
 }
 
 void Remote::initUART(int baudRate)
 {
-    /* USART configuration structure for USART1 */
-    USART_InitTypeDef usart1_init_struct;
-    /* Enable USART1 */
-    USART_Cmd(USART1, ENABLE);
-    /* Baud rate 9600, 8-bit data, One stop bit
+    /* USART configuration structure for USART */
+    USART_InitTypeDef usart_init_struct;
+
+    /* Enable USART */
+    USART_Cmd(REMOTE_USART_INDEX, ENABLE);
+
+    /* 8-bit data, One stop bit
      * No parity, Do both Rx and Tx, No HW flow control
      */
-    usart1_init_struct.USART_BaudRate = 9600;
-    usart1_init_struct.USART_WordLength = USART_WordLength_8b;
-    usart1_init_struct.USART_StopBits = USART_StopBits_1;
-    usart1_init_struct.USART_Parity = USART_Parity_No ;
-    usart1_init_struct.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-    usart1_init_struct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    /* Configure USART1 */
-    USART_Init(USART1, &usart1_init_struct);
+    usart_init_struct.USART_BaudRate   = baudRate;
+    usart_init_struct.USART_WordLength = USART_WordLength_8b;
+    usart_init_struct.USART_StopBits   = USART_StopBits_1;
+    usart_init_struct.USART_Parity     = USART_Parity_No ;
+    usart_init_struct.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
+    usart_init_struct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    /* Configure USART */
+    USART_Init(REMOTE_USART_INDEX, &usart_init_struct);
     /* Enable RXNE interrupt */
-    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-    /* Enable USART1 global interrupt */
-    NVIC_EnableIRQ(USART1_IRQn);
+    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_RXNE, ENABLE);
+    /* Enable USART global interrupt */
+    NVIC_EnableIRQ(REMOTE_USART_IRQn);
 }
 
 extern "C"
