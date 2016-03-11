@@ -19,6 +19,12 @@ void InitKrabi::setYellow()
 }
 #endif
 
+/** Initialisation roues codeuses **/
+void InitKrabi::initRotaryEncoders()
+{
+	initRightRotaryEncoder(	TIM4, GPIOD, GPIO_Pin_12, 	GPIOD, GPIO_Pin_13);
+	initLeftRotaryEncoder(	TIM3, GPIOA, GPIO_Pin_6, 	GPIOA, GPIO_Pin_7);
+}
 
 void InitKrabi::initClock()
 {

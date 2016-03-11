@@ -37,6 +37,8 @@ class Initialisation
     // Mettez toutes vos initialisations de PIN dans la fonction "initialisation"
     // On l'appellera ensuite dans le main au tout début pour tout initialiser d'un coup
         virtual void initGPIO() = 0;
+		
+		virtual void initRotaryEncoders() = 0;
 
         virtual void initActionneurs() = 0;
 
@@ -46,6 +48,10 @@ class Initialisation
         Odometrie* odometrie;
         StrategieV2* strategie;
         bool yellow;
+		
+		// Create the rotary encoders with the proper pins
+		void initRightRotaryEncoder	(TIM_TypeDef* TIMx, 	GPIO_TypeDef* GPIO_ch1, uint16_t pin_Ch1, 	GPIO_TypeDef* GPIO_ch2, uint16_t pin_Ch2);
+		void initLeftRotaryEncoder	(TIM_TypeDef* TIMx, 	GPIO_TypeDef* GPIO_ch1, uint16_t pin_Ch1, 	GPIO_TypeDef* GPIO_ch2, uint16_t pin_Ch2);
 
 #ifdef ROBOTHW
         Tirette* tirette;

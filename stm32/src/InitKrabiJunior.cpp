@@ -19,6 +19,14 @@ void InitKrabiJunior::setYellow()
 }
 #endif
 
+/** Initialisation roues codeuses **/
+void InitKrabiJunior::initRotaryEncoders()
+{
+	initRightRotaryEncoder(	TIM4, GPIOB, GPIO_Pin_6, 	GPIOB, GPIO_Pin_7, GPIO_AF_TIM4, GPIO_PinSource6, GPIO_PinSource7);
+	initLeftRotaryEncoder(	TIM1, GPIOA, GPIO_Pin_8, 	GPIOA, GPIO_Pin_9, GPIO_AF_TIM1, GPIO_PinSource8, GPIO_PinSource9);
+}
+
+
 void InitKrabiJunior::initClock()
 {
 #ifdef ROBOTHW

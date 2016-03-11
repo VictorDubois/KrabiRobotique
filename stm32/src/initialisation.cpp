@@ -33,7 +33,10 @@ extern "C" void SysTick_Handler()
 
 #ifdef ROBOTHW
 Initialisation::Initialisation(PositionPlusAngle position) : start(position), tirette(0)
-{}
+{
+	rcd = 0;
+	rcg = 0;
+}
 #else
 #include <QDebug>
 Initialisation::Initialisation(PositionPlusAngle position, bool yellow, Robot* robot) : start(position), robot(robot)
@@ -78,6 +81,22 @@ void Initialisation::init()
 bool Initialisation::isYellow()
 {
     return yellow;
+}
+
+void Initialisation::initLeftRotaryEncoder()
+{
+	if(rcg)
+		delete rcg;
+		
+	rcg = new QuadratureCoderHandler();
+}
+
+void Initialisation::initRightRotaryEncoder()
+{
+	if(rcd)
+		delete rcd;
+		
+	rcd = new QuadratureCoderHandler();
 }
 
 Asservissement* Initialisation::getAsservissement()
