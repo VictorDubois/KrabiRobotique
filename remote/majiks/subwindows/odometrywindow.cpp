@@ -5,11 +5,11 @@
 
 #include <cmath>
 
-OdometryWindow::OdometryWindow(BluetoothProxy* bluetoothProxy, QWidget *parent): QWidget(parent), ui(new Ui::OdometryWindow)
+OdometryWindow::OdometryWindow(AbstractSerialProxy* serialProxy, QWidget *parent): QWidget(parent), ui(new Ui::OdometryWindow)
 {
     ui->setupUi(this);
 
-    m_bluetoothProxy = bluetoothProxy;
+    m_serialProxy = serialProxy;
 
     connect(ui->queryButton,            &QPushButton::clicked,   this, &OdometryWindow::requireSync);
     connect(ui->applyButton,            &QPushButton::clicked,   this, &OdometryWindow::apply);
@@ -72,7 +72,7 @@ void OdometryWindow::resetReferences()
 void OdometryWindow::requireSync()
 {
     KrabiPacket p(KrabiPacket::WATCH_REQUIRE_ONCE, KrabiPacket::W_ODOMETRIE);
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void OdometryWindow::update()
@@ -103,5 +103,5 @@ void OdometryWindow::apply()
     p.add(static_cast<float>(ui->wheelSize->value()));
     p.add(static_cast<float>(ui->interAxisDistance->value()));
 
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }

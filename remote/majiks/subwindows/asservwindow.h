@@ -7,14 +7,14 @@ namespace Ui {
 class AsservWindow;
 }
 
-class BluetoothProxy;
+class AbstractSerialProxy;
 
 class AsservWindow : public QWidget
 {
     Q_OBJECT
 
     public:
-        explicit AsservWindow(BluetoothProxy* bluetoothProxy, QWidget *parent = nullptr);
+        explicit AsservWindow(AbstractSerialProxy* serialProxy, QWidget *parent = nullptr);
         ~AsservWindow();
 
         bool graphLinear();
@@ -39,7 +39,7 @@ class AsservWindow : public QWidget
 
         Ui::AsservWindow *ui;
 
-        BluetoothProxy* m_bluetoothProxy;
+        AbstractSerialProxy* m_serialProxy;
 
         void showEvent(QShowEvent* event);
 };

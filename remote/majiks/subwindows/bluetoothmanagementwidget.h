@@ -1,7 +1,7 @@
 #ifndef BLUETOOTHMANAGEMENTWIDGET_H
 #define BLUETOOTHMANAGEMENTWIDGET_H
 
-#include <QWidget>
+#include "serialmanagementwidget.h"
 
 class BluetoothProxy;
 
@@ -10,10 +10,10 @@ class QTableWidget;
 class QLabel;
 class QLineEdit;
 
-class BluetoothManagementWidget: public QWidget
+class BluetoothManagementWidget: public SerialManagementWidget
 {
     public:
-        BluetoothManagementWidget(BluetoothProxy *bluetoothProxy, QWidget *parent = nullptr);
+        BluetoothManagementWidget(BluetoothProxy *bluetoothProxy = nullptr, QWidget *parent = nullptr);
 
         QString getSelectedAddress() const;
 

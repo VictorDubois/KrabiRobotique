@@ -7,14 +7,14 @@
 class QPushButton;
 class QLabel;
 
-class BluetoothProxy;
+class AbstractSerialProxy;
 
 class RemoteWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        explicit RemoteWidget(BluetoothProxy *bluetoothProxy, QWidget *parent = nullptr);
+        explicit RemoteWidget(AbstractSerialProxy *serialProxy, QWidget *parent = nullptr);
 
         void setCurrentPosition(const QPointF& position, float angle);
 
@@ -48,7 +48,7 @@ class RemoteWidget : public QWidget
         float m_linearStep;
         float m_angularStep;
 
-        BluetoothProxy* m_bluetoothProxy;
+        AbstractSerialProxy* m_serialProxy;
 };
 
 #endif // REMOTEWIDGET_H

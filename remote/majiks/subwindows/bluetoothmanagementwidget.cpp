@@ -12,7 +12,7 @@
 
 #include "../bluetoothproxy/bluetoothproxy.h"
 
-BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothProxy, QWidget* parent): QWidget(parent)
+BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothProxy, QWidget* parent): SerialManagementWidget(parent)
 {
     m_bluetoothProxy = bluetoothProxy;
 
@@ -59,10 +59,14 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
 
     connect(m_connectButton,        &QPushButton::clicked,              this,               &BluetoothManagementWidget::on_connectButton_clicked);
     connect(m_checkBluetoothButton, &QPushButton::clicked,              this,               &BluetoothManagementWidget::checkBluetoothAvailability);
-    connect(m_scanButton,           &QPushButton::clicked,              m_bluetoothProxy,   &BluetoothProxy::scanRemoteDevices);
-    connect(m_bluetoothProxy,       &BluetoothProxy::deviceDiscovered,  this,               &BluetoothManagementWidget::deviceDiscovered);
-    connect(m_bluetoothProxy,       &BluetoothProxy::connected,         this,               &BluetoothManagementWidget::checkConnectionStatus);
-    connect(m_bluetoothProxy,       &BluetoothProxy::disconnected,      this,               &BluetoothManagementWidget::checkConnectionStatus);
+
+    if(m_bluetoothProxy)
+    {
+        connect(m_scanButton,           &QPushButton::clicked,              m_bluetoothProxy,   &BluetoothProxy::scanRemoteDevices);
+        connect(m_bluetoothProxy,       &BluetoothProxy::deviceDiscovered,  this,               &BluetoothManagementWidget::deviceDiscovered);
+        connect(m_bluetoothProxy,       &BluetoothProxy::connected,         this,               &BluetoothManagementWidget::checkConnectionStatus);
+        connect(m_bluetoothProxy,       &BluetoothProxy::disconnected,      this,               &BluetoothManagementWidget::checkConnectionStatus);
+    }
 
     connect(m_UUIDInput,            &QLineEdit::textChanged,            this,               &BluetoothManagementWidget::changeUUID);
 
@@ -71,13 +75,14 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
 
     m_UUIDInput->setText("B62C4E8D-62CC-404B-BBBF-BF3E3BBB1374");
 
-    checkBluetoothAvailability();
     checkConnectionStatus();
+    checkBluetoothAvailability();
 }
 
 void BluetoothManagementWidget::changeUUID(const QString& uuid)
 {
-    m_bluetoothProxy->setUUID(uuid);
+    if(m_bluetoothProxy)
+        m_bluetoothProxy->setUUID(uuid);
 }
 
 void BluetoothManagementWidget::deviceDiscovered(const QString& name, const QString& address)
@@ -116,19 +121,26 @@ int BluetoothManagementWidget::findDeviceByAddress(const QString& address)
 
 void BluetoothManagementWidget::checkBluetoothAvailability()
 {
-    bool btAv = m_bluetoothProxy->isBluetoothAvailable();
+    bool btAv = false;
+
+    if(m_bluetoothProxy)
+        btAv = m_bluetoothProxy->isBluetoothAvailable();
 
     m_scanButton->setEnabled(btAv);
     m_sendButton->setEnabled(btAv);
     m_detectedDevices->setEnabled(btAv);
     m_connectButton->setEnabled(btAv);
+    m_UUIDInput->setEnabled(btAv);
 
     m_bluetoothAvLabel->setText(tr("Bluetooth is <b>%1available</b>").arg(btAv?"":"NOT "));
 }
 
 void BluetoothManagementWidget::checkConnectionStatus()
-{
-    bool cxSt = m_bluetoothProxy->isConnected();
+{   
+    bool cxSt = false;
+
+    if(m_bluetoothProxy)
+        cxSt = m_bluetoothProxy->isConnected();
 
     m_UUIDInput->setEnabled(!cxSt);
 
@@ -146,6 +158,9 @@ void BluetoothManagementWidget::checkConnectionStatus()
 
 void BluetoothManagementWidget::on_connectButton_clicked()
 {
+    if(!m_bluetoothProxy)
+        return;
+
     if(m_bluetoothProxy->isConnected())
         return m_bluetoothProxy->disconnect();
 
@@ -170,6 +185,9 @@ QString BluetoothManagementWidget::getSelectedAddress() const
 //Debug
 void BluetoothManagementWidget::sendTest()
 {
+    if(!m_bluetoothProxy)
+        return;
+
     KrabiPacket packet(KrabiPacket::LOG_DEBUG);
     packet.addString("test");
 

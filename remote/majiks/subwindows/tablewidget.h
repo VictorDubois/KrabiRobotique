@@ -3,12 +3,12 @@
 
 #include <QWidget>
 
-class BluetoothProxy;
+class AbstractSerialProxy;
 
 class TableWidget: public QWidget
 {
     public:
-        TableWidget(BluetoothProxy *bluetoothProxy, QWidget *parent = 0);
+        TableWidget(AbstractSerialProxy *serialProxy, QWidget *parent = 0);
 
         void setRobotPosition(const QPointF& position);
         QPointF getRobotPosition() const;
@@ -36,7 +36,7 @@ class TableWidget: public QWidget
         float   m_robotAngle;
         bool    m_robotVisible;
 
-        BluetoothProxy* m_bluetoothProxy;
+        AbstractSerialProxy* m_serialProxy;
 };
 
 #endif // TABLEWIDGET_H

@@ -3,11 +3,11 @@
 
 #include "bluetoothproxy/bluetoothproxy.h"
 
-WatchWindow::WatchWindow(BluetoothProxy* bluetoothProxy, QWidget *parent): QWidget(parent), ui(new Ui::WatchWindow)
+WatchWindow::WatchWindow(AbstractSerialProxy *serialProxy, QWidget *parent): QWidget(parent), ui(new Ui::WatchWindow)
 {
     ui->setupUi(this);
 
-    m_bluetoothProxy = bluetoothProxy;
+    m_serialProxy = serialProxy;
 
     excluded.append(KrabiPacket::W_WATCHES);
     excluded.append(KrabiPacket::W_PID_LIN);
@@ -95,7 +95,7 @@ void WatchWindow::setWatching(KrabiPacket::W_TABLE w, bool watching, bool transm
     if (transmit)
     {
         KrabiPacket p(watching ? KrabiPacket::WATCH_SET : KrabiPacket::WATCH_RESET, w);
-        m_bluetoothProxy->sendData(p);
+        m_serialProxy->sendData(p);
     }
 
     //DebugWindow::getInstance()->getSharpWindow()->setWatchChecked(watches[KrabiPacket::W_SHARPS]->isChecked());
@@ -107,13 +107,13 @@ void WatchWindow::deselectAll()
         setWatching(it.key(), false, false);
 
     KrabiPacket p(KrabiPacket::WATCH_DESELECT_ALL);
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void WatchWindow::requireSync()
 {
     KrabiPacket p(KrabiPacket::WATCH_REQUIRE_ONCE, KrabiPacket::W_WATCHES);
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void WatchWindow::syncFinished(KrabiPacket p)
