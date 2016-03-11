@@ -83,21 +83,6 @@ bool Initialisation::isYellow()
     return yellow;
 }
 
-void Initialisation::initLeftRotaryEncoder()
-{
-	if(rcg)
-		delete rcg;
-		
-	rcg = new QuadratureCoderHandler();
-}
-
-void Initialisation::initRightRotaryEncoder()
-{
-	if(rcd)
-		delete rcd;
-		
-	rcd = new QuadratureCoderHandler();
-}
 
 Asservissement* Initialisation::getAsservissement()
 {
