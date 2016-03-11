@@ -55,14 +55,14 @@ void Initialisation::init()
 #endif
 
     strategie = new StrategieV2(isYellow());
-
+/*
 #ifdef ROBOTHW
     tirette->attendreRemise();
     tirette->attendreEnlevee();
 #endif
-
+*/
     asservissement = new Asservissement(odometrie);
-
+/*
 #ifdef ROBOTHW
     setYellow();
 #endif
@@ -72,7 +72,7 @@ void Initialisation::init()
         start = start.getSymetrical();
     }
 
-    odometrie->setPos(start);
+    odometrie->setPos(start);*/
 }
 
 bool Initialisation::isYellow()

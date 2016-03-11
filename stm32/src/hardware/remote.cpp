@@ -15,6 +15,40 @@
 GenericBuffer Remote::bufferRecv = GenericBuffer();
 GenericBuffer Remote::bufferSend = GenericBuffer();
 
+GenericBuffer::GenericBuffer()
+{
+    size = 0;
+    for(size_t i=0;i<USART_BUFFER_SIZE;++i)
+        buf[i] = 0;
+}
+
+bool GenericBuffer::append(uint8_t d)
+{
+    if(size == USART_BUFFER_SIZE)
+        return true;
+
+    buf[size] = d;
+    ++size;
+    return false;
+}
+
+uint8_t GenericBuffer::pop_front()
+{
+    if(isEmpty())
+        return 0;
+
+    int d = buf[0];
+
+    --size;
+    memmove(buf, buf+1, size);
+    return d;
+}
+
+bool GenericBuffer::isEmpty() const
+{
+    return size == 0;
+}
+
 Remote* Remote::singleton = 0;
 
 Remote* Remote::getSingleton()
@@ -28,18 +62,10 @@ Remote* Remote::getSingleton()
 
 Remote::Remote() : mRemoteMod(true), mRemoteControl(false)
 {
-#ifdef ROBOTHW
+    #ifdef ROBOTHW
     initClocksAndPortsGPIO();
     initUART(USART_BAUDRATE);
 #endif
-
-    /*isOpenContainer = false;
-    isOpenLeftArm = false;
-    isOpenRightArm = false;
-    timerLances = -1;
-
-    brakInv = false;
-    brakOut = false;*/
 
     linSpeed = 0.;
     angSpeed = 0.;
@@ -47,142 +73,85 @@ Remote::Remote() : mRemoteMod(true), mRemoteControl(false)
     for(int i(0); i < KrabiPacket::MAX_WATCHES; i++)
         mWatchesEnabled[i] = false;
     mWatchesEnabled[KrabiPacket::W_POSITION] = true;
-    //mWatchesEnabled[KrabiPacket::W_SPEED] = true;
-    //mWatchesEnabled[KrabiPacket::W_SPEED_TARGET] = true;
 }
 
 void Remote::initClocksAndPortsGPIO()
 {
+    /* Bit configuration structure for GPIOA PIN9 and PIN10 */
+    GPIO_InitTypeDef gpioa_init_struct;
 
-#ifdef ROBOTHW
-
-#ifdef STM32F40_41xxx // Pin pour le stm32 h405
-
-//CF tuto : http://eliaselectronics.com/stm32f4-discovery-usart-example/
-
-/* enable peripheral clock for USART2 */
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-/* GPIOA clock enable */
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+    /* Enalbe clock for USART1, AFIO and GPIOA */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_AFIO |
+                           RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB, ENABLE);
 
 
+    /** USART remap **/
+    // Enable USART1 remap from PA9 and PA10 (used by USB) to PB6 and PB7
+    GPIO_PinRemapConfig(GPIO_Remap_USART1, ENABLE);
+
+    /** GPIO setup **/
     GPIO_InitTypeDef GPIO_InitStructure;
- 	// port A pin 2 TX : du stm vers l'extérieur
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-    #ifdef STM32F40_41xxx
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;// the pins are configured as alternate function so the USART peripheral has access to them
-        GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;// this defines the output type as push pull mode (as opposed to open drain)
-        GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;// this activates the pullup resistors on the IO pins
-    #elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    #endif
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port (// this defines the IO speed and has nothing to do with the baudrate!)
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
- 	// port A pin 3 RX : vers le stm
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // port B pin 6 TX
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
 
-    #ifdef STM32F40_41xxx
-        GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
-        GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
-    #endif
-#endif
-#ifdef STM32F10X_CL // Pin pour le stm32 h107
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-    //RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-    GPIO_PinRemapConfig(GPIO_PartialRemap_USART3, ENABLE);
+    // port B pin 7 RX
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
 
-    GPIO_InitTypeDef GPIO_InitStructure;
-    // port C pin 10 TX - ext2 15
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-    // port C pin 11 RX - ext2 14
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // La vitesse de rafraichissement du port
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-    // port D pin 10 : la direction (TX/RX)
-    /*GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; // La vitesse de rafraichissement du port
-    GPIO_Init(GPIOD, &GPIO_InitStructure);*/
-
-    /*GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_USART3);     // Tx
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_USART3);*/     // Rx
-#endif
-
-#endif
-
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
 void Remote::initUART(int baudRate)
 {
-#ifdef ROBOTHW
-    USART_InitTypeDef USART_InitStructure;
-
-    USART_InitStructure.USART_BaudRate = baudRate;
-
-    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    USART_InitStructure.USART_StopBits = USART_StopBits_1;
-    USART_InitStructure.USART_Parity = USART_Parity_No;
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-
-    USART_Init(REMOTE_USART_INDEX, &USART_InitStructure);
-
-    USART_Cmd(REMOTE_USART_INDEX, ENABLE);
-
-    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_RXNE, ENABLE);
-
-    /**** IT ***/
-    NVIC_InitTypeDef NVIC_InitStructure;
-
-    // Configure the NVIC Preemption Priority Bits
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-
-    // Enable the USARTy Interrupt
-    NVIC_InitStructure.NVIC_IRQChannel = REMOTE_USART_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-#endif
+    /* USART configuration structure for USART1 */
+    USART_InitTypeDef usart1_init_struct;
+    /* Enable USART1 */
+    USART_Cmd(USART1, ENABLE);
+    /* Baud rate 9600, 8-bit data, One stop bit
+     * No parity, Do both Rx and Tx, No HW flow control
+     */
+    usart1_init_struct.USART_BaudRate = 9600;
+    usart1_init_struct.USART_WordLength = USART_WordLength_8b;
+    usart1_init_struct.USART_StopBits = USART_StopBits_1;
+    usart1_init_struct.USART_Parity = USART_Parity_No ;
+    usart1_init_struct.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+    usart1_init_struct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    /* Configure USART1 */
+    USART_Init(USART1, &usart1_init_struct);
+    /* Enable RXNE interrupt */
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+    /* Enable USART1 global interrupt */
+    NVIC_EnableIRQ(USART1_IRQn);
 }
 
-extern "C" void REMOTE_USART_IRQ_HANDLER(void)
+extern "C"
 {
-    volatile unsigned int IIR;
-
-    IIR = REMOTE_USART_INDEX->SR;
-    if (IIR & USART_FLAG_RXNE)
+/** Interruption handler **/
+void REMOTE_USART_IRQ_HANDLER(void)
+{
+    if(USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_RXNE) != RESET) //Interuption type: 'RX register Not Empty' (i.e. data to be read)
     {
-        if (Remote::bufferRecv.size < USART_BUFFER_SIZE)
-            Remote::bufferRecv.buf[Remote::bufferRecv.size++] = (REMOTE_USART_INDEX->DR & 0x1FF);
+        uint8_t d = USART_ReceiveData(REMOTE_USART_INDEX); // We can only read one byte at a time
+        Remote::bufferRecv.append(d);
 
-        REMOTE_USART_INDEX->SR &= ~USART_FLAG_RXNE;
+        //Debug
+        Remote::getSingleton()->addData(d);
     }
 
-    if (USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_TC) != RESET)
+    if(USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_TXE) != RESET) //Interuption type: 'TX register Empty' (i.e. ready to send)
     {
-        if (Remote::bufferSend.size > 0)
-        {
-            volatile int test = Remote::bufferSend.buf[0];
-            USART_SendData(REMOTE_USART_INDEX, (u16) Remote::bufferSend.buf[0]);
-            Remote::bufferSend.size--;
-            memmove(Remote::bufferSend.buf, Remote::bufferSend.buf + 1, Remote::bufferSend.size);
-        }
-        if (Remote::bufferSend.size == 0)
-            USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE);
+        if(!Remote::bufferSend.isEmpty()) // There IS some data to send
+            USART_SendData(REMOTE_USART_INDEX, Remote::bufferSend.pop_front()); // We can only send one byte per TXE interrupt
+        else // We ran out of data to send
+            USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, DISABLE); // Disable the TXE interrupt
     }
+}
 }
 
 void Remote::addData(int data)
@@ -190,28 +159,9 @@ void Remote::addData(int data)
     if (!mRemoteMod)
         return;
 
-    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE);
+    USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE); // Enable the TXE interrupt
 
-    if (Remote::bufferSend.size < USART_BUFFER_SIZE)
-        Remote::bufferSend.buf[Remote::bufferSend.size++] = data;
-
-    //if (Remote::bufferSend.size > 0)
-    /*{
-        if (Remote::bufferSend.size < USART_BUFFER_SIZE)
-            Remote::bufferSend.buf[Remote::bufferSend.size++] = data;
-    }*/
-    /*else
-    {
-        //Remote::bufferSend.buf[Remote::bufferSend.size++] = data;
-        USART_ITConfig(REMOTE_USART_INDEX, USART_IT_TXE, ENABLE);
-        USART_SendData(REMOTE_USART_INDEX, (u16) data);
-    }*/
-
-/*#ifdef ROBOTHW
-    // Wait until the send buffer is cleared finishes
-    USART_SendData(REMOTE_USART_INDEX, (u16) data);
-    while (USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_TC) == RESET);
-#endif*/
+    Remote::bufferSend.append(data);
 }
 
 void Remote::send(KrabiPacket &packet)
@@ -294,7 +244,7 @@ int Remote::receiveData()
 
 void Remote::waitForConnection()
 {
-    while(!dataAvailable());
+    while(Remote::bufferRecv.isEmpty());
 
     update();
 
