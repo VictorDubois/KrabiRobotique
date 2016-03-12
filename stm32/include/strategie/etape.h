@@ -36,7 +36,6 @@ public:
         AMPOULE = 20,
         TAPIS = 21,
         DEPOSER_GOBELET = 22,
-        DEPOSER_PIED = 23,
         COIN_GAUCHE_HAUT = 24,
         COIN_GAUCHE_BAS = 25,
         SPOT_SOLITAIRE_COIN = 26,
@@ -58,7 +57,6 @@ public:
         ROBOT_AMPOULE = AMPOULE + ROBOT_VU_ICI,
         ROBOT_TAPIS = TAPIS + ROBOT_VU_ICI,
         ROBOT_DEPOSER_GOBELET = DEPOSER_GOBELET + ROBOT_VU_ICI,
-        ROBOT_DEPOSER_PIED = DEPOSER_PIED + ROBOT_VU_ICI,
         ROBOT_COIN_GAUCHE_HAUT = COIN_GAUCHE_HAUT + ROBOT_VU_ICI,
         ROBOT_COIN_GAUCHE_BAS = COIN_GAUCHE_BAS + ROBOT_VU_ICI,
         ROBOT_SPOT_SOLITAIRE_COIN = SPOT_SOLITAIRE_COIN + ROBOT_VU_ICI
@@ -196,6 +194,9 @@ public:
 
     /** @brief Ajoute des voisins au tableau de voisins */
     void addVoisins(int newVoisinIndex1, int newVoisinIndex2, int newVoisinIndex3, int newVoisinIndex4);
+
+    /** @brief Ajoute des voisins au tableau de voisins */
+    void addVoisins(int newVoisinIndex1, int newVoisinIndex2, int newVoisinIndex3, int newVoisinIndex4, int newVoisinIndex5);
 
     /** @brief Setter de l'étape à laquelle on fini l'action de l'étape */
     void setNumeroEtapeFinAction(int newNumeroEtapeFinAction);
