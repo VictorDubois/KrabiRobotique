@@ -19,9 +19,6 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
     m_bluetoothAvLabel      = new QLabel(this);
     m_connectionLabel       = new QLabel(this);
 
-    //Debug
-    m_sendButton            = new QPushButton(tr("Send"), this);
-
     m_scanButton            = new QPushButton(tr("Scan"), this);
     m_connectButton         = new QPushButton(this);
     m_checkBluetoothButton  = new QPushButton(tr("Check Bluetooth"), this);
@@ -55,7 +52,6 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
     layout->addLayout(btCxLay);
     layout->addWidget(m_scanButton);
     layout->addWidget(m_detectedDevices);
-    layout->addWidget(m_sendButton);
 
     connect(m_connectButton,        &QPushButton::clicked,              this,               &BluetoothManagementWidget::on_connectButton_clicked);
     connect(m_checkBluetoothButton, &QPushButton::clicked,              this,               &BluetoothManagementWidget::checkBluetoothAvailability);
@@ -70,8 +66,6 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
 
     connect(m_UUIDInput,            &QLineEdit::textChanged,            this,               &BluetoothManagementWidget::changeUUID);
 
-    //Debug
-    connect(m_sendButton, &QPushButton::clicked, this, &BluetoothManagementWidget::sendTest);
 
     //m_UUIDInput->setText("B62C4E8D-62CC-404B-BBBF-BF3E3BBB1374");
     m_UUIDInput->setText("00001101-0000-1000-8000-00805F9B34FB");
@@ -128,7 +122,6 @@ void BluetoothManagementWidget::checkBluetoothAvailability()
         btAv = m_bluetoothProxy->isBluetoothAvailable();
 
     m_scanButton->setEnabled(btAv);
-    m_sendButton->setEnabled(btAv);
     m_detectedDevices->setEnabled(btAv);
     m_connectButton->setEnabled(btAv);
     m_UUIDInput->setEnabled(btAv);
@@ -180,17 +173,4 @@ QString BluetoothManagementWidget::getSelectedAddress() const
     int row = l[0]->row();
 
     return m_detectedDevices->item(row, 1)->data(BluetoothManagementWidget::ADDRESS_DATA_INDEX).toString();
-}
-
-
-//Debug
-void BluetoothManagementWidget::sendTest()
-{
-    if(!m_bluetoothProxy)
-        return;
-
-    KrabiPacket packet(KrabiPacket::LOG_DEBUG);
-    packet.addString("test");
-
-    m_bluetoothProxy->sendData(packet);
 }

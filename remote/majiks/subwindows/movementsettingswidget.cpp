@@ -3,12 +3,15 @@
 #include <QGroupBox>
 #include <QDoubleSpinBox>
 #include <QLabel>
+#include <QCheckBox>
 #include <QBoxLayout>
 #include <QGridLayout>
 
 MovementSettingsWidget::MovementSettingsWidget(QWidget *parent) : QWidget(parent)
 {
-    m_stepsGB = new QGroupBox(tr("Pas de déplacement"), this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+
+    m_stepsGB = new QGroupBox(tr("Movement steps"), this);
 
     m_angularStepSB = new QDoubleSpinBox(this);
     m_angularStepSB->setSuffix(tr(" °"));
@@ -25,8 +28,6 @@ MovementSettingsWidget::MovementSettingsWidget(QWidget *parent) : QWidget(parent
     connect(m_angularStepSB,    static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MovementSettingsWidget::on_stepsUpdated);
     connect(m_linearStepSB,     static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MovementSettingsWidget::on_stepsUpdated);
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
-
     QGridLayout* stepsLayout = new QGridLayout(m_stepsGB);
     stepsLayout->addWidget(new QLabel(tr("Distance")),  1, 1);
     stepsLayout->addWidget(new QLabel(tr("Angle")),     1, 2);
@@ -34,7 +35,24 @@ MovementSettingsWidget::MovementSettingsWidget(QWidget *parent) : QWidget(parent
     stepsLayout->addWidget(m_angularStepSB,             2, 2);
 
     layout->addWidget(m_stepsGB);
+
+
+    m_tableGB = new QGroupBox(tr("Table settings"), this);
+
+    m_tableOrientationCB = new QCheckBox(tr("Swap table axes"), this);
+
+    connect(m_tableOrientationCB, &QCheckBox::toggled, this, &MovementSettingsWidget::changeTableOrientation);
+
+    QGridLayout* tableSettingsLayout = new QGridLayout(m_tableGB);
+    tableSettingsLayout->addWidget(m_tableOrientationCB, 1, 1);
+
+    layout->addWidget(m_tableGB);
     layout->addStretch();
+}
+
+void MovementSettingsWidget::changeTableOrientation(bool rotated)
+{
+    emit tableOrientationChanged(rotated);
 }
 
 

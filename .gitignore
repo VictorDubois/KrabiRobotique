@@ -10,7 +10,7 @@
 *.autosave
 bin/
 simulation/qtcreator-files/paprikaSimulateur-build*/
-*.pro.user
+*.pro.user*
 remote/build-*/
 remote/doc/
 remote/Majiks/majiks.pro.user

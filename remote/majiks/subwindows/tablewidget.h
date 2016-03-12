@@ -19,22 +19,26 @@ class TableWidget: public QWidget
         void setRobotVisible(bool visible);
         bool isRobotVisible() const;
 
+        void setTableOrientation(bool rotated);
+        bool isTableRotated() const;
+
     protected:
         void paintEvent(QPaintEvent*);
         void mouseDoubleClickEvent(QMouseEvent*);
+
+        QPoint getOrientatedMaxima() const;
+        QPointF getOrientatedMaximaF() const;
 
     private:
 
         const unsigned int TABLE_LENGTH;
         const unsigned int TABLE_WIDTH;
 
-        const float TABLE_LENGTH_F;
-        const float TABLE_WIDTH_F;
-
-
         QPointF m_robotPosition;
         float   m_robotAngle;
         bool    m_robotVisible;
+
+        bool    m_tableIsRotated;
 
         AbstractSerialProxy* m_serialProxy;
 };
