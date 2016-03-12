@@ -73,7 +73,8 @@ BluetoothManagementWidget::BluetoothManagementWidget(BluetoothProxy* bluetoothPr
     //Debug
     connect(m_sendButton, &QPushButton::clicked, this, &BluetoothManagementWidget::sendTest);
 
-    m_UUIDInput->setText("B62C4E8D-62CC-404B-BBBF-BF3E3BBB1374");
+    //m_UUIDInput->setText("B62C4E8D-62CC-404B-BBBF-BF3E3BBB1374");
+    m_UUIDInput->setText("00001101-0000-1000-8000-00805F9B34FB");
 
     checkConnectionStatus();
     checkBluetoothAvailability();
