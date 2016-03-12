@@ -1,15 +1,14 @@
 #ifndef BLUETOOTHPROXY_H
 #define BLUETOOTHPROXY_H
 
-#include <QObject>
+#include "serialproxy/abstractserialproxy.h"
+
 #include <QString>
 
-#include "krabipacket.h"
-
 /**
- * @brief An abstract class providing an interface for plateform-specific Bluetooth connections
+ * @brief An abstract class providing an interface for plateform-specific Bluetooth serial connections
  */
-class BluetoothProxy: public QObject
+class BluetoothProxy: public AbstractSerialProxy
 {
     Q_OBJECT
     public:
@@ -52,17 +51,6 @@ class BluetoothProxy: public QObject
          * @return A list of the local adapters
          */
         virtual QStringList getAllLocalAdapters()                       = 0;
-
-        /**
-         * @brief Send data to the remote device
-         *
-         * Send a packet to the remote Bluetooth device.
-         * Note a connection has to be established beforehand. Otherwise,
-         * the packet will be discarded.
-         * @param data The data to be sent
-         * @see connectToHost dataReceived
-         */
-        virtual void sendData(KrabiPacket& data)                        = 0;
 
         /**
          * @brief Initiate a scan of remote Bluetooth devices.
@@ -124,37 +112,6 @@ class BluetoothProxy: public QObject
          * @param address The MAC address of the remote device
          */
         void deviceDiscovered(QString name, QString address);
-
-        /**
-         * @brief Signal emitted when a connection is successfuly established.
-         * @see connectToHost
-         */
-        void connected();
-
-        /**
-         * @brief Signal emitted when the connection is interupted.
-         * @see disconnect
-         */
-        void disconnected();
-
-        /**
-         * @brief Signal emitted when data has been received
-         *
-         * @param data The received data
-         */
-        void dataReceived(KrabiPacket data);
-
-    protected:
-        /**
-         * @brief Process incomming data from binary format to Krabi packets
-         *
-         * This function extracts as many KrabiPacket structures from a byte array as possible.
-         * For every processed packet, a dataReceived() signal will be emitted.
-         * @param data The byte array to be processed
-         * @return The numbers of packets processed
-         * @see dataReceived
-         */
-        int processData(QByteArray& data);
 
     private:
         QString m_UUID;

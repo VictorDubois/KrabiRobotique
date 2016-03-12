@@ -9,14 +9,14 @@ namespace Ui {
 class OdometryWindow;
 }
 
-class BluetoothProxy;
+class AbstractSerialProxy;
 
 class OdometryWindow : public QWidget
 {
     Q_OBJECT
 
     public:
-        explicit OdometryWindow(BluetoothProxy* bluetoothProxy, QWidget *parent = nullptr);
+        explicit OdometryWindow(AbstractSerialProxy *serialProxy, QWidget *parent = nullptr);
         ~OdometryWindow();
 
         void setCurrentRobotPosition(QPointF position);
@@ -54,7 +54,7 @@ class OdometryWindow : public QWidget
         QPointF m_referenceRobotPosition;
         float   m_referenceRobotAngle;
 
-        BluetoothProxy* m_bluetoothProxy;
+        AbstractSerialProxy* m_serialProxy;
 };
 
 #endif // OdometryWindow_H

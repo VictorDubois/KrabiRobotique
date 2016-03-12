@@ -10,10 +10,10 @@
 
 BluetoothProxyQt5::BluetoothProxyQt5(QObject *parent): BluetoothProxy(parent)
 {
-    setUUID("B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374");
+    //setUUID("B62C4E8D-62CC-404b-BBBF-BF3E3BBB1374");
 
     //STM32 bluetooth adapter
-    //setUUID("00001101-0000-1000-8000-00805F9B34FB");
+    setUUID("00001101-0000-1000-8000-00805F9B34FB");
 
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
@@ -60,6 +60,7 @@ QString BluetoothProxyQt5::remoteAddress() const
 
 void BluetoothProxyQt5::readData()
 {
+    qDebug() << "Got milk";
     m_buffer.append(m_socket->readAll());
     processData(m_buffer);
 }
@@ -72,6 +73,8 @@ void BluetoothProxyQt5::sendData(KrabiPacket& data)
     QByteArray binData = data.dataByteArray();
     binData.append(0x0D);
     binData.append(0x0A);
+
+    qDebug() << "Sending milk";
 
     m_socket->write(binData);
 }

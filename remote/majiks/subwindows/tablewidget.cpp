@@ -1,6 +1,6 @@
 #include "tablewidget.h"
 
-#include "bluetoothproxy/bluetoothproxy.h"
+#include "serialproxy/abstractserialproxy.h"
 #include "loggerwidget.h"
 
 #include <QPainter>
@@ -9,11 +9,11 @@
 #include <QDebug>
 #include <QtGlobal>
 
-TableWidget::TableWidget(BluetoothProxy *bluetoothProxy, QWidget* parent): QWidget(parent),
+TableWidget::TableWidget(AbstractSerialProxy *serialProxy, QWidget* parent): QWidget(parent),
 TABLE_LENGTH(3000), TABLE_WIDTH(2000),
 TABLE_LENGTH_F(static_cast<float>(TABLE_LENGTH)), TABLE_WIDTH_F(static_cast<float>(TABLE_WIDTH))
 {
-    m_bluetoothProxy = bluetoothProxy;
+    m_serialProxy = serialProxy;
 
     setRobotVisible(true);
     setRobotAngle(0.f);
@@ -67,7 +67,7 @@ void TableWidget::mouseDoubleClickEvent(QMouseEvent *evt)
 
         qDebug() << "Sending robot to " << x << " " << y;
 
-        m_bluetoothProxy->sendData(p);
+        m_serialProxy->sendData(p);
     }
 }
 

@@ -26,14 +26,17 @@ extern "C" void SysTick_Handler()
 
     Odometrie::odometrie->update();
 
-    StrategieV2::update();
+    //StrategieV2::update();
 
     Asservissement::asservissement->update();
 }
 
 #ifdef ROBOTHW
 Initialisation::Initialisation(PositionPlusAngle position) : start(position), tirette(0)
-{}
+{
+	rcd = 0;
+	rcg = 0;
+}
 #else
 #include <QDebug>
 Initialisation::Initialisation(PositionPlusAngle position, bool yellow, Robot* robot) : start(position), robot(robot)
@@ -46,6 +49,7 @@ void Initialisation::init()
 {
     initClock();
     initGPIO();
+    initRotaryEncoders();
 
 #ifdef ROBOTHW
     odometrie = new Odometrie(rcg, rcd);
@@ -55,12 +59,12 @@ void Initialisation::init()
 #endif
 
     strategie = new StrategieV2(isYellow());
-
+/*
 #ifdef ROBOTHW
     tirette->attendreRemise();
     tirette->attendreEnlevee();
 #endif
-
+*/
     asservissement = new Asservissement(odometrie);
 
 #ifdef ROBOTHW
@@ -79,6 +83,7 @@ bool Initialisation::isYellow()
 {
     return yellow;
 }
+
 
 Asservissement* Initialisation::getAsservissement()
 {

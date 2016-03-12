@@ -9,14 +9,14 @@
 
 namespace Ui {class WatchWindow;}
 
-class BluetoothProxy;
+class AbstractSerialProxy;
 
 class WatchWindow : public QWidget
 {
     Q_OBJECT
 
     public:
-        explicit WatchWindow(BluetoothProxy *bluetoothProxy, QWidget *parent = nullptr);
+        explicit WatchWindow(AbstractSerialProxy* serialProxy, QWidget *parent = nullptr);
         ~WatchWindow();
 
         bool isWatching(KrabiPacket::W_TABLE w);
@@ -36,7 +36,7 @@ class WatchWindow : public QWidget
         QMap<KrabiPacket::W_TABLE, QCheckBox*> watches;
         Ui::WatchWindow *ui;
 
-        BluetoothProxy* m_bluetoothProxy;
+        AbstractSerialProxy* m_serialProxy;
 
         void setWatching(KrabiPacket::W_TABLE w, bool watching, bool transmit, bool force = false);
 

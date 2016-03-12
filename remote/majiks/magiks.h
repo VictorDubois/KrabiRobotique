@@ -1,14 +1,16 @@
 #ifndef MAGIKS_H
 #define MAGIKS_H
 
+//#define BLUETOOTH_SERVER_MODE
+
 #include <QWidget>
 
-class BluetoothProxy;
+class AbstractSerialProxy;
 class PacketProcessor;
 class OdometryWindow;
 class WatchWindow;
 class AsservWindow;
-class BluetoothManagementWidget;
+class SerialManagementWidget;
 class LoggerWidget;
 class PlotWidget;
 class TableWidget;
@@ -26,14 +28,15 @@ class Magiks: public QWidget
 
     private:
         void connected();
+        void disconnected();
 
-        BluetoothProxy* m_bluetoothProxy;
+        AbstractSerialProxy* m_serialProxy;
 
         PacketProcessor*            m_packetProcessor;
         OdometryWindow*             m_odometry;
         WatchWindow*                m_watches;
         AsservWindow*               m_asserv;
-        BluetoothManagementWidget*  m_bluetoothManagement;
+        SerialManagementWidget*     m_serialManagement;
         LoggerWidget*               m_logger;
         PlotWidget*                 m_plots;
         TableWidget*                m_table;

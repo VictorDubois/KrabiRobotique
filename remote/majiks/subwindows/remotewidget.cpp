@@ -1,12 +1,14 @@
 #include "remotewidget.h"
 
+#include "serialproxy/abstractserialproxy.h"
+
 #include <QGridLayout>
 #include <QPushButton>
 #include <QLabel>
 
-RemoteWidget::RemoteWidget(BluetoothProxy* bluetoothProxy, QWidget *parent): QWidget(parent)
+RemoteWidget::RemoteWidget(AbstractSerialProxy *serialProxy, QWidget *parent): QWidget(parent)
 {
-    m_bluetoothProxy = bluetoothProxy;
+    m_serialProxy = serialProxy;
 
     m_upButton      = new QPushButton(tr("Up"));
     m_downButton    = new QPushButton(tr("Down"));

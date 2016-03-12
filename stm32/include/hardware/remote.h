@@ -2,20 +2,24 @@
 #define REMOTE_H
 
 #include "misc.h"
-#ifdef STM32F40_41xxx
+#ifdef STM32F40_41xxx   //STM32 H405
     #include "stm32f4xx_rcc.h"
     #include "stm32f4xx_gpio.h"
     #include "stm32f4xx_usart.h"
     #define REMOTE_USART_INDEX USART2
     #define REMOTE_USART_IRQ_HANDLER USART2_IRQHandler
     #define REMOTE_USART_IRQn USART2_IRQn
-#elif defined(STM32F10X_MD) || defined(STM32F10X_CL)
+#elif defined(STM32F10X_MD) || defined(STM32F10X_CL) // STM32F10X (i.e. STM32 H107)
     #include "stm32f10x_rcc.h"
     #include "stm32f10x_gpio.h"
     #include "stm32f10x_usart.h"
-    #define REMOTE_USART_INDEX USART3
-    #define REMOTE_USART_IRQ_HANDLER USART3_IRQHandler
-    #define REMOTE_USART_IRQn USART3_IRQn
+
+    // USART name
+    #define REMOTE_USART_INDEX USART1
+    // Interruption handler name
+    #define REMOTE_USART_IRQ_HANDLER USART1_IRQHandler
+    #define REMOTE_USART_IRQn USART1_IRQn
+
 #endif
 
 #include "krabipacket.h"
@@ -25,7 +29,14 @@
 #define LINEAR_REMOTE_SPEED_LIMIT 2.0
 #define ANGULAR_REMOTE_SPEED_LIMIT 0.01
 
-struct GenericBuffer {
+struct GenericBuffer
+{
+    GenericBuffer();
+
+    bool append(uint8_t d);
+    uint8_t pop_front();
+    bool isEmpty() const;
+
     uint8_t size;
     uint8_t buf[USART_BUFFER_SIZE];
 };

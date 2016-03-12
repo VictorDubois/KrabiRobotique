@@ -3,10 +3,10 @@
 
 #include "../bluetoothproxy/bluetoothproxy.h"
 
-AsservWindow::AsservWindow(BluetoothProxy* bluetoothProxy, QWidget *parent): QWidget(parent), ui(new Ui::AsservWindow)
+AsservWindow::AsservWindow(AbstractSerialProxy* serialProxy, QWidget *parent): QWidget(parent), ui(new Ui::AsservWindow)
 {
     ui->setupUi(this);
-    m_bluetoothProxy = bluetoothProxy;
+    m_serialProxy = serialProxy;
 }
 
 AsservWindow::~AsservWindow()
@@ -52,13 +52,13 @@ void AsservWindow::settingsReceivedLinear(float p, float i, float d)
 void AsservWindow::requireSyncAngular()
 {
     KrabiPacket p(KrabiPacket::WATCH_REQUIRE_ONCE, KrabiPacket::W_PID_ANG);
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void AsservWindow::requireSyncLinear()
 {
     KrabiPacket p(KrabiPacket::WATCH_REQUIRE_ONCE, KrabiPacket::W_PID_LIN);
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void AsservWindow::runTest()
@@ -71,7 +71,7 @@ void AsservWindow::runTest()
 
     //DebugWindow::getInstance()->clearPlots();
 
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 
     //Table::getMainInstance()->resetTimer();
 }
@@ -79,7 +79,7 @@ void AsservWindow::runTest()
 void AsservWindow::stopTest()
 {
     KrabiPacket p(KrabiPacket::STOP);
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void AsservWindow::on_linQuery_clicked()
@@ -95,7 +95,7 @@ void AsservWindow::on_linSet_clicked()
     p.add((float) ui->linKd->value());
     p.add(ui->linearEnabled->isChecked());
 
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void AsservWindow::on_angQuery_clicked()
@@ -111,7 +111,7 @@ void AsservWindow::on_angSet_clicked()
     p.add(static_cast<float>(ui->angKd->value()));
     p.add(ui->angularEnabled->isChecked());
 
-    m_bluetoothProxy->sendData(p);
+    m_serialProxy->sendData(p);
 }
 
 void AsservWindow::on_stopButton_clicked()

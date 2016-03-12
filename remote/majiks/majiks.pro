@@ -1,5 +1,5 @@
 QT       += core gui widgets
-QT       += bluetooth
+QT       += bluetooth serialport
 
 
 CONFIG += console c++11 warn_on
@@ -47,7 +47,11 @@ SOURCES += 	main.cpp \
                 packetprocessor.cpp \
                 timemaster.cpp 	\
                 bluetoothtestserver.cpp \
-    subwindows/movementsettingswidget.cpp
+    subwindows/movementsettingswidget.cpp \
+    serialproxy/abstractserialproxy.cpp \
+    serialproxy/serialproxy.cpp \
+    subwindows/serialmanagementwidget.cpp \
+    subwindows/serialportmanagementwidget.cpp
 
     
 
@@ -66,7 +70,11 @@ HEADERS  += magiks.h  \
             packetprocessor.h \
             timemaster.h \
             bluetoothtestserver.h \
-    subwindows/movementsettingswidget.h
+    subwindows/movementsettingswidget.h \
+    serialproxy/abstractserialproxy.h \
+    serialproxy/serialproxy.h \
+    subwindows/serialmanagementwidget.h \
+    subwindows/serialportmanagementwidget.h
 
 
 

@@ -41,8 +41,9 @@ int StrategieV3::update()
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
     if(this->avoiding)
     {
-
+        #ifndef ROBOTHW
         qDebug() << "En train d'eviter";
+        #endif
 
         this->tableaudebug[this->etapeEnCours]->robotVu();
         //this->tableaudebug[this->etapeEnCours]->setState(-2);
@@ -88,7 +89,9 @@ int StrategieV3::update()
     }
     else
     {
+        #ifndef ROBOTHW
         qDebug() << "Pas en train d'eviter";
+        #endif
 
         //On reset toute les directions à aller en marche avant
         for(int i = 0 ; i < this->nombreEtapes ; i++)

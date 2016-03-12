@@ -38,6 +38,8 @@ class Initialisation
     // On l'appellera ensuite dans le main au tout début pour tout initialiser d'un coup
         virtual void initGPIO() = 0;
 
+		virtual void initRotaryEncoders() = 0;
+
         virtual void initActionneurs() = 0;
 
     protected:
