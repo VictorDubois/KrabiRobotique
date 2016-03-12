@@ -114,7 +114,7 @@ PositionsList PositionsList::fromQList(const QList<PositionData>& list)
 ////////////////////
 #ifdef ROBOTHW
 void Tourelle::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_af, GPIO_TypeDef* GPIOx_RX, uint16_t GPIO_Pin_RX, GPIO_TypeDef* GPIOx_TX, uint16_t GPIO_Pin_TX)
-{
+{//processeur : pour faire les recherches, c'est en fait f10 pour h107, et f04 pour h405
 
 #ifdef STM32F40_41xxx // For stm32 h405
     RCC_APB1PeriphClockCmd(usart_rcc_index, ENABLE);
@@ -144,7 +144,7 @@ void Tourelle::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_a
 
 #ifdef STM32F10X_CL // For stm32 h107
 
-    RCC_APB2PeriphClockCmd(usart_rcc_index, ENABLE);
+    RCC_APB1PeriphClockCmd(usart_rcc_index, ENABLE);
 
     GPIO_PinRemapConfig(usart_af, ENABLE);
 
@@ -196,8 +196,14 @@ Tourelle* Tourelle::getSingleton()
 Tourelle::Tourelle()
 {
 #ifdef ROBOTHW
-    initClocksAndPortsGPIO(RCC_APB1Periph_USART2, GPIO_Remap_USART2, GPIOC, GPIO_Pin_12, GPIOD, GPIO_Pin_2);
+#ifdef STM32F10X_CL //h107
+    initClocksAndPortsGPIO(RCC_APB1Periph_USART2, GPIO_Remap_USART2, GPIOD, GPIO_Pin_6, GPIOD, GPIO_Pin_5);
     initUART(TURRET_USART_INDEX, USART_BAUDRATE);
+#endif
+#ifdef STM32F40_41xxx // For stm32 h405
+
+#endif
+
 #endif
 }
 
