@@ -16,12 +16,6 @@ class Objet
         enum Type
         {
             ANY,
-            GLASS, /*!< Représente un gobelet*/
-            GIFT, /*!< Représente un cadeau*/
-            FIREUP, /*!< Représente un feu en position verticale*/
-            TORCH, /*!< Représente une torche*/
-            CUP, /*!< Représente un gobelet à pop-corn*/
-            STAND, /*!< Représente un pied de projecteur*/
             SHELL, /*!< Représente un coquillage*/
             SANDCUBE /*!< Représente un cube de chateau de sable*/
         };

@@ -71,7 +71,6 @@ HEADERS += \
     ../../src/strategie/clap.h \
     ../../include/strategie/clap.h \
     ../../include/strategie/gobelet.h \
-    ../../include/strategie/krabijunior2015.h \
     ../../include/strategie/tapis.h \
     ../../include/actionneurs/brasTapis.h \
     ../../include/actionneurs/brasKrabi.h \
@@ -91,7 +90,6 @@ HEADERS += \
     ../../include/simul/asservwindow.h \
     ../../include/simul/sharpwindow.h \
     ../../include/simul/watchwindow.h \
-    ../../include/strategie/deposerPied.h \
     ../../include/strategie/manipulationCoinGaucheHaut.h \
     ../../include/strategie/manipulationCoinGaucheBas.h \
     ../../include/strategie/manipulationCoinGaucheHautPiedSolitaire.h \
@@ -170,7 +168,6 @@ SOURCES += \
     ../../src/simul/asservwindow.cpp \
     ../../src/simul/sharpwindow.cpp \
     ../../src/simul/watchwindow.cpp \
-    ../../src/strategie/deposerPied.cpp \
     ../../src/strategie/manipulationCoinGaucheHaut.cpp \
     ../../src/strategie/manipulationCoinGaucheBas.cpp \
     ../../src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp \
