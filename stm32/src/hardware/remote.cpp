@@ -180,7 +180,7 @@ void REMOTE_USART_IRQ_HANDLER(void)
         Remote::bufferRecv.append(d);
 
         //Debug
-        Remote::getSingleton()->addData(d);
+        //Remote::getSingleton()->addData(d);
     }
 
     if(USART_GetFlagStatus(REMOTE_USART_INDEX, USART_FLAG_TXE) != RESET) //Interuption type: 'TX register Empty' (i.e. ready to send)

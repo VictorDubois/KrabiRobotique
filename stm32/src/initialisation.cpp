@@ -26,7 +26,7 @@ extern "C" void SysTick_Handler()
 
     Odometrie::odometrie->update();
 
-    StrategieV2::update();
+    //StrategieV2::update();
 
     Asservissement::asservissement->update();
 }
@@ -49,6 +49,7 @@ void Initialisation::init()
 {
     initClock();
     initGPIO();
+    initRotaryEncoders();
 
 #ifdef ROBOTHW
     odometrie = new Odometrie(rcg, rcd);
@@ -65,7 +66,7 @@ void Initialisation::init()
 #endif
 */
     asservissement = new Asservissement(odometrie);
-/*
+
 #ifdef ROBOTHW
     setYellow();
 #endif
@@ -75,7 +76,7 @@ void Initialisation::init()
         start = start.getSymetrical();
     }
 
-    odometrie->setPos(start);*/
+    odometrie->setPos(start);
 }
 
 bool Initialisation::isYellow()

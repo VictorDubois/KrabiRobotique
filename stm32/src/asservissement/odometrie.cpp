@@ -14,7 +14,7 @@ Odometrie* Odometrie::odometrie = NULL;
 #define M_PI 3.14159265358979323846
 #endif
 
-Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderHandler* roueCodeuseDroite)
+Odometrie::Odometrie(QuadratureCoderHandler* rcg, QuadratureCoderHandler* rcd)
 : rayonRoueCodeuse(RAYON_ROUE), entraxe(TAILLE_ENTRAXE), nbTicksParTour(NBR_TICK_PAR_TOUR)
 {
     vitesseLineaire =0;
@@ -30,8 +30,8 @@ Odometrie::Odometrie(QuadratureCoderHandler* roueCodeuseGauche, QuadratureCoderH
         prevDeltaTicksRoueGauche[i] = 0;
     }
 
-    this->roueCodeuseGauche = roueCodeuseGauche;
-    this->roueCodeuseDroite = roueCodeuseDroite;
+    this->roueCodeuseGauche = rcg;
+    this->roueCodeuseDroite = rcd;
 
     if(odometrie == 0)
     {
