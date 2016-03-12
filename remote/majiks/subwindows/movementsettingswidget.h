@@ -5,6 +5,7 @@
 
 class QDoubleSpinBox;
 class QGroupBox;
+class QCheckBox;
 
 class MovementSettingsWidget: public QWidget
 {
@@ -16,12 +17,19 @@ class MovementSettingsWidget: public QWidget
 
         void stepsUpdated(float linearStep, float angularStep);
 
+        void tableOrientationChanged(bool rotated);
+
     private:
         void on_stepsUpdated(double);
+
+        void changeTableOrientation(bool rotated);
 
         QGroupBox* m_stepsGB;
         QDoubleSpinBox* m_angularStepSB;
         QDoubleSpinBox* m_linearStepSB;
+
+        QGroupBox* m_tableGB;
+        QCheckBox* m_tableOrientationCB;
 };
 
 #endif // MOVEMENTSETTINGSWIDGET_H

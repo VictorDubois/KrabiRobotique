@@ -2,7 +2,9 @@
 
 #include "serialproxy/serialproxy.h"
 
+#ifdef SERIAL_ENABLED
 #include <QtSerialPort/QSerialPortInfo>
+#endif
 
 #include <QLabel>
 #include <QPushButton>
@@ -58,16 +60,18 @@ void SerialPortManagementWidget::updateConnectionStatus()
 
 void SerialPortManagementWidget::updateAvailablePorts()
 {
+    m_portsCB->clear();
+    #ifdef SERIAL_ENABLED
     QString current = getSelectedPort();
 
     QList<QSerialPortInfo> l = QSerialPortInfo::availablePorts();
 
-    m_portsCB->clear();
 
     for(auto port: l)
         m_portsCB->addItem(port.portName());
 
     m_portsCB->setCurrentText(current);
+    #endif
 }
 
 QString SerialPortManagementWidget::getSelectedPort() const

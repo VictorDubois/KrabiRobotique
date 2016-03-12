@@ -10,10 +10,10 @@ SerialProxy::SerialProxy(qint32 baudrate, QObject *parent): AbstractSerialProxy(
     m_serialPort = new QSerialPort(this);
 
     connect(m_serialPort, &QSerialPort::readyRead, this, &SerialProxy::readData);
-
     setBaudrate(baudrate);
 }
 
+#ifdef SERIAL_ENABLED
 bool SerialProxy::setBaudrate(qint32 baudrate)
 {
     return !m_serialPort->setBaudRate(baudrate);
@@ -92,3 +92,5 @@ void SerialProxy::sendData(KrabiPacket& data)
 
     m_serialPort->write(binData);
 }
+
+#endif

@@ -19,17 +19,23 @@ class MovementSettingsWidget;
 
 class QTabWidget;
 
+/**
+ * @brief The application's main class.
+ *
+ * This class represents the main window. It builds everything else, connects signals to slots, and manages the tabs.
+ */
 class Magiks: public QWidget
 {
     Q_OBJECT
 
     public:
+        /**
+         * @brief Constructor
+         * @param parent
+         */
         explicit Magiks(QWidget *parent = nullptr);
 
     private:
-        void connected();
-        void disconnected();
-
         AbstractSerialProxy* m_serialProxy;
 
         PacketProcessor*            m_packetProcessor;

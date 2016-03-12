@@ -18,9 +18,6 @@ class BluetoothManagementWidget: public SerialManagementWidget
         QString getSelectedAddress() const;
 
     private:
-        //Debug
-        void sendTest();
-        QPushButton* m_sendButton;
 
         void checkBluetoothAvailability();
         void checkConnectionStatus();
