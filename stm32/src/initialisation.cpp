@@ -28,6 +28,8 @@ extern "C" void SysTick_Handler()
 
     //StrategieV2::update();
 
+    Tourelle::getSingleton()->update();
+
     Asservissement::asservissement->update();
 }
 
