@@ -338,6 +338,15 @@ void Etape::addVoisins(int newVoisinIndex1, int newVoisinIndex2, int newVoisinIn
     this->addVoisin(newVoisinIndex4);
 }
 
+void Etape::addVoisins(int newVoisinIndex1, int newVoisinIndex2, int newVoisinIndex3, int newVoisinIndex4, int newVoisinIndex5)
+{
+    this->addVoisin(newVoisinIndex1);
+    this->addVoisin(newVoisinIndex2);
+    this->addVoisin(newVoisinIndex3);
+    this->addVoisin(newVoisinIndex4);
+    this->addVoisin(newVoisinIndex5);
+}
+
 void Etape::setNumeroEtapeFinAction(int newNumeroEtapeFinAction)
 {
     this->numeroEtapeFinAction = newNumeroEtapeFinAction;
@@ -389,8 +398,6 @@ QString Etape::getNameType(EtapeType type)
         return "Tapis";
     case DEPOSER_GOBELET:
         return "Déposer Gobelet";
-    case DEPOSER_PIED:
-        return "Déposer Pied";
     default:
         return QString::number(type);
     }
@@ -416,8 +423,6 @@ QString Etape::getShortNameType(EtapeType type)
         return "Tapis";
     case DEPOSER_GOBELET:
         return "D.G";
-    case DEPOSER_PIED:
-        return "D.P";
     default:
         return "";
     }

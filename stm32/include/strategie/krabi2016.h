@@ -13,7 +13,6 @@
 #include "gobelet.h"
 #include "tapis.h"
 #include "ramasserPied.h"
-#include "deposerPied.h"
 #include "deposerGobelet.h"
 #include "manipulationCoinGaucheBas.h"
 #include "manipulationCoinGaucheHaut.h"
