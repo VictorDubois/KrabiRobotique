@@ -13,9 +13,14 @@
     #include "debugwindow.h"
 #endif
 
-CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin, float precisionAngle, float stopAtDistance)
-    : Command(), smoothFactor(0.f), requireSmoothMovement(false), bonAngle(false), angleSmoothEnd(false), stopAtDistance(stopAtDistance)
+CommandAllerA::CommandAllerA(Position p, bool reculer, float vitesseLineaireMax, float vitesseFin, float /*precisionAngle*/, float distance): Command()
 {
+    smoothFactor            = 0.f;
+    requireSmoothMovement   = false;
+    bonAngle                = false;
+    angleSmoothEnd          = false;
+    stopAtDistance          = distance;
+
     but = p;
     vitesseLinMax = vitesseLineaireMax;
     vFin2 = vitesseFin*vitesseFin;

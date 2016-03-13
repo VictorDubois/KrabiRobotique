@@ -2,7 +2,7 @@
 
 PIDFilterDistance::PIDFilterDistance() :
     sommeErreurs(0), erreurPrecedente(0),
-    Kp(FILTER_LINEAIRE_KP), Kd(FILTER_LINEAIRE_KD), Ki(FILTER_LINEAIRE_KI)
+    Kp(FILTER_LINEAIRE_KP), Ki(FILTER_LINEAIRE_KI), Kd(FILTER_LINEAIRE_KD)
 {
 }
 
