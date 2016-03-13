@@ -69,8 +69,8 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     new Etape(13, new DeposerGobelet(Position(183, 496, true)) );
 
 
-    // Tapis
-    new Etape(17, new Tapis(Position(480, 780, true)) );
+    // Cabine
+    new Etape(17, new Cabine(Position(480, 780, true)) );
     new Etape(36, new Tapis(Position(1420, 180, true)) );
 
     // Ramasser Pied
@@ -100,7 +100,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     // Voisins
     Etape::get(0)->addVoisin(1);
-
+    Etape::get(17)->addVoisins(1);
     Etape::get(18)->addVoisins(5, 1);
     Etape::get(18)->addVoisins(35, 27);
     Etape::get(20)->addVoisins(5, 35 , 28);
@@ -129,6 +129,9 @@ int Krabi2016::getScoreEtape(int i){
         case Etape::TAPIS :
             return 1000;//STRATEGIE
 //            return 0;
+
+        case Etape::CABINE :
+            return 0;//STRATEGIE
 
         case Etape::AMPOULE :
             return 0;

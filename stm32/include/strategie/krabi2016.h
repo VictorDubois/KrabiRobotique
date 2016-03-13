@@ -5,13 +5,12 @@
 
 #define NOMBRE_ETAPES 50
 
-
-
 #include "strategiev3.h"
 #include "etape.h"
 #include "clap.h"
 #include "gobelet.h"
 #include "tapis.h"
+#include "cabine.h"
 #include "ramasserPied.h"
 #include "deposerGobelet.h"
 #include "manipulationCoinGaucheBas.h"
@@ -28,7 +27,7 @@ public:
     /** @brief Actions de Krabi */
     Clap actionClap[3];
     Gobelet actionGobelet[5];
-    Tapis actionTapis[2];
+    Cabine actionCabine[2];
     DeposerGobelet actionDeposerGobelet[3];
     RamasserPied actionRamasserPied[8];
 
