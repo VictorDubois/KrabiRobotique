@@ -11,6 +11,7 @@
 
 #include "initialisation.h"
 
+#include "hardware/tourelle.h"
 
 //pour lancer l'update à chaque tic d'horloge
 extern "C" void SysTick_Handler()
@@ -249,13 +250,13 @@ void initialisationDesPIN()
 #ifdef STM32F40_41xxx // pour la STM32 H405 2014 v1 :
 
     // Roues codeuses
-    /*GPIO_PinAFConfig (GPIOB, GPIO_PinSource6, GPIO_AF_TIM4);
+    GPIO_PinAFConfig (GPIOB, GPIO_PinSource6, GPIO_AF_TIM4);
     GPIO_PinAFConfig (GPIOB, GPIO_PinSource7, GPIO_AF_TIM4);
     GPIO_PinAFConfig (GPIOA, GPIO_PinSource8, GPIO_AF_TIM1);
-    GPIO_PinAFConfig (GPIOA, GPIO_PinSource9, GPIO_AF_TIM1);*/
+    GPIO_PinAFConfig (GPIOA, GPIO_PinSource9, GPIO_AF_TIM1);
 
     // Moteurs
-    /*GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;

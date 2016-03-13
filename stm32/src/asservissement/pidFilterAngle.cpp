@@ -2,7 +2,7 @@
 
 PIDFilterAngle::PIDFilterAngle() :
     sommeErreurs(0), erreurPrecedente(0),
-    Kp(FILTER_ANGLE_KP), Kd(FILTER_ANGLE_KD), Ki(FILTER_ANGLE_KI)
+    Kp(FILTER_ANGLE_KP), Ki(FILTER_ANGLE_KI), Kd(FILTER_ANGLE_KD)
 {
 }
 

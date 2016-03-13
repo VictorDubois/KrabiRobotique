@@ -22,8 +22,10 @@ void InitKrabi::setYellow()
 /** Initialisation roues codeuses **/
 void InitKrabi::initRotaryEncoders()
 {
+#ifdef ROBOTHW
 	rcd = new QuadratureCoderHandler(TIM4, GPIOD, GPIO_Pin_12, 	GPIOD, GPIO_Pin_13);
 	rcg = new QuadratureCoderHandler(TIM3, GPIOA, GPIO_Pin_6, 	GPIOA, GPIO_Pin_7);
+#endif
 }
 
 void InitKrabi::initClock()

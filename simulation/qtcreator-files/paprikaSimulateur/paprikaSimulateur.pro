@@ -10,6 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     DEFINES += BLUETOOTH QT5 USE_PLOT
 }
 
+QMAKE_CXXFLAGS += -Wno-reorder -Wno-unused-variable
+
 INCLUDEPATH += ../../include ../../../stm32/Libraries/CMSIS/Core/CM3 ../../../stm32/Libraries/STM32F10x_StdPeriph_Driver/inc /usr/local/include/Box2D
 INCLUDEPATH += ../../include/simul ../../include/strategie ../../include/asservissement ../../include/actionneurs ../../include/hardware
 

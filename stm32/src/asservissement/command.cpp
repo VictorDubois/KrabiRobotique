@@ -11,17 +11,19 @@ bool Command::limiter = false;
 
 bool Command::previousWasSmooth = false;
 
-Command::Command() : mFinished(false), linSpeed(Odometrie::odometrie->getVitesseLineaire()), angSpeed(Odometrie::odometrie->getVitesseAngulaire())
+Command::Command()
 {
     Command::stop = false;
 
-    fromSmoothMovement = previousWasSmooth;
-    previousWasSmooth = false;
+    angSpeed            = Odometrie::odometrie->getVitesseAngulaire();
+    linSpeed            = Odometrie::odometrie->getVitesseLineaire();
+    mFinished           = false;
+    fromSmoothMovement  = previousWasSmooth;
+    previousWasSmooth   = false;
 }
 
 Command::~Command()
-{
-}
+{}
 
 bool Command::getStop(void)
 {
