@@ -113,9 +113,6 @@ Krabi2015::Krabi2015(bool isYellow) : StrategieV3(isYellow)
     Etape::get(47)->setNumeroEtapeFinAction(-1);
     Etape::get(48)->setNumeroEtapeFinAction(-1);
 
-    //Deposer Pieds
-    new Etape(41, new DeposerPied(Position(500, 1000, true)) );
-
 
     // pousser pied
 //    Etape::get(2)->addVoisin(11);
@@ -268,15 +265,6 @@ int Krabi2015::getScoreEtape(int i){
             else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==1)
                 return 20;//STRATEGIE
 //                return 100000;
-            else
-                return 0;
-        case Etape::DEPOSER_PIED :
-            if (Ascenseur::getSingleton()->getNbrPiedsStockes()==3)
-                return 10000;//STRATEGIE
-//                return 0;
-            else if (Ascenseur::getSingleton()->getNbrPiedsStockes()==2)
-                return 5;//STRATEGIE
-//                return 0;
             else
                 return 0;
         case Etape::DEPOSER_GOBELET :
