@@ -68,6 +68,7 @@ HEADERS += \
     ../../include/simul/contactlistener.h \
     ../../include/strategie/strategiev3.h \
     ../../include/strategie/etape.h \
+    ../../include/strategie/cabine.h \
     ../../include/strategie/dijkstra.h \
     ../../include/hardware/tourelle.h \
     ../../src/strategie/clap.h \
@@ -180,7 +181,8 @@ SOURCES += \
     ../../src/initkrabi.cpp \
     ../../src/initialisation.cpp \
     ../../src/strategie/krabijunior2016.cpp \
-    ../../src/strategie/krabi2016.cpp
+    ../../src/strategie/krabi2016.cpp \
+    ../../src/strategie/cabine.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \

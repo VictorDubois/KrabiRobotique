@@ -18,6 +18,8 @@ public:
     {
         ROBOT_VU_ICI = 100,
 
+        CABINE = 8,
+
         POINT_PASSAGE = 0,
         COLLECT = 1,
         FRUIT = 2,

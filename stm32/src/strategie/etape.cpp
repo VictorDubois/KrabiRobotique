@@ -382,6 +382,8 @@ QString Etape::getNameType(EtapeType type)
 {
     switch(type)
     {
+    case CABINE:
+        return "Cabine";
     case POINT_PASSAGE:
         return "Passage";
     case DEPART:
@@ -407,6 +409,8 @@ QString Etape::getShortNameType(EtapeType type)
 {
     switch(type)
     {
+    case CABINE:
+        return "Cabine";
     case POINT_PASSAGE:
         return "";
     case DEPART:
