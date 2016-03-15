@@ -3,6 +3,8 @@
 
 #include "position.h"
 
+#define ETAPE_INVALID_IDX   -1
+
 class ActionGoTo;
 class MediumLevelAction;
 
@@ -65,34 +67,9 @@ public:
 
     };
 
-    /** @brief Constructeur vide d'une etape */
-    Etape();
+    static int makeEtape(MediumLevelAction* action);
+    static int makeEtape(Position position, EtapeType type = POINT_PASSAGE);
 
-    /** @brief Constructeur d'une etape *
-    *   @param le numero de cette étape */
-    Etape(int numero);
-
-    /** @brief Constructeur d'une etape *
-    *   @param le numero de cette étape *
-    *   @param l'étape à réaliser */
-    Etape(int numero, MediumLevelAction* action);
-
-    /** @brief Constructeur d'une etape *
-    *   @param position Position de cette étape *
-    *   @param typeType d'étape (un feu, un point de passage...) *
-    *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
-    *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
-    Etape(int numero, Position position, EtapeType type = POINT_PASSAGE, int state = -1, int nombreEtapesLieesParFinirEtape = 0);
-
-    /** @brief Constructeur d'une etape *
-    *   @param position Position de cette étape *
-    *   @param le nombre d'étapes attachées à celle_ci *
-    *   @param le numero de cette étape *
-    *   @param le tableau contenant toutes les étapes, pour qu'elle s'y ajoute *
-    *   @param typeType d'étape (un feu, un point de passage...) *
-    *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
-    *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
-    Etape(Position position,/* int nbChildren, */int numero, Etape** tableaudebug, EtapeType type = POINT_PASSAGE, int state = -1, int nombreEtapesLieesParFinirEtape = 0);
 
     /** @brief Renvoi un pointeur vers une des etapes attachees a celle-ci *
     *   @param nb le numéro du lien vers l'autre etape */
@@ -216,11 +193,13 @@ public:
 
     void setGoBack(bool val);
 
+    static int getTotalEtapes();
+
     static Etape** initTableauEtapeTotal(int number);
 
     static Etape* get(int index);
 
-    static Etape** getTableaudebug();
+    static Etape** getTableauEtapesTotal();
 
 #ifndef ROBOTHW
     static QString getNameType(EtapeType type);
@@ -228,6 +207,14 @@ public:
 #endif
 
 private:
+
+    /** @brief Constructeur d'une etape *
+    *   @param position Position de cette étape *
+    *   @param typeType d'étape (un feu, un point de passage...) *
+    *   @param state Etat de cette étape, utilisé pour l'exploration du graphe
+    *   @param nombreEtapesLieesParFinirEtape Nombre d'étapes qui doivent être considérées comme finie si celle-ci l'est */
+    Etape(Position position, EtapeType type = POINT_PASSAGE);
+
     /** @brief Tableau des étapes attachées à celle-ci */
     Etape** children;
 
@@ -271,9 +258,11 @@ private:
 
     MediumLevelAction* action;
 
-    static int numberInit;
+    //static int numberInit;
 
-    static Etape** tableaudebug;
+    static int totalEtapesInstanciated;
+
+    static Etape** tableauEtapesTotal;
 
     void postInit();
 };
