@@ -74,7 +74,7 @@ bool KrabiPacket::isValid()
     return mValid;
 }
 
-void KrabiPacket::addData(const void* data, uint8_t size)
+void KrabiPacket::addData(void* data, uint8_t size)
 {
     if (mCursor + size + KRABIPACKET_SUFFIX_SIZE > KRABIPACKET_MAXSIZE)
         return;
@@ -93,7 +93,7 @@ void KrabiPacket::copyData(void* dest, uint8_t size)
     mCursor += size;
 }
 
-void KrabiPacket::addString(const char* data)
+void KrabiPacket::addString(char* data)
 {
     int size = 0;
     while( data[size] != '\0' )

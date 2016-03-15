@@ -27,7 +27,7 @@ extern "C" void SysTick_Handler()
 
     Odometrie::odometrie->update();
 
-    //StrategieV2::update();
+    //sStrategieV2::update();
 
     Tourelle::getSingleton()->update();
 

@@ -78,7 +78,7 @@ public:
     KrabiPacket(QByteArray data);
 #endif
 
-    void addData(const void* data, uint8_t size);
+    void addData(void* data, uint8_t size);
     void copyData(void* dest, uint8_t size);
 
     // args
@@ -102,7 +102,7 @@ public:
         return mCursor + sizeof(T) < mLength;
     }
 
-    void addString(const char* data);
+    void addString(char *data);
     char* getString();
 
     void setId(uint8_t id);

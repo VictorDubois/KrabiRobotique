@@ -11,8 +11,6 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     //Initialisation des tableaux d'étapes
     this->numeroEtapeGarage = ETAPE_GARAGE;
     tableauEtapesTotal = Etape::initTableauEtapeTotal(NOMBRE_ETAPES);//new Etape*[NOMBRE_ETAPES];
-    //actionEtape = new MediumLevelAction*[NOMBRE_ETAPES];
-    //actionGoto = new ActionGoTo[NOMBRE_ETAPES];
 
 
     // Création des étapes
@@ -60,55 +58,24 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 //    Etape::get(4)->setNumeroEtapeFinAction(43); //Clapet notre côté vers notre bord
 
 
-    // Voisins
-/*    Etape::get(0)->addVoisin(1, false);
-
-    Etape::get(1)->addVoisins(3, 8, 31);
-    Etape::get(1)->addVoisins(12, 21, 45); */
-
-
     this->nombreEtapes = Etape::getTotalEtapes();
 
     // Lancer Dijkstra
     startDijkstra();
 }
 
-int Krabi2016::getScoreEtape(int i){
-    /* TODO : Supprimer le modificateur temporel et inclure directement un coefficient dans le score pour les actions longues
-       Plus tard : pourquoi pas changer le système en ayant les FEU etc... fils de Etape, ça éviterait aussi le switch dans updateStock().
-       Juste faire attention à comment transmettre le stock à update.
-     */
+int Krabi2016::getScoreEtape(int i)
+{
+
     switch (this->tableauEtapesTotal[i]->getEtapeType())
     {
         case Etape::DEPART :
             return 0;
-        case Etape::CLAP :
-            return 10;
-//            return 1000000;
-        case Etape::TAPIS :
-            return 1000;//STRATEGIE
-//            return 0;
-
-        case Etape::CABINE :
-            return 0;//STRATEGIE
-
-        case Etape::AMPOULE :
-            return 0;
-
-        case Etape::DEPOSER_GOBELET :
-            /*if (!Pinces::getSingleton()->getEstDispo())
-                return 40;
-            else*/
-                return 0;
-        case Etape::COIN_GAUCHE_HAUT :
-            return 0;
-        case Etape::SPOT_SOLITAIRE_COIN :
-            return 0;
-        case Etape::COIN_GAUCHE_BAS :
-            return 0;
+        /*case Etape::TYPE_ACTION:
+            return NB_POINTS_ACTION; */
         case Etape::POINT_PASSAGE :
             return 0;
         default :
-            return 0;
+            return 10; /* DEBUG (0 sinon) */
     }
 }

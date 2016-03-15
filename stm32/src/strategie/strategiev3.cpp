@@ -36,6 +36,7 @@ int StrategieV3::update()
     //this->actionEtape[this->etapeEnCours]->reset();
     //this->actionGoto[this->etapeEnCours].reset();
 
+
     tableauEtapesTotal[this->etapeEnCours]->reset();
 
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
@@ -103,6 +104,8 @@ int StrategieV3::update()
         this->enTrainEviterReculant = false;
         this->enTrainEviterAvancant = false;
 
+        qDebug() << "Status strat: " << statusStrat;
+
         if(this->statusStrat==2)//Si on vient d'arriver à une étape intermédiare
         {
             this->updateIntermedaire();
@@ -128,6 +131,8 @@ int StrategieV3::update()
                 this->etapeEnCours = this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction() == -1
                                         ? this->etapeEnCours
                                         : this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
+
+                qDebug() << "Etape en cours: " << etapeEnCours;
             }
 
 
@@ -139,6 +144,7 @@ int StrategieV3::update()
             // Sinon, il y a risque de prendre un avertissement pour anti-jeu (évité de peu pour le premier match de Krabi 2014)
             if(!resteDesChosesAFaire)
             {
+                qDebug() << "Trucs à faire 1";
                 for(int i = 0 ; i < this->nombreEtapes ; i++)
                 {
                     this->tableauEtapesTotal[i]->oublieRobotVu();
@@ -148,6 +154,7 @@ int StrategieV3::update()
                 //S'il n'y a VRAIMENT plus rien à faire
                 if(!resteDesChosesAFaire)
                 {
+                    qDebug() << "Trucs à faire 2";
                     //Si on est au garage, on s'arrête
                     if(this->etapeEnCours == this->numeroEtapeGarage)
                     {
@@ -213,6 +220,8 @@ int StrategieV3::update()
             this->updateIntermedaire();//On y va
         }
     }
+
+    qDebug() << "Update finished";
     return this->statusStrat;
 }
 
@@ -244,7 +253,7 @@ void StrategieV3::updateIntermedaire()
     if(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)
     {
         #ifndef ROBOTHW
-            qDebug() << "la prochaine etape est le goal\n";
+            qDebug() << "la prochaine etape est le goal\n" << etapeOuOnVientDArriver;
         #endif
         this->statusStrat = 1;
     }
@@ -253,13 +262,7 @@ void StrategieV3::updateIntermedaire()
     //On cherche l'etape suivant vers l'etape - but
     while(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) != etapeOuOnVientDArriver)
     {
-        #ifndef ROBOTHW
-        qDebug() << "On cherche l'etape suivant vers l'etape - but" << this->etapeEnCours << "\n";
-        qDebug() << "tableauEtapesTotal[0]" << (this->tableauEtapesTotal[0]->getEtapeType());
-        qDebug() << "tableauEtapesTotal[10]" << (this->tableauEtapesTotal[10]->getEtapeType());
-        qDebug() << "tableauEtapesTotal[36]" << (this->tableauEtapesTotal[36]->getEtapeType());
-        qDebug() << "tableauEtapesTotal[36]" << (this->tableauEtapesTotal[36]->getPosition().getX());
-        #endif
+
         this->nextStep = this->etapeEnCours;
         this->etapeEnCours = ((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero()));
 
@@ -267,6 +270,7 @@ void StrategieV3::updateIntermedaire()
 
     if(this->statusStrat == 1)
     {
+        qDebug() << "Okay ici";
         //On réalise l'action de l'étape - but
         StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getAction());
     }
@@ -409,6 +413,8 @@ bool StrategieV3::updateScores() {
         {
             resteDesChosesAFaire = true;
         }
+
+        qDebug() << "Etape " << i << " Score: " << scoreTypeEtape;
 
         this->tableauEtapesTotal[i]->setScore(scoreTypeEtape);
     }
