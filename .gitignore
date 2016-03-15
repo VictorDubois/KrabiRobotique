@@ -5,6 +5,7 @@
 *.list
 *.out
 *.[oa]
+*.depend
 *~
 *.layout
 *.autosave

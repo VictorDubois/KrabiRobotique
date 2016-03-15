@@ -6,75 +6,60 @@
     #include <QDebug>
 #endif
 
-Etape** Etape::tableaudebug = 0;
+Etape** Etape::tableauEtapesTotal = 0;
 
-Etape::Etape(){}
+int Etape::totalEtapesInstanciated = 0;
 
-Etape::Etape(int numero)
+Etape::Etape(Position position, EtapeType type)
 {
-    this->position = Position();
-    this->type = POINT_PASSAGE;
-    this->state = -1;
-    this->numero = numero;
+    int idx = (Etape::totalEtapesInstanciated++);
+
+    this->position      = position;
+    this->type          = type;
+    this->state         = -1;
+    this->action        = 0;
+    this->nbChildren    = 0;
+    this->distance      = -1;
+    this->score         = 0;
+    this->numero        = idx;
+    this->numeroEtapeFinAction = idx;
     this->nombreEtapesLieesParFinirEtape = 0;
-
-    postInit();
-}
-
-Etape::Etape(int numero, MediumLevelAction* action)
-{
-    this->position = Position();
-    this->type = POINT_PASSAGE;
-    this->state = -1;
-    this->numero = numero;
-    this->nombreEtapesLieesParFinirEtape = 0;
-
-    postInit();
-
-    setAction(action);
-}
-
-Etape::Etape(int numero, Position position, EtapeType type, int state, int nombreEtapesLieesParFinirEtape)
-{
-    this->position = position;
-    this->type = type;
-    this->state = state;
-    this->numero = numero;
-    this->nombreEtapesLieesParFinirEtape = nombreEtapesLieesParFinirEtape;
-    this->numeroEtapeFinAction = numero;//Par défaut, on fini à l'endroit de l'étape
-
-    //Initialisation du tableau de voisins à vide
-    /*for(int i = 0 ; i < nbChildren ; i++)
-    {
-        this->children[i] = 0;
-    }*/
-
-    postInit();
-}
-
-Etape::Etape(Position position, int numero, Etape** tableaudebug, EtapeType type, int state, int nombreEtapesLieesParFinirEtape)
-{
-    this->position = position;
-    this->type = type;
-    this->state = state;
-    this->numero = numero;
-    this->nombreEtapesLieesParFinirEtape = nombreEtapesLieesParFinirEtape;
-
-    postInit();
-}
-
-void Etape::postInit()
-{
-    this->action = 0;
-    this->nbChildren = 0;
-    this->distance = -1;
-    this->score = 0;
-    this->numeroEtapeFinAction = numero;//Par défaut, on fini à l'endroit de l'étape
-
-    tableaudebug[this->numero] = this;
 
     this->actionGoTo = new ActionGoTo(getPosition());
+
+    if(idx != ETAPE_INVALID_IDX)
+        tableauEtapesTotal[idx] = this;
 }
+
+int Etape::makeEtape(MediumLevelAction* action)
+{
+    int idx = Etape::makeEtape(Position(), Etape::POINT_PASSAGE);
+
+    if(idx == ETAPE_INVALID_IDX)
+        return idx;
+
+    Etape::get(idx)->setAction(action);
+
+    return idx;
+}
+
+int Etape::makeEtape(Position position, EtapeType type)
+{
+    Etape* e = new Etape(position, type);
+
+    int idx = e->getNumero();
+
+    if(idx == ETAPE_INVALID_IDX)
+        delete e;
+
+    return idx;
+}
+
+int Etape::getTotalEtapes()
+{
+    return Etape::totalEtapesInstanciated;
+}
+
 
 Etape* Etape::getChild(int nb){
     return this->children[nb];
@@ -176,10 +161,14 @@ void Etape::setDistances(int* distances)
     this->distances = distances;
 }
 
-void Etape::computeChildDistances(){
+void Etape::computeChildDistances()
+{
+    if(nbChildren == 0)
+        return;
+
     this->distances = new int[this->nbChildren];
 
-    for(int i=0; i<this->nbChildren; i++)
+    for(int i=0; i<this->nbChildren; ++i)
     {
         this->distances[i] = Dijkstra::calculDistanceDirect(this->children[i], this);
     }
@@ -268,22 +257,6 @@ void Etape::addVoisin(Etape* newVoisin, bool autreSens)
         this->nbChildren++;
     }
 
-
-    /*int i = 0;
-    //On cherche le premier voisin non-initialisé
-    while(this->children[i]!=0 && i < this->nbChildren)
-    {
-        i++;
-    }
-    //Erreur, il y a trop de voisins !
-    if (i == nbChildren)
-    {
-#ifndef ROBOTHW
-        qDebug() << "ERREUR, TROP DE VOISINS !!!";
-#endif
-    }
-    this->children[i] = newVoisin;
-    */
     if (autreSens)
     {
         newVoisin->addVoisin(this, false);
@@ -359,22 +332,22 @@ int Etape::getNumeroEtapeFinAction()
 
 Etape** Etape::initTableauEtapeTotal(int number)
 {
-    tableaudebug = new Etape*[number];
+    tableauEtapesTotal = new Etape*[number];
     for(int i(0); i<number; ++i)
-        tableaudebug[i] = 0;
-    return tableaudebug;
+        tableauEtapesTotal[i] = 0;
+    return tableauEtapesTotal;
 }
 
 Etape* Etape::get(int index)
 {
-    if (tableaudebug[index] == 0)
-        new Etape(index);
-    return tableaudebug[index];
+    if (tableauEtapesTotal[index] == 0)
+        0;/*new Etape(index);*/
+    return tableauEtapesTotal[index];
 }
 
-Etape** Etape::getTableaudebug()
+Etape** Etape::getTableauEtapesTotal()
 {
-    return tableaudebug;
+    return tableauEtapesTotal;
 }
 
 #ifndef ROBOTHW

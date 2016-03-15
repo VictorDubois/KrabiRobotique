@@ -63,7 +63,7 @@ protected:
 
     /** @brief le tableau des étapes constituant le graphe à explorer */
     //Etape** tableauEtapes;
-    Etape** tableaudebug;
+    Etape** tableauEtapesTotal;
 
     /** @brief vient-on de détecter un robot */
     bool avoiding;
