@@ -104,8 +104,6 @@ int StrategieV3::update()
         this->enTrainEviterReculant = false;
         this->enTrainEviterAvancant = false;
 
-        qDebug() << "Status strat: " << statusStrat;
-
         if(this->statusStrat==2)//Si on vient d'arriver à une étape intermédiare
         {
             this->updateIntermedaire();
@@ -132,7 +130,6 @@ int StrategieV3::update()
                                         ? this->etapeEnCours
                                         : this->tableauEtapesTotal[this->etapeEnCours]->getNumeroEtapeFinAction();
 
-                qDebug() << "Etape en cours: " << etapeEnCours;
             }
 
 
@@ -144,7 +141,6 @@ int StrategieV3::update()
             // Sinon, il y a risque de prendre un avertissement pour anti-jeu (évité de peu pour le premier match de Krabi 2014)
             if(!resteDesChosesAFaire)
             {
-                qDebug() << "Trucs à faire 1";
                 for(int i = 0 ; i < this->nombreEtapes ; i++)
                 {
                     this->tableauEtapesTotal[i]->oublieRobotVu();
@@ -154,7 +150,6 @@ int StrategieV3::update()
                 //S'il n'y a VRAIMENT plus rien à faire
                 if(!resteDesChosesAFaire)
                 {
-                    qDebug() << "Trucs à faire 2";
                     //Si on est au garage, on s'arrête
                     if(this->etapeEnCours == this->numeroEtapeGarage)
                     {
@@ -221,7 +216,6 @@ int StrategieV3::update()
         }
     }
 
-    qDebug() << "Update finished";
     return this->statusStrat;
 }
 
@@ -270,7 +264,6 @@ void StrategieV3::updateIntermedaire()
 
     if(this->statusStrat == 1)
     {
-        qDebug() << "Okay ici";
         //On réalise l'action de l'étape - but
         StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getAction());
     }
@@ -413,9 +406,6 @@ bool StrategieV3::updateScores() {
         {
             resteDesChosesAFaire = true;
         }
-
-        qDebug() << "Etape " << i << " Score: " << scoreTypeEtape;
-
         this->tableauEtapesTotal[i]->setScore(scoreTypeEtape);
     }
     return resteDesChosesAFaire;
