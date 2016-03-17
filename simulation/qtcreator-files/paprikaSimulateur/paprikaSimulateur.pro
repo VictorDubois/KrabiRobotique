@@ -58,20 +58,20 @@ HEADERS += \
     ../../include/hardware/limitSwitchSensor.h \
     ../../include/hardware/ligthBarrierSensor.h \
     ../../include/hardware/ax12api.h \
-        ../../include/hardware/leds.h \
+    ../../include/hardware/leds.h \
     ../../include/hardware/analogSensor.h \
     ../../include/strategie/strategieV2.h \
     ../../include/strategie/recalibrerOdometrie.h \
-        ../../include/strategie/mediumLevelAction.h \
-        ../../include/strategie/actionGoTo.h \
+    ../../include/strategie/mediumLevelAction.h \
+    ../../include/strategie/actionGoTo.h \
     ../../include/simul/userdata.h \
     ../../include/simul/contactlistener.h \
     ../../include/strategie/strategiev3.h \
     ../../include/strategie/etape.h \
     ../../include/strategie/cabine.h \
+    ../../include/strategie/zoneConstruction.h \
     ../../include/strategie/dijkstra.h \
     ../../include/hardware/tourelle.h \
-    ../../src/strategie/clap.h \
     ../../include/strategie/clap.h \
     ../../include/strategie/gobelet.h \
     ../../include/strategie/tapis.h \
@@ -182,7 +182,8 @@ SOURCES += \
     ../../src/initialisation.cpp \
     ../../src/strategie/krabijunior2016.cpp \
     ../../src/strategie/krabi2016.cpp \
-    ../../src/strategie/cabine.cpp
+    ../../src/strategie/cabine.cpp \
+    ../../src/strategie/zoneConstruction.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \
