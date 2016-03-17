@@ -6,6 +6,7 @@
 #include "asservissement.h"
 #include "strategieV2.h"
 #include "sensors.h"
+#include "hardware/tourelle.h"
 #include <iostream>
 #include <QDebug>
 
@@ -348,6 +349,7 @@ void Robot::paint(QPainter &p, int dt)
         else
         {
             Odometrie::odometrie->update();
+            Tourelle::getSingleton()->update();
             StrategieV2::update();
             Asservissement::asservissement->update();
             deriv.position.x = asservissement->getLinearSpeed();

@@ -479,6 +479,17 @@ void Table::update(int dt)
 
     debugText += "Sharps : \n " + sharpsChecked + "\n\n";
 
+    debugText += "Detected beacons: \n";
+    PositionsList l = Tourelle::getSingleton()->getPositionsList();
+    if(!l.isEmpty())
+    {
+        for(size_t i=0;i<l.size();++i)
+            debugText += ("Distance: " + QString::number(l[i].distance) + "mm Angle: " + QString::number(l[i].angle) + " degs\n");
+        debugText += "\n";
+    }
+    else
+        debugText += "None\n\n";
+
     DebugWindow::getInstance()->setText(debugText);
     if (!mRemoteMod)
     {
@@ -708,6 +719,7 @@ QList<PositionData> Table::getBeaconsRelativePosition(Robot* refBot)
     refBot = (!refBot)?getMainRobot():refBot;
 
     Position refPosition = refBot->getPos().getPosition();
+    float refAngle       = refBot->getPos().getAngle();
 
     QList<PositionData> positions;
 
@@ -722,7 +734,7 @@ QList<PositionData> Table::getBeaconsRelativePosition(Robot* refBot)
 
         PositionData polarPosition;
         polarPosition.distance = sqrt(x*x+y*y);
-        polarPosition.angle = static_cast<unsigned long>(atan2(y, x) * 180.f / 3.1415f + 180.f);
+        polarPosition.angle = static_cast<unsigned long>((atan2(y, x) + refAngle) * 180.f / 3.1415f)%360;
 
         positions.append(polarPosition);
     }

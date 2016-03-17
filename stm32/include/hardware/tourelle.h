@@ -24,8 +24,8 @@
 
     // Maximum angular error (in degree)
     #define TURRET_TEST_MAX_ANGLE_DEV  2/2
-    // Maximum linear error (in cm)
-    #define TURRET_TEST_MAX_LIN_DEV  10/2
+    // Maximum linear error (in mm)
+    #define TURRET_TEST_MAX_LIN_DEV  100/2
 
 #endif
 
@@ -53,6 +53,9 @@ class PositionsList
 
 		// Returns the size of the data set
 		unsigned int size() const;
+
+        // Returns true if the list is empty
+        bool isEmpty() const;
 
 		// Access to i-ist element in the set (O(1)). Warning: there are no bound checks
 		PositionData& operator[](unsigned int i);

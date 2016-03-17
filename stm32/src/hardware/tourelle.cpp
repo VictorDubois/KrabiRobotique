@@ -21,13 +21,21 @@
  // PositionsList //
 ///////////////////
 
-PositionsList::PositionsList():m_usedSize(0),m_allocatedSize(0),m_array(0)
+PositionsList::PositionsList()
 {
+    m_usedSize      = 0;
+    m_allocatedSize = 0;
+    m_array         = 0;
+
 	reserve(5);
 }
 
-PositionsList::PositionsList(const PositionsList& l):m_usedSize(0),m_allocatedSize(0),m_array(0)
+PositionsList::PositionsList(const PositionsList& l)
 {
+    m_usedSize      = 0;
+    m_allocatedSize = 0;
+    m_array         = 0;
+
 	reserve(l.m_allocatedSize);
 	m_usedSize=l.m_usedSize;
 	memcpy(m_array,l.m_array,m_usedSize);
@@ -61,6 +69,11 @@ void PositionsList::append(const PositionData& element)
 unsigned int PositionsList::size() const
 {
 	return m_usedSize;
+}
+
+bool PositionsList::isEmpty() const
+{
+    return size() == 0;
 }
 
 void PositionsList::clear()
@@ -105,7 +118,7 @@ PositionsList PositionsList::fromQList(const QList<PositionData>& list)
 {
     PositionsList l;
 
-    for(size_t i=0; i<list.size();++i)
+    for(int i=0; i<list.size();++i)
         l.append(list[i]);
     return l;
 }
