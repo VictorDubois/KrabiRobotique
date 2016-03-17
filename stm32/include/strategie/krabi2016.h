@@ -9,6 +9,7 @@
 #include "etape.h"
 #include "clap.h"
 #include "gobelet.h"
+#include "zoneConstruction.h"
 #include "tapis.h"
 #include "cabine.h"
 #include "ramasserPied.h"

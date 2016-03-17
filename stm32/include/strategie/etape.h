@@ -21,6 +21,7 @@ public:
         ROBOT_VU_ICI = 100,
 
         CABINE = 8,
+        ZONE_CONSTRUCTION = 9,
 
         POINT_PASSAGE = 0,
         COLLECT = 1,
@@ -28,9 +29,6 @@ public:
         DEPART = 5,
         DEPOSE_FEU = 6,
         DEPOSE_FRUIT = 7,
-        FEU_TERRAIN = 11,
-        TIR_MAMMOUTH = 12,
-        TIR_FILET = 13,
         FEU_MINI_BRAS = 14,
         FEU_COTE = 15,
         CENTRE_TABLE = 16,
@@ -50,9 +48,6 @@ public:
         ROBOT_DEPART =        DEPART + ROBOT_VU_ICI,
         ROBOT_DEPOSE_FEU =    DEPOSE_FEU + ROBOT_VU_ICI,
         ROBOT_DEPOSE_FRUIT  = DEPOSE_FRUIT + ROBOT_VU_ICI,
-        ROBOT_FEU_TERRAIN =   FEU_TERRAIN + ROBOT_VU_ICI,
-        ROBOT_TIR_MAMMOUTH =  TIR_MAMMOUTH + ROBOT_VU_ICI,
-        ROBOT_TIR_FILET = TIR_FILET + ROBOT_VU_ICI,
         ROBOT_FEU_MINI_BRAS = FEU_MINI_BRAS + ROBOT_VU_ICI,
         ROBOT_CENTRE_TABLE = CENTRE_TABLE + ROBOT_VU_ICI,
         ROBOT_CLAP = CLAP + ROBOT_VU_ICI,

@@ -357,6 +357,8 @@ QString Etape::getNameType(EtapeType type)
     {
     case CABINE:
         return "Cabine";
+    case ZONE_CONSTRUCTION:
+        return "Zone de construction";
     case POINT_PASSAGE:
         return "Passage";
     case DEPART:
@@ -384,6 +386,8 @@ QString Etape::getShortNameType(EtapeType type)
     {
     case CABINE:
         return "Cabine";
+    case ZONE_CONSTRUCTION:
+        return "Z.C";
     case POINT_PASSAGE:
         return "";
     case DEPART:

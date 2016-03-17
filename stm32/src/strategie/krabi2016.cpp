@@ -25,10 +25,10 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     int wc = Etape::makeEtape(Position(1120, 1203, true));
 
     /** Actions **/
-    // Gobelets
-    int ga = Etape::makeEtape(new Gobelet(Position(910,  805,    true)));
-    int gb = Etape::makeEtape(new Gobelet(Position(1500, 1650,   true)));
-    int gc = Etape::makeEtape(new Gobelet(Position(2090, 800,    true)));
+    // Zone de construction
+    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(910,  805,    true)));
+    int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1500, 1350,   true)));
+    int zc3 = Etape::makeEtape(new ZoneConstruction(Position(2090, 800,    true)));
 
     // Pieds
     int pa = Etape::makeEtape(new RamasserPied(Position(870,    1355, true)));
@@ -42,9 +42,9 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     Etape::get(start)   ->addVoisin(wa);
     Etape::get(wa)      ->addVoisin(wb, wc);
     Etape::get(wb)      ->addVoisin(wc);
-    Etape::get(ga)      ->addVoisin(wb, gb);
-    Etape::get(gb)      ->addVoisin(wc);
-    Etape::get(gc)      ->addVoisin(wc);
+    Etape::get(zc1)      ->addVoisin(wb, zc2);
+    Etape::get(zc2)      ->addVoisin(wc);
+    Etape::get(zc3)      ->addVoisin(wc);
     Etape::get(pa)      ->addVoisin(wb, wc);
     Etape::get(pb)      ->addVoisin(pa, wc);
 
