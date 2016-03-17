@@ -75,6 +75,8 @@
 		<Unit filename="include/actionneurs/brasKrabi.h" />
 		<Unit filename="include/actionneurs/brasLateraux.h" />
 		<Unit filename="include/actionneurs/brasTapis.h" />
+		<Unit filename="include/actionneurs/fichingNet" />
+		<Unit filename="include/actionneurs/fishingNet.h" />
 		<Unit filename="include/actionneurs/moteur.h" />
 		<Unit filename="include/actionneurs/pinces.h" />
 		<Unit filename="include/actionneurs/roues.h" />
@@ -134,6 +136,7 @@
 		<Unit filename="include/strategie/strategieV2.h" />
 		<Unit filename="include/strategie/strategiev3.h" />
 		<Unit filename="include/strategie/tapis.h" />
+		<Unit filename="include/strategie/zoneConstruction.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/brak (copie).cpp.victor" />
 		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/roues.cpp.victor" />
@@ -144,6 +147,7 @@
 		<Unit filename="src/actionneurs/brasKrabi.cpp" />
 		<Unit filename="src/actionneurs/brasLateraux.cpp" />
 		<Unit filename="src/actionneurs/brasTapis.cpp" />
+		<Unit filename="src/actionneurs/fishingNet.cpp" />
 		<Unit filename="src/actionneurs/moteur.cpp" />
 		<Unit filename="src/actionneurs/pinces.cpp" />
 		<Unit filename="src/actionneurs/roues.cpp" />
@@ -209,6 +213,7 @@
 		<Unit filename="src/strategie/strategieV2.cpp" />
 		<Unit filename="src/strategie/strategiev3.cpp" />
 		<Unit filename="src/strategie/tapis.cpp" />
+		<Unit filename="src/strategie/zoneConstruction.cpp" />
 		<Unit filename="src/stub.c">
 			<Option compilerVar="CC" />
 		</Unit>
