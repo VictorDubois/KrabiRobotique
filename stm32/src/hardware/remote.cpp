@@ -79,7 +79,7 @@ void Remote::initClocksAndPortsGPIO()
 {
 #ifdef STM32F10X_CL //H107
 
-    /* Bit configuration structure for GPIOA PIN9 and PIN10 */
+    /* Bit configuration structure for GPIOB PIN6 and PIN7 */
     GPIO_InitTypeDef gpioa_init_struct;
 
     /* Enalbe clock for USART1, AFIO and GPIOA */
