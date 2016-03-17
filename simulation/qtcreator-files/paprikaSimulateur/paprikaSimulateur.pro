@@ -104,7 +104,8 @@ HEADERS += \
     ../../include/initialisation.h \
     ../../include/vector.h \
     ../../include/strategie/krabijunior2016.h \
-    ../../include/strategie/krabi2016.h
+    ../../include/strategie/krabi2016.h \
+    ../../stm32/include/actionneurs/fishingNet.h
 
 
 SOURCES += \
@@ -183,7 +184,8 @@ SOURCES += \
     ../../src/strategie/krabijunior2016.cpp \
     ../../src/strategie/krabi2016.cpp \
     ../../src/strategie/cabine.cpp \
-    ../../src/strategie/zoneConstruction.cpp
+    ../../src/strategie/zoneConstruction.cpp \
+    ../../src/actionneurs/fishingNet.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \
