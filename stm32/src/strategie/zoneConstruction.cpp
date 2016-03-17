@@ -28,8 +28,9 @@ int ZoneConstruction::update()
     if (status == 0) //Début
     {
 #ifndef ROBOTHW
-        qDebug() << "Zone de onstruction";
+        qDebug() << "Zone de construction";
 #endif
+        status++;
     }
 
     return status;

@@ -26,9 +26,8 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     /** Actions **/
     // Zone de construction
-    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(910,  805,    true)));
-    int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1500, 1350,   true)));
-    int zc3 = Etape::makeEtape(new ZoneConstruction(Position(2090, 800,    true)));
+    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(750,  750,    true)));
+
 
     // Pieds
     int pa = Etape::makeEtape(new RamasserPied(Position(870,    1355, true)));
@@ -41,10 +40,8 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     // [WIP]
     Etape::get(start)   ->addVoisin(wa);
     Etape::get(wa)      ->addVoisin(wb, wc);
+    Etape::get(wa)      ->addVoisin(zc1);
     Etape::get(wb)      ->addVoisin(wc);
-    Etape::get(zc1)      ->addVoisin(wb, zc2);
-    Etape::get(zc2)      ->addVoisin(wc);
-    Etape::get(zc3)      ->addVoisin(wc);
     Etape::get(pa)      ->addVoisin(wb, wc);
     Etape::get(pb)      ->addVoisin(pa, wc);
 
@@ -69,12 +66,17 @@ int Krabi2016::getScoreEtape(int i)
 
     switch (this->tableauEtapesTotal[i]->getEtapeType())
     {
-        case Etape::DEPART :
-            return 0;
         /*case Etape::TYPE_ACTION:
             return NB_POINTS_ACTION; */
+
+        case Etape::DEPART :
+            return 0;
         case Etape::POINT_PASSAGE :
             return 0;
+        case Etape::ZONE_CONSTRUCTION :
+            // Rajouter la verification de la benne, sinon vide aucun interet d'aller dans la zone de construction
+            return 100;
+
         default :
             return 10; /* DEBUG (0 sinon) */
     }
