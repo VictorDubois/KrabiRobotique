@@ -30,6 +30,7 @@ int Cabine::update()
 #ifndef ROBOTHW
         qDebug() << "Ouverture cabine";
 #endif
+     status++;
     }
 
     return status;
