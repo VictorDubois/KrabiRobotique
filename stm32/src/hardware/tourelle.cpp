@@ -42,9 +42,11 @@ void PositionsList::reserve(unsigned int i)
 	m_usedSize = min(m_usedSize, i);
 	m_allocatedSize=i;
 
-	memcpy(ptr, m_array, m_usedSize*sizeof(PositionData));
-
-	delete m_array;
+	if(m_array != 0)
+	{
+        memcpy(ptr, m_array, m_usedSize*sizeof(PositionData));
+        delete m_array;
+	}
 	m_array = ptr;
 }
 
@@ -114,7 +116,7 @@ PositionsList PositionsList::fromQList(const QList<PositionData>& list)
 ////////////////////
 #ifdef ROBOTHW
 void Tourelle::initClocksAndPortsGPIO(uint32_t usart_rcc_index, uint32_t usart_af, GPIO_TypeDef* GPIOx_RX, uint16_t GPIO_Pin_RX, GPIO_TypeDef* GPIOx_TX, uint16_t GPIO_Pin_TX)
-{//processeur : pour faire les recherches, c'est en fait f10 pour h107, et f04 pour h405
+{//processeur : pour faire les recherches, c'est en fait f10 pour h107, et f4 pour h405
 
 #ifdef STM32F40_41xxx // For stm32 h405
     RCC_APB1PeriphClockCmd(usart_rcc_index, ENABLE);
@@ -201,7 +203,7 @@ Tourelle::Tourelle()
     initUART(TURRET_USART_INDEX, USART_BAUDRATE);
 #endif
 #ifdef STM32F40_41xxx // For stm32 h405
-
+    // TODO
 #endif
 
 #endif
