@@ -75,7 +75,7 @@ StrategieV2::StrategieV2(bool yellow)
             sharpsToCheck[i] = false;
 
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
-        actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2016(yellow);
+        //actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2016(yellow);
     #else
         actionsToDo[0] = (MediumLevelAction*) new Krabi2016(yellow);
     #endif

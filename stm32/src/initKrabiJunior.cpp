@@ -23,8 +23,8 @@ void InitKrabiJunior::setYellow()
 void InitKrabiJunior::initRotaryEncoders()
 {
 #ifdef ROBOTHW
-	rcd = new QuadratureCoderHandler(TIM4, GPIOB, GPIO_Pin_6, 	GPIOB, GPIO_Pin_7, GPIO_AF_TIM4, GPIO_PinSource6, GPIO_PinSource7);
-	rcg = new QuadratureCoderHandler(TIM1, GPIOA, GPIO_Pin_8, 	GPIOA, GPIO_Pin_9, GPIO_AF_TIM1, GPIO_PinSource8, GPIO_PinSource9);
+//	rcd = new QuadratureCoderHandler(TIM4, GPIOB, GPIO_Pin_6, 	GPIOB, GPIO_Pin_7, GPIO_AF_TIM4, GPIO_PinSource6, GPIO_PinSource7);
+//	rcg = new QuadratureCoderHandler(TIM1, GPIOA, GPIO_Pin_8, 	GPIOA, GPIO_Pin_9, GPIO_AF_TIM1, GPIO_PinSource8, GPIO_PinSource9);
 #endif
 }
 
@@ -59,7 +59,5 @@ void InitKrabiJunior::initGPIO()
 #ifdef ROBOTHW
     Tirette tirette(GPIOA, GPIO_Pin_10);
 
-    QuadratureCoderHandler* rcd = new QuadratureCoderHandler(TIM4, GPIOB, GPIO_Pin_6, GPIOB, GPIO_Pin_7, GPIO_AF_TIM4 ,GPIO_PinSource6, GPIO_PinSource7);
-    QuadratureCoderHandler* rcg = new QuadratureCoderHandler(TIM1, GPIOA, GPIO_Pin_8, GPIOA, GPIO_Pin_9, GPIO_AF_TIM1 ,GPIO_PinSource8, GPIO_PinSource9);
 #endif
 }

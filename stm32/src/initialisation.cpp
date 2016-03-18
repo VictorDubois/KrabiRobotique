@@ -25,13 +25,17 @@ extern "C" void SysTick_Handler()
     }
 #endif
 
+#ifndef STM32F40_41xxx
     Odometrie::odometrie->update();
 
+
     //StrategieV2::update();
+
 
     Tourelle::getSingleton()->update();
 
     Asservissement::asservissement->update();
+#endif
 }
 
 #ifdef ROBOTHW

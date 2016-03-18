@@ -21,9 +21,9 @@ public:
 // Mettez toutes vos initialisations de PIN dans la fonction "initialisation"
 // On l'appellera ensuite dans le main au tout début pour tout initialiser d'un coup
     virtual void initGPIO();
-	
+
 	void initRotaryEncoders();
-	
+
     virtual void initActionneurs();
 };
 
