@@ -612,7 +612,7 @@ Command* StrategieV2::setCurrentGoalSmooth(Position goal, Position nextGoal, flo
     return currentCommand;
 }
 
-Command* StrategieV2::setCurrentGoal(Position goal, Position center, float vitesse, bool goBack, Angle precisionAngle)
+Command* StrategieV2::setCurrentGoal(Position goal, Position center, float vitesse, bool goBack, Angle /*precisionAngle*/)
 {
     if (currentCommand != NULL)
         delete currentCommand;
@@ -668,6 +668,7 @@ bool StrategieV2::willCollide()
     somethingDetected = true;
     Asservissement::asservissement->setCommandSpeeds(NULL); // stoppe le robot
     Asservissement::asservissement->resetAsserv();
+    return false;
 }
 
 bool StrategieV2::isYellow()
@@ -751,6 +752,8 @@ bool StrategieV2::sharpDetects(SharpSensor::SharpName name)
     for (int i = 0; i < SharpSensor::END_SHARP_NAME; i++)
         if (sharps[i]->getName() == name && sharpsToCheck[i] == true && !tourneSurSoiMeme)
             return sharps[i]->getValue().b;
+
+    return false;
 }
 
 void StrategieV2::setTourneSurSoiMeme(bool tourne)

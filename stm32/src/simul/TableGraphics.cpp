@@ -69,7 +69,7 @@ void Shape::drawSelf(QPainter* painter)
     painter->setPen(p_color);
 }
 
-void Shape::createSolid(b2Body* body)
+void Shape::createSolid(b2Body*)
 {
 }
 
