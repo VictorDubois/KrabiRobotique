@@ -74,13 +74,13 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 		table->resize(proportion*s.height(),s.height());
 }
 
-void MainWindow::moveEvent(QMoveEvent * event)
+void MainWindow::moveEvent(QMoveEvent*)
 {
     if (DebugWindow::getInstance()->isAttached())
         DebugWindow::getInstance()->moveWithoutEvent(this->mapToGlobal(QPoint()) + QPoint(this->width() + 16, -QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight)));
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::closeEvent(QCloseEvent*)
 {
     DebugWindow::getInstance()->close();
 }
