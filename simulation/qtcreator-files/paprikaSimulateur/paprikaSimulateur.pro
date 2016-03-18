@@ -105,7 +105,7 @@ HEADERS += \
     ../../include/vector.h \
     ../../include/strategie/krabijunior2016.h \
     ../../include/strategie/krabi2016.h \
-    ../../stm32/include/actionneurs/fishingNet.h
+    ../../include/actionneurs/fishingNet.h
 
 
 SOURCES += \
