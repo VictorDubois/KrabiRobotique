@@ -12,7 +12,7 @@
 
 #define ratio_qt_box2d 0.01
 
-Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(10000), mRemoteMod(false), body(NULL)
+Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(10000), body(NULL), mRemoteMod(false)
 {
     this->manual = manual;
     level = 0;
@@ -92,7 +92,7 @@ Robot::Robot(b2World & world, bool manual, bool isYellow) : world(world), olds(1
     // 2dbox limite à 8 le nombre de vertex par polygone
     inc = 0;
 
-    for(int i = 0; i < robotPolygonPoints.size(); i += 1)
+    for(size_t i = 0; i < robotPolygonPoints.size(); i += 1)
     {
         v[0].Set(0., 0.);
         v[1].Set(robotPolygonPoints[i].x() * ratio_qt_box2d, robotPolygonPoints[i].y() * ratio_qt_box2d);
