@@ -108,6 +108,7 @@
 		<Unit filename="include/asservissement/odometrie.h" />
 		<Unit filename="include/asservissement/pidFilterAngle.h" />
 		<Unit filename="include/asservissement/pidFilterDistance.h" />
+		<Unit filename="include/clock.h" />
 		<Unit filename="include/constantes.h" />
 		<Unit filename="include/debug.h" />
 		<Unit filename="include/hardware/analogSensor.h" />
@@ -130,7 +131,6 @@
 		<Unit filename="include/initKrabiJunior.h" />
 		<Unit filename="include/initialisation.h" />
 		<Unit filename="include/interfaceServosNumeriques.h" />
-		<Unit filename="include/loop.h" />
 		<Unit filename="include/memory.h" />
 		<Unit filename="include/strategie/strategieV2.h" />
 		<Unit filename="include/strategie/strategiev3.h" />
@@ -153,6 +153,7 @@
 		<Unit filename="src/asservissement/odometrie.cpp" />
 		<Unit filename="src/asservissement/pidFilterAngle.cpp" />
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
+		<Unit filename="src/clock.cpp" />
 		<Unit filename="src/debug.cpp" />
 		<Unit filename="src/distance.cpp" />
 		<Unit filename="src/hardware/analogSensor.cpp" />

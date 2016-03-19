@@ -49,7 +49,7 @@ void InitKrabiJunior::initActionneurs()
     ServosNumeriques::initUART(1000000);
     ServosNumeriques::sendMode();
 
-    Sensors* sensors = Sensors::getSingleton();
+    /*Sensors* sensors = */Sensors::getSingleton();
     ServosNumeriques::setLedState(1, 12);
 #endif
 }

@@ -35,10 +35,10 @@ HEADERS += \
     ../../include/actionneurs/ascenseur.h \
     ../../include/asservissement/pidFilterDistance.h \
     ../../include/asservissement/pidFilterAngle.h \
-        ../../include/asservissement/odometrie.h \
-        ../../include/asservissement/commandAllerA.h \
+    ../../include/asservissement/odometrie.h \
+    ../../include/asservissement/commandAllerA.h \
     ../../include/asservissement/command.h \
-        ../../include/asservissement/asservissement.h \
+    ../../include/asservissement/asservissement.h \
     ../../include/simul/XMLReader.h \
     ../../include/simul/TableGraphics.h \
     ../../include/simul/table.h \
@@ -108,22 +108,23 @@ HEADERS += \
     ../../include/strategie/benne.h \
     ../../include/actionneurs/fishingNet.h \
     ../../include/actionneurs/parasol.h \
-    ../../include/strategie/benne.h
+    ../../include/strategie/benne.h \
+    ../../include/clock.h
 
 
 SOURCES += \
     ../../src/asservissement/pidFilterDistance.cpp \
-        ../../src/asservissement/pidFilterAngle.cpp \
-        ../../src/asservissement/commandAllerA.cpp \
+    ../../src/asservissement/pidFilterAngle.cpp \
+    ../../src/asservissement/commandAllerA.cpp \
     ../../src/asservissement/command.cpp \
-        ../../src/asservissement/asservissement.cpp \
+    ../../src/asservissement/asservissement.cpp \
     ../../src/actionneurs/servo.cpp \
     ../../src/actionneurs/sensors.cpp \
     ../../src/actionneurs/sensor.cpp \
     ../../src/position.cpp \
     ../../src/distance.cpp \
     ../../src/angle.cpp \
-        ../../src/positionPlusAngle.cpp \
+    ../../src/positionPlusAngle.cpp \
     ../../src/simul/XMLReader.cpp \
     ../../src/simul/TableGraphics.cpp \
     ../../src/simul/table.cpp \
@@ -140,12 +141,12 @@ SOURCES += \
     ../../src/hardware/limitSwitchSensor.cpp \
     ../../src/hardware/ligthBarrierSensor.cpp \
     ../../src/hardware/ax12api.cpp \
-        ../../src/hardware/leds.cpp \
+    ../../src/hardware/leds.cpp \
     ../../src/hardware/analogSensor.cpp \
     ../../src/strategie/strategieV2.cpp \
     ../../src/strategie/recalibrerOdometrie.cpp \
     ../../src/strategie/mediumLevelAction.cpp \
-        ../../src/strategie/actionGoTo.cpp \
+    ../../src/strategie/actionGoTo.cpp \
     ../../src/simul/userdata.cpp \
     ../../src/simul/contactlistener.cpp \
     ../../src/strategie/strategiev3.cpp \
@@ -180,7 +181,6 @@ SOURCES += \
     ../../src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp \
     ../../src/vec3d.cpp \
     ../../src/vec2d.cpp \
-    ../../src/loop.cpp \
     ../../src/InitKrabiJunior.cpp \
     ../../src/initkrabi.cpp \
     ../../src/initialisation.cpp \
@@ -190,7 +190,8 @@ SOURCES += \
     ../../src/strategie/benne.cpp \
     ../../src/strategie/zoneConstruction.cpp \
     ../../src/actionneurs/fishingNet.cpp \
-    ../../src/actionneurs/parasol.cpp
+    ../../src/actionneurs/parasol.cpp \
+    ../../src/clock.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \

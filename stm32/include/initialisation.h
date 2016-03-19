@@ -8,7 +8,7 @@
 #include "quadratureCoderHandler.h"
 #include "odometrie.h"
 #include "strategieV2.h"
-#include "loop.h"
+
 #include "asservissement.h"
 #include "interfaceServosNumeriques.h"
 

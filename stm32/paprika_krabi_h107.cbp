@@ -90,6 +90,7 @@
 		<Unit filename="include/asservissement/odometrie.h" />
 		<Unit filename="include/asservissement/pidFilterAngle.h" />
 		<Unit filename="include/asservissement/pidFilterDistance.h" />
+		<Unit filename="include/clock.h" />
 		<Unit filename="include/constantes.h" />
 		<Unit filename="include/distance.h" />
 		<Unit filename="include/hardware/analogSensor.h" />
@@ -119,6 +120,7 @@
 		<Unit filename="include/position.h" />
 		<Unit filename="include/positionPlusAngle.h" />
 		<Unit filename="include/strategie/actionGoTo.h" />
+		<Unit filename="include/strategie/benne.h" />
 		<Unit filename="include/strategie/cabine.h" />
 		<Unit filename="include/strategie/clap.h" />
 		<Unit filename="include/strategie/deposerGobelet.h" />
@@ -164,6 +166,7 @@
 		<Unit filename="src/asservissement/odometrie.cpp" />
 		<Unit filename="src/asservissement/pidFilterAngle.cpp" />
 		<Unit filename="src/asservissement/pidFilterDistance.cpp" />
+		<Unit filename="src/clock.cpp" />
 		<Unit filename="src/debug.cpp" />
 		<Unit filename="src/distance.cpp" />
 		<Unit filename="src/hardware/analogSensor.cpp" />
@@ -195,6 +198,7 @@
 		<Unit filename="src/strategie/actionGoTo.cpp" />
 		<Unit filename="src/strategie/anciens_fichiers/feuKrabi (copie).cpp.victor" />
 		<Unit filename="src/strategie/anciens_fichiers/feukrabilateral.cpp.limitVitesseVictor" />
+		<Unit filename="src/strategie/benne.cpp" />
 		<Unit filename="src/strategie/cabine.cpp" />
 		<Unit filename="src/strategie/clap.cpp" />
 		<Unit filename="src/strategie/deposerGobelet.cpp" />
