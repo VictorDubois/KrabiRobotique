@@ -19,7 +19,6 @@
 //#include "capteurs.h"
 #endif
 
-#include "loop.h"
 #include "sensors.h"
 #include "constantes.h"
 #include "odometrie.h"

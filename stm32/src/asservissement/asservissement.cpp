@@ -2,6 +2,8 @@
 #include "strategieV2.h"
 #include "ascenseur.h"
 
+#include "clock.h"
+
 #include "misc.h"
 #include "capteurCouleur.h"
 
@@ -47,7 +49,7 @@ Asservissement * Asservissement::asservissement = NULL; //Pour que nos variables
 bool Asservissement::matchFini = false;
 const uint16_t Asservissement::nb_ms_between_updates = MS_BETWEEN_UPDATE;
 
-Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(false), engineLimit(0.5f), testDataSent(0), testDataToSend(0)
+Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunning(false), stopped(false), testDataSent(0), testDataToSend(0), engineLimit(0.5f)
 
 /*:
     seuil_collision(SEUIL_COLISION),
@@ -371,7 +373,7 @@ void Asservissement::update(void)
         }
     }
 
-    if (testMod && !testRunning && testDataSent < testDataToSend && (systick_count % 10 == 0))
+    if (testMod && !testRunning && testDataSent < testDataToSend && (Clock::getInstance()->elapsedSinceStartup() % (10*Clock::MS_PER_TICK) == 0))
     {
         // send data
 #ifndef NO_REMOTE
