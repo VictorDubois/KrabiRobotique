@@ -91,6 +91,15 @@ bool Clock::hasMatchEnded() const
     return isMatchStarted() && (elapsedSinceMatchStart() >= Clock::MATCH_DURATION_MS);
 }
 
+unsigned int Clock::delay(unsigned int duration)
+{
+    unsigned int start = Clock::getInstance()->elapsedSinceStartup();
+
+    while(duration > (Clock::getInstance()->elapsedSinceStartup()-start));
+
+    return Clock::getInstance()->elapsedSinceStartup()-start;
+}
+
 extern "C" void SysTick_Handler()
 {
     Clock::getInstance()->tick();
