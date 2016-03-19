@@ -4,13 +4,14 @@
 #include "position.h"
 #include "mediumLevelAction.h"
 #include "command.h"
+#include "benne.h"
 
 class ZoneConstruction : public MediumLevelAction
 {
 public:
     ZoneConstruction();
 
-    ZoneConstruction(Position goalPosition);
+    ZoneConstruction(Position goalPosition, Benne* benne);
 
     ~ZoneConstruction();
 
@@ -20,6 +21,7 @@ public:
 
 protected:
     Position goalPosition;
+    Benne* benne_locale;
 };
 
 #endif // ZONECONSTRUCTION_H

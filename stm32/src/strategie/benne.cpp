@@ -5,11 +5,11 @@ Benne::Benne()
     isBenneEmpty = true;
 }
 
-void Benne::setIsBenneEmpty() {
+void Benne::setBenneEmpty() {
     isBenneEmpty = true;
 }
 
-void Benne::setIsBenneFull() {
+void Benne::setBenneFull() {
     isBenneEmpty = false;
 }
 

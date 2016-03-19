@@ -1,41 +1,40 @@
 #include "krabi2016.h"
 #include "ascenseur.h"
 #include "pinces.h"
-#include "benne.h"
 
 #ifndef ROBOTHW
     #include <QDebug>
 #endif
 
-Benne *benne = new Benne();
 
 Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 {
+    // Création de la benne
+    benne = new Benne();
+
     //Initialisation des tableaux d'étapes
     this->numeroEtapeGarage = ETAPE_GARAGE;
     tableauEtapesTotal = Etape::initTableauEtapeTotal(NOMBRE_ETAPES);//new Etape*[NOMBRE_ETAPES];
-
 
     // Création des étapes
     // Les étapes correspondant à des actions sont créées automatiquement lors de l'ajout d'actions
 
     int start = Etape::makeEtape(Position(250, 1000, true), Etape::DEPART); // départ au fond de la zone de départ
 
-
-
     /** Points de passage **/
     int wa = Etape::makeEtape(Position(600,  1000, true));
     int wb = Etape::makeEtape(Position(880,  1140, true));
-    int wc = Etape::makeEtape(Position(1120, 1203, true));
+
 
     /** Actions **/
     // Zone de construction
-    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(650, 450, true)));
+    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(980, 920, true), benne));
+    int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1050, 1050, true), benne));
 
 
     // Pieds
-    int pa = Etape::makeEtape(new RamasserPied(Position(870,    1755, true)));
-    int pb = Etape::makeEtape(new RamasserPied(Position(1100,   1770, true)));
+    int pa = Etape::makeEtape(new RamasserPied(Position(870,    1655, true)));
+    int pb = Etape::makeEtape(new RamasserPied(Position(1100,   1670, true)));
 
     // Etc.
 
@@ -43,11 +42,11 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     /** Liens **/
     // [WIP]
     Etape::get(start)   ->addVoisin(wa);
-    Etape::get(wa)      ->addVoisin(wb, wc);
+    Etape::get(wa)      ->addVoisin(wb, zc2);
     Etape::get(wa)      ->addVoisin(zc1);
-    Etape::get(wb)      ->addVoisin(wc);
-    Etape::get(pa)      ->addVoisin(wb, wc);
-    Etape::get(pb)      ->addVoisin(pa, wc);
+    Etape::get(wb)      ->addVoisin(zc2);
+    Etape::get(pa)      ->addVoisin(wb, zc2);
+    Etape::get(pb)      ->addVoisin(pa, zc2);
 
 #ifndef ROBOTHW
     qDebug() << Etape::getTotalEtapes();
@@ -77,19 +76,22 @@ int Krabi2016::getScoreEtape(int i)
             return 0;
         case Etape::POINT_PASSAGE :
             return 0;
-        case Etape::ZONE_CONSTRUCTION :
+        case Etape::ZONE_CONSTRUCTION : {
             if (benne->getIsBenneEmpty()) {
-                return 0;
+                return 1;
             }
             else {
-                return 100;
+                return 10000;
             }
+        }
 
         case Etape::RAMASSER_PIED : {
 
-            benne->setIsBenneFull();
-            return 10;
+            // On fait comme si on avait rammasé un cube, du coup la benne est pleine, en vrai on fera
+            // tout ça dans la future classe cube
 
+            benne->setBenneFull();
+            return 900;
         }
 
         default :
