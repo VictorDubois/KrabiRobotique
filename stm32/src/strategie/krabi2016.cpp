@@ -1,10 +1,13 @@
 #include "krabi2016.h"
 #include "ascenseur.h"
 #include "pinces.h"
+#include "benne.h"
 
 #ifndef ROBOTHW
     #include <QDebug>
 #endif
+
+Benne *benne = new Benne();
 
 Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 {
@@ -19,18 +22,19 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     int start = Etape::makeEtape(Position(250, 1000, true), Etape::DEPART); // départ au fond de la zone de départ
 
 
+
     /** Points de passage **/
-    int wa = Etape::makeEtape(Position(700,  1000, true));
+    int wa = Etape::makeEtape(Position(600,  1000, true));
     int wb = Etape::makeEtape(Position(880,  1140, true));
     int wc = Etape::makeEtape(Position(1120, 1203, true));
 
     /** Actions **/
     // Zone de construction
-    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(750,  750,    true)));
+    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(650, 450, true)));
 
 
     // Pieds
-    int pa = Etape::makeEtape(new RamasserPied(Position(870,    1355, true)));
+    int pa = Etape::makeEtape(new RamasserPied(Position(870,    1755, true)));
     int pb = Etape::makeEtape(new RamasserPied(Position(1100,   1770, true)));
 
     // Etc.
@@ -74,8 +78,19 @@ int Krabi2016::getScoreEtape(int i)
         case Etape::POINT_PASSAGE :
             return 0;
         case Etape::ZONE_CONSTRUCTION :
-            // Rajouter la verification de la benne, sinon vide aucun interet d'aller dans la zone de construction
-            return 100;
+            if (benne->getIsBenneEmpty()) {
+                return 0;
+            }
+            else {
+                return 100;
+            }
+
+        case Etape::RAMASSER_PIED : {
+
+            benne->setIsBenneFull();
+            return 10;
+
+        }
 
         default :
             return 10; /* DEBUG (0 sinon) */

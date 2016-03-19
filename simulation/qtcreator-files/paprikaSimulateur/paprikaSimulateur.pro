@@ -105,8 +105,10 @@ HEADERS += \
     ../../include/vector.h \
     ../../include/strategie/krabijunior2016.h \
     ../../include/strategie/krabi2016.h \
+    ../../include/strategie/benne.h \
     ../../include/actionneurs/fishingNet.h \
-    ../../include/actionneurs/parasol.h
+    ../../include/actionneurs/parasol.h \
+    ../../include/strategie/benne.h
 
 
 SOURCES += \
@@ -185,6 +187,7 @@ SOURCES += \
     ../../src/strategie/krabijunior2016.cpp \
     ../../src/strategie/krabi2016.cpp \
     ../../src/strategie/cabine.cpp \
+    ../../src/strategie/benne.cpp \
     ../../src/strategie/zoneConstruction.cpp \
     ../../src/actionneurs/fishingNet.cpp \
     ../../src/actionneurs/parasol.cpp

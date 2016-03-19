@@ -10,7 +10,7 @@ class ZoneConstruction : public MediumLevelAction
 public:
     ZoneConstruction();
 
-    ZoneConstruction(Position position);
+    ZoneConstruction(Position goalPosition);
 
     ~ZoneConstruction();
 
@@ -19,7 +19,7 @@ public:
     Etape::EtapeType getType();
 
 protected:
-    Position position;
+    Position goalPosition;
 };
 
 #endif // ZONECONSTRUCTION_H
