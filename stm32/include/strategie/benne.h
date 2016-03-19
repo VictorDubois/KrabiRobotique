@@ -8,8 +8,8 @@ public:
 
     ~Benne();
 
-    void setIsBenneEmpty();
-    void setIsBenneFull();
+    void setBenneEmpty();
+    void setBenneFull();
 
     bool getIsBenneEmpty();
     bool getIsBenneFull();

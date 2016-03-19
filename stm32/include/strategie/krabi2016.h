@@ -17,6 +17,7 @@
 #include "manipulationCoinGaucheBas.h"
 #include "manipulationCoinGaucheHaut.h"
 #include "manipulationCoinGaucheHautPiedSolitaire.h"
+#include "benne.h"
 
 class Krabi2016 : public StrategieV3
 {
@@ -34,6 +35,9 @@ public:
 
 
 private:
+
+    Benne* benne;
+
 //    /** Nombre d'étapes dans le graph */
 //    int nombreEtapes = NOMBRE_ETAPES;
 
@@ -42,6 +46,7 @@ private:
 
     /** @brief update du score d'une étape */
     int getScoreEtape(int i);
+
 
 };
 

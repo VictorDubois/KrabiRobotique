@@ -3,6 +3,7 @@
 #include "mediumLevelAction.h"
 #include "command.h"
 #include "position.h"
+#include "krabi2016.h"
 
 #ifndef ROBOTHW
 #include <QDebug>
@@ -10,9 +11,10 @@
 
 ZoneConstruction::ZoneConstruction(){}
 
-ZoneConstruction::ZoneConstruction(Position goalPosition):MediumLevelAction(goalPosition)
+ZoneConstruction::ZoneConstruction(Position goalPosition, Benne* benne):MediumLevelAction(goalPosition)
 {
-
+    goalPosition = this->goalPosition;
+    benne_locale = benne;
 }
 
 ZoneConstruction::~ZoneConstruction(){}
@@ -55,7 +57,9 @@ int ZoneConstruction::update()
     else if (status == 3) {
 #ifndef ROBOTHW
         qDebug() << "Etape zone de construction finie";
+
 #endif
+        benne_locale->setBenneEmpty();
         status = -1;
     }
 
