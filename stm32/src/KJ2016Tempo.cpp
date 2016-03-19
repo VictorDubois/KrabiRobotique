@@ -3,6 +3,8 @@
 #include "interfaceServosNumeriques.h"
 #include "actionneurs/fishingNet.h"
 
+#include "clock.h"
+
 KJ2016Tempo::KJ2016Tempo(unsigned int leftServoID, unsigned int rightServoID): LEFT_SERVO_ID(leftServoID), RIGHT_SERVO_ID(rightServoID)
 {}
 
@@ -70,7 +72,7 @@ void KJ2016Tempo::turn90(bool toLeft)
     ServosNumeriques::moveAtSpeed(0x0400 - speed, servoOne);
     ServosNumeriques::moveAtSpeed(0x0400 + speed, servoTwo);
 
-    wasteTime(static_cast<unsigned int>( 1/((float)speed) * correctionFactor));
+    Clock::delay(static_cast<unsigned int>( 1/((float)speed) * correctionFactor));
 
     enginesStop();
 }
@@ -88,11 +90,6 @@ void KJ2016Tempo::move(int distance)
     ServosNumeriques::moveAtSpeed(0x0400 + speed, LEFT_SERVO_ID);
     ServosNumeriques::moveAtSpeed(0x0400 + speed, RIGHT_SERVO_ID);
 
-    wasteTime(static_cast<unsigned int>((float)distance / (float)speed * correctionFactor));
+    Clock::delay(static_cast<unsigned int>((float)distance / (float)speed * correctionFactor));
     enginesStop();
-}
-
-void KJ2016Tempo::wasteTime(unsigned int time)
-{
-    for(unsigned int i=0; i<time; ++i); //Meh
 }

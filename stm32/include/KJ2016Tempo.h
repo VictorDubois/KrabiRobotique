@@ -28,8 +28,6 @@ class KJ2016Tempo
 
         void move(int distance);
 
-        void wasteTime(unsigned int time);
-
         KJ2016Tempo(unsigned int leftServoID, unsigned int rightServoID);
 };
 
