@@ -143,7 +143,7 @@ void Table::createObjects()
 
 #ifdef COUPE_2016
 
-    objets.push_back(new Objet(world, Position(928.,2000.), Objet::FILET, 0, QColor(255, 0, 0)));
+    /*objets.push_back(new Objet(world, Position(928.,2000.), Objet::FILET, 0, QColor(255, 0, 0)));*/
 
 
     //SANDCUBE
@@ -199,7 +199,7 @@ void Table::createObjects()
 
 //SANDCYLINDER
     objets.push_back(new Objet(world, Position(1500.,145.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
-  objets.push_back(new Objet(world, Position(650.,900.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
+  /*objets.push_back(new Objet(world, Position(650.,900.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
     objets.push_back(new Objet(world, Position(2350.,900.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
   objets.push_back(new Objet(world, Position(888.,58.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
     objets.push_back(new Objet(world, Position(2113.,58.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
@@ -208,15 +208,15 @@ void Table::createObjects()
    objets.push_back(new Objet(world, Position(650.,900.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
     objets.push_back(new Objet(world, Position(2350.,900.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
     objets.push_back(new Objet(world, Position(888.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
-    objets.push_back(new Objet(world, Position(2113.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2113.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));*/
 
     //PORTE
     objets.push_back(new Objet(world, Position(0.,0.), Objet::PORTE, 0, QColor(132, 76, 130)));
     objets.push_back(new Objet(world, Position(2100.,0.), Objet::PORTE, 0, QColor(54, 103, 53)));
-    objets.push_back(new Objet(world, Position(0.,0.), Objet::MER, 0, QColor(135,206,250)));
+    /*objets.push_back(new Objet(world, Position(0.,0.), Objet::MER, 0, QColor(135,206,250)));
     //POISSON
     objets.push_back(new Objet(world, Position(650.,2020.), Objet::POISSON, 0, QColor(132, 76, 130)));
-    objets.push_back(new Objet(world, Position(2700.,1985.), Objet::POISSON, 0, QColor(54, 103, 53)));
+    objets.push_back(new Objet(world, Position(2700.,1985.), Objet::POISSON, 0, QColor(54, 103, 53)));*/
 
 
 #define SHELL_2
