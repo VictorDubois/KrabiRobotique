@@ -159,30 +159,56 @@ void Table::createObjects()
     objets.push_back(new Objet(world, Position(2350.,900.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
 
 
-   objets.push_back(new Objet(world, Position(1026.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(830.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
 
-    objets.push_back(new Objet(world, Position(1084.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(888.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
 
-    objets.push_back(new Objet(world, Position(1026.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2113.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
 
-    objets.push_back(new Objet(world, Position(1084.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2055.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
 
-    objets.push_back(new Objet(world, Position(1860.,8.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
-    objets.push_back(new Objet(world, Position(1918.,8.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
-    objets.push_back(new Objet(world, Position(1860.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
-    objets.push_back(new Objet(world, Position(1918.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(830.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(888.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2113.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2055.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1471.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1413.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1355.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1297.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1239.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1529.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1587.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1645.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1703.,0.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1471.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1413.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
+
+    objets.push_back(new Objet(world, Position(1529.,58.), Objet::SANDCUBE, 0, QColor(232, 140, 0)));
 
 
 //SANDCYLINDER
+    objets.push_back(new Objet(world, Position(1500.,145.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
   objets.push_back(new Objet(world, Position(650.,900.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
     objets.push_back(new Objet(world, Position(2350.,900.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
-   /* objets.push_back(new Objet(world, Position(884.,58.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
-    objets.push_back(new Objet(world, Position(2118.,58.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));*/
+  objets.push_back(new Objet(world, Position(888.,58.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2113.,58.), Objet::SANDCYLINDER, 0, QColor(232, 140, 0)));
     //SANDCONE
+
    objets.push_back(new Objet(world, Position(650.,900.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
     objets.push_back(new Objet(world, Position(2350.,900.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
-    /*objets.push_back(new Objet(world, Position(884.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
-    objets.push_back(new Objet(world, Position(2118.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));*/
+    objets.push_back(new Objet(world, Position(888.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
+    objets.push_back(new Objet(world, Position(2113.,58.), Objet::SANDCONE, 0, QColor(232, 140, 0)));
 
     //PORTE
     objets.push_back(new Objet(world, Position(0.,0.), Objet::PORTE, 0, QColor(132, 76, 130)));

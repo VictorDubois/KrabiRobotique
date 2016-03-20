@@ -177,10 +177,17 @@ case SANDCONE:
     break;
 }
 case SANDCYLINDER:
-{
+{   p_color = QColor(232, 140, 0);
     pa.setBrush(p_color);
     pa.setPen(p_color);
     pa.drawEllipse(QPoint(p.x,p.y),29,29);
+    p_color = QColor(0, 0, 0);
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+    QRectF rectangle(p.x-29, p.y-29,58,58);
+        int startAngle = 0 * 16;
+        int spanAngle = 360 * 16;
+        pa.drawArc(rectangle, startAngle, spanAngle);
     break;
 }
     case SANDCUBE:

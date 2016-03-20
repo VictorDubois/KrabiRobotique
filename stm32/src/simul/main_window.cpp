@@ -1,3 +1,4 @@
+
 #include "simul/main_window.h"
 #include "simul/table.h"
 #include <QTimer>
