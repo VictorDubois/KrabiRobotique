@@ -63,7 +63,7 @@ public slots:
 
 public:
 	static const int tableWidth = 3000;
-    static const int tableHeight = 2500;
+    static const int tableHeight = 2000;
 	static b2AABB getWorldAABB();
     //Bougie p_bougies[20];
     //Bougie p_balles[20];
