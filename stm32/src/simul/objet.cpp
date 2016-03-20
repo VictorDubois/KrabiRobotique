@@ -18,6 +18,38 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circle;
+        circle.m_radius = 0.381f;
+        circle.m_p.Set(0.,0.);
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+
+        radius = circle.m_radius;
+        break;
+    }
+    case SANDCONE:
+    {
+        b2CircleShape circle;
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circle;
+        circle.m_radius = 0.29f;
+        circle.m_p.Set(0.,0.);
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+
+        radius = circle.m_radius;
+        break;
+    }
+    case SANDCYLINDER:
+    {
+        b2CircleShape circle;
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circle;
         circle.m_radius = 0.29f;
         circle.m_p.Set(0.,0.);
         fixtureDef.density = 1.0f;
@@ -53,6 +85,69 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         radius = 0.58f;
         break;
     }
+    case PORTE:
+    {  b2Vec2 vertices[4];
+        vertices[0].Set(0.0f, -0.1f);
+        vertices[1].Set(0.0f, 0.0f);
+        vertices[2].Set(-1.2f, 0.0f);
+        vertices[3].Set(-1.2f, -0.1f);
+
+        int32 count = 4;
+        b2PolygonShape polygon;
+        polygon.Set(vertices, count);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &polygon;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+
+        radius = 1.2f;
+        break;
+
+
+
+
+
+    }
+    case MER:
+    { b2Vec2 vertices[4];
+        vertices[0].Set(0.0f, -2.32f);
+        vertices[1].Set(0.0f, 0.0f);
+        vertices[2].Set(-5.1f, 0.0f);
+        vertices[3].Set(-5.1f, -2.32f);
+
+        int32 count = 4;
+        b2PolygonShape polygon;
+        polygon.Set(vertices, count);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &polygon;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.filter.maskBits = 0x3;
+        fixtureDef.filter.categoryBits = 0x1;
+        body->CreateFixture(&fixtureDef);
+
+        radius = 5.1f;
+        break;
+
+
+    }
+    case POISSON:
+    {
+        break;
+
+
+    }
+    case FILET:
+    {
+        break;
+
+
+    }
     }
 }
 
@@ -65,28 +160,133 @@ void Objet::paint(QPainter &pa)
 {
     switch (type)
     {
-        case SHELL:
-        {
-            pa.setBrush(p_color);
-            pa.setPen(p_color);
+    case SHELL:
+    {
+        pa.setBrush(p_color);
+        pa.setPen(p_color);
 
-            pa.drawEllipse(QPoint(p.x,p.y),38,38);
-            break;
-        }
-        case SANDCUBE:
-        {
-            p_color = QColor(232, 140, 0);
-            pa.setBrush(p_color);
-            pa.setPen(p_color);
-
-            pa.drawRect(-29, -29, 58, 58);
-            break;
-        }
-		default:
-            break;
+        pa.drawEllipse(QPoint(p.x,p.y),38.1,38.1);
+        break;
     }
-    return;
+case SANDCONE:
+{    QConicalGradient conicalGradient(QPoint(p.x,p.y), 0);
+    conicalGradient.setColorAt(0.2,QColor(232, 140, 0));
+    conicalGradient.setColorAt(0.9, Qt::black);
+    pa.setBrush(conicalGradient);
+    pa.drawEllipse(QPoint(p.x,p.y), 29, 29);
+    break;
 }
+case SANDCYLINDER:
+{
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+    pa.drawEllipse(QPoint(p.x,p.y),29,29);
+    break;
+}
+    case SANDCUBE:
+    {p_color = QColor(232, 140, 0);
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+
+    pa.drawRect(p.x, p.y,58,58);
+    p_color = QColor(0, 0, 0);
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+    pa.drawLine(QPointF(p.x, p.y), QPointF(p.x+58, p.y));
+    pa.drawLine(QPointF(p.x+58, p.y),QPointF (p.x+58, p.y+58));
+    pa.drawLine(QPointF(p.x+58, p.y+58), QPointF(p.x, p.y+58));
+    pa.drawLine(QPointF(p.x, p.y+58), QPointF(p.x, p.y));
+    break;/*pa.translate(p.x, p.y);
+        p_color = QColor(232, 140, 0);
+        pa.setBrush(p_color);
+        pa.setPen(p_color);
+        pa.drawRect(592,842, 58, 58);
+        pa.drawRect(650,842, 58, 58);
+        pa.drawRect(592,900, 58, 58);
+        pa.drawRect(650,900, 58, 58);
+        p_color = QColor(0, 0, 0);
+        pa.setBrush(p_color);
+        pa.setPen(p_color);
+        pa.drawLine(QPointF(592,842), QPointF(708,842));
+        pa.drawLine(QPointF(592,842), QPointF(592,958));
+        pa.drawLine(QPointF(592,958), QPointF(708,958));
+        pa.drawLine(QPointF(708,958), QPointF(708,842));
+        pa.drawLine(QPointF(650,842), QPointF(650,958));
+        pa.drawLine(QPointF(592,900), QPointF(708,900));
+        pa.translate(-p.x, -p.y);
+        break;*/
+    }
+case PORTE:
+{
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+    pa.translate(p.x+240, p.y+0);
+     pa.rotate(8);
+    pa.drawRect(0, 0, 120, 10);
+     pa.rotate(-8);
+     pa.translate(300, 0);
+    pa.rotate(8);
+    pa.drawRect(0, 0, 120, 10);
+     pa.rotate(-8);
+      pa.translate(-p.x-540, 0);
+    break;
+
+}
+case MER:
+{ p_color = QColor(135,206,250);
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+
+    pa.drawRect(498,2000, 410, 232);
+    pa.drawRect(2110,2000, 410, 232);
+
+    break;
+
+
+
+}
+case POISSON:
+{
+    pa.setBrush(p_color);
+    pa.setPen(p_color);
+    pa.translate(p.x, p.y);
+    pa.drawEllipse(0,0,82,50);
+    pa.translate(130, 30);
+     pa.rotate(80);
+   pa.drawEllipse(0,0,82,50);
+     pa.translate(130, 40);
+    pa.rotate(80);
+    pa.drawEllipse(0,0,82,50);
+   pa.translate(130, 50);
+    pa.rotate(80);
+   pa.drawEllipse(0,0,82,50);
+     pa.rotate(-240);
+
+   pa.translate(-p.x-390, -p.y-120);
+   break;
+
+
+}
+case FILET:
+{    pa.translate(p.x, p.y);
+    QPen pen;
+    pen.setColor(QColor(0, 0, 0));
+    QBrush brush(Qt::black);
+    brush.setStyle(Qt::Dense5Pattern);
+    pa.setPen(pen);
+    pa.setBrush(brush);
+    pa.drawRect(0, 0, 1144, 232);
+     pa.translate(-p.x, -p.y);
+     break;
+
+}
+
+    default:
+        break;
+}
+return;
+}
+
 
 void Objet::updatePos()
 {
