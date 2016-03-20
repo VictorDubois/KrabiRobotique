@@ -32,6 +32,8 @@ class KJ2016Tempo
 
         void move(int distance);
 
+        void waitForArrival(unsigned int duration);
+
         KJ2016Tempo(unsigned int leftServoID, unsigned int rightServoID);
 };
 
