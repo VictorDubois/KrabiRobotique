@@ -89,11 +89,12 @@ void Element::paint(QPainter & pa)
     pa.setBrush(QColor("yellow"));
     pa.setPen(QColor("yellow"));
 
-	pa.drawEllipse(QPoint(p.x,-p.y),100,-100);
+    pa.drawEllipse(QPoint(p.x,-p.y),100,-100);
 
     pa.setBrush(QColor("black"));
     pa.setPen(QColor("black"));
 	QFont font;
+
 	font.setPointSize(30);
 	pa.setFont(font);
 

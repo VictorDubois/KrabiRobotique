@@ -1,4 +1,4 @@
-#include "krabijunior2016.h"
+                                                                                                                                                                                                                #include "krabijunior2016.h"
 
 
 KrabiJunior2016::KrabiJunior2016(bool isYellow) : StrategieV3(isYellow)
