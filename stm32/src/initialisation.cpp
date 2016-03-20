@@ -45,9 +45,10 @@ void Initialisation::init()
 #ifdef ROBOTHW
     tirette->attendreRemise();
     tirette->attendreEnlevee();
-    Clock::getInstance()->matchStart();
+
 #endif
 */
+    Clock::getInstance()->matchStart(); // Will also start the callbacks
     asservissement = new Asservissement(odometrie);
 
 #ifdef ROBOTHW
