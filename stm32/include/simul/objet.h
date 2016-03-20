@@ -20,12 +20,12 @@ class Objet
 
             SHELL, /*!< Représente un coquillage*/
             SANDCUBE, /*!< Représente un cube de chateau de sable*/
-            SANDCONE, /*!< Représente un cone de chateau de sable*/
+            /* SANDCONE, /*!< Représente un cone de chateau de sable*/
             SANDCYLINDER, /*!< Représente un cylinder de chateau de sable*/
-            PORTE, /*!< Représente la porte des cabine de plage*/
-            MER, /*!< Représente la mer*/
-            POISSON, /*!< Représente le poisson*/
-            FILET/*!< Représente le filet*/
+            PORTE /*!< Représente la porte des cabine de plage*/
+            /*MER, /*!< Représente la mer*/
+            /*POISSON, /*!< Représente le poisson*/
+            /*FILET/*!< Représente le filet*/
         };
         /**@brief Constructeur de la classe permettant de construire directement un objet de type type à la position p avec pour angle initial theta. */
         /**@param world Pointer vers le b2World dans lequel va être créé notre objet*/

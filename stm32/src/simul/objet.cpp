@@ -29,7 +29,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         radius = circle.m_radius;
         break;
     }
-    case SANDCONE:
+    /*case SANDCONE:
     {
         b2CircleShape circle;
         b2FixtureDef fixtureDef;
@@ -60,7 +60,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
 
         radius = circle.m_radius;
         break;
-    }
+    }*/
 
     case SANDCUBE:
     {
@@ -112,7 +112,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
 
 
     }
-    case MER:
+    /*case MER:
     { b2Vec2 vertices[4];
         vertices[0].Set(0.0f, -2.32f);
         vertices[1].Set(0.0f, 0.0f);
@@ -147,7 +147,7 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         break;
 
 
-    }
+    }*/
     }
 }
 
@@ -168,14 +168,14 @@ void Objet::paint(QPainter &pa)
         pa.drawEllipse(QPoint(p.x,p.y),38.1,38.1);
         break;
     }
-case SANDCONE:
+/*case SANDCONE:
 {    QConicalGradient conicalGradient(QPoint(p.x,p.y), 0);
     conicalGradient.setColorAt(0.2,QColor(232, 140, 0));
     conicalGradient.setColorAt(0.9, Qt::black);
     pa.setBrush(conicalGradient);
     pa.drawEllipse(QPoint(p.x,p.y), 29, 29);
     break;
-}
+}*/
 case SANDCYLINDER:
 {   p_color = QColor(232, 140, 0);
     pa.setBrush(p_color);
@@ -239,7 +239,7 @@ case PORTE:
     break;
 
 }
-case MER:
+/*case MER:
 { p_color = QColor(135,206,250);
     pa.setBrush(p_color);
     pa.setPen(p_color);
@@ -286,7 +286,7 @@ case FILET:
      pa.translate(-p.x, -p.y);
      break;
 
-}
+}*/
 
     default:
         break;
