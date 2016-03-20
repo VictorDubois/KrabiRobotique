@@ -8,8 +8,9 @@
  */
 class KJ2016Tempo
 {
-    unsigned int LEFT_SERVO_ID;
-    unsigned int RIGHT_SERVO_ID;
+    static const float KJ_INTERAXIS        = 100.f; // To update
+    static const float KJ_WHEEL_DIAMETER   = 60.f;
+    static const float SERVO_MAX_RPM       = 59.f;
 
     public:
         /**
@@ -20,6 +21,9 @@ class KJ2016Tempo
         ~KJ2016Tempo();
 
     private:
+        const unsigned int LEFT_SERVO_ID;
+        const unsigned int RIGHT_SERVO_ID;
+        const float SERVO_SPEED_FACTOR;
 
         void enginesStart();
         void enginesStop();
