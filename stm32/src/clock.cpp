@@ -5,6 +5,16 @@
 #include "hardware/tourelle.h"
 #include "hardware/leds.h"
 
+#ifndef ROBOTHW
+    #include <QTimer>
+#endif
+
+#ifdef STM32F40_41xxx
+    #define HW_CLOCK_SPEED 72000000   // 72Mhz
+#else
+    #define HW_CLOCK_SPEED 168000000  // 168Mhz
+#endif
+
 void Clock::everyTick()
 {
 }
@@ -39,6 +49,23 @@ Clock::Clock()
     m_last5msTick       = 0;
     m_matchStartTime    = 0;
     m_matchStarted      = false;
+
+    #ifdef ROBOTHW
+        *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
+
+        *((uint32_t *)(STK_LOAD_ADDR)) = (0.001*HW_CLOCK_SPEED*Clock::MS_PER_TICK)/8; // (doit etre inférieur à 0x00FFFFFF=16 777 215)
+        /* (voir p190 de la doc) */
+
+        NVIC_InitTypeDef SysTick_IRQ;
+
+        SysTick_IRQ.NVIC_IRQChannel = SysTick_IRQn;
+        SysTick_IRQ.NVIC_IRQChannelCmd = ENABLE;
+        SysTick_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
+        SysTick_IRQ.NVIC_IRQChannelSubPriority = 1;
+        NVIC_Init(&SysTick_IRQ);
+    #else
+        /* Some trick with QTimer here */
+    #endif
 }
 
 void Clock::tick()

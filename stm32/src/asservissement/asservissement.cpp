@@ -91,24 +91,25 @@ Asservissement::Asservissement(Odometrie* _odometrie) : testMod(false), testRunn
 #ifdef CAPTEURS
     sensors = Sensors::getSensors();
 #endif
+#if 0
+    #ifdef ROBOTHW  //on définie les interruptions possibles dues à certains ports
+        *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
+    #ifdef STM32F40_41xxx
+        *((uint32_t *)(STK_LOAD_ADDR)) = 21000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
+    #else
+        *((uint32_t *)(STK_LOAD_ADDR)) = 9000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
+    #endif
+        // le micro controlleur tourne à une frequence f (72Mhz ici), la valeur à mettre est (0.001*(f/8))*(temps en ms entre chaque update)
+        // voir p190 de la doc
 
-#ifdef ROBOTHW  //on définie les interruptions possibles dues à certains ports
-    *((uint32_t *)(STK_CTRL_ADDR)) = 0x03; // CLKSOURCE:0 ; TICKINT: 1 ; ENABLE:1
-#ifdef STM32F40_41xxx
-    *((uint32_t *)(STK_LOAD_ADDR)) = 21000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
-#else
-    *((uint32_t *)(STK_LOAD_ADDR)) = 9000*nb_ms_between_updates; // valeur en ms*9000 (doit etre inférieur à 0x00FFFFFF=16 777 215)
-#endif
-    // le micro controlleur tourne à une frequence f (72Mhz ici), la valeur à mettre est (0.001*(f/8))*(temps en ms entre chaque update)
-    // voir p190 de la doc
+        NVIC_InitTypeDef SysTick_IRQ;
 
-    NVIC_InitTypeDef SysTick_IRQ;
-
-    SysTick_IRQ.NVIC_IRQChannel = SysTick_IRQn;
-    SysTick_IRQ.NVIC_IRQChannelCmd = ENABLE;
-    SysTick_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
-    SysTick_IRQ.NVIC_IRQChannelSubPriority = 1;
-    NVIC_Init(&SysTick_IRQ);
+        SysTick_IRQ.NVIC_IRQChannel = SysTick_IRQn;
+        SysTick_IRQ.NVIC_IRQChannelCmd = ENABLE;
+        SysTick_IRQ.NVIC_IRQChannelPreemptionPriority = 0;
+        SysTick_IRQ.NVIC_IRQChannelSubPriority = 1;
+        NVIC_Init(&SysTick_IRQ);
+    #endif
 #endif
 }
 
