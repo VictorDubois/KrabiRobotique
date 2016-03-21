@@ -375,6 +375,8 @@ QString Etape::getNameType(EtapeType type)
         return "Tapis";
     case DEPOSER_GOBELET:
         return "Déposer Gobelet";
+    case CUBE_DEBUT:
+        return "Pousser les cubes a l'init";
     default:
         return QString::number(type);
     }
@@ -404,6 +406,8 @@ QString Etape::getShortNameType(EtapeType type)
         return "Tapis";
     case DEPOSER_GOBELET:
         return "D.G";
+    case CUBE_DEBUT:
+        return "Cube debut";
     default:
         return "";
     }
