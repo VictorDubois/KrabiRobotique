@@ -109,6 +109,7 @@ HEADERS += \
     ../../include/actionneurs/fishingNet.h \
     ../../include/actionneurs/parasol.h \
     ../../include/strategie/benne.h \
+    ../../include/strategie/cubeDebut.h \
     ../../include/clock.h
 
 
@@ -189,6 +190,7 @@ SOURCES += \
     ../../src/strategie/cabine.cpp \
     ../../src/strategie/benne.cpp \
     ../../src/strategie/zoneConstruction.cpp \
+    ../../src/strategie/cubeDebut.cpp \
     ../../src/actionneurs/fishingNet.cpp \
     ../../src/actionneurs/parasol.cpp \
     ../../src/clock.cpp

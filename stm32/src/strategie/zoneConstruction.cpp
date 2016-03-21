@@ -32,7 +32,7 @@ int ZoneConstruction::update()
 #ifndef ROBOTHW
         qDebug() << "Zone Construction";
 #endif
-        StrategieV2::setCurrentGoal(this->getGoalPosition(), false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
+        //StrategieV2::setCurrentGoal(this->getGoalPosition(), false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
 
         status++;
     }
