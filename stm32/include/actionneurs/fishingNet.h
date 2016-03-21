@@ -10,21 +10,21 @@ class FishingNet
     /**
       * The ID of the innermost AX12 (i.e. for rotation)
       */
-    static const int SERVO_INT_ID = 0; // To update
+    static const int SERVO_INT_ID = 42; // To update
     /**
       * The ID of the outermost AX12 (i.e. for folding/unfolding)
       */
-    static const int SERVO_EXT_ID = 1;
+    static const int SERVO_EXT_ID = 16;
 
     /**
       * Those constantes are angles sent to the relevant servos for the relevant action (names are pretty explicit)
       */
-    static const int SERVO_EXT_CLOSED_POS   = 0x00;
-    static const int SERVO_EXT_DEPLOYED_POS = 0x00;
-    static const int SERVO_EXT_RAISED_POS   = 0x00;
+    static const int SERVO_EXT_CLOSED_POS   = 0x0339;
+    static const int SERVO_EXT_DEPLOYED_POS = 0x0200;
+    static const int SERVO_EXT_RAISED_POS   = 0x0240;
 
-    static const int SERVO_INT_RAISED_POS   = 0x00;
-    static const int SERVO_INT_LOWERED_POS  = 0x00;
+    static const int SERVO_INT_RAISED_POS   = 0x0200;
+    static const int SERVO_INT_LOWERED_POS  = 0x00C3;
 
     public:
         enum NET_STATE
