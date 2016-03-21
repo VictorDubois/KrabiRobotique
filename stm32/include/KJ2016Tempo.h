@@ -8,8 +8,8 @@
  */
 class KJ2016Tempo
 {
-    static const float KJ_INTERAXIS        = 100.f; // To update
-    static const float KJ_WHEEL_DIAMETER   = 60.f;
+    static const float KJ_INTERAXIS        = 132.f; // To update
+    static const float KJ_WHEEL_DIAMETER   = 70.f;
     static const float SERVO_MAX_RPM       = 59.f;
 
     public:

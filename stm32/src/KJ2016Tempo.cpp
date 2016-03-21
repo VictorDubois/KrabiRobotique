@@ -20,8 +20,8 @@ void KJ2016Tempo::run(bool isYellow)
 {
     /** ID for the driving servos **/
     /* Left and right is relative to the starting position */
-    const unsigned int SERVO_ONE_ID = 0;
-    const unsigned int SERVO_TWO_ID = 1;
+    const unsigned int SERVO_ONE_ID = 69;
+    const unsigned int SERVO_TWO_ID = 15;
 
     KJ2016Tempo KJ(isYellow?SERVO_ONE_ID:SERVO_TWO_ID, isYellow?SERVO_TWO_ID:SERVO_ONE_ID);
 
@@ -97,10 +97,13 @@ void KJ2016Tempo::move(int distance)
 
 void KJ2016Tempo::waitForArrival(unsigned int duration)
 {
-    static const unsigned int sensorCheckDelay = Clock::MS_PER_TICK * 10;
+    unsigned int sensorCheckDelay = Clock::MS_PER_TICK * 10;
 
     while(true)
     {
+        if(sensorCheckDelay > duration)
+            sensorCheckDelay = duration;
+
         unsigned int t = Clock::delay(sensorCheckDelay);
 
         if(t >= duration)
