@@ -22,6 +22,7 @@ public:
 
         CABINE = 8,
         ZONE_CONSTRUCTION = 9,
+        CUBE_DEBUT = 10,
 
         POINT_PASSAGE = 0,
         COLLECT = 1,

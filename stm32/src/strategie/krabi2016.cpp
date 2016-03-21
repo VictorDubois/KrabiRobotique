@@ -19,11 +19,14 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     // Création des étapes
     // Les étapes correspondant à des actions sont créées automatiquement lors de l'ajout d'actions
 
-    int start = Etape::makeEtape(Position(250, 1000, true), Etape::DEPART); // départ au fond de la zone de départ
+    int start = Etape::makeEtape(Position(250, 900, true), Etape::DEPART); // départ au fond de la zone de départ
 
     /** Points de passage **/
-    int wa = Etape::makeEtape(Position(600,  1000, true));
-    int wb = Etape::makeEtape(Position(880,  1140, true));
+    int wa = Etape::makeEtape(Position(600,  900, true));
+    int wb = Etape::makeEtape(Position(680,  740, true));
+
+    // On crée l'étape "pousse les cubes du début"
+    int c1 = Etape::makeEtape(new CubeDebut(Position(900, 900, true)));
 
 
     /** Actions **/
@@ -33,8 +36,8 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
 
     // Pieds
-    int pa = Etape::makeEtape(new RamasserPied(Position(870,    1655, true)));
-    int pb = Etape::makeEtape(new RamasserPied(Position(1100,   1670, true)));
+    int pa = Etape::makeEtape(new RamasserPied(Position(970,  260, true)));
+    int pb = Etape::makeEtape(new RamasserPied(Position(1200, 260, true)));
 
     // Etc.
 
@@ -44,6 +47,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     Etape::get(start)   ->addVoisin(wa);
     Etape::get(wa)      ->addVoisin(wb, zc2);
     Etape::get(wa)      ->addVoisin(zc1);
+    Etape::get(c1)      ->addVoisin(wa);
     Etape::get(wb)      ->addVoisin(zc2);
     Etape::get(pa)      ->addVoisin(wb, zc2);
     Etape::get(pb)      ->addVoisin(pa, zc2);
@@ -81,9 +85,12 @@ int Krabi2016::getScoreEtape(int i)
                 return 1;
             }
             else {
-                return 10000;
+                return 1000;
             }
         }
+
+        case Etape::CUBE_DEBUT :
+            return 10000;
 
         case Etape::RAMASSER_PIED : {
 
@@ -91,10 +98,10 @@ int Krabi2016::getScoreEtape(int i)
             // tout ça dans la future classe cube
 
             benne->setBenneFull();
-            return 900;
+            return 100;
         }
 
         default :
-            return 10; /* DEBUG (0 sinon) */
+            return 1; /* DEBUG (0 sinon) */
     }
 }

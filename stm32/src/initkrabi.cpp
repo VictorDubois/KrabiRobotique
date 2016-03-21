@@ -1,12 +1,12 @@
 #include "initkrabi.h"
 
 #ifdef ROBOTHW
-InitKrabi::InitKrabi() : Initialisation(PositionPlusAngle(Position(194, 1000), 0))
+InitKrabi::InitKrabi() : Initialisation(PositionPlusAngle(Position(194, 900), 0))
 {
 }
 #else
 #include <QDebug>
-InitKrabi::InitKrabi(bool yellow, Robot* robot) : Initialisation(PositionPlusAngle(Position(194, 1000), 0), yellow, robot)
+InitKrabi::InitKrabi(bool yellow, Robot* robot) : Initialisation(PositionPlusAngle(Position(194, 900), 0), yellow, robot)
 {
     qDebug() << "InitKrabi " << robot;
 }

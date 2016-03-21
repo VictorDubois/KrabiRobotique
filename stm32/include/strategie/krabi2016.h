@@ -18,6 +18,7 @@
 #include "manipulationCoinGaucheHaut.h"
 #include "manipulationCoinGaucheHautPiedSolitaire.h"
 #include "benne.h"
+#include "cubeDebut.h"
 
 class Krabi2016 : public StrategieV3
 {
