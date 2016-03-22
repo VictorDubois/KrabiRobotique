@@ -34,6 +34,13 @@ class Clock
          * @see every5ms everyTick MS_PER_TICK
          */
         virtual void everySecond();
+        /**
+         * @brief This function is called approximatively 100ms.
+         *
+         * Important note: the same restrictions than every5ms apply here (but should be less noticeable).
+         * @see every5ms everyTick MS_PER_TICK
+         */
+        virtual void every100ms();
 
     public:
         /**
@@ -103,6 +110,7 @@ class Clock
 
         unsigned long m_tickCount;
         unsigned long m_last5msTick;
+        unsigned long m_last100msTick;
         unsigned long m_last1sTick;
 
         unsigned long m_matchStartTime;

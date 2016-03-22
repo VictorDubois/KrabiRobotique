@@ -9,7 +9,7 @@
     #include <QTimer>
 #endif
 
-#ifdef STM32F40_41xxx
+#ifndef STM32F40_41xxx
     #define HW_CLOCK_SPEED 72000000   // 72Mhz
 #else
     #define HW_CLOCK_SPEED 168000000  // 168Mhz
@@ -24,15 +24,22 @@ void Clock::every5ms()
     #ifndef STM32F40_41xxx
         Odometrie::odometrie->update();
         Asservissement::asservissement->update();
-
         Tourelle::getSingleton()->update();
+        //StrategieV2::update();
+    #endif
+}
+
+void Clock::every100ms()
+{
+    #ifndef STM32F40_41xxx
+        //Tourelle::getSingleton()->update();
         //StrategieV2::update();
     #endif
 }
 
 void Clock::everySecond()
 {
-    Led::toggle(0);
+    //Led::toggle(0);
 }
 
 Clock* Clock::getInstance()
@@ -74,13 +81,19 @@ void Clock::tick()
 
     everyTick();
 
-    if((m_tickCount - m_last5msTick) * Clock::MS_PER_TICK > 5)
+    if((m_tickCount - m_last5msTick) * Clock::MS_PER_TICK >= 5)
     {
         every5ms();
         m_last5msTick = m_tickCount;
     }
 
-    if((m_tickCount - m_last5msTick) * Clock::MS_PER_TICK > 1000)
+    if((m_tickCount - m_last100msTick) * Clock::MS_PER_TICK >= 100)
+    {
+        every100ms();
+        m_last100msTick = m_tickCount;
+    }
+
+    if((m_tickCount - m_last1sTick) * Clock::MS_PER_TICK >= 1000)
     {
         everySecond();
         m_last1sTick = m_tickCount;
