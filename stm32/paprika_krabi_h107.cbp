@@ -71,6 +71,7 @@
 		<Unit filename="Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="include/KJ2016Tempo.h" />
 		<Unit filename="include/actionneurs/ascenseur.h" />
 		<Unit filename="include/actionneurs/brasKrabi.h" />
 		<Unit filename="include/actionneurs/brasLateraux.h" />
@@ -122,6 +123,7 @@
 		<Unit filename="include/strategie/benne.h" />
 		<Unit filename="include/strategie/cabine.h" />
 		<Unit filename="include/strategie/clap.h" />
+		<Unit filename="include/strategie/cubeDebut.h" />
 		<Unit filename="include/strategie/deposerGobelet.h" />
 		<Unit filename="include/strategie/deposerPied.h" />
 		<Unit filename="include/strategie/etape.h" />
@@ -139,6 +141,7 @@
 		<Unit filename="include/strategie/tapis.h" />
 		<Unit filename="include/strategie/zoneConstruction.h" />
 		<Unit filename="include/vector.h" />
+		<Unit filename="src/KJ2016Tempo.cpp" />
 		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/brak (copie).cpp.victor" />
 		<Unit filename="src/actionneurs/anciennes_classes_actionneurs/roues.cpp.victor" />
 		<Unit filename="src/actionneurs/anciens_fichiers/brak (copie).cpp.victor" />
@@ -199,6 +202,7 @@
 		<Unit filename="src/strategie/benne.cpp" />
 		<Unit filename="src/strategie/cabine.cpp" />
 		<Unit filename="src/strategie/clap.cpp" />
+		<Unit filename="src/strategie/cubeDebut.cpp" />
 		<Unit filename="src/strategie/deposerGobelet.cpp" />
 		<Unit filename="src/strategie/dijkstra.cpp" />
 		<Unit filename="src/strategie/etape.cpp" />
