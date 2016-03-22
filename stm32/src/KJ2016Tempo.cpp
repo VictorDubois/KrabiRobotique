@@ -7,12 +7,10 @@
 #include "actionneurs/sensors.h"
 
 KJ2016Tempo::KJ2016Tempo(unsigned int leftServoID, unsigned int rightServoID):
-    LEFT_SERVO_ID(leftServoID), RIGHT_SERVO_ID(rightServoID), SERVO_SPEED_FACTOR((KJ2016Tempo::SERVO_MAX_RPM / 1024.f) * 60.f / (2.f*3.1415))
-{}
-
-KJ2016Tempo::~KJ2016Tempo()
+    LEFT_SERVO_ID(leftServoID), RIGHT_SERVO_ID(rightServoID), SERVO_SPEED_FACTOR((KJ2016Tempo::SERVO_MAX_RPM * 2*3.1415)/(1024*60))
 {
-    enginesStop();
+    ServosNumeriques::changeContinuousRotationMode(LEFT_SERVO_ID,   true);
+    ServosNumeriques::changeContinuousRotationMode(RIGHT_SERVO_ID,  true);
 }
 
 
@@ -48,51 +46,38 @@ void KJ2016Tempo::run(bool isYellow)
 
 }
 
-void KJ2016Tempo::enginesStart()
-{
-    ServosNumeriques::changeContinuousRotationMode(LEFT_SERVO_ID,   true);
-    ServosNumeriques::changeContinuousRotationMode(RIGHT_SERVO_ID,  true);
-}
 
-void KJ2016Tempo::enginesStop()
+void KJ2016Tempo::stop()
 {
-    ServosNumeriques::changeContinuousRotationMode(LEFT_SERVO_ID,   false);
-    ServosNumeriques::changeContinuousRotationMode(RIGHT_SERVO_ID,  false);
+    ServosNumeriques::moveAtSpeed(0, LEFT_SERVO_ID);
+    ServosNumeriques::moveAtSpeed(0, RIGHT_SERVO_ID);
 }
 
 void KJ2016Tempo::turn90(bool toLeft)
 {
-    static const float alpha = (3.1415 * KJ2016Tempo::KJ_INTERAXIS * KJ2016Tempo::SERVO_SPEED_FACTOR) / (2 * KJ2016Tempo::KJ_WHEEL_DIAMETER);
+    static const float alpha = 1.08f*(1000.f * KJ2016Tempo::KJ_INTERAXIS * 3.1415)/(KJ2016Tempo::SERVO_SPEED_FACTOR * KJ2016Tempo::KJ_WHEEL_DIAMETER * 2.f);
 
-    unsigned int angularSpeed = 0x0100;
+    unsigned int angularSpeed = 1023;
 
-    angularSpeed = (toLeft)?angularSpeed:-angularSpeed;
-
-    enginesStart();
-
-    ServosNumeriques::moveAtSpeed(0x0400 + angularSpeed, LEFT_SERVO_ID);
-    ServosNumeriques::moveAtSpeed(0x0400 + angularSpeed, RIGHT_SERVO_ID);
+    ServosNumeriques::moveAtSpeed((toLeft?0:1023) + angularSpeed, RIGHT_SERVO_ID);
+    ServosNumeriques::moveAtSpeed((toLeft?0:1023) + angularSpeed, LEFT_SERVO_ID);
 
     waitForArrival(static_cast<unsigned int>( alpha/(float)angularSpeed ));
 
-    enginesStop();
+    stop();
 }
 
 void KJ2016Tempo::move(int distance)
 {
-    static const float beta = KJ2016Tempo::SERVO_SPEED_FACTOR * 2.f / KJ2016Tempo::KJ_WHEEL_DIAMETER;
+    static const float beta = (1000.f * 2.f)/(KJ2016Tempo::SERVO_SPEED_FACTOR * KJ2016Tempo::KJ_WHEEL_DIAMETER);
 
-    unsigned int angularSpeed = 0x0100;
+    unsigned int angularSpeed = 1023;
 
-    angularSpeed = (distance>0)?angularSpeed:-angularSpeed;
+    ServosNumeriques::moveAtSpeed((distance<0?1023:0) + angularSpeed, LEFT_SERVO_ID);
+    ServosNumeriques::moveAtSpeed((distance>0?1023:0) + angularSpeed, RIGHT_SERVO_ID);
 
-    enginesStart();
-
-    ServosNumeriques::moveAtSpeed(0x0400 - angularSpeed, LEFT_SERVO_ID);
-    ServosNumeriques::moveAtSpeed(0x0400 + angularSpeed, RIGHT_SERVO_ID);
-
-    waitForArrival(static_cast<unsigned int>( beta * (float)distance / (float)angularSpeed ));
-    enginesStop();
+    waitForArrival(static_cast<unsigned int>( beta * (float)((distance<0)?-distance:distance) / (float)angularSpeed ));
+    stop();
 }
 
 void KJ2016Tempo::waitForArrival(unsigned int duration)
