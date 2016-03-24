@@ -10,7 +10,7 @@ class CubeDebut : public MediumLevelAction
 public:
     CubeDebut();
 
-    CubeDebut(Position position);
+    CubeDebut(Position position, Position wa_position);
 
     ~CubeDebut();
 
@@ -20,6 +20,7 @@ public:
 
 protected:
     Position position;
+    Position position_depart;
 };
 
 #endif // CUBEDEBUT_H
