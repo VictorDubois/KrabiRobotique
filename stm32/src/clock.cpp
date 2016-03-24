@@ -4,9 +4,10 @@
 #include "asservissement/asservissement.h"
 #include "hardware/tourelle.h"
 #include "hardware/leds.h"
-#include "hardware/remote.h"
 
-#ifndef ROBOTHW
+#ifdef ROBOTHW
+    #include "hardware/remote.h"
+#else
     #include <QTimer>
 #endif
 
@@ -22,12 +23,14 @@ void Clock::everyTick()
 
 void Clock::every5ms()
 {
-    #ifndef STM32F40_41xxx
-        Remote::getSingleton()->update();
-        Odometrie::odometrie->update();
-        Asservissement::asservissement->update();
-        Tourelle::getSingleton()->update();
-        //StrategieV2::update();
+    #ifdef ROBOTHW
+        #ifndef STM32F40_41xxx
+            Remote::getSingleton()->update();
+            Odometrie::odometrie->update();
+            Asservissement::asservissement->update();
+            Tourelle::getSingleton()->update();
+            //StrategieV2::update();
+        #endif
     #endif
 }
 
