@@ -89,11 +89,6 @@ StrategieV2::StrategieV2(bool yellow)
         sharps = sensors->getSharpSensorsList();
 
         emptySharpsToCheck();
-#ifdef ROBOTHW
-//        tourelle = new Tourelle(TIM6, 0);//TIM parameter is not implemented yet
-//    tourelle = new Tourelle();
-    //tourelle->setZoneCritique(10, 27000);
-#endif
 
         updateCount = 0;
     }
@@ -119,41 +114,15 @@ void StrategieV2::resetTime()
 
 void StrategieV2::update()
 {
-#ifndef NO_REMOTE
+/*#ifndef NO_REMOTE
     Remote::getSingleton()->update();
-#endif
+#endif*/
 
     if (!currentAction)
     {
         Asservissement::asservissement->setCommandSpeeds(NULL);
         return;
     }
-    //Tourelle* tourelle = new Tourelle(TIM6, 0);
-    /*
-        uint8_t resultZoneCritique = tourelle->setZoneCritique(10, 27000);
-
-
-
-        uint16_t resultAngle = tourelle->calculAngle(0);
-
-    //    objectDetectionInstant[0] = 0;
-    //    resultAngle = tourelle->calculAngle(0);
-    //    objectDetectionInstant[0] = 10;
-    //    resultAngle = tourelle->calculAngle(0);
-    //    objectDetectionInstant[0] = 20;
-    //    resultAngle = tourelle->calculAngle(0);
-    //    objectDetectionInstant[0] = 40;
-    //    resultAngle = tourelle->calculAngle(0);
-
-        bool resultUpdate = tourelle->update();
-
-        resultUpdate = tourelle->update();
-
-        nombreObjetDetecte = 1;
-
-        resultUpdate = tourelle->update();
-
-    */
 
     if (StrategieV2::strategie == NULL)
         return;
@@ -162,33 +131,7 @@ void StrategieV2::update()
     if(currentAction)
         currentAction->updateTime(90*1000-updateCount*5);
 
-#ifdef ROBOTHW
-//    if (updateCount % 6 == 2)
-//    {
-//        EXTI_GenerateSWInterrupt(EXTI_Line2);
-//    }
 
-//    if (updateCount % 6 == 3)
-//    {
-//        EXTI_GenerateSWInterrupt(EXTI_Line3);
-//    }
-
-    //On met à jour l'indicateur de "on doit rallentir"
-//    bool returnTourelle = tourelle->updateSimple();
-//    if(returnTourelle)
-//    {
-//        //allumerLED();
-//        hysteresisTourelle = 100;// On ralenti pendant 0,5s mini
-//    }
-//    else if (hysteresisTourelle > 0)
-//    {
-//        hysteresisTourelle--;
-//    }
-//
-//    //On donne l'ordre de ralentir, si besoin
-//    currentCommand->limitSpeed(hysteresisTourelle);
-
-#endif
     if (updateCount < 0)
     {
         updateCount = 50000;
