@@ -10,7 +10,7 @@
 Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 {
     // Création de la benne
-    benne = new Benne();
+    benne = Benne::getInstance(); // NB: Tu pourrais utiliser getInstance partout et te passer de l'attribut
 
     //Initialisation des tableaux d'étapes
     this->numeroEtapeGarage = ETAPE_GARAGE;

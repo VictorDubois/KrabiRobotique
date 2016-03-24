@@ -1,22 +1,23 @@
 #include "initkrabi.h"
 
+#include "actionneurs/benne.h"
+
 #ifdef ROBOTHW
-InitKrabi::InitKrabi() : Initialisation(PositionPlusAngle(Position(194, 900), 0))
-{
-}
+    InitKrabi::InitKrabi() : Initialisation(PositionPlusAngle(Position(194, 900), 0))
+    {}
 #else
-#include <QDebug>
-InitKrabi::InitKrabi(bool yellow, Robot* robot) : Initialisation(PositionPlusAngle(Position(194, 900), 0), yellow, robot)
-{
-    qDebug() << "InitKrabi " << robot;
-}
+    #include <QDebug>
+    InitKrabi::InitKrabi(bool yellow, Robot* robot) : Initialisation(PositionPlusAngle(Position(194, 900), 0), yellow, robot)
+    {
+        qDebug() << "InitKrabi " << robot;
+    }
 #endif
 
 #ifdef ROBOTHW
-void InitKrabi::setYellow()
-{
-    yellow =  GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == Bit_RESET;
-}
+    void InitKrabi::setYellow()
+    {
+        yellow =  GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == Bit_RESET;
+    }
 #endif
 
 /** Initialisation roues codeuses **/
@@ -177,5 +178,7 @@ void InitKrabi::initActionneurs()
 
     Sensors* sensors = Sensors::getSingleton();
     ServosNumeriques::setLedState(1, 12);
+
+    Benne::getInstance();
 #endif
 }

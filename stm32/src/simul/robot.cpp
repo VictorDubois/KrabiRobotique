@@ -7,6 +7,7 @@
 #include "strategieV2.h"
 #include "sensors.h"
 #include "hardware/tourelle.h"
+#include "actionneurs/benne.h"
 #include <iostream>
 #include <QDebug>
 
@@ -348,6 +349,7 @@ void Robot::paint(QPainter &p, int dt)
         }
         else
         {
+            Benne::getInstance()->update();
             Odometrie::odometrie->update();
             Tourelle::getSingleton()->update();
             StrategieV2::update();

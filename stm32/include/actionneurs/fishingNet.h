@@ -10,7 +10,7 @@ class FishingNet
     /**
       * The ID of the innermost AX12 (i.e. for rotation)
       */
-    static const int SERVO_INT_ID = 42; // To update
+    static const int SERVO_INT_ID = 42;
     /**
       * The ID of the outermost AX12 (i.e. for folding/unfolding)
       */
