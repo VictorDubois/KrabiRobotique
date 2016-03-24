@@ -8,10 +8,22 @@ class Benne
     /**
       * The ID of the AX12 used to drive the belts
     */
-    static const int SERVO_ID = 0; // To update
+    static const int BELTS_SERVO_ID = 0; // To update
 
     static const int FORWARD_SPEED  = 1023;
     static const int BACKWARD_SPEED = 2046;
+
+    /**
+      * The ID of the AX12 used to deploy/retract the front ramp
+    */
+    static const int RAMP_LEFT_SERVO_ID     = 0; // To update
+    static const int RAMP_RIGHT_SERVO_ID    = 0; // To update
+
+    static const int RAMP_LEFT_DEPLOYED_ANGLE    = 0;
+    static const int RAMP_LEFT_RETRACTED_ANGLE   = 1023;
+
+    static const int RAMP_RIGHT_DEPLOYED_ANGLE   = 1023;
+    static const int RAMP_RIGHT_RETRACTED_ANGLE  = 0;
 
     public:
         struct Status
@@ -43,10 +55,14 @@ class Benne
 
         void stop();
 
-        bool isFrontSwitchActive() const;
-        bool isBackSwitchActive() const;
+        void deployRamp();
+        void retractRamp();
 
         Benne::Status::Enum getStatus() const;
+
+    protected:
+        bool isFrontSwitchActive() const;
+        bool isBackSwitchActive() const;
 
     private:
         Benne();

@@ -31,7 +31,10 @@ Benne::Benne()
     m_status = Status::UNKNOWN;
 
     #ifdef ROBOTHW
-        ServosNumeriques::changeContinuousRotationMode(SERVO_ID,  true);
+        ServosNumeriques::changeContinuousRotationMode(BELTS_SERVO_ID, true);
+
+        ServosNumeriques::changeContinuousRotationMode(RAMP_LEFT_SERVO_ID,  false);
+        ServosNumeriques::changeContinuousRotationMode(RAMP_RIGHT_SERVO_ID, false);
     #endif
 }
 
@@ -74,7 +77,7 @@ void Benne::empty()
     if(getStatus() != Status::CLOSED && getStatus() != Status::CLOSING)
     {
         #ifdef ROBOTHW
-            ServosNumeriques::moveAtSpeed(FORWARD_SPEED, SERVO_ID);
+            ServosNumeriques::moveAtSpeed(FORWARD_SPEED, BELTS_SERVO_ID);
         #else
             qDebug() << "Bin is closing";
         #endif
@@ -87,12 +90,32 @@ void Benne::open()
     if(getStatus() != Status::OPEN && getStatus() != Status::OPENING)
     {
         #ifdef ROBOTHW
-            ServosNumeriques::moveAtSpeed(BACKWARD_SPEED, SERVO_ID);
+            ServosNumeriques::moveAtSpeed(BACKWARD_SPEED, BELTS_SERVO_ID);
         #else
             qDebug() << "Bin is opening";
         #endif
         setStatus(Status::OPENING);
     }
+}
+
+void Benne::deployRamp()
+{
+    #ifdef ROBOTHW
+        ServosNumeriques::moveTo(RAMP_LEFT_DEPLOYED_ANGLE,  RAMP_LEFT_SERVO_ID);
+        ServosNumeriques::moveTo(RAMP_RIGHT_DEPLOYED_ANGLE, RAMP_RIGHT_SERVO_ID);
+    #else
+        qDebug() << "Deploying ramp";
+    #endif
+}
+
+void Benne::retractRamp()
+{
+    #ifdef ROBOTHW
+        ServosNumeriques::moveTo(RAMP_LEFT_RETRACTED_ANGLE,  RAMP_LEFT_SERVO_ID);
+        ServosNumeriques::moveTo(RAMP_RIGHT_RETRACTED_ANGLE, RAMP_RIGHT_SERVO_ID);
+    #else
+        qDebug() << "Retracting ramp";
+    #endif
 }
 
 void Benne::update()
@@ -121,7 +144,7 @@ void Benne::update()
 void Benne::stop()
 {
     #ifdef ROBOTHW
-        ServosNumeriques::moveAtSpeed(0, SERVO_ID);
+        ServosNumeriques::moveAtSpeed(0, BELTS_SERVO_ID);
     #endif
 }
 
