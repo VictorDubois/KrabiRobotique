@@ -10,7 +10,7 @@ class Cabine : public MediumLevelAction
 public:
     Cabine();
 
-    Cabine(Position position);
+    Cabine(Position position, Position wd_position);
 
     ~Cabine();
 
@@ -20,6 +20,7 @@ public:
 
 protected:
     Position position;
+    Position position_depart;
 };
 
 #endif // CABINE_H
