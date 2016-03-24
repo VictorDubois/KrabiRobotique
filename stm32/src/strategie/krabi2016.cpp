@@ -23,32 +23,39 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     /** Points de passage **/
     int wa = Etape::makeEtape(Position(600,  900, true));
-    int wb = Etape::makeEtape(Position(680,  740, true));
+    int wb = Etape::makeEtape(Position(680,  700, true));
+    int wc = Etape::makeEtape(Position(1000,  500, true));
+    int wd = Etape::makeEtape(Position(400,  500, true));
 
     // On crée l'étape "pousse les cubes du début"
-    int c1 = Etape::makeEtape(new CubeDebut(Position(900, 900, true)));
+    int cd1 = Etape::makeEtape(new CubeDebut(Position(900, 900, true)));
 
 
     /** Actions **/
     // Zone de construction
-    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(980, 920, true), benne));
-    int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1050, 1050, true), benne));
+    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(1000, 600, true), benne));
+    int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1050, 600, true), benne));
 
 
     // Pieds
     int pa = Etape::makeEtape(new RamasserPied(Position(970,  260, true)));
     int pb = Etape::makeEtape(new RamasserPied(Position(1200, 260, true)));
 
-    // Etc.
+    // Cabines de plage
+    int cp1 = Etape::makeEtape(new Cabine(Position(250, 50, true)));
+    int cp2 = Etape::makeEtape(new Cabine(Position(500, 50, true)));
 
 
     /** Liens **/
     // [WIP]
     Etape::get(start)   ->addVoisin(wa);
     Etape::get(wa)      ->addVoisin(wb, zc2);
-    Etape::get(wa)      ->addVoisin(zc1);
-    Etape::get(c1)      ->addVoisin(wa);
-    Etape::get(wb)      ->addVoisin(zc2);
+    Etape::get(wc)      ->addVoisin(zc1);
+    Etape::get(cd1)      ->addVoisin(wa);
+    Etape::get(cp1)      ->addVoisin(wd);
+    Etape::get(cp2)      ->addVoisin(wd);
+    Etape::get(wc)      ->addVoisin(zc2);
+    Etape::get(wd)      ->addVoisin(wb);
     Etape::get(pa)      ->addVoisin(wb, zc2);
     Etape::get(pb)      ->addVoisin(pa, zc2);
 

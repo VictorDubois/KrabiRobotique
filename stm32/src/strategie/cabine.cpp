@@ -10,9 +10,9 @@
 
 Cabine::Cabine(){}
 
-Cabine::Cabine(Position position):MediumLevelAction(position)
+Cabine::Cabine(Position goalPosition):MediumLevelAction(goalPosition)
 {
-
+    goalPosition = this->goalPosition;
 }
 
 Cabine::~Cabine(){}
@@ -27,10 +27,40 @@ int Cabine::update()
 
     if (status == 0) //Début
     {
+        StrategieV2::setCurrentGoal(this->getGoalPosition(), false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
 #ifndef ROBOTHW
-        qDebug() << "Ouverture cabine";
+        qDebug() << "On se prepare a pousser une porte";
 #endif
      status++;
+    }
+
+    else if (status == 1) {
+        if (Command::isNear(this->getGoalPosition(), 200.0f)) // le second paramètre est la distance a l'objectif
+        {
+            // après avoir poussé les cubes on revient en marche arrière
+            StrategieV2::setCurrentGoal(Position(600, 900), true, VITESSE_LINEAIRE_MAX, -100.0, 10.f);
+#ifndef ROBOTHW
+        qDebug() << "On revient en marche arriere au point ou on prend son elan";
+#endif
+            status++;
+        }
+    }
+
+    else if (status == 2) {
+        if (Command::isNear(Position(600, 900), 10.0f)) // le second paramètre est la distance a l'objectif
+        {
+#ifndef ROBOTHW
+        qDebug() << "On est revenu au point ou on prend son elan";
+#endif
+            status++;
+        }
+    }
+
+    else if (status == 3) {
+#ifndef ROBOTHW
+        qDebug() << "Etape fermeture de cabine finie";
+#endif
+        status = -1;
     }
 
     return status;
