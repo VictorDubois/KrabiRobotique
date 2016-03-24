@@ -42,8 +42,8 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
 
     // Pieds
-    int pa = Etape::makeEtape(new RamasserPied(Position(970,  260, true)));
-    int pb = Etape::makeEtape(new RamasserPied(Position(1200, 260, true)));
+    int pa = Etape::makeEtape(new RamasserPied(Position(1100,  280, true)));
+    int pb = Etape::makeEtape(new RamasserPied(Position(1300, 280, true)));
 
     // Cabines de plage
     int cp1 = Etape::makeEtape(new Cabine(Position(250, 50, true), wd_position));
@@ -53,15 +53,19 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     /** Liens **/
     // [WIP]
     Etape::get(start)   ->addVoisin(wa);
-    Etape::get(wa)      ->addVoisin(wb, zc2);
-    Etape::get(wc)      ->addVoisin(zc1);
+    Etape::get(wa)      ->addVoisin(wb);
     Etape::get(cd1)     ->addVoisin(wa);
+
+    Etape::get(wc)      ->addVoisin(zc1);
+    Etape::get(wc)      ->addVoisin(zc2);
+    Etape::get(wc)      ->addVoisin(pa);
+
     Etape::get(cp1)     ->addVoisin(wd);
     Etape::get(cp2)     ->addVoisin(wd);
-    Etape::get(wc)      ->addVoisin(zc2);
+
     Etape::get(wd)      ->addVoisin(wb);
-    Etape::get(pa)      ->addVoisin(wb, zc2);
-    Etape::get(pb)      ->addVoisin(pa, zc2);
+    Etape::get(pa)      ->addVoisin(wb);
+    Etape::get(pb)      ->addVoisin(pa);
 
 #ifndef ROBOTHW
     qDebug() << Etape::getTotalEtapes();
