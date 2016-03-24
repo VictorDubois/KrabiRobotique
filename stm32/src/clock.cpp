@@ -1,12 +1,14 @@
 #include "clock.h"
 
+
 #include "asservissement/odometrie.h"
 #include "asservissement/asservissement.h"
 #include "hardware/tourelle.h"
-#include "hardware/leds.h"
+#include "actionneurs/benne.h"
 
 #ifdef ROBOTHW
     #include "hardware/remote.h"
+    #include "hardware/leds.h"
 #else
     #include <QTimer>
 #endif
@@ -29,6 +31,7 @@ void Clock::every5ms()
             Odometrie::odometrie->update();
             Asservissement::asservissement->update();
             Tourelle::getSingleton()->update();
+            Benne::getInstance()->update();
             //StrategieV2::update();
         #endif
     #endif
