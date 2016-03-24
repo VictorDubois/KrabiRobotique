@@ -47,6 +47,9 @@ int CubeDebut::update()
     }
 
     else if (status == 2) {
+
+        // A faire, ne pas hardcoder la position
+
         if (Command::isNear(Position(600, 900), 10.0f)) // le second paramètre est la distance a l'objectif
         {
 #ifndef ROBOTHW
