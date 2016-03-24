@@ -49,18 +49,35 @@ void KJ2016Tempo::run(bool isYellow)
 
 void KJ2016Tempo::stop()
 {
+    m_leftServoSpeed    = 0;
+    m_rightServoSpeed   = 0;
+
     ServosNumeriques::moveAtSpeed(0, LEFT_SERVO_ID);
     ServosNumeriques::moveAtSpeed(0, RIGHT_SERVO_ID);
 }
 
+void KJ2016Tempo::pause()
+{
+    ServosNumeriques::moveAtSpeed(0, LEFT_SERVO_ID);
+    ServosNumeriques::moveAtSpeed(0, RIGHT_SERVO_ID);
+}
+
+void KJ2016Tempo::resume()
+{
+    ServosNumeriques::moveAtSpeed(m_leftServoSpeed,     LEFT_SERVO_ID);
+    ServosNumeriques::moveAtSpeed(m_rightServoSpeed,    RIGHT_SERVO_ID);
+}
+
 void KJ2016Tempo::turn90(bool toLeft)
 {
-    static const float alpha = 1.08f*(1000.f * KJ2016Tempo::KJ_INTERAXIS * 3.1415)/(KJ2016Tempo::SERVO_SPEED_FACTOR * KJ2016Tempo::KJ_WHEEL_DIAMETER * 2.f);
+    static const float alpha = (1000.f * KJ2016Tempo::KJ_INTERAXIS * 3.1415)/(KJ2016Tempo::SERVO_SPEED_FACTOR * KJ2016Tempo::KJ_WHEEL_DIAMETER * 2.f);
 
     unsigned int angularSpeed = 1023;
 
-    ServosNumeriques::moveAtSpeed((toLeft?0:1023) + angularSpeed, RIGHT_SERVO_ID);
-    ServosNumeriques::moveAtSpeed((toLeft?0:1023) + angularSpeed, LEFT_SERVO_ID);
+    m_leftServoSpeed    = (toLeft?0:1023) + angularSpeed;
+    m_rightServoSpeed   = (toLeft?0:1023) + angularSpeed;
+
+    resume();
 
     waitForArrival(static_cast<unsigned int>( alpha/(float)angularSpeed ));
 
@@ -73,8 +90,10 @@ void KJ2016Tempo::move(int distance)
 
     unsigned int angularSpeed = 1023;
 
-    ServosNumeriques::moveAtSpeed((distance<0?1023:0) + angularSpeed, LEFT_SERVO_ID);
-    ServosNumeriques::moveAtSpeed((distance>0?1023:0) + angularSpeed, RIGHT_SERVO_ID);
+    m_leftServoSpeed    = (distance<0?1023:0) + angularSpeed;
+    m_rightServoSpeed   = (distance>0?1023:0) + angularSpeed;
+
+    resume();
 
     waitForArrival(static_cast<unsigned int>( beta * (float)((distance<0)?-distance:distance) / (float)angularSpeed ));
     stop();
@@ -96,6 +115,9 @@ void KJ2016Tempo::waitForArrival(unsigned int duration)
 
         duration -= t;
 
-        while(Sensors::getSingleton()->sharpDetect()); // We wait for all sharps to be clear
+        while(Sensors::getSingleton()->sharpDetect()) // We wait for all sharps to be clear
+            pause();
+
+        resume();
     }
 }
