@@ -8,7 +8,7 @@
  */
 class KJ2016Tempo
 {
-    static const float KJ_INTERAXIS        = 132.f; // To update
+    static const float KJ_INTERAXIS        = 142.56f; // To update
     static const float KJ_WHEEL_DIAMETER   = 70.f;
     static const float SERVO_MAX_RPM       = 52.f;
 
@@ -23,7 +23,12 @@ class KJ2016Tempo
         const unsigned int RIGHT_SERVO_ID;
         const float SERVO_SPEED_FACTOR;
 
+        unsigned int m_leftServoSpeed;
+        unsigned int m_rightServoSpeed;
+
         void stop();
+        void pause();
+        void resume();
 
         void turn90(bool toLeft);
 
