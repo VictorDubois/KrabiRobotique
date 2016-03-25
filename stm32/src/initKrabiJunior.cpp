@@ -59,5 +59,43 @@ void InitKrabiJunior::initGPIO()
 #ifdef ROBOTHW
     Tirette tirette(GPIOA, GPIO_Pin_10);
 
+#ifdef STM32F40_41xxx
+    GPIO_InitTypeDef GPIOStruct;
+
+    GPIOStruct.GPIO_OType = GPIO_OType_PP;
+    GPIOStruct.GPIO_Speed = GPIO_Speed_2MHz;
+
+    /** Sharps **/
+    GPIOStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_5;
+    GPIOStruct.GPIO_Mode = GPIO_Mode_AN;
+    GPIOStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_Init(GPIOC, &GPIOStruct);
+
+    GPIOStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+    GPIOStruct.GPIO_Mode = GPIO_Mode_AN;
+    GPIOStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_Init(GPIOB, &GPIOStruct);
+
+    GPIOStruct.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+    GPIOStruct.GPIO_Mode = GPIO_Mode_AN;
+    GPIOStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_Init(GPIOA, &GPIOStruct);
+
+    /** LEDS choix strat **/
+    GPIOStruct.GPIO_Pin = GPIO_Pin_9;
+    GPIOStruct.GPIO_Mode = GPIO_Mode_IN;
+    GPIOStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+    GPIOStruct.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIOStruct);
+
+    /** LED verte **/
+    GPIOStruct.GPIO_Pin = GPIO_Pin_12;
+    GPIOStruct.GPIO_Mode = GPIO_Mode_OUT;
+    GPIOStruct.GPIO_OType = GPIO_OType_PP;
+    GPIOStruct.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_Init(GPIOC, &GPIOStruct);
+    GPIO_WriteBit(GPIOC, GPIO_Pin_12, Bit_SET);
+#endif
+
 #endif
 }

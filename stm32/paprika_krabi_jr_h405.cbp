@@ -48,7 +48,6 @@
 			<Add before="cp stm32LinkerScriptH405.cmd stm32LinkerScript.cmd" />
 			<Add after="arm-none-eabi-objcopy -Obinary main.out main.bin" />
 			<Add after="arm-none-eabi-objdump -S main.out &gt; main.list" />
-			<Add after="cp main.bin ~/Dropbox/Clubs/Robotique/Informatique/git2014_f4/gitRobotique/stm32/." />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="LibrariesF4/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" />
@@ -199,7 +198,7 @@
 			<debugger>
 				<search_path add="../../../../../Lien vers partageMV" />
 				<remote_debugging target="Debug">
-					<options conn_type="0" serial_baud="115200" ip_address="192.168.153.1" ip_port="3333" additional_cmds_before="source ~/.gdbinit" />
+					<options conn_type="0" serial_baud="115200" ip_address="127.0.0.1" ip_port="3333" additional_cmds_before="source ~/.gdbinit" />
 				</remote_debugging>
 			</debugger>
 		</Extensions>
