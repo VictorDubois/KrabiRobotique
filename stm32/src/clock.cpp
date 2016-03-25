@@ -47,7 +47,7 @@ void Clock::every100ms()
 
 void Clock::everySecond()
 {
-    //Led::toggle(0);
+    Led::toggle(0);
 }
 
 Clock* Clock::getInstance()

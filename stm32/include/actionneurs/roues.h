@@ -12,7 +12,7 @@ class Roues
         Roues();
 
         /**@brief On sauvegarde ces deux roues pour pouvoir les utiliser indépendament */
-        Roue gauche,droite;
+        Roue droite, gauche;
 };
 
 #endif // ROUES_H
