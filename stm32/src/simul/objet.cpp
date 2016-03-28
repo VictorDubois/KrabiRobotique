@@ -85,6 +85,10 @@ Objet::Objet(b2World & world, Position p, Type type, Angle theta, QColor color) 
         radius = 0.58f;
         break;
     }
+    case SANDCUBE1:
+    {
+
+    }
     case PORTE:
     {  b2Vec2 vertices[4];
         vertices[0].Set(0.0f, -0.1f);
@@ -222,6 +226,28 @@ case SANDCYLINDER:
         pa.drawLine(QPointF(592,900), QPointF(708,900));
         pa.translate(-p.x, -p.y);
         break;*/
+    }
+    case SANDCUBE1:
+    {
+      pa.translate(p.x, p.y);
+        p_color = QColor(232, 140, 0);
+        pa.setBrush(p_color);
+        pa.setPen(p_color);
+        pa.drawRect(830,0, 58, 58);
+        pa.drawRect(888,0, 58, 58);
+        pa.drawRect(830,58, 58, 58);
+        pa.drawRect(888,58, 58, 58);
+        p_color = QColor(0, 0, 0);
+        pa.setBrush(p_color);
+        pa.setPen(p_color);
+        pa.drawLine(QPointF(830,0), QPointF(946,0));
+        pa.drawLine(QPointF(946,0), QPointF(946,116));
+        pa.drawLine(QPointF(946,116), QPointF(830,116));
+        pa.drawLine(QPointF(830,116), QPointF(830,0));
+        pa.drawLine(QPointF(888,0), QPointF(888,116));
+        pa.drawLine(QPointF(830,58), QPointF(946,58));
+        pa.translate(-p.x, -p.y);
+        break;
     }
 case PORTE:
 {

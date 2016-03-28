@@ -19,7 +19,8 @@ class Objet
             ANY,
 
             SHELL, /*!< Représente un coquillage*/
-            SANDCUBE, /*!< Représente un cube de chateau de sable*/
+            SANDCUBE,
+            SANDCUBE1,/*!< Représente un cube de chateau de sable*/
             /* SANDCONE, /*!< Représente un cone de chateau de sable*/
             SANDCYLINDER, /*!< Représente un cylinder de chateau de sable*/
             PORTE /*!< Représente la porte des cabine de plage*/
