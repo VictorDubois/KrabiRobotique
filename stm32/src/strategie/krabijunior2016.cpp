@@ -34,9 +34,6 @@ int KrabiJunior2016::getScoreEtape(int i){
             case Etape::DEPART :
                 return 10;
                 break;
-            case Etape::TAPIS :
-                return 10;
-                break;
             default :
                 return 0;
                 break;

@@ -7,7 +7,6 @@
 
 #include "strategiev3.h"
 #include "etape.h"
-#include "clap.h"
 
 class KrabiJunior2016 : public StrategieV3
 {
