@@ -32,6 +32,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     int wd = Etape::makeEtape(wd_position);
 
     int we = Etape::makeEtape(Position(900,  425, true));
+    int wf = Etape::makeEtape(Position(1400,  425, true));
 
     // On crée l'étape "pousse les cubes du début"
     int cd1 = Etape::makeEtape(new CubeDebut(Position(900, 900, true), wa_position));
@@ -47,6 +48,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     int pa = Etape::makeEtape(new RamasserPied(Position(1200,  280, true)));
     int pb = Etape::makeEtape(new RamasserPied(Position(1400, 280, true)));
     int pc = Etape::makeEtape(new RamasserPied(Position(900, 280, true)));
+    int pd = Etape::makeEtape(new RamasserPied(Position(1500, 280, true)));
 
     // Cabines de plage
     int cp1 = Etape::makeEtape(new Cabine(Position(250, 50, true), wd_position));
@@ -70,7 +72,6 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     Etape::get(wd)      ->addVoisin(wb);
     Etape::get(pa)      ->addVoisin(wb);
     Etape::get(pb)      ->addVoisin(pa);
-    Etape::get(pc)      ->addVoisin(pa);
     Etape::get(pc)      ->addVoisin(we);
 
     Etape::get(we)      ->addVoisin(wa);
@@ -79,13 +80,16 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     Etape::get(we)      ->addVoisin(wd);
     Etape::get(we)      ->addVoisin(pa);
 
+    Etape::get(wf)      ->addVoisin(pb);
+    Etape::get(wf)      ->addVoisin(pd);
+    Etape::get(wf)      ->addVoisin(wc);
+
     Etape::get(zc1)     ->addVoisin(pa);
     Etape::get(zc1)     ->addVoisin(pb);
-    Etape::get(zc1)     ->addVoisin(pc);
 
     Etape::get(zc2)     ->addVoisin(pa);
     Etape::get(zc2)     ->addVoisin(pb);
-    Etape::get(zc2)     ->addVoisin(pc);
+    Etape::get(zc2)     ->addVoisin(wf);
 
 #ifndef ROBOTHW
     qDebug() << Etape::getTotalEtapes();
@@ -131,6 +135,8 @@ int Krabi2016::getScoreEtape(int i)
 
             // On fait comme si on avait rammasé un cube, du coup la benne est pleine, en vrai on fera
             // tout ça dans la future classe cube
+
+            // le probleme avec le setter est que dans la recherche de meilleur itineraire la methode est exectuee
 
             benne->setBenneFull();
             return 100;
