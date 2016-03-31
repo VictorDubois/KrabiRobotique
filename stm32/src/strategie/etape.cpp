@@ -191,10 +191,7 @@ int Etape::getNombreEtapesLieesParFinirEtape()
 
 void Etape::finir(void)
 {
-    if(this->type == FRUIT)
-    {
-        this->type = POINT_PASSAGE;
-    }
+    return;
 }
 
 void Etape::setScore(int score)
@@ -363,18 +360,10 @@ QString Etape::getNameType(EtapeType type)
         return "Passage";
     case DEPART:
         return "Départ";
-    case CLAP:
-        return "Clap";
-    case GOBELET:
-        return "Gobelet";
+
     case RAMASSER_PIED:
         return "Pied";
-    case AMPOULE:
-        return "Ampoule";
-    case TAPIS:
-        return "Tapis";
-    case DEPOSER_GOBELET:
-        return "Déposer Gobelet";
+
     case CUBE_DEBUT:
         return "Pousser les cubes a l'init";
     default:
@@ -394,18 +383,10 @@ QString Etape::getShortNameType(EtapeType type)
         return "";
     case DEPART:
         return "Start";
-    case CLAP:
-        return "Clap";
-    case GOBELET:
-        return "Gob";
+
     case RAMASSER_PIED:
         return "Pied";
-    case AMPOULE:
-        return "Amp";
-    case TAPIS:
-        return "Tapis";
-    case DEPOSER_GOBELET:
-        return "D.G";
+
     case CUBE_DEBUT:
         return "Cube debut";
     default:

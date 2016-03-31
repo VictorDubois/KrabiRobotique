@@ -24,7 +24,7 @@ void eteindreLED2();
     bool isLedOn(int led);
 #endif
 
-class Leds
+class Led
 {
 public:
     static void toggle(int index = 0);

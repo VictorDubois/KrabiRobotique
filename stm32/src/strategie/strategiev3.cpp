@@ -22,7 +22,7 @@ StrategieV3::StrategieV3(bool /*isYellow*/) : MediumLevelAction()
     this->millisecondesRestantes = 90 * 1000;
 
 #ifndef ROBOTHW
-    colorLiaisonsEtapes = QColor("blue");
+    colorLiaisonsEtapes = QColor(150,100,50);
     colorEtapeGoal = QColor("red");
     colorEtapesIntermediaires = QColor("yellow");
     colorEtapes = QColor("orange");

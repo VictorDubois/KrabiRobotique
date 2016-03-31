@@ -72,13 +72,9 @@ HEADERS += \
     ../../include/strategie/zoneConstruction.h \
     ../../include/strategie/dijkstra.h \
     ../../include/hardware/tourelle.h \
-    ../../include/strategie/clap.h \
-    ../../include/strategie/gobelet.h \
-    ../../include/strategie/tapis.h \
     ../../include/actionneurs/brasTapis.h \
     ../../include/actionneurs/brasKrabi.h \
     ../../include/actionneurs/brasLateraux.h \
-    ../../include/strategie/deposerGobelet.h \
     ../../include/actionneurs/pinces.h \
     ../../include/strategie/ramasserPied.h \
     ../../include/hardware/microSwitch.h \
@@ -154,14 +150,10 @@ SOURCES += \
     ../../src/strategie/etape.cpp \
     ../../src/strategie/dijkstra.cpp \
     ../../src/hardware/tourelle.cpp \
-    ../../src/strategie/clap.cpp \
-    ../../src/strategie/gobelet.cpp \
-    ../../src/strategie/tapis.cpp \
     ../../src/actionneurs/brasTapis.cpp \
     ../../src/actionneurs/brasLateraux.cpp \
     ../../src/actionneurs/brasKrabi.cpp \
     ../../src/actionneurs/ascenseur.cpp \
-    ../../src/strategie/deposerGobelet.cpp \
     ../../src/actionneurs/pinces.cpp \
     ../../src/strategie/ramasserPied.cpp \
     ../../src/simul/debugwindow.cpp \
