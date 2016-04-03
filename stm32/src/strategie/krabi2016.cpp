@@ -31,7 +31,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     Position wd_position = Position(400,  500, true);
     int wd = Etape::makeEtape(wd_position);
 
-    int we = Etape::makeEtape(Position(900,  425, true));
+    int we = Etape::makeEtape(Position(950,  425, true));
     int wf = Etape::makeEtape(Position(1400,  425, true));
 
     // On crée l'étape "pousse les cubes du début"
@@ -44,11 +44,11 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1150, 600, true), benne));
 
 
-    // Pieds
-    int pa = Etape::makeEtape(new RamasserPied(Position(1200,  280, true)));
-    int pb = Etape::makeEtape(new RamasserPied(Position(1400, 280, true)));
-    int pc = Etape::makeEtape(new RamasserPied(Position(900, 280, true)));
-    int pd = Etape::makeEtape(new RamasserPied(Position(1500, 280, true)));
+    // Dune
+    int da = Etape::makeEtape(new Dune(Position(1200,  280, true), benne));
+    int db = Etape::makeEtape(new Dune(Position(1400, 280, true), benne));
+    int dc = Etape::makeEtape(new Dune(Position(950, 250, true), benne));
+    int dd = Etape::makeEtape(new Dune(Position(1500, 280, true), benne));
 
     // Cabines de plage
     int cp1 = Etape::makeEtape(new Cabine(Position(250, 50, true), wd_position));
@@ -64,31 +64,31 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     Etape::get(wc)      ->addVoisin(zc1);
     Etape::get(wc)      ->addVoisin(zc2);
-    Etape::get(wc)      ->addVoisin(pa);
+    Etape::get(wc)      ->addVoisin(da);
 
     Etape::get(cp1)     ->addVoisin(wd);
     Etape::get(cp2)     ->addVoisin(wd);
 
     Etape::get(wd)      ->addVoisin(wb);
-    Etape::get(pa)      ->addVoisin(wb);
-    Etape::get(pb)      ->addVoisin(pa);
-    Etape::get(pc)      ->addVoisin(we);
+    Etape::get(da)      ->addVoisin(wb);
+    Etape::get(db)      ->addVoisin(da);
+    Etape::get(dc)      ->addVoisin(we);
 
     Etape::get(we)      ->addVoisin(wa);
     Etape::get(we)      ->addVoisin(wb);
     Etape::get(we)      ->addVoisin(wc);
     Etape::get(we)      ->addVoisin(wd);
-    Etape::get(we)      ->addVoisin(pa);
+    Etape::get(we)      ->addVoisin(da);
 
-    Etape::get(wf)      ->addVoisin(pb);
-    Etape::get(wf)      ->addVoisin(pd);
+    Etape::get(wf)      ->addVoisin(db);
+    Etape::get(wf)      ->addVoisin(dd);
     Etape::get(wf)      ->addVoisin(wc);
 
-    Etape::get(zc1)     ->addVoisin(pa);
-    Etape::get(zc1)     ->addVoisin(pb);
+    Etape::get(zc1)     ->addVoisin(da);
+    Etape::get(zc1)     ->addVoisin(db);
 
-    Etape::get(zc2)     ->addVoisin(pa);
-    Etape::get(zc2)     ->addVoisin(pb);
+    Etape::get(zc2)     ->addVoisin(da);
+    Etape::get(zc2)     ->addVoisin(db);
     Etape::get(zc2)     ->addVoisin(wf);
 
 #ifndef ROBOTHW
@@ -98,7 +98,7 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     // Certaines actions d'étapes ne finnissent pas là où elles ont commencé :
     // Clapets:
-//    Etape::get(4)->setNumeroEtapeFinAction(43); //Clapet notre côté vers notre bord
+    // Etape::get(4)->setNumeroEtapeFinAction(43); //Clapet notre côté vers notre bord
 
 
     this->nombreEtapes = Etape::getTotalEtapes();
@@ -131,14 +131,14 @@ int Krabi2016::getScoreEtape(int i)
         case Etape::CUBE_DEBUT :
             return 10000;
 
-        case Etape::RAMASSER_PIED : {
+        case Etape::DUNE : {
 
             // On fait comme si on avait rammasé un cube, du coup la benne est pleine, en vrai on fera
             // tout ça dans la future classe cube
 
             // le probleme avec le setter est que dans la recherche de meilleur itineraire la methode est exectuee
 
-            benne->setBenneFull();
+            // benne->setBenneFull();
             return 100;
         }
 
