@@ -76,7 +76,6 @@ HEADERS += \
     ../../include/actionneurs/brasKrabi.h \
     ../../include/actionneurs/brasLateraux.h \
     ../../include/actionneurs/pinces.h \
-    ../../include/strategie/ramasserPied.h \
     ../../include/hardware/microSwitch.h \
     ../../include/simul/debugwindow.h \
     ../../include/asservissement/commandTournerVers.h \
@@ -106,6 +105,7 @@ HEADERS += \
     ../../include/actionneurs/parasol.h \
     ../../include/actionneurs/benne.h \
     ../../include/strategie/cubeDebut.h \
+    ../../include/strategie/dune.h \
     ../../include/clock.h
 
 
@@ -155,7 +155,6 @@ SOURCES += \
     ../../src/actionneurs/brasKrabi.cpp \
     ../../src/actionneurs/ascenseur.cpp \
     ../../src/actionneurs/pinces.cpp \
-    ../../src/strategie/ramasserPied.cpp \
     ../../src/simul/debugwindow.cpp \
     ../../src/hardware/microSwitch.cpp \
     ../../src/asservissement/commandTournerVers.cpp \
@@ -180,6 +179,7 @@ SOURCES += \
     ../../src/strategie/krabijunior2016.cpp \
     ../../src/strategie/krabi2016.cpp \
     ../../src/strategie/cabine.cpp \
+    ../../src/strategie/dune.cpp \
     ../../src/actionneurs/benne.cpp \
     ../../src/strategie/zoneConstruction.cpp \
     ../../src/strategie/cubeDebut.cpp \

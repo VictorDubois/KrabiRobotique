@@ -354,16 +354,14 @@ QString Etape::getNameType(EtapeType type)
     {
     case CABINE:
         return "Cabine";
+    case DUNE:
+        return "Dune";
     case ZONE_CONSTRUCTION:
         return "Zone de construction";
     case POINT_PASSAGE:
         return "Passage";
     case DEPART:
         return "Départ";
-
-    case RAMASSER_PIED:
-        return "Pied";
-
     case CUBE_DEBUT:
         return "Pousser les cubes a l'init";
     default:
@@ -377,16 +375,14 @@ QString Etape::getShortNameType(EtapeType type)
     {
     case CABINE:
         return "Cabine";
+    case DUNE:
+        return "Dune";
     case ZONE_CONSTRUCTION:
         return "Z.C";
     case POINT_PASSAGE:
         return "";
     case DEPART:
         return "Start";
-
-    case RAMASSER_PIED:
-        return "Pied";
-
     case CUBE_DEBUT:
         return "Cube debut";
     default:

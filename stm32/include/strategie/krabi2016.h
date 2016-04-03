@@ -9,11 +9,11 @@
 #include "etape.h"
 #include "zoneConstruction.h"
 #include "cabine.h"
-#include "ramasserPied.h"
 #include "manipulationCoinGaucheBas.h"
 #include "manipulationCoinGaucheHaut.h"
 #include "manipulationCoinGaucheHautPiedSolitaire.h"
 #include "benne.h"
+#include "dune.h"
 #include "cubeDebut.h"
 
 class Krabi2016 : public StrategieV3
@@ -25,8 +25,6 @@ public:
 
     /** @brief Actions de Krabi */
     Cabine actionCabine[2];
-    RamasserPied actionRamasserPied[8];
-
 
 private:
 
