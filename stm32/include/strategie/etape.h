@@ -18,17 +18,17 @@ public:
     /** @brief Enum des types d'étape possible (un feu, un point de passage...) */
     enum EtapeType
     {
-        ROBOT_VU_ICI = 100,
+        ROBOT_VU_ICI = 0x80,
 
-        CABINE = 8,
-        ZONE_CONSTRUCTION = 9,
-        CUBE_DEBUT = 10,
-        DUNE =  11,
+        CABINE = 0x40,
+        ZONE_CONSTRUCTION = 0x20,
+        CUBE_DEBUT = 0x10,
+        DUNE =  0x08,
 
-        POINT_PASSAGE = 0,
-        COLLECT = 1,
+        POINT_PASSAGE = 0x04,
+        COLLECT = 0x02,
 
-        DEPART = 5
+        DEPART = 0x01
 
     };
 
