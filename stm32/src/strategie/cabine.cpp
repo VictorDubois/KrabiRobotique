@@ -28,6 +28,8 @@ int Cabine::update()
 
     if (status == 0) //Début
     {
+        // A faire : Desactiver le Sharp avant
+
         StrategieV2::setCurrentGoal(this->getGoalPosition(), false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
 #ifndef ROBOTHW
         qDebug() << "On se prepare a pousser une porte";

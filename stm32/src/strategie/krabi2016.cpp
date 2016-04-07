@@ -22,20 +22,20 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
     int start = Etape::makeEtape(Position(250, 900, true), Etape::DEPART); // départ au fond de la zone de départ
 
     /** Points de passage **/
-    Position wa_position = Position(600,  900, true);
-    int wa = Etape::makeEtape(wa_position);
+    Position p1_position = Position(600,  900, true);
+    int p1 = Etape::makeEtape(p1_position);
 
-    int wb = Etape::makeEtape(Position(680,  700, true));
-    int wc = Etape::makeEtape(Position(1000,  500, true));
+    int p2 = Etape::makeEtape(Position(680,  700, true));
+    int p3 = Etape::makeEtape(Position(1000,  500, true));
 
-    Position wd_position = Position(400,  500, true);
-    int wd = Etape::makeEtape(wd_position);
+    Position p4_position = Position(400,  500, true);
+    int p4 = Etape::makeEtape(p4_position);
 
-    int we = Etape::makeEtape(Position(950,  425, true));
-    int wf = Etape::makeEtape(Position(1400,  425, true));
+    int p5 = Etape::makeEtape(Position(950,  425, true));
+    int p6 = Etape::makeEtape(Position(1400,  425, true));
 
     // On crée l'étape "pousse les cubes du début"
-    int cd1 = Etape::makeEtape(new CubeDebut(Position(900, 900, true), wa_position));
+    int cubedebut = Etape::makeEtape(new CubeDebut(Position(900, 900, true), p1_position));
 
 
     /** Actions **/
@@ -45,51 +45,51 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
 
     // Dune
-    int da = Etape::makeEtape(new Dune(Position(1200,  280, true), benne));
-    int db = Etape::makeEtape(new Dune(Position(1400, 280, true), benne));
-    int dc = Etape::makeEtape(new Dune(Position(950, 250, true), benne));
-    int dd = Etape::makeEtape(new Dune(Position(1500, 280, true), benne));
+    int dune1 = Etape::makeEtape(new Dune(Position(1200,  280, true), benne));
+    int dune2 = Etape::makeEtape(new Dune(Position(1400, 280, true), benne));
+    int dune3 = Etape::makeEtape(new Dune(Position(950, 250, true), benne));
+    int dune4 = Etape::makeEtape(new Dune(Position(1500, 280, true), benne));
 
     // Cabines de plage
-    int cp1 = Etape::makeEtape(new Cabine(Position(250, 50, true), wd_position));
-    int cp2 = Etape::makeEtape(new Cabine(Position(500, 50, true), wd_position));
+    int cabine1 = Etape::makeEtape(new Cabine(Position(250, 50, true), p4_position));
+    int cabine2 = Etape::makeEtape(new Cabine(Position(500, 50, true), p4_position));
 
 
     /** Liens **/
     // [WIP]
-    Etape::get(start)   ->addVoisin(wa);
-    Etape::get(wa)      ->addVoisin(wb);
-    Etape::get(wa)      ->addVoisin(wd);
-    Etape::get(cd1)     ->addVoisin(wa);
+    Etape::get(start)    ->addVoisin(p1);
+    Etape::get(p1)       ->addVoisin(p2);
+    Etape::get(p1)       ->addVoisin(p4);
+    Etape::get(cubedebut)->addVoisin(p1);
 
-    Etape::get(wc)      ->addVoisin(zc1);
-    Etape::get(wc)      ->addVoisin(zc2);
-    Etape::get(wc)      ->addVoisin(da);
+    Etape::get(p3)      ->addVoisin(zc1);
+    Etape::get(p3)      ->addVoisin(zc2);
+    Etape::get(p3)      ->addVoisin(dune4);
 
-    Etape::get(cp1)     ->addVoisin(wd);
-    Etape::get(cp2)     ->addVoisin(wd);
+    Etape::get(cabine1)     ->addVoisin(p4);
+    Etape::get(cabine2)     ->addVoisin(p4);
 
-    Etape::get(wd)      ->addVoisin(wb);
-    Etape::get(da)      ->addVoisin(wb);
-    Etape::get(db)      ->addVoisin(da);
-    Etape::get(dc)      ->addVoisin(we);
+    Etape::get(p4)         ->addVoisin(p2);
+    Etape::get(dune1)      ->addVoisin(p2);
+    Etape::get(dune2)      ->addVoisin(dune1);
+    Etape::get(dune3)      ->addVoisin(p5);
 
-    Etape::get(we)      ->addVoisin(wa);
-    Etape::get(we)      ->addVoisin(wb);
-    Etape::get(we)      ->addVoisin(wc);
-    Etape::get(we)      ->addVoisin(wd);
-    Etape::get(we)      ->addVoisin(da);
+    Etape::get(p5)      ->addVoisin(p1);
+    Etape::get(p5)      ->addVoisin(p2);
+    Etape::get(p5)      ->addVoisin(p3);
+    Etape::get(p5)      ->addVoisin(p4);
+    Etape::get(p5)      ->addVoisin(dune1);
 
-    Etape::get(wf)      ->addVoisin(db);
-    Etape::get(wf)      ->addVoisin(dd);
-    Etape::get(wf)      ->addVoisin(wc);
+    Etape::get(p5)      ->addVoisin(dune2);
+    Etape::get(p5)      ->addVoisin(dune4);
+    Etape::get(p5)      ->addVoisin(p3);
 
-    Etape::get(zc1)     ->addVoisin(da);
-    Etape::get(zc1)     ->addVoisin(db);
+    Etape::get(zc1)     ->addVoisin(dune1);
+    Etape::get(zc1)     ->addVoisin(dune2);
 
-    Etape::get(zc2)     ->addVoisin(da);
-    Etape::get(zc2)     ->addVoisin(db);
-    Etape::get(zc2)     ->addVoisin(wf);
+    Etape::get(zc2)     ->addVoisin(dune1);
+    Etape::get(zc2)     ->addVoisin(dune2);
+    Etape::get(zc2)     ->addVoisin(p5);
 
 #ifndef ROBOTHW
     qDebug() << Etape::getTotalEtapes();
@@ -115,6 +115,9 @@ int Krabi2016::getScoreEtape(int i)
         /*case Etape::TYPE_ACTION:
             return NB_POINTS_ACTION; */
 
+
+        // A faire : remplacer la priorite par le nombre de points obtenables a l'etape
+
         case Etape::DEPART :
             return 0;
         case Etape::POINT_PASSAGE :
@@ -128,18 +131,21 @@ int Krabi2016::getScoreEtape(int i)
             }
         }
 
+        case Etape::CABINE :
+            return 400;
+
         case Etape::CUBE_DEBUT :
-            return 10000;
+            return 500;
 
         case Etape::DUNE : {
 
-            // On fait comme si on avait rammasé un cube, du coup la benne est pleine, en vrai on fera
-            // tout ça dans la future classe cube
+            if( benne->getIsBenneEmpty() ) {
+                return 400;
+            }
 
-            // le probleme avec le setter est que dans la recherche de meilleur itineraire la methode est exectuee
-
-            // benne->setBenneFull();
-            return 100;
+            else {
+                return 1;
+            }
         }
 
         default :

@@ -36,6 +36,8 @@ int CubeDebut::update()
     }
 
     else if (status == 1) {
+         // A faire : Desactiver le Sharp avant
+
         if (Command::isNear(this->getGoalPosition(), 100.0f)) // le second paramètre est la distance a l'objectif
         {
             // après avoir poussé les cubes on revient en marche arrière
