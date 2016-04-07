@@ -57,39 +57,18 @@ Krabi2016::Krabi2016(bool isYellow) : StrategieV3(isYellow)
 
     /** Liens **/
     // [WIP]
-    Etape::get(start)    ->addVoisin(p1);
-    Etape::get(p1)       ->addVoisin(p2);
-    Etape::get(p1)       ->addVoisin(p4);
-    Etape::get(cubedebut)->addVoisin(p1);
+    Etape::get(p1)      ->addVoisins(start, cubedebut, p2, p4);
+    Etape::get(p3)      ->addVoisins(zc1, zc2, dune4);
+    Etape::get(p4)      ->addVoisins(cabine1, cabine2, p2);
+    Etape::get(p5)      ->addVoisins(p1,p2,p3,p4);
+    Etape::get(p5)      ->addVoisins(dune1,dune2, dune4);
 
-    Etape::get(p3)      ->addVoisin(zc1);
-    Etape::get(p3)      ->addVoisin(zc2);
-    Etape::get(p3)      ->addVoisin(dune4);
+    Etape::get(dune1)   ->addVoisin(p2);
+    Etape::get(dune2)   ->addVoisin(dune1);
+    Etape::get(dune3)   ->addVoisin(p5);
 
-    Etape::get(cabine1)     ->addVoisin(p4);
-    Etape::get(cabine2)     ->addVoisin(p4);
-
-    Etape::get(p4)         ->addVoisin(p2);
-    Etape::get(dune1)      ->addVoisin(p2);
-    Etape::get(dune2)      ->addVoisin(dune1);
-    Etape::get(dune3)      ->addVoisin(p5);
-
-    Etape::get(p5)      ->addVoisin(p1);
-    Etape::get(p5)      ->addVoisin(p2);
-    Etape::get(p5)      ->addVoisin(p3);
-    Etape::get(p5)      ->addVoisin(p4);
-    Etape::get(p5)      ->addVoisin(dune1);
-
-    Etape::get(p5)      ->addVoisin(dune2);
-    Etape::get(p5)      ->addVoisin(dune4);
-    Etape::get(p5)      ->addVoisin(p3);
-
-    Etape::get(zc1)     ->addVoisin(dune1);
-    Etape::get(zc1)     ->addVoisin(dune2);
-
-    Etape::get(zc2)     ->addVoisin(dune1);
-    Etape::get(zc2)     ->addVoisin(dune2);
-    Etape::get(zc2)     ->addVoisin(p5);
+    Etape::get(zc1)     ->addVoisins(dune1, dune2);
+    Etape::get(zc2)     ->addVoisins(dune1, dune2, p5);
 
 #ifndef ROBOTHW
     qDebug() << Etape::getTotalEtapes();
@@ -122,6 +101,7 @@ int Krabi2016::getScoreEtape(int i)
             return 0;
         case Etape::POINT_PASSAGE :
             return 0;
+
         case Etape::ZONE_CONSTRUCTION : {
             if (benne->getIsBenneEmpty()) {
                 return 1;
@@ -138,11 +118,9 @@ int Krabi2016::getScoreEtape(int i)
             return 500;
 
         case Etape::DUNE : {
-
             if( benne->getIsBenneEmpty() ) {
                 return 400;
             }
-
             else {
                 return 1;
             }
