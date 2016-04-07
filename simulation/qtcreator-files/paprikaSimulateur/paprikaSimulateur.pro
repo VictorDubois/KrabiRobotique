@@ -88,9 +88,6 @@ HEADERS += \
     ../../include/simul/asservwindow.h \
     ../../include/simul/sharpwindow.h \
     ../../include/simul/watchwindow.h \
-    ../../include/strategie/manipulationCoinGaucheHaut.h \
-    ../../include/strategie/manipulationCoinGaucheBas.h \
-    ../../include/strategie/manipulationCoinGaucheHautPiedSolitaire.h \
     ../../include/vec3d.h \
     ../../include/vec2d.h \
     ../../include/interfaceServosNumeriques.h \
@@ -168,9 +165,6 @@ SOURCES += \
     ../../src/simul/asservwindow.cpp \
     ../../src/simul/sharpwindow.cpp \
     ../../src/simul/watchwindow.cpp \
-    ../../src/strategie/manipulationCoinGaucheHaut.cpp \
-    ../../src/strategie/manipulationCoinGaucheBas.cpp \
-    ../../src/strategie/manipulationCoinGaucheHautPiedSolitaire.cpp \
     ../../src/vec3d.cpp \
     ../../src/vec2d.cpp \
     ../../src/InitKrabiJunior.cpp \

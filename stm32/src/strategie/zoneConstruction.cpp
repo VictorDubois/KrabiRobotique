@@ -37,7 +37,6 @@ int ZoneConstruction::update()
         status++;
     }
 
-
     else if (status == 1)
     {
         StrategieV2::setCurrentGoal(this->getGoalPosition(), false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
@@ -56,8 +55,7 @@ int ZoneConstruction::update()
 
     else if (status == 3) {
 #ifndef ROBOTHW
-        qDebug() << "Etape zone de construction finie";
-
+        qDebug() << "Etape zone de construction finie ; benne vide";
 #endif
         benne_locale->setBenneEmpty();
         status = -1;

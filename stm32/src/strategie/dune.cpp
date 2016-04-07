@@ -39,6 +39,8 @@ int Dune::update()
 
     else if (status == 1)
     {
+         // A faire : Desactiver le Sharp avant
+
         StrategieV2::setCurrentGoal(this->getGoalPosition(), false, VITESSE_LINEAIRE_MAX, -100.0, 200.f);
         status++;
     }
@@ -56,7 +58,7 @@ int Dune::update()
     else if (status == 3) {
 #ifndef ROBOTHW
         qDebug() << "Etape dune finie";
-
+        qDebug() << "Benne pleine";
 #endif
         benne_locale->setBenneFull();
         status = -1;
