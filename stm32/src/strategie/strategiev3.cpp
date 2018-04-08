@@ -1,13 +1,17 @@
 #include "strategiev3.h"
-#include "strategieV2.h"
-#include "actionGoTo.h"
-#include "leds.h"
-#include "odometrie.h"
-#include "asservissement.h"
+
+#ifndef STANDALONE_STRATEGIE
+	#include "strategieV2.h"
+	#include "actionGoTo.h"
+	#include "leds.h"
+	#include "odometrie.h"
+	#include "asservissement.h"
+#endif
+
 #include "dijkstra.h"
 #include "etape.h"
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     #include <QDebug>
 #endif
 //#include <iostream>
@@ -21,7 +25,7 @@ StrategieV3::StrategieV3(bool /*isYellow*/) : MediumLevelAction()
     this->enTrainEviterAvancant = false;
     this->millisecondesRestantes = 90 * 1000;
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     colorLiaisonsEtapes = QColor(150,100,50);
     colorEtapeGoal = QColor("red");
     colorEtapesIntermediaires = QColor("yellow");
@@ -42,7 +46,7 @@ int StrategieV3::update()
     //Si on est en train d'éviter, on revient à l'étape précédente, et on marque l'étape comme à éviter
     if(this->avoiding)
     {
-        #ifndef ROBOTHW
+        #ifdef QTGUI
         qDebug() << "En train d'eviter";
         #endif
 
@@ -58,18 +62,31 @@ int StrategieV3::update()
         {
             this->enTrainEviterReculant = false;
             this->enTrainEviterAvancant = true;
+
+            #ifndef STANDALONE_STRATEGIE
             tableauEtapesTotal[etapeEnCours]->getActionGoTo()->setGoBack(false);
+            #else
+            // @TODO setGoBack to false
+            #endif // STANDALONE_STRATEGIE
             //actionEtape[etapeEnCours]->setGoBack(false);
         }
         else
         {
             this->enTrainEviterReculant = true;
             this->enTrainEviterAvancant = false;
+            #ifndef STANDALONE_STRATEGIE
             tableauEtapesTotal[etapeEnCours]->getActionGoTo()->setGoBack(true);
+            #else
+            // @TODO setGoBack to true
+            #endif // STANDALONE_STRATEGIE
             //actionEtape[etapeEnCours]->setGoBack(true);
         }
 
-        StrategieV2::addTemporaryAction(tableauEtapesTotal[etapeEnCours]->getActionGoTo());
+        #ifndef STANDALONE_STRATEGIE
+            StrategieV2::addTemporaryAction(tableauEtapesTotal[etapeEnCours]->getActionGoTo());
+        #else
+            // @TODO addTempAction
+        #endif // STANDALONE_STRATEGIE
         //StrategieV2::addTemporaryAction(actionEtape[etapeEnCours]);
         //dijkstra->setEtapeCourante((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero()));
         if(dijkstra->run() != 0)
@@ -90,7 +107,7 @@ int StrategieV3::update()
     }
     else
     {
-        #ifndef ROBOTHW
+        #ifdef QTGUI
         qDebug() << "Pas en train d'eviter";
         #endif
 
@@ -154,7 +171,7 @@ int StrategieV3::update()
                     if(this->etapeEnCours == this->numeroEtapeGarage)
                     {
                         this->statusStrat=-1;//Plus rien à faire, on passe à l'action suivante de stratégieV2
-#ifndef ROBOTHW
+#ifdef QTGUI
                         qDebug() << "Fin de StrategieV3";
 #endif
                         return this->statusStrat;
@@ -236,7 +253,7 @@ void StrategieV3::updateIntermedaire()
     //Ainsi, le parent du parent du parent... de n'importe quelle étape est l'étape d'origine
     //(sauf peut être le parent de l'étape d'origine, mais on s'en fout
 
-    #ifndef ROBOTHW
+    #ifdef QTGUI
         qDebug() << "updateIntermedaire\n";
     #endif
     int etapeOuOnVientDArriver = this->etapeEnCours;
@@ -246,7 +263,7 @@ void StrategieV3::updateIntermedaire()
     // Si la prochaine étape est le goal, alors au prochain update il faudra trouver un nouvel objectif -> status = 1;
     if(((this->tableauEtapesTotal[this->etapeEnCours]->getParent()->getNumero())) == etapeOuOnVientDArriver)
     {
-        #ifndef ROBOTHW
+        #ifdef QTGUI
             qDebug() << "la prochaine etape est le goal\n" << etapeOuOnVientDArriver;
         #endif
         this->statusStrat = 1;
@@ -265,7 +282,12 @@ void StrategieV3::updateIntermedaire()
     if(this->statusStrat == 1)
     {
         //On réalise l'action de l'étape - but
-        StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getAction());
+        #ifndef STANDALONE_STRATEGIE
+            StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getAction());
+        #else
+            // @TODO add temp action
+        #endif // STANDALONE_STRATEGIE
+
     }
     else
     {
@@ -273,12 +295,18 @@ void StrategieV3::updateIntermedaire()
 #ifdef SMOOTH_MOVE
         tableauEtapesTotal[this->etapeEnCours]->getActionGoTo()->setNextGoal(tableauEtapesTotal[this->nextStep]->getPosition());
 #endif
-        StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getActionGoTo());
+
+        #ifndef STANDALONE_STRATEGIE
+            StrategieV2::addTemporaryAction(tableauEtapesTotal[this->etapeEnCours]->getActionGoTo());
+        #else
+            // @TODO add temp action
+        #endif // STANDALONE_STRATEGIE
+
     }
 }
 
 
-#ifndef ROBOTHW
+#ifdef QTGUI
 void StrategieV3::paint(QPainter* p)
 {
     for(int numeroEtape = 0 ; numeroEtape<this->nombreEtapes ; numeroEtape++)

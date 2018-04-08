@@ -4,7 +4,7 @@
 #include "position.h"
 #include "etape.h"
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     #include <QPainter>
 #endif
 
@@ -20,7 +20,7 @@ class MediumLevelAction
         virtual void    reset();
         void            setGoBack(bool val);
 
-        #ifndef ROBOTHW
+        #ifdef QTGUI
         virtual void paint(QPainter* p);
         #endif
 

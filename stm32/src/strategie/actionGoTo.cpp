@@ -1,12 +1,17 @@
 #include "actionGoTo.h"
-#include "odometrie.h"
-#include "strategieV2.h"
-#include "sharpSensor.h"
-#ifndef ROBOTHW
-#include <QDebug>
+
+#ifdef QTGUI
+	#include <QDebug>
     #define abs fabs
 #endif
-#include "leds.h"
+
+#ifndef STANDALONE_STRATEGIE
+	#include "odometrie.h"
+	#include "strategieV2.h"
+	#include "sharpSensor.h"
+	#include "leds.h"
+#endif
+
 
 /** valeurs :
     1 : aller ver le haut (0,Y)
@@ -60,9 +65,11 @@ ActionGoTo::~ActionGoTo()
 
 int ActionGoTo::update()
 {
+	#ifndef STANDALONE_STRATEGIE
+
     if (status == 0)
     {
-#ifndef ROBOTHW
+#ifdef QTGUI
         qDebug() << "actionGoTo " << goalPosition.getX();
 #endif
         //allumerLED2();
@@ -155,6 +162,8 @@ int ActionGoTo::update()
             status = -1;
     }
     return status;
+
+	#endif
 }
 
 void ActionGoTo::collisionAvoided()

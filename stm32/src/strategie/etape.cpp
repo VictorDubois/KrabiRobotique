@@ -2,7 +2,7 @@
 #include "dijkstra.h"
 #include "actionGoTo.h"
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     #include <QDebug>
 #endif
 
@@ -347,7 +347,7 @@ Etape** Etape::getTableauEtapesTotal()
     return tableauEtapesTotal;
 }
 
-#ifndef ROBOTHW
+#ifdef QTGUI
 QString Etape::getNameType(EtapeType type)
 {
     switch(type)

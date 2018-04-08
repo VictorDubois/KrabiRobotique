@@ -8,7 +8,7 @@
 class ActionGoTo;
 class MediumLevelAction;
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     #include <QString>
 #endif
 
@@ -165,7 +165,7 @@ public:
 
     static Etape** getTableauEtapesTotal();
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     static QString getNameType(EtapeType type);
     static QString getShortNameType(EtapeType type);
 #endif

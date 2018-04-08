@@ -1,7 +1,11 @@
 #include "mediumLevelAction.h"
-#include "strategieV2.h"
 
-#ifndef ROBOTHW
+#ifndef STANDALONE_STRATEGIE
+    // Only for color
+    #include "strategieV2.h"
+#endif // STANDALONE_STRATEGIE
+
+#ifdef QTGUI
 #include <QDebug>
 #endif
 
@@ -42,7 +46,7 @@ Etape::EtapeType MediumLevelAction::getType()
     return Etape::POINT_PASSAGE;
 }
 
-#ifndef ROBOTHW
+#ifdef QTGUI
 void MediumLevelAction::paint(QPainter* p)
 {}
 #endif

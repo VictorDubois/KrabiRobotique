@@ -1,14 +1,17 @@
 #ifndef STRATEGIEV3_H
 #define STRATEGIEV3_H
 
+#ifndef STANDALONE_STRATEGIE
 #include "actionGoTo.h"
+#include "strategieV2.h"
+#endif
+
 #include "mediumLevelAction.h"
 #include "dijkstra.h"
-#include "strategieV2.h"
 
 //#define SMOOTH_MOVE
 
-#ifndef ROBOTHW
+#ifdef QTGUI
 #include <QPainter>
 #include <QColor>
 #endif
@@ -43,7 +46,7 @@ public:
 
     void startDijkstra();
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     virtual void paint(QPainter* p);
 #endif
 
@@ -86,7 +89,7 @@ protected:
     void updateStock();
     virtual int getScoreEtape(int i) = 0;
 
-#ifndef ROBOTHW
+#ifdef QTGUI
     QColor colorLiaisonsEtapes;
     QColor colorEtapeGoal;
     QColor colorEtapesIntermediaires;

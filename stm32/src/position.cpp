@@ -1,8 +1,10 @@
 #include <math.h>
 
 #include "position.h"
-#include "strategieV2.h"
-
+#ifndef STANDALONE_STRATEGIE
+    // Only for color
+    #include "strategieV2.h"
+#endif // STANDALONE_STRATEGIE
 
 // Constructeur par défaut avec des coordonnées nulles.
 Position::Position()
@@ -13,7 +15,11 @@ Position::Position()
 Position::Position(Distance X, Distance Y, bool colorDependent)
     : x(X), y(Y)
 {
+    #ifndef STANDALONE_STRATEGIE
     if (colorDependent && !StrategieV2::isYellow())
+    #else
+    if (colorDependent && true /*!StrategieV2::isYellow()*/)
+    #endif
     {
         x = 3000-x;
     }
