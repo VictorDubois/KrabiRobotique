@@ -35,6 +35,11 @@ StrategieV3::StrategieV3(bool /*isYellow*/) : MediumLevelAction()
 #endif
 }
 
+Etape* StrategieV3::getEtapeEnCours()
+{
+    return this->tableauEtapesTotal[this->etapeEnCours];
+}
+
 int StrategieV3::update()
 {
     //this->actionEtape[this->etapeEnCours]->reset();

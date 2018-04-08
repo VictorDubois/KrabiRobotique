@@ -39,9 +39,8 @@ int main()
     result = strat->update();
     result = strat->update();
 
-
     #ifdef USE_IOSTREAM
-        std::cout << "goal: " << strat->.Print() << std::endl;
+        std::cout << "goal: " << strat->getEtapeEnCours()->getPosition().Print() << std::endl;
         std::cout << "end" << std::endl;
     #endif // USE_IOSTREAM
     return 0;

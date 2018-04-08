@@ -46,6 +46,9 @@ public:
 
     void startDijkstra();
 
+    /** @brief Retourne un pointeur sur l'étape en cours */
+    Etape* getEtapeEnCours();
+
 #ifdef QTGUI
     virtual void paint(QPainter* p);
 #endif
