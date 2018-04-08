@@ -5,6 +5,10 @@
 #include "distance.h"
 #include "vec2d.h"
 
+#ifdef USE_IOSTREAM
+#include <iostream>
+#endif // USE_IOSTREAM
+
 class StrategieV2;
 
 #define COLOR_POSITION Position::colorPosition
@@ -74,6 +78,12 @@ class Position
 
         /// @brief Pour modifier Y
         void setY(Distance Y);
+
+
+        #ifdef USE_IOSTREAM
+        /// @brief Decrit la position
+        std::string Print();
+        #endif // USE_IOSTREAM
 
         /// @brief Coordonnées
         Distance x;

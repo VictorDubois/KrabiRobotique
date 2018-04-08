@@ -30,4 +30,4 @@ private:
 };
 
 
-#endif // Krabi2016_H
+#endif // GOLDO2018_H

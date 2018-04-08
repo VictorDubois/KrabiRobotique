@@ -25,6 +25,13 @@ Position::Position(Distance X, Distance Y, bool colorDependent)
     }
 }
 
+#ifdef USE_IOSTREAM
+std::string Position::Print()
+{
+    return std::to_string(this->getX()) + ", " + std::to_string(this->getY());
+}
+#endif // USE_IOSTREAM
+
 Distance Position::getX() const
 {
     return x;

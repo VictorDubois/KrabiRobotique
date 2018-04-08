@@ -99,7 +99,7 @@ int Goldo2018::getScoreEtape(int i)
         case Etape::DEPART :
             return 0;
         case Etape::POINT_PASSAGE :
-            if(i == 5) {
+            if(i == 2) {
                 return 100;
             }
             else {

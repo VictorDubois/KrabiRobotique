@@ -12,6 +12,9 @@
 
 #define DISABLE_TIRETTE
 
+#ifdef USE_IOSTREAM
+    #include <iostream>
+#endif
 
 // Dit si on est du coté bleu
 bool isBlue() // = ROUGE
@@ -21,6 +24,9 @@ bool isBlue() // = ROUGE
 
 int main()
 {
+    #ifdef USE_IOSTREAM
+        std::cout << "begin" << std::endl;
+    #endif // USE_IOSTREAM
 
     Position pos(200,1850, isBlue());//1500, isBlue());
     PositionPlusAngle posPlusAngle(pos,-M_PI/2);
@@ -29,6 +35,15 @@ int main()
 
     StrategieV3* strat = new Goldo2018(isBlue());
 
+    int result;
+    result = strat->update();
+    result = strat->update();
+
+
+    #ifdef USE_IOSTREAM
+        std::cout << "goal: " << strat->.Print() << std::endl;
+        std::cout << "end" << std::endl;
+    #endif // USE_IOSTREAM
     return 0;
 }
 
