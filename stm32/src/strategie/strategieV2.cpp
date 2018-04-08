@@ -1,9 +1,12 @@
 #include "strategieV2.h"
 #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
     #include "krabijunior2016.h"
+#elif defined(GOLDO2018) // Goldo 2018
+    #include "goldo2018.h"
 #else
     #include "krabi2016.h"
 #endif
+
 #include "leds.h"
 #include "positionPlusAngle.h"
 #include "asservissement.h"
@@ -76,7 +79,9 @@ StrategieV2::StrategieV2(bool yellow)
 
     #if defined(STM32F40_41xxx) || defined(STM32F10X_MD) // H405
         //actionsToDo[0] = (MediumLevelAction*) new KrabiJunior2016(yellow);
-    #else
+    #elif defined(GOLDO2018) // Goldo 2018
+        actionsToDo[0] = (MediumLevelAction*) new Goldo2018(yellow);
+    #else // Krabi 2016
         actionsToDo[0] = (MediumLevelAction*) new Krabi2016(yellow);
     #endif
 

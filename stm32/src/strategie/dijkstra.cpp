@@ -287,5 +287,6 @@ int Dijkstra::getDistance(Etape* etape)
 
 bool Dijkstra::etapeRapporte(Etape* etape)
 {
+    // A segfault here can be related to a splitted graph (ex: start not linked to the rest of the graph)
     return (bool) etape->getScore();
 }

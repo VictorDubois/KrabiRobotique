@@ -3,7 +3,7 @@
 
 #define ETAPE_GARAGE 1
 
-#define NOMBRE_ETAPES 50
+#define NOMBRE_ETAPES 5
 
 #include "strategiev3.h"
 #include "etape.h"

@@ -21,13 +21,17 @@ Goldo2018::Goldo2018(bool isYellow) : StrategieV3(isYellow)
     int p1 = Etape::makeEtape(p1_position);
 
     int p2 = Etape::makeEtape(Position(680,  700, true));
-    int p3 = Etape::makeEtape(Position(1000,  500, true));
 
-    Position p4_position = Position(400,  500, true);
-    int p4 = Etape::makeEtape(p4_position);
+    Etape::get(p1)->addVoisins(start);
+    Etape::get(p1)->addVoisins(p2);
 
-    int p5 = Etape::makeEtape(Position(950,  425, true));
-    int p6 = Etape::makeEtape(Position(1400,  425, true));
+//    int p3 = Etape::makeEtape(Position(1000,  500, true));
+
+//    Position p4_position = Position(400,  500, true);
+//    int p4 = Etape::makeEtape(p4_position);
+
+//    int p5 = Etape::makeEtape(Position(950,  425, true));
+//    int p6 = Etape::makeEtape(Position(1400,  425, true));
 
     // On crée l'étape "pousse les cubes du début"
 //    int cubedebut = Etape::makeEtape(new CubeDebut(Position(900, 900, true), p1_position));
@@ -55,7 +59,7 @@ Goldo2018::Goldo2018(bool isYellow) : StrategieV3(isYellow)
 //    Etape::get(p1)      ->addVoisins(start, cubedebut, p2, p4);
 //    Etape::get(p3)      ->addVoisins(zc1, zc2, dune4);
 //    Etape::get(p4)      ->addVoisins(cabine1, cabine2, p2);
-    Etape::get(p5)      ->addVoisins(p1,p2,p3,p4);
+//    Etape::get(p5)      ->addVoisins(p1,p2,p3,p4, p6);
 //    Etape::get(p5)      ->addVoisins(dune1,dune2, dune4);
 
 //    Etape::get(dune1)   ->addVoisin(p2);
