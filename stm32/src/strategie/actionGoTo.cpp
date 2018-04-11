@@ -70,7 +70,7 @@ int ActionGoTo::update()
     if (status == 0)
     {
 #ifdef QTGUI
-        qDebug() << "actionGoTo " << goalPosition.getX();
+        qDebug() << "actionGoTo " << goalPosition.getX() << " " << goalPosition.getY();
 #endif
         //allumerLED2();
         Position pos = Odometrie::odometrie->getPos().getPosition();

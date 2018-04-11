@@ -19,12 +19,19 @@ public:
     enum EtapeType
     {
         DEPART = 0x01,
+//#ifdef GOLDO2018
+
+
+        ABEILLE = 0x03,
+
+//#elif KRABI2016
         CUBE_DEBUT = 0x02,
 
         DUNE =  0x04,
         ZONE_CONSTRUCTION = 0x08,
-
         CABINE = 0x10,
+
+//#endif
         POINT_PASSAGE = 0x20,
 
         ROBOT_VU_ICI = 0x40

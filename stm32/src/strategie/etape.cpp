@@ -352,20 +352,26 @@ QString Etape::getNameType(EtapeType type)
 {
     switch(type)
     {
-    case CABINE:
-        return "Cabine";
-    case DUNE:
-        return "Dune";
-    case ZONE_CONSTRUCTION:
-        return "Zone de construction";
-    case POINT_PASSAGE:
-        return "Passage";
-    case DEPART:
-        return "Départ";
-    case CUBE_DEBUT:
-        return "Pousser les cubes a l'init";
-    default:
-        return QString::number(type);
+        case POINT_PASSAGE:
+            return "Passage";
+        case DEPART:
+            return "Départ";
+//#ifdef GOLDO2018
+        case ABEILLE:
+            return "Abeille";
+//#elif KRABI2016
+        case CABINE:
+            return "Cabine";
+        case DUNE:
+            return "Dune";
+        case ZONE_CONSTRUCTION:
+            return "Zone de construction";
+
+        case CUBE_DEBUT:
+            return "Pousser les cubes a l'init";
+//#endif
+        default:
+            return QString::number(type);
     }
 }
 
@@ -373,20 +379,26 @@ QString Etape::getShortNameType(EtapeType type)
 {
     switch(type)
     {
-    case CABINE:
-        return "Cabine";
-    case DUNE:
-        return "Dune";
-    case ZONE_CONSTRUCTION:
-        return "Z.C";
-    case POINT_PASSAGE:
-        return "";
-    case DEPART:
-        return "Start";
-    case CUBE_DEBUT:
-        return "Cube debut";
-    default:
-        return "";
+        case POINT_PASSAGE:
+            return "";
+        case DEPART:
+            return "Start";
+//#ifdef GOLDO2018
+        case ABEILLE:
+            return "Abeille";
+//#elif KRABI2016
+        case CABINE:
+            return "Cabine";
+        case DUNE:
+            return "Dune";
+        case ZONE_CONSTRUCTION:
+            return "Z.C";
+
+        case CUBE_DEBUT:
+            return "Cube debut";
+//#endif
+        default:
+            return "";
     }
 }
 

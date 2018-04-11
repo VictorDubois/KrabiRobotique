@@ -7,7 +7,11 @@
     {}
 #else
     #include <QDebug>
+#ifdef GOLDO2018
+    InitKrabi::InitKrabi(bool yellow, Robot* robot) : Initialisation(PositionPlusAngle(Position(200, 350), 0), yellow, robot)
+#else
     InitKrabi::InitKrabi(bool yellow, Robot* robot) : Initialisation(PositionPlusAngle(Position(194, 900), 0), yellow, robot)
+#endif
     {
         qDebug() << "InitKrabi " << robot;
     }

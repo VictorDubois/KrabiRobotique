@@ -3,10 +3,11 @@
 
 #define ETAPE_GARAGE 1
 
-#define NOMBRE_ETAPES 5
+#define NOMBRE_ETAPES 30
 
 #include "strategiev3.h"
 #include "etape.h"
+#include "abeille.h"
 
 class Goldo2018 : public StrategieV3
 {

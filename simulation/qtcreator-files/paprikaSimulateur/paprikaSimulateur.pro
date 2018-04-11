@@ -19,7 +19,8 @@ LIBS += -L/usr/local/lib/ -lBox2D
 
 DEFINES += NO_REMOTE
 DEFINES += "KRABI"
-#DEFINES += "GOLDO2018"
+#DEFINES += "KRABI2016"
+DEFINES += "GOLDO2018"
 #DEFINES += "KRABI_JR"
 DEFINES += QTGUI
 
@@ -106,7 +107,8 @@ HEADERS += \
     ../../include/strategie/cubeDebut.h \
     ../../include/strategie/dune.h \
     ../../include/clock.h \
-    ../../include/strategie/goldo2018.h
+    ../../include/strategie/goldo2018.h \
+    ../../include/strategie/abeille.h
 
 
 SOURCES += \
@@ -183,7 +185,8 @@ SOURCES += \
     ../../src/actionneurs/fishingNet.cpp \
     ../../src/actionneurs/parasol.cpp \
     ../../src/clock.cpp \
-    ../../src/strategie/goldo2018.cpp
+    ../../src/strategie/goldo2018.cpp \
+    ../../src/strategie/abeille.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \

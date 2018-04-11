@@ -7,8 +7,6 @@
 
 #include "main_window.h"
 
-#define COUPE_2016
-
 #ifndef ROBOTHW
 #include <QDebug>
 #endif
@@ -141,7 +139,7 @@ void Table::createObjects()
 {
     removeAllObjects();
 
-#ifdef COUPE_2016
+#ifdef KRABI2016
 
     /*objets.push_back(new Objet(world, Position(928.,2000.), Objet::FILET, 0, QColor(255, 0, 0)));*/
 
@@ -630,10 +628,17 @@ void Table::paintEvent(QPaintEvent* evt)
 	p.setWorldMatrixEnabled(true);
 
 
-
+//    mHideTable = true;
 	// dessine la table
     if (!mHideTable)
+    {
         tableGraphics.draw(&p);
+
+#ifdef GOLDO2018
+        QPixmap pixmap1("/home/alex/Documents/Krabi/Gits/gitRobotique/simulation/qtcreator-files/paprikaSimulateur/fond2018.png");
+        p.drawPixmap(0, 0, tableWidth, tableHeight, pixmap1);  // this works
+#endif
+    }
     else
     {
         QFont font;

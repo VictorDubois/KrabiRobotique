@@ -14,44 +14,40 @@ Goldo2018::Goldo2018(bool isYellow) : StrategieV3(isYellow)
     // Création des étapes
     // Les étapes correspondant à des actions sont créées automatiquement lors de l'ajout d'actions
 
-    int start = Etape::makeEtape(Position(250, 900, true), Etape::DEPART); // départ au fond de la zone de départ
+    // Initialisation in simulator in initKrabi.cpp
+    int start = Etape::makeEtape(Position(200, 350, true), Etape::DEPART); // départ au fond de la zone de départ
 
     /** Points de passage **/
-    Position p1_position = Position(600,  900, true);
+    Position p1_position = Position(600,  350, true);
     int p1 = Etape::makeEtape(p1_position);
 
-    int p2 = Etape::makeEtape(Position(680,  700, true));
+    int p2 = Etape::makeEtape(Position(600, 1400, true));
+
+    int p3 = Etape::makeEtape(Position(220, 1600, true));
 
     Etape::get(p1)->addVoisins(start);
     Etape::get(p1)->addVoisins(p2);
 
-//    int p3 = Etape::makeEtape(Position(1000,  500, true));
+    // ABEILLE
+    Etape::get(p3)->addVoisins(p2);
+    int abeille = Etape::makeEtape(new Abeille(Position(220, 1800, true)));
+    Etape::get(abeille)->addVoisins(p3);
 
-//    Position p4_position = Position(400,  500, true);
-//    int p4 = Etape::makeEtape(p4_position);
+    // Reservoir eau proche
+    int reservoirProche = Etape::makeEtape(Position(220, 850, true));
+    int pReservoirProche = Etape::makeEtape(Position(600, 850, true)); // passage associé
 
-//    int p5 = Etape::makeEtape(Position(950,  425, true));
-//    int p6 = Etape::makeEtape(Position(1400,  425, true));
+    Etape::get(p1)->addVoisins(pReservoirProche);
+    Etape::get(pReservoirProche)->addVoisins(reservoirProche);
+    Etape::get(pReservoirProche)->addVoisins(p2);
 
-    // On crée l'étape "pousse les cubes du début"
-//    int cubedebut = Etape::makeEtape(new CubeDebut(Position(900, 900, true), p1_position));
-//
-//
-//    /** Actions **/
-//    // Zone de construction
-//    int zc1 = Etape::makeEtape(new ZoneConstruction(Position(1050, 600, true), benne));
-//    int zc2 = Etape::makeEtape(new ZoneConstruction(Position(1150, 600, true), benne));
-//
-//
-//    // Dune
-//    int dune1 = Etape::makeEtape(new Dune(Position(1200,  280, true), benne));
-//    int dune2 = Etape::makeEtape(new Dune(Position(1400, 280, true), benne));
-//    int dune3 = Etape::makeEtape(new Dune(Position(950, 250, true), benne));
-//    int dune4 = Etape::makeEtape(new Dune(Position(1500, 280, true), benne));
-//
-//    // Cabines de plage
-//    int cabine1 = Etape::makeEtape(new Cabine(Position(250, 50, true), p4_position));
-//    int cabine2 = Etape::makeEtape(new Cabine(Position(500, 50, true), p4_position));
+    // Navigation centrale
+    int pCentrale1 = Etape::makeEtape(Position(1500, 350, true));
+    int pCentrale2 = Etape::makeEtape(Position(1500, 1400, true));
+
+    Etape::get(p1)->addVoisins(pCentrale1);
+    Etape::get(pCentrale1)->addVoisins(pCentrale2);
+    Etape::get(p2)->addVoisins(pCentrale2);
 
 
     /** Liens **/
@@ -99,12 +95,9 @@ int Goldo2018::getScoreEtape(int i)
         case Etape::DEPART :
             return 0;
         case Etape::POINT_PASSAGE :
-            if(i == 2) {
-                return 100;
-            }
-            else {
-                return 0;
-            }
+            return 0;
+        case Etape::ABEILLE :
+            return 100;
 
 
 //        case Etape::ZONE_CONSTRUCTION : {
