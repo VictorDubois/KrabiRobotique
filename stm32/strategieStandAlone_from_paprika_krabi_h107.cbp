@@ -66,6 +66,7 @@
 		<Unit filename="include/distance.h" />
 		<Unit filename="include/position.h" />
 		<Unit filename="include/positionPlusAngle.h" />
+		<Unit filename="include/strategie/abeille.h" />
 		<Unit filename="include/strategie/actionGoTo.h" />
 		<Unit filename="include/strategie/dijkstra.h" />
 		<Unit filename="include/strategie/etape.h" />
@@ -78,6 +79,7 @@
 		<Unit filename="src/mainStandAloneStrat.cpp" />
 		<Unit filename="src/position.cpp" />
 		<Unit filename="src/positionPlusAngle.cpp" />
+		<Unit filename="src/strategie/abeille.cpp" />
 		<Unit filename="src/strategie/actionGoTo.cpp" />
 		<Unit filename="src/strategie/dijkstra.cpp" />
 		<Unit filename="src/strategie/etape.cpp" />
@@ -90,9 +92,7 @@
 			<code_completion />
 			<envvars />
 			<lib_finder disable_auto="1" />
-			<debugger>
-
-			</debugger>
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

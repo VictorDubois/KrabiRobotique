@@ -1,8 +1,11 @@
 #include "abeille.h"
-#include "strategieV2.h"
 #include "mediumLevelAction.h"
-#include "command.h"
 #include "position.h"
+
+#ifndef STANDALONE_STRATEGIE
+#include "strategieV2.h"
+#include "command.h"
+#endif
 
 #ifdef QTGUI
 #include <QDebug>

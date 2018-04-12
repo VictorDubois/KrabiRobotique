@@ -39,6 +39,10 @@ int main()
     result = strat->update();
     result = strat->update();
 
+    strat->collisionAvoided();
+
+    result = strat->update();
+
     #ifdef USE_IOSTREAM
         std::cout << "goal: " << strat->getEtapeEnCours()->getPosition().Print() << std::endl;
         std::cout << "end" << std::endl;

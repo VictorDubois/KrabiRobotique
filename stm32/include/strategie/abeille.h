@@ -3,7 +3,10 @@
 
 #include "position.h"
 #include "mediumLevelAction.h"
+
+#ifndef STANDALONE_STRATEGIE
 #include "command.h"
+#endif // STANDALONE_STRATEGIE
 
 class Abeille : public MediumLevelAction
 {
