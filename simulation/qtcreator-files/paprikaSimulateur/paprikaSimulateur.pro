@@ -108,7 +108,8 @@ HEADERS += \
     ../../include/strategie/dune.h \
     ../../include/clock.h \
     ../../include/strategie/goldo2018.h \
-    ../../include/strategie/abeille.h
+    ../../include/strategie/abeille.h \
+    ../../include/strategie/reservoirEau.h
 
 
 SOURCES += \
@@ -186,7 +187,8 @@ SOURCES += \
     ../../src/actionneurs/parasol.cpp \
     ../../src/clock.cpp \
     ../../src/strategie/goldo2018.cpp \
-    ../../src/strategie/abeille.cpp
+    ../../src/strategie/abeille.cpp \
+    ../../src/strategie/reservoirEau.cpp
 
 FORMS += \
     ../../include/simul/remotedebug.ui \

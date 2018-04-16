@@ -23,6 +23,7 @@ public:
 
 
         ABEILLE = 0x03,
+        RESERVOIR_EAU = 0x05,
 
 //#elif KRABI2016
         CUBE_DEBUT = 0x02,

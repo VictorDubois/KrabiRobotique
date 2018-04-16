@@ -8,6 +8,7 @@
 #include "strategiev3.h"
 #include "etape.h"
 #include "abeille.h"
+#include "reservoirEau.h"
 
 class Goldo2018 : public StrategieV3
 {

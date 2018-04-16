@@ -30,12 +30,12 @@ Goldo2018::Goldo2018(bool isYellow) : StrategieV3(isYellow)
 
     // ABEILLE
     Etape::get(p3)->addVoisins(p2);
-    int abeille = Etape::makeEtape(new Abeille(Position(220, 1800, true)));
+    int abeille = Etape::makeEtape(new Abeille(Position(210, 1800, true)));
     Etape::get(abeille)->addVoisins(p3);
 
     // Reservoir eau proche
-    int reservoirProche = Etape::makeEtape(Position(220, 850, true));
-    int pReservoirProche = Etape::makeEtape(Position(600, 850, true)); // passage associé
+    int reservoirProche = Etape::makeEtape(new ReservoirEau(Position(220, 840, true)));
+    int pReservoirProche = Etape::makeEtape(Position(600, 840, true)); // passage associé
 
     Etape::get(p1)->addVoisins(pReservoirProche);
     Etape::get(pReservoirProche)->addVoisins(reservoirProche);
@@ -48,6 +48,15 @@ Goldo2018::Goldo2018(bool isYellow) : StrategieV3(isYellow)
     Etape::get(p1)->addVoisins(pCentrale1);
     Etape::get(pCentrale1)->addVoisins(pCentrale2);
     Etape::get(p2)->addVoisins(pCentrale2);
+
+    // Bouton poussoir
+
+    int bouton = Etape::makeEtape(new Abeille(Position(1130, 200, true)));
+    int pBouton = Etape::makeEtape(Position(1130, 350, true));
+
+    Etape::get(p1)-> addVoisins(pBouton);
+    Etape::get(pCentrale1)-> addVoisins(pBouton);
+    Etape::get(pBouton)-> addVoisins(bouton);
 
 
     /** Liens **/
@@ -98,6 +107,8 @@ int Goldo2018::getScoreEtape(int i)
             return 0;
         case Etape::ABEILLE :
             return 100;
+        case Etape::RESERVOIR_EAU :
+            return 200;
 
 
 //        case Etape::ZONE_CONSTRUCTION : {
