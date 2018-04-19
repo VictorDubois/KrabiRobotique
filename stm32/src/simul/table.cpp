@@ -108,20 +108,25 @@ Table::Table(MainWindow *mainWi, QWidget* parent, bool isYellow): QWidget(parent
 #endif
 	// bordures
     box.SetAsBox(30,0, b2Vec2(0,0),0);
-	tableBody->CreateFixture(&fixture);
+    tableBody->CreateFixture(&fixture);
 
     box.SetAsBox(0,20, b2Vec2(0,0),0);
-	tableBody->CreateFixture(&fixture);
+    tableBody->CreateFixture(&fixture);
 
     box.SetAsBox(0,20, b2Vec2(30,0),0);
-	tableBody->CreateFixture(&fixture);
+    tableBody->CreateFixture(&fixture);
 
     box.SetAsBox(30,0, b2Vec2(0,20),0);
-	tableBody->CreateFixture(&fixture);
+    tableBody->CreateFixture(&fixture);
     // fin bordures
 
     // load the graphics of the game.
+
+#ifdef KRABI2016
+    tableGraphics.load("../paprikaSimulateur/tabledata2016.xml");
+#elif GOLDO2018
     tableGraphics.load("../paprikaSimulateur/tabledata.xml");
+#endif
     tableGraphics.createSolids(tableBody);
 
 
@@ -135,9 +140,42 @@ Table::~Table()
         delete objets[i];
 }
 
+#ifdef GOLDO2018
+void Table::createConstructionCubes(Position  position) {
+    Position  cubeOffset =  Position(-29,-29);
+    Position fiveCubesOffsets[5] = {
+        Position(-58,+0),
+        Position(+58,+0),
+        Position(+0,+0),
+        Position(+0,-58),
+        Position(+0,+58)
+    };
+    QColor fiveCubesColors[5] = {
+        QColor(97, 153, 59),
+        QColor(208, 93, 40),
+        QColor(14, 14, 16),
+        QColor(0, 124, 176),
+        QColor(247, 181, 0)
+    };
+
+    for (int i = 0; i < 5; i++) {
+        objets.push_back(new Objet(world, position + fiveCubesOffsets[i] + cubeOffset, Objet::SANDCUBE, 0, fiveCubesColors[i]));
+    }
+}
+#endif
+
 void Table::createObjects()
 {
     removeAllObjects();
+
+#ifdef GOLDO2018
+    createConstructionCubes(Position(2700.,1190.));
+    createConstructionCubes(Position(2150.,540.));
+    createConstructionCubes(Position(1900.,1500.));
+    createConstructionCubes(Position(1100.,1500.));
+    createConstructionCubes(Position(850.,540.));
+    createConstructionCubes(Position(300.,1190.));
+#endif
 
 #ifdef KRABI2016
 
@@ -632,12 +670,13 @@ void Table::paintEvent(QPaintEvent* evt)
 	// dessine la table
     if (!mHideTable)
     {
-        tableGraphics.draw(&p);
 
 #ifdef GOLDO2018
-        QPixmap pixmap1("/home/alex/Documents/Krabi/Gits/gitRobotique/simulation/qtcreator-files/paprikaSimulateur/fond2018.png");
+        QPixmap pixmap1("../paprikaSimulateur/fond2018.png");
         p.drawPixmap(0, 0, tableWidth, tableHeight, pixmap1);  // this works
 #endif
+        tableGraphics.draw(&p);
+
     }
     else
     {

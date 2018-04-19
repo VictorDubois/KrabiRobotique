@@ -1,120 +1,41 @@
 ############### FOND #################
 
-### EAU ###
-<Rect>
-	<Color>#007CB0</Color>
+### Recyclage ###
+
+<Rect solid="1">
+	<Color>#61993b</Color>
 	<Position> 
-		<x>0</x>
-		<y>1200</y>
+		<x>900</x>
+		<y>1750</y>
 	</Position>
 	<Size>
-		<x>3000</x>
-		<y>800</y>
-	</Size>
-</Rect>
-### SABLE ###
-<Rect>
-	<Color>#F7B500</Color>
-	<Position> 
-		<x>0</x>
-		<y>0</y>
-	</Position>
-	<Size>
-		<x>3000</x>
-		<y>1200</y>
+		<x>600</x>
+		<y>250</y>
 	</Size>
 </Rect>
 
-<Ellipse><Color>#F7B500</Color><Center><x>1500</x><y>350</y></Center><Radius>1150</Radius></Ellipse>
-<Rect><Color>#F7B500</Color><Position><x>600</x><y>1200</y></Position><Size><x>1800</x><y>40</y></Size></Rect>
-### EAU ###
-<Ellipse><Color>#007CB0</Color><Center><x>600</x><y>1550</y></Center><Radius>350</Radius></Ellipse>
-<Ellipse><Color>#007CB0</Color><Center><x>2400</x><y>1550</y></Center><Radius>350</Radius></Ellipse>
+<Rect solid="1">
+	<Color>#d05d28</Color>
+	<Position> 
+		<x>1500</x>
+		<y>1750</y>
+	</Position>
+	<Size>
+		<x>600</x>
+		<y>250</y>
+	</Size>
+</Rect>
 
-############# FIN FOND ###############
+<Rect>
+	<Color>#b5b0a1</Color>
+	<Position> 
+		<x>922</x>
+		<y>1772</y>
+	</Position>
+	<Size>
+		<x>1156</x>
+		<y>206</y>
+	</Size>
+</Rect>
 
-############# PARAVENT ###############
 
-### FOND PARAVENT ###
-<Ellipse><Color>#844C82</Color><Center><x>1500</x><y>750</y></Center><Radius>600</Radius></Ellipse>
-<Ellipse><Color>#366735</Color><Center><x>1500</x><y>750</y></Center><Radius>590</Radius></Ellipse>
-<Ellipse><Color>#F7B500</Color><Center><x>1500</x><y>750</y></Center><Radius>580</Radius></Ellipse>
-<Rect><Color>#F7B500</Color><Position><x>0</x><y>0</y></Position><Size><x>3000</x><y>772</y></Size></Rect>
-
-### TASSEAUX ###
-
-<Rect solid="1"><Color>#E88C00</Color><Position><x>900</x><y>750</y></Position><Size><x>1200</x><y>22</y></Size></Rect>
-<Rect solid="1"><Color>#E88C00</Color><Position><x>1476</x><y>772</y></Position><Size><x>48</x><y>578</y></Size></Rect>
-
-########### FIN PARAVENT #############
-
-########### TASSEAUX DUNE ############
-
-<Rect solid="1"><Color>#E88C00</Color><Position><x>800</x><y>0</y></Position><Size><x>22</x><y>200</y></Size></Rect>
-<Rect solid="1"><Color>#E88C00</Color><Position><x>2178</x><y>0</y></Position><Size><x>22</x><y>200</y></Size></Rect>
-
-######### FIN TASSEAUX DUNE ##########
-
-########### ZONES DEPART #############
-
-### VIOLET ###
-
-<Rect><Color>#844C82</Color><Position><x>0</x><y>600</y></Position><Size><x>300</x><y>500</y></Size></Rect>
-<Rect><Color>#F1F0EA</Color><Position><x>0</x><y>650</y></Position><Size><x>300</x><y>50</y></Size></Rect>
-<Rect><Color>#F1F0EA</Color><Position><x>0</x><y>1000</y></Position><Size><x>300</x><y>50</y></Size></Rect>
-
-### VERT ###
-
-<Rect><Color>#366735</Color><Position><x>2700</x><y>600</y></Position><Size><x>300</x><y>500</y></Size></Rect>
-<Rect><Color>#F1F0EA</Color><Position><x>2700</x><y>650</y></Position><Size><x>300</x><y>50</y></Size></Rect>
-<Rect><Color>#F1F0EA</Color><Position><x>2700</x><y>1000</y></Position><Size><x>300</x><y>50</y></Size></Rect>
-
-######### FIN ZONES DEPART ###########
-
-############## ROCHERS ###############
-
-### COTE VIOLET ###
-
-<Ellipse solid="1"><Color>#B5B0A1</Color><Center><x>0</x><y>2000</y></Center><Radius>250</Radius></Ellipse>
-<Ellipse><Color>#000000</Color><Center><x>0</x><y>2000</y></Center><Radius>151</Radius></Ellipse>
-<Ellipse><Color>#B5B0A1</Color><Center><x>0</x><y>2000</y></Center><Radius>150</Radius></Ellipse>
-
-### COTE VERT ###
-
-<Ellipse solid="1"><Color>#B5B0A1</Color><Center><x>3000</x><y>2000</y></Center><Radius>250</Radius></Ellipse>
-<Ellipse><Color>#000000</Color><Center><x>3000</x><y>2000</y></Center><Radius>151</Radius></Ellipse>
-<Ellipse><Color>#B5B0A1</Color><Center><x>3000</x><y>2000</y></Center><Radius>150</Radius></Ellipse>
-
-############ FIN ROCHERS #############
-
-################ MER #################
-
-### COTE VIOLET ###
-
-<Rect><Color>#FFFFFF</Color><Position><x>498</x><y>1970</y></Position><Size><x>410</x><y>30</y></Size></Rect>
-
-### COTE VERT ###
-
-<Rect><Color>#FFFFFF</Color><Position><x>2112</x><y>1970</y></Position><Size><x>410</x><y>30</y></Size></Rect>
-
-############## FIN MER ###############
-
-############### FILET ################
-
-<Rect solid="1"><Color>#000000</Color><Position><x>928</x><y>1956</y></Position><Size><x>22</x><y>44</y></Size></Rect>
-<Rect><Color>#007CB0</Color><Position><x>930</x><y>1958</y></Position><Size><x>18</x><y>40</y></Size></Rect>
-<Rect solid="1"><Color>#000000</Color><Position><x>2050</x><y>1958</y></Position><Size><x>22</x><y>44</y></Size></Rect>
-<Rect><Color>#007CB0</Color><Position><x>2052</x><y>1958</y></Position><Size><x>18</x><y>40</y></Size></Rect>
-
-<Rect><Color>#000000</Color><Position><x>950</x><y>1958</y></Position><Size><x>1100</x><y>44</y></Size></Rect>
-
-############# FIN FILET ##############
-
-############### KABIN ################
-
-<Rect><Color>#007CB0</Color><Position><x>260</x><y>0</y></Position><Size><x>80</x><y>44</y></Size></Rect>
-<Rect><Color>#007CB0</Color><Position><x>560</x><y>0</y></Position><Size><x>80</x><y>44</y></Size></Rect>
-<Rect><Color>#007CB0</Color><Position><x>2360</x><y>0</y></Position><Size><x>80</x><y>44</y></Size></Rect>
-<Rect><Color>#007CB0</Color><Position><x>2660</x><y>0</y></Position><Size><x>80</x><y>44</y></Size></Rect>
-
-############# FIN KABIN ##############

@@ -53,6 +53,10 @@ private:
 
     static Table* _instance;
 
+#ifdef GOLDO2018
+    void createConstructionCubes(Position position);
+#endif
+
 public slots:
     void createObjects();
     void removeAllObjects();
