@@ -16,6 +16,11 @@
     #include <iostream>
 #endif
 
+#define SERIAL_STREAM
+#ifdef SERIAL_STREAM
+    #include "serialCom.h"
+#endif
+
 // Dit si on est du coté bleu
 bool isBlue() // = ROUGE
 {
@@ -35,6 +40,15 @@ int main()
 
     StrategieV3* strat = new Goldo2018(isBlue());
 
+#ifdef SERIAL_STREAM
+    SerialCom *serialCom = new SerialCom();
+
+    char message = 100;
+    serialCom->sendSerial(message);
+    serialCom->sendSerial(message);
+    serialCom->sendSerial(serialCom->receiveSerial());
+#endif
+
     int result;
     result = strat->update();
     result = strat->update();
@@ -49,4 +63,5 @@ int main()
     #endif // USE_IOSTREAM
     return 0;
 }
+
 

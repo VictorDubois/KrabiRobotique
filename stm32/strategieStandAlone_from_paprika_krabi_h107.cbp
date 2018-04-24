@@ -20,18 +20,30 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="-1" />
-				<Option projectLibDirsRelation="-1" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-DSTANDALONE_STRATEGIE" />
 					<Add option="-DGOLDO2018" />
 					<Add option="-DUSE_IOSTREAM" />
 					<Add directory="include" />
 					<Add directory="include/strategie" />
+					<Add directory="/usr/lib/x86_64-linux-gnu/" />
 				</Compiler>
 				<Linker>
+					<Add option="-l serial" />
+					<Add option="-pthread" />
+					<Add library="/usr/lib/x86_64-linux-gnu/libserial.so" />
+					<Add library="/usr/lib/x86_64-linux-gnu/libserial.so.0.0.0" />
+					<Add library="/usr/lib/x86_64-linux-gnu/" />
+					<Add library="/usr/include/" />
+					<Add library="serial" />
 					<Add directory="include" />
 					<Add directory="include/strategie" />
+					<Add directory="/usr/lib" />
+					<Add directory="/usr/lib/x86_64-linux-gnu" />
+					<Add directory="/usr/include/" />
+					<Add directory="/usr/local/lib" />
 				</Linker>
 				<MakeCommands>
 					<Build command="" />
@@ -64,6 +76,7 @@
 		<Unit filename="include/angle.h" />
 		<Unit filename="include/constantes.h" />
 		<Unit filename="include/distance.h" />
+		<Unit filename="include/hardware/serialCom.h" />
 		<Unit filename="include/position.h" />
 		<Unit filename="include/positionPlusAngle.h" />
 		<Unit filename="include/strategie/abeille.h" />
@@ -77,6 +90,7 @@
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/angle.cpp" />
 		<Unit filename="src/distance.cpp" />
+		<Unit filename="src/hardware/serialCom.cpp" />
 		<Unit filename="src/mainStandAloneStrat.cpp" />
 		<Unit filename="src/position.cpp" />
 		<Unit filename="src/positionPlusAngle.cpp" />
