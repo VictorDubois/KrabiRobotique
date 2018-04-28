@@ -33,3 +33,10 @@ void SerialCom::sendSerial(char write_byte) {
     serial_stream << write_byte;
 }
 
+void SerialCom::sendSerial(char* write_byte) {
+//    char write_byte_2 = 'b';
+
+    // Write a message.
+    serial_stream << &write_byte;
+}
+

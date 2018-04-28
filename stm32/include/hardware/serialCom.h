@@ -18,6 +18,8 @@ public:
 
     char receiveSerial();
     void sendSerial(char sendByte);
+    void sendSerial(char* write_byte);
+
 
     SerialCom();
     ~SerialCom();

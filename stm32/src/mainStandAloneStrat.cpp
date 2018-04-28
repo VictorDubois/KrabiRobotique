@@ -18,7 +18,8 @@
 
 #define SERIAL_STREAM
 #ifdef SERIAL_STREAM
-    #include "serialCom.h"
+    #include "serialComStrat.h"
+    #include "serialMessage.h"
 #endif
 
 // Dit si on est du coté bleu
@@ -41,12 +42,31 @@ int main()
     StrategieV3* strat = new Goldo2018(isBlue());
 
 #ifdef SERIAL_STREAM
-    SerialCom *serialCom = new SerialCom();
+    SerialComStrat *serialComStrat = new SerialComStrat();
+    char messageData[2];
+    messageData[0] = SerialComStrat::ASK_NEXT_MISSION;
+    messageData[1] = 200;
 
-    char message = 100;
-    serialCom->sendSerial(message);
-    serialCom->sendSerial(message);
-    serialCom->sendSerial(serialCom->receiveSerial());
+    SerialMessage* message = new SerialMessage(SerialMessage::ASK_NEXT_MISSION, 0, NULL);
+    serialComStrat->sendNewMission(posPlusAngle);
+
+//    serialComStrat->sendMessage(message);
+//
+//    delete message;
+//
+//    message = new SerialMessage(SerialMessage::NEW_MISSION, 2, messageData);
+//    serialComStrat->sendMessage(message);
+//
+//    delete message;
+
+
+
+//    SerialCom *serialCom = new SerialCom();
+//
+//    char message = 100;
+//    serialCom->sendSerial(message);
+//    serialCom->sendSerial(message);
+//    serialCom->sendSerial(serialCom->receiveSerial());
 #endif
 
     int result;
