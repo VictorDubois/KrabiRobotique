@@ -7,15 +7,12 @@
 class SerialMessage
 {
 public:
-//    void sendMessage();
-//    void sendSerial(char sendByte);
-
-    SerialMessage(uint8_t type, uint8_t length, char* data);
+    SerialMessage(uint8_t type, uint8_t length, unsigned char* data);
     ~SerialMessage();
 
     uint8_t getType();
     uint8_t getLength();
-    char* getData();
+    unsigned char* getData();
 
 
     /** @brief types of packets */
@@ -29,10 +26,9 @@ public:
     };
 
 private:
-//    SerialCom* serial_com;
     uint8_t type;
     uint8_t length;
-    char* data;
+    unsigned char* data;
 };
 
 #endif // SERIALMESSAGE_H

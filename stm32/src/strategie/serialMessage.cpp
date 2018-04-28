@@ -1,48 +1,42 @@
-
 #include "serialMessage.h"
 #include <iostream>
 
-
-SerialMessage::SerialMessage(uint8_t type, uint8_t length, char* data) {
+/**
+ * SerialMessage's constructor
+ */
+SerialMessage::SerialMessage(uint8_t type, uint8_t length, unsigned char* data) {
     this->type = type;
     this->length = length;
-
     this->data = data;
 }
 
+/**
+ * SerialMessage's destructor
+ */
 SerialMessage::~SerialMessage() {
 
 }
 
+/**
+ * Returns the message's type, according to SerialMessage::PacketType
+ * @return uint8_t the message's type
+ */
 uint8_t SerialMessage::getType() {
     return this->type;
 }
 
+/**
+ * Returns the message's data
+ * @return uint8_t the message's data length
+ */
 uint8_t SerialMessage::getLength() {
     return this->length;
 }
 
-char* SerialMessage::getData() {
+/**
+ * Returns the message's data
+ * @return unsigned char* the message's data
+ */
+unsigned char* SerialMessage::getData() {
     return this->data;
 }
-
-
-
-//char SerialCom::receiveSerial() {
-//    char read_byte;
-//
-//    // Read a character.
-//    serial_stream >> read_byte;
-//
-//    std::cout << "serial_stream read: " << read_byte << std::endl;
-//
-//    return read_byte;
-//}
-//
-//void SerialCom::sendSerial(char write_byte) {
-////    char write_byte_2 = 'b';
-//
-//    // Write a character.
-//    serial_stream << write_byte;
-//}
-

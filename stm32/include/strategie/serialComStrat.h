@@ -1,4 +1,3 @@
-
 #ifndef SERIALCOMSTRAT_H
 #define SERIALCOMSTRAT_H
 
@@ -10,8 +9,8 @@ class SerialComStrat
 {
 public:
     void sendMessage(SerialMessage* message);
-    void sendNewMission(PositionPlusAngle position);
-//    void sendSerial(char sendByte);
+    void sendNewMission(PositionPlusAngle position, uint8_t missionType);
+    void receiveMessage(SerialMessage**);
 
     SerialComStrat();
     ~SerialComStrat();
@@ -29,7 +28,7 @@ public:
 
 private:
     SerialCom* serial_com;
-    void splitToChar(uint32_t, char*);
+    void splitToChar(uint32_t, unsigned char*);
 
 };
 

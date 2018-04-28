@@ -87,6 +87,8 @@
 		<Unit filename="include/strategie/goldo2018.h" />
 		<Unit filename="include/strategie/mediumLevelAction.h" />
 		<Unit filename="include/strategie/reservoirEau.h" />
+		<Unit filename="include/strategie/serialComStrat.h" />
+		<Unit filename="include/strategie/serialMessage.h" />
 		<Unit filename="include/strategie/strategiev3.h" />
 		<Unit filename="include/vector.h" />
 		<Unit filename="src/angle.cpp" />
@@ -102,6 +104,8 @@
 		<Unit filename="src/strategie/goldo2018.cpp" />
 		<Unit filename="src/strategie/mediumLevelAction.cpp" />
 		<Unit filename="src/strategie/reservoirEau.cpp" />
+		<Unit filename="src/strategie/serialComStrat.cpp" />
+		<Unit filename="src/strategie/serialMessage.cpp" />
 		<Unit filename="src/strategie/strategiev3.cpp" />
 		<Unit filename="src/vec2d.cpp" />
 		<Unit filename="src/vec3d.cpp" />

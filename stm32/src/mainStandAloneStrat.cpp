@@ -28,6 +28,28 @@ bool isBlue() // = ROUGE
     return true;
 }
 
+/**
+ * Update the strategy, and send the new mission
+ * @param StrategieV3* strat, the strategy
+ * @param SerialComStrat *serialComStrat
+ * @return result, the strategie's update result
+ */
+int sendNewMission(StrategieV3* strat, SerialComStrat *serialComStrat) {
+    int result = strat->update();
+    Position goal = strat->getEtapeEnCours()->getPosition();
+    int mission_type = strat->getEtapeEnCours()->getEtapeType();
+
+    #ifdef USE_IOSTREAM
+    std::cout << "goal: " << goal.Print() << std::endl;
+    std::cout << "type: " << mission_type << std::endl;
+    #endif // USE_IOSTREAM
+
+    PositionPlusAngle* goalWithAngle = new PositionPlusAngle(goal, 0);
+    serialComStrat->sendNewMission(*goalWithAngle, mission_type);
+
+    return result;
+}
+
 int main()
 {
     #ifdef USE_IOSTREAM
@@ -42,45 +64,45 @@ int main()
     StrategieV3* strat = new Goldo2018(isBlue());
 
 #ifdef SERIAL_STREAM
+    int result;
+
+    // strategy serial com handler
     SerialComStrat *serialComStrat = new SerialComStrat();
-    char messageData[2];
-    messageData[0] = SerialComStrat::ASK_NEXT_MISSION;
-    messageData[1] = 200;
+    SerialMessage* messageReceived;
 
-    SerialMessage* message = new SerialMessage(SerialMessage::ASK_NEXT_MISSION, 0, NULL);
-    serialComStrat->sendNewMission(posPlusAngle);
-
-//    serialComStrat->sendMessage(message);
-//
-//    delete message;
-//
-//    message = new SerialMessage(SerialMessage::NEW_MISSION, 2, messageData);
-//    serialComStrat->sendMessage(message);
-//
-//    delete message;
+// Tests
+//    SerialMessage* message = new SerialMessage(SerialMessage::ASK_NEXT_MISSION, 0, NULL);
+//    serialComStrat->sendNewMission(posPlusAngle, strat->getEtapeEnCours()->getEtapeType());
 
 
+    while(1) {
+        // Receive a new message (blocking)
+        serialComStrat->receiveMessage(&messageReceived);
 
-//    SerialCom *serialCom = new SerialCom();
-//
-//    char message = 100;
-//    serialCom->sendSerial(message);
-//    serialCom->sendSerial(message);
-//    serialCom->sendSerial(serialCom->receiveSerial());
+        // Act according to the message's type
+        switch(messageReceived->getType()) {
+            case SerialMessage::ASK_NEXT_MISSION:
+                #ifdef USE_IOSTREAM
+                    std::cout << "ASK_NEXT_MISSION" << std::endl;
+                #endif // USE_IOSTREAM
+                sendNewMission(strat, serialComStrat);
+                break;
+
+            case SerialMessage::OBSTACLE_DETECTED:
+                #ifdef USE_IOSTREAM
+                    std::cout << "OBSTACLE_DETECTED" << std::endl;
+                #endif // USE_IOSTREAM
+                strat->collisionAvoided();
+                sendNewMission(strat, serialComStrat);
+                break;
+
+            default:
+                break;
+        }
+    }
+
 #endif
 
-    int result;
-    result = strat->update();
-    result = strat->update();
-
-    strat->collisionAvoided();
-
-    result = strat->update();
-
-    #ifdef USE_IOSTREAM
-        std::cout << "goal: " << strat->getEtapeEnCours()->getPosition().Print() << std::endl;
-        std::cout << "end" << std::endl;
-    #endif // USE_IOSTREAM
     return 0;
 }
 

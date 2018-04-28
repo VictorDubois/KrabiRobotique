@@ -1,32 +1,29 @@
 #ifndef SERIALCOM_H
 #define SERIALCOM_H
 
+#define USE_SERIAL_PORT
+//#define USE_SERIAL_STREAM
+
+#include <SerialPort.h>
 #include <SerialStream.h>
+
+
 using namespace LibSerial;
 
 class SerialCom
 {
 public:
-//    /// @brief Retourne la valeur de l'angle dans un float entre -PI et PI.
-//    static SerialCom wrapSerialCom(SerialCom angle);
-//
-//    /// @brief Vérifie s'il y a égalité ou presque entre deux angles.
-//    static bool anglesAlmostEqual(SerialCom a1, SerialCom a2);
-//
-//    /// @brief Calcul la différence entre deux angles (rad), le résultat est donné dans [-pi, pi]
-//    static float diffSerialCom(float a, float b);
-
-    char receiveSerial();
-    void sendSerial(char sendByte);
-    void sendSerial(char* write_byte);
+    unsigned char receiveSerial();
+    void sendSerial(unsigned char sendByte);
 
 
     SerialCom();
     ~SerialCom();
 
 private:
+#ifdef USE_SERIAL_STREAM
     SerialStream serial_stream;
-
+#endif // USE_SERIAL_STREAM
 };
 
 #endif // SERIALCOM_H
